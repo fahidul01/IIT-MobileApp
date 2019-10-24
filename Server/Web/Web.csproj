@@ -20,4 +20,8 @@
     <ProjectReference Include="..\Web.Infrastructure\Web.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\lib\" />
+  </ItemGroup>
+
 </Project>
