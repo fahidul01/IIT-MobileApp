@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html class="perfect-scrollbar-on">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FoodRulers</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+    <!-- Icons -->
+    <!-- CSS Files -->
+    @RenderSection("Styles", required: false)
+    <link href="~/lib/font-awesome/css/all.min.css" rel="stylesheet" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/twitter-bootstrap/css/bootstrap.min.css" />
+    <link href="~/css/argon.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+
+    <partial name="_SidebarAdmin" />
+    <div class="main-content">
+        <partial name="_NavbarAdmin" />
+        <!-- Page content -->
+        <div class="container-fluid mt--7">
+            <!-- Page content -->
+            @RenderBody()
+            @if (ViewData["SuccessMessage"] is string success && !string.IsNullOrWhiteSpace(success))
+            {
+                <div>
+                    @await Html.PartialAsync("_Success")
+                </div>
+            }
+            @if (ViewData["FailedMessage"] is string failed && !string.IsNullOrWhiteSpace(failed))
+            {
+                <div>
+                    @await Html.PartialAsync("_Failed")
+                </div>
+            }
+            <span id="spinner" style="display:none;"><i class="fas fa-spinner fa-spin"></i></span>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/jquery.min.js" asp-append-version="true"></script>
+
+    @RenderSection("Scripts", required: false)
+    <script src="~/lib/twitter-bootstrap/js/bootstrap.min.js" asp-append-version="true"></script>
+    <script src="~/js/argon.js"></script>
+    <script src="~/js/site.js"></script>
+</body>
+</html>

@@ -11,6 +11,27 @@
         "css/bootstrap.min.css",
         "js/bootstrap.js"
       ]
+    },
+    {
+      "library": "font-awesome@5.11.2",
+      "destination": "wwwroot/lib/font-awesome/",
+      "files": [
+        "css/all.min.css",
+        "css/all.css",
+        "js/all.js",
+        "js/all.min.js",
+        "webfonts/fa-brands-400.ttf",
+        "webfonts/fa-regular-400.ttf",
+        "webfonts/fa-solid-900.ttf"
+      ]
+    },
+    {
+      "library": "jquery@3.4.1",
+      "destination": "wwwroot/lib/jquery/"
+    },
+    {
+      "library": "popper.js@1.15.0",
+      "destination": "wwwroot/lib/popper.js/"
     }
   ]
 }
