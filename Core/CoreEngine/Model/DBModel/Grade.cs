@@ -8,8 +8,6 @@ namespace CoreEngine.Model.DBModel
         public string GradeName { get; set; }
         public decimal GradePoint { get; set; }
         [Required]
-        public virtual Course Course { get; set; }
-        [Required]
-        public virtual DBUser Student { get; set; }
+        public virtual StudentCourse StudentCourse { get; set; }
     }
 }

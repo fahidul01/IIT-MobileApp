@@ -8,6 +8,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using Web.Infrastructure.DBModel;
+using Web.Models.Web;
+using Web.WebServices;
 
 namespace Web
 {
@@ -45,6 +47,8 @@ namespace Web
                 options.SlidingExpiration = true;
                 options.LoginPath = "/Accounts/Login";
             });
+            services.AddTransient<IEmailSender, EmailSender>();
+            services.Configure<AuthMessageSenderOptions>(Configuration);
 
             services.AddControllersWithViews();
         }

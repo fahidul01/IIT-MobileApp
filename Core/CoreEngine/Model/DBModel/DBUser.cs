@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
 
 namespace CoreEngine.Model.DBModel
 {
     public class DBUser : IdentityUser
     {
         public virtual Batch Batch { get; set; }
+        public virtual ICollection<CourseMaterial> CourseMaterials { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
     }

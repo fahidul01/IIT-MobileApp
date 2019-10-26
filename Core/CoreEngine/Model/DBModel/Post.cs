@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.ComponentModel.DataAnnotations;
 
 namespace CoreEngine.Model.DBModel
 {
-    public class StudentPost
+    public class Post
     {
         public int Id { get; set; }
         public string Title { get; set; }
@@ -13,7 +12,9 @@ namespace CoreEngine.Model.DBModel
         public bool FutureNotification { get; set; }
         public DateTime EventDate { get; set; }
         public string File { get; set; }
-
+        public virtual Batch Batch { get; set; }
+        [Required]
+        public virtual DBUser Owner { get; set; }
     }
 
     public enum PostType
@@ -21,6 +22,7 @@ namespace CoreEngine.Model.DBModel
         Notice,
         Examination,
         ClassCancel,
-        ExtraClass
+        ExtraClass,
+        All
     }
 }

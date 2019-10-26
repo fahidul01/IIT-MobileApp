@@ -20,88 +20,81 @@ namespace Web.Api
         }
 
         // GET: api/Courses
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Course>>> GetCourses()
-        {
-            return await _context.Courses.ToListAsync();
-        }
+        //[HttpGet]
+        //public async Task<ActionResult<IEnumerable<Course>>> GetCourses()
+        //{
+        //    //return await _context.Courses.ToListAsync();
+        //}
 
-        // GET: api/Courses/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Course>> GetCourse(int id)
-        {
-            var course = await _context.Courses.FindAsync(id);
+        //// GET: api/Courses/5
+        //[HttpGet("{id}")]
+        //public async Task<ActionResult<Course>> GetCourse(int id)
+        //{
+        //    //
+        //}
 
-            if (course == null)
-            {
-                return NotFound();
-            }
+        //// PUT: api/Courses/5
+        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for
+        //// more details see https://aka.ms/RazorPagesCRUD.
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> PutCourse(int id, Course course)
+        //{
+        //    if (id != course.Id)
+        //    {
+        //        return BadRequest();
+        //    }
 
-            return course;
-        }
+        //    _context.Entry(course).State = EntityState.Modified;
 
-        // PUT: api/Courses/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutCourse(int id, Course course)
-        {
-            if (id != course.Id)
-            {
-                return BadRequest();
-            }
+        //    try
+        //    {
+        //        await _context.SaveChangesAsync();
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        if (!CourseExists(id))
+        //        {
+        //            return NotFound();
+        //        }
+        //        else
+        //        {
+        //            throw;
+        //        }
+        //    }
 
-            _context.Entry(course).State = EntityState.Modified;
+        //    return NoContent();
+        //}
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CourseExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+        //// POST: api/Courses
+        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for
+        //// more details see https://aka.ms/RazorPagesCRUD.
+        //[HttpPost]
+        //public async Task<Course> PostCourse(Course course)
+        //{
+        //    _context.Courses.Add(course);
+        //    await _context.SaveChangesAsync();
+        //    return course;
+        //}
 
-            return NoContent();
-        }
+        //// DELETE: api/Courses/5
+        //[HttpDelete("{id}")]
+        //public async Task<ActionResult<Course>> DeleteCourse(int id)
+        //{
+        //    var course = await _context.Courses.FindAsync(id);
+        //    if (course == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-        // POST: api/Courses
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPost]
-        public async Task<Course> PostCourse(Course course)
-        {
-            _context.Courses.Add(course);
-            await _context.SaveChangesAsync();
-            return course;
-        }
+        //    _context.Courses.Remove(course);
+        //    await _context.SaveChangesAsync();
 
-        // DELETE: api/Courses/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<Course>> DeleteCourse(int id)
-        {
-            var course = await _context.Courses.FindAsync(id);
-            if (course == null)
-            {
-                return NotFound();
-            }
+        //    return course;
+        //}
 
-            _context.Courses.Remove(course);
-            await _context.SaveChangesAsync();
-
-            return course;
-        }
-
-        private bool CourseExists(int id)
-        {
-            return _context.Courses.Any(e => e.Id == id);
-        }
+        //private bool CourseExists(int id)
+        //{
+        //    return _context.Courses.Any(e => e.Id == id);
+        //}
     }
 }

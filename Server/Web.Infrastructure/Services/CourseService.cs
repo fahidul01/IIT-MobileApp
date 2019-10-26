@@ -18,7 +18,7 @@ namespace Web.Infrastructure.Services
         {
             var oldCourse = await _db.Courses
                                      .FirstOrDefaultAsync(x => x.Id == course.Id &&
-                                                               x.Batch.Id == batchId);
+                                                               x.Semester.Batch.Id == batchId);
             if (oldCourse != null) return false;
             else
             {
@@ -27,7 +27,6 @@ namespace Web.Infrastructure.Services
                 else
                 {
                     _db.Entry(course).State = EntityState.Added;
-                    course.Batch = batch;
                     await _db.SaveChangesAsync();
                     return true;
                 }
