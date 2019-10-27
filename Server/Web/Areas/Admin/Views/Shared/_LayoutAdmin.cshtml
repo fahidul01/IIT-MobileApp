@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html class="perfect-scrollbar-on">
+<html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,7 +7,7 @@
     @RenderSection("Styles", required: false)
     <link href="~/lib/font-awesome/css/all.min.css" rel="stylesheet" asp-append-version="true" />
     <link rel="stylesheet" href="~/lib/twitter-bootstrap/css/bootstrap.min.css" />
-    <link href="~/css/argon.min.css" rel="stylesheet" />
+    <link href="~/css/argon-dashboard.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
@@ -20,7 +20,7 @@
             <div class="card p-4 vh-100">
                 @RenderBody()
             </div>
-            
+
             @if (ViewData["SuccessMessage"] is string success && !string.IsNullOrWhiteSpace(success))
             {
                 <div>
