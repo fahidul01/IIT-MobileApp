@@ -1,4 +1,4 @@
-﻿<nav class="navbar navbar-vertical fixed-left navbar-expand-md navbar-light bg-white" id="sidenav-main">
+﻿<nav class="navbar navbar-vertical fixed-left navbar-expand-md navbar-dark bg-dark" id="sidenav-main">
     <div class="container-fluid">
         <!-- Toggler -->
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#sidenav-collapse-main" aria-controls="sidenav-main" aria-expanded="false" aria-label="Toggle navigation">
@@ -6,7 +6,7 @@
         </button>
         <!-- Brand -->
         <a class="navbar-brand pt-0" href="/">
-            <p class="font-weight-bolder">FoodRulers</p>
+            <p class="font-weight-bolder">IIT App</p>
         </a>
         <!-- User -->
         <ul class="nav align-items-center d-md-none">
@@ -39,6 +39,7 @@
                 <div class="row">
                     <div class="col-6 collapse-brand">
                         <a asp-action="Index" asp-controller="Dashboard">
+                            <i class="fas fa-sad-cry text-blue"></i>
                             Dashboard
                         </a>
                     </div>
@@ -64,97 +65,41 @@
             <!-- Navigation -->
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <hr class="my--1" />
-                    <a class="nav-link" href="/admin/dashboard">
-                        <i class="ni ni-tv-2 text-primary"></i> Dashboard
+                    <a class="nav-link" asp-area="admin" asp-controller="Dashboard">
+                        <i class="fa fas fa-home"></i> Dashboard
                     </a>
-                    <hr class="my--1" />
                 </li>
                 <li class="nav-item ">
-                    <a class="nav-link" href="#members" aria-expanded="false" data-toggle="collapse">
-                        <i class="ni ni-briefcase-24 text-danger"></i>
-                        Members
+                    <a class="nav-link" asp-area="admin" asp-controller="Batch">
+                        <i class="fa fas fa-user"></i> Batches
                     </a>
-                    <ul id="members" class="list-inline collapse sub-menu">
-                        <li class="nav-item">
-                            <a class="nav-link" asp-action="CreateMember" asp-controller="Accounts">
-                                <i class="ni ni-fat-add text-success"></i>
-                                Create Member
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-action="MemberList" asp-controller="Accounts">
-                                <i class="fas fa-table text-blue"></i>
-                                All Members
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-action="MemberBanks" asp-controller="Accounts">
-                                <i class="fas fa-table text-blue"></i>
-                                Member Banks
-                            </a>
-                        </li>
-                    </ul>
-                    <hr class="my--1" />
                 </li>
                 <li class="nav-item ">
-                    <a class="nav-link" href="#missions" aria-expanded="false" data-toggle="collapse">
-                        <i class="ni ni-briefcase-24 text-danger"></i>
-                        Missions
+                    <a class="nav-link" asp-area="admin" asp-controller="Student">
+                        <i class="fa fa-people-carry"></i> Students
                     </a>
-                    <ul id="missions" class="list-inline collapse sub-menu">
-                        <li class="nav-item">
-                            <a class="nav-link" asp-action="Create" asp-controller="Missions">
-                                <i class="ni ni-fat-add text-success"></i>
-                                Create New Mission
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-action="Index" asp-controller="Missions">
-                                <i class="fas fa-table text-blue"></i>
-                                AllMission
-                            </a>
-                        </li>
-                    </ul>
-                    <hr class="my--1" />
                 </li>
                 <li class="nav-item ">
-                    <a class="nav-link" href="#deals" aria-expanded="false" data-toggle="collapse">
-                        <i class="ni ni-briefcase-24 text-danger"></i>
-                        Deals
+                    <a class="nav-link" href="#notice" aria-expanded="false"
+                       data-toggle="collapse">
+                        <i class="fas fa-object-group"></i>
+                        Posts
                     </a>
-                    <ul id="deals" class="list-inline collapse sub-menu">
+                    <ul id="notice" class="pl-4 list-inline collapse sub-menu">
                         <li class="nav-item">
-                            <a class="nav-link" asp-action="SingleDeals" asp-controller="Deals">
-                                <i class="ni ni-single-02 text-success"></i>
-                                Single Deals
+                            <a class="nav-link" asp-area="Admin"
+                               asp-controller="Notices"
+                               asp-action="UpcomingNotices">
+                                <i class="fa fas fa-flag"></i>
+                                Upcoming Notices
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-action="GroupDeals" asp-controller="Deals">
-                                <i class="fas fa-layer-group text-blue"></i>
-                                Group Deals
-                            </a>
-                        </li>
-                    </ul>
-                    <hr class="my--1" />
-                </li>
-                @*Restaurants*@
-                <li class="nav-item ">
-                    <a class="nav-link" href="#restaurants" aria-expanded="false" data-toggle="collapse">
-                        <i class="fa fa-folder-open text-danger"></i>
-                        Restaurants
-                    </a>
-                    <ul id="restaurants" class="list-inline collapse sub-menu">
-                        <li class="nav-item">
-                            <a class="nav-link" asp-action="Index" asp-controller="Restaurants">
-                                <i class="ni ni-single-02 text-success"></i>
-                                Restaurants
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-action="Create" asp-controller="Restaurants">
-                                <i class="fas fa-sad-cry text-blue"></i>
+                            <a class="nav-link"
+                               asp-area="Admin"
+                               asp-action="CreateNotice"
+                               asp-controller="Notices">
+                                <i class="fas fa-plus"></i>
                                 Create New
                             </a>
                         </li>

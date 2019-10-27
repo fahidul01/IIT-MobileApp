@@ -3,11 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>FoodRulers</title>
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
-    <!-- Icons -->
-    <!-- CSS Files -->
+    <title>IIT Application</title>
     @RenderSection("Styles", required: false)
     <link href="~/lib/font-awesome/css/all.min.css" rel="stylesheet" asp-append-version="true" />
     <link rel="stylesheet" href="~/lib/twitter-bootstrap/css/bootstrap.min.css" />
@@ -15,14 +11,16 @@
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
-
     <partial name="_SidebarAdmin" />
     <div class="main-content">
         <partial name="_NavbarAdmin" />
         <!-- Page content -->
-        <div class="container-fluid mt--7">
+        <div class="container-fluid mt--7 vh-100">
             <!-- Page content -->
-            @RenderBody()
+            <div class="card p-4 vh-100">
+                @RenderBody()
+            </div>
+            
             @if (ViewData["SuccessMessage"] is string success && !string.IsNullOrWhiteSpace(success))
             {
                 <div>
@@ -43,7 +41,7 @@
 
     @RenderSection("Scripts", required: false)
     <script src="~/lib/twitter-bootstrap/js/bootstrap.min.js" asp-append-version="true"></script>
-    <script src="~/js/argon.js"></script>
+    <script src="~/js/argon.min.js"></script>
     <script src="~/js/site.js"></script>
 </body>
 </html>

@@ -1,4 +1,26 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿$(document).ready(function () {
+    //Show modals if present
+    $('#modal-notification').modal('show');
 
-// Write your JavaScript code.
+    //Expand if needed
+    var url = window.location;
+    $('.navbar-nav').find('.active').removeClass('active');
+    $('.navbar-nav li a').each(function () {
+        if (this.href === url.href) {
+            var parent = $(this).parent();
+            parent.addClass('active');
+            var ulList = parent.closest("ul");
+            if (ulList.hasClass("collapse")) {
+                ulList.addClass("show");
+                ulList.siblings(':first-child').attr("aria-expanded", "true");
+            }
+        }
+    });
+    if ($(".mypicker").length !== 0) {
+        $('.mypicker').selectpicker({
+            liveSearch: true,
+            showSubtext: true
+        });
+    }
+});
+

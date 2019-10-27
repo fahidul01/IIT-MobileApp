@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CoreEngine.Model.DBModel
 {
-    public class Post
+    public class Notice
     {
         public int Id { get; set; }
         public string Title { get; set; }

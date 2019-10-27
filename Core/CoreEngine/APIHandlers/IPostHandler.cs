@@ -6,9 +6,9 @@ namespace CoreEngine.APIHandlers
 {
     public interface IPostHandler
     {
-        Task<List<Post>> GetPosts(int page, PostType postType = PostType.All);
-        Task<bool> AddPost(Post post);
-        Task<bool> UpdatePost(Post post);
-        Task<bool> DeletePost(Post post);
+        Task<List<Notice>> GetPosts(int page, PostType postType = PostType.All);
+        Task<bool> AddPost(Notice post);
+        Task<bool> UpdatePost(Notice post);
+        Task<bool> DeletePost(Notice post);
     }
 }
