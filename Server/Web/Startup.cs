@@ -1,3 +1,4 @@
+using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -8,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using Web.Infrastructure.DBModel;
+using Web.Infrastructure.Services;
 using Web.Models.Web;
 using Web.WebServices;
 
@@ -27,6 +29,7 @@ namespace Web
         {
             services.AddDbContext<StudentDBContext>(opt =>
                  opt.UseSqlite("Filename=mydata.db"));
+            services.RegisterAllTypes<BaseService>(typeof(StudentDBContext).Assembly);
 
             services.AddIdentity<DBUser, IdentityRole>(options =>
             {

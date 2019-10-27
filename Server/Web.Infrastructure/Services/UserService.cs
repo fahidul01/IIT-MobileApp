@@ -10,7 +10,7 @@ using Web.Infrastructure.DBModel;
 
 namespace Web.Infrastructure.Services
 {
-    public class UserService
+    public class UserService : BaseService
     {
         readonly UserManager<DBUser> _usermanager;
         readonly StudentDBContext _db;

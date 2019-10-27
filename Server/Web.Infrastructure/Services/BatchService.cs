@@ -1,11 +1,12 @@
-﻿using CoreEngine.Model.DBModel;
+﻿using CoreEngine.Model.Common;
+using CoreEngine.Model.DBModel;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using Web.Infrastructure.DBModel;
 
 namespace Web.Infrastructure.Services
 {
-    public class BatchService
+    public class BatchService : BaseService
     {
         private readonly StudentDBContext _db;
 

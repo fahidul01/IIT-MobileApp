@@ -8,6 +8,11 @@ namespace CoreEngine.Model.DBModel
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public int NumberOfSemester { get; set; }
+        /// <summary>
+        /// In Months
+        /// </summary>
+        public int SemesterDuration { get; set; } = 1;
         public virtual ICollection<DBUser> Students { get; set; }
         public virtual ICollection<Semester> Semesters { get; set; }
         public DateTime StartsOn { get; set; }
