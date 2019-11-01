@@ -1,0 +1,51 @@
+﻿@model List<DBUser>
+<div class="table-responsive">
+    <table class="table align-items-center">
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Role</th>
+                <th scope="col">Status</th>
+                <th scope="col">Users</th>
+                <th scope="col">Completion</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var student in Model)
+            {
+                <tr>
+                    <th scope="row">
+                        <div class="media align-items-center">
+                            <a href="#" class="avatar rounded-circle mr-3">
+                                <img alt="Image placeholder" src="/img/theme/bootstrap.jpg">
+                            </a>
+                            <div class="media-body">
+                                <span class="mb-0 text-sm">@student.FullName</span>
+                            </div>
+                        </div>
+                    </th>
+                    <td>
+                        @student.UserName
+                    </td>
+                    <td>
+                        <span class="badge badge-dot mr-4">
+                            <i class="bg-warning"></i> @student.Email
+                        </span>
+                    </td>
+                    <td class="text-right">
+                        <div class="dropdown">
+                            <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                                <a class="dropdown-item">Edit</a>
+                                <a class="dropdown-item">Delete</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

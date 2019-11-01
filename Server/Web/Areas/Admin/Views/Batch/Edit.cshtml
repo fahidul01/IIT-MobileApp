@@ -1,14 +1,14 @@
 ﻿@model Batch
-
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Edit";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<h1>Update Batch</h1>
+<h1>Edit Batch Information</h1>
 <hr />
 <form asp-action="Create">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Id" />
     <div class="row">
         <div class="form-group col-lg-6 col-md-12 col-sm-12">
             <label asp-for="Name" class="control-label"></label>
@@ -17,15 +17,10 @@
         </div>
     </div>
     <div class="row">
-        <div class="form-group col-lg-4 col-md-6 col-sm-6">
+        <div class="form-group col-lg-4 col-md-6 col-sm-12">
             <label asp-for="NumberOfSemester" class="control-label"></label>
             <input asp-for="NumberOfSemester" class="form-control" />
             <span asp-validation-for="NumberOfSemester" class="text-danger"></span>
-        </div>
-        <div class="form-group col-lg-4 col-md-6 col-sm-6">
-            <label asp-for="SemesterDuration" class="control-label"></label>
-            <input asp-for="SemesterDuration" class="form-control" />
-            <span asp-validation-for="SemesterDuration" class="text-danger"></span>
         </div>
     </div>
     <div class="row">
@@ -36,11 +31,35 @@
         </div>
     </div>
     <div class="form-group">
-        <input type="submit" value="Create" class="btn btn-primary" />
+        <input type="submit" value="Update" class="btn btn-outline-primary" />
     </div>
 </form>
+<br />
+<br />
+<h1>Semesters</h1>
+@foreach (var semester in Model.Semesters)
+{
+    <a class="nav-link" href="#@semester.Name" aria-expanded="false"
+       data-toggle="collapse">
+        <h3>@semester.Name</h3>
+    </a>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+    <div id="@semester.Name" class="pl-4 list-inline collapse sub-menu">
+        <hr class="p-0" />
+        Semester Information and courses
+        <hr class="p-0" />
+    </div>
+}
+
+<div class="row">
+    <h1 class="col-8">Students</h1>
+    <form class="col-4" enctype="multipart/form-data" method="post">
+        <div>
+            <input class="btn" type="file" value="Add Students" onchange="form.submit()" />
+        </div>
+    </form>
+</div>
+<div id="student_table" class="min-vh-100">
+    @await Html.PartialAsync("_students", Model.Students.ToList())
 </div>
 

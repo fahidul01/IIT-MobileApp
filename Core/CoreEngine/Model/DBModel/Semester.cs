@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace CoreEngine.Model.DBModel
@@ -13,6 +14,8 @@ namespace CoreEngine.Model.DBModel
         /// Duration of a semester in Months
         /// </summary>
         public int Duration { get; set; }
+        public DateTime StartsOn { get; set; }
+        public DateTime EndsOn { get; set; }
         public virtual ICollection<Course> Courses { get; set; }
 
         public Semester()

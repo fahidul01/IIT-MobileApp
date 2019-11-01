@@ -1,20 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.ComponentModel.DataAnnotations;
 
 namespace CoreEngine.Model.DBModel
 {
     public class Batch
     {
         public int Id { get; set; }
+        [Required]
         public string Name { get; set; }
+        [Required]
         public int NumberOfSemester { get; set; }
         /// <summary>
         /// In Months
         /// </summary>
+        [Required]
         public int SemesterDuration { get; set; } = 1;
         public virtual ICollection<DBUser> Students { get; set; }
         public virtual ICollection<Semester> Semesters { get; set; }
+        [Required]
+        [DataType(DataType.Date)]
         public DateTime StartsOn { get; set; }
 
         public Batch()
