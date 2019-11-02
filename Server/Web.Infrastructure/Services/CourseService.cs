@@ -15,18 +15,20 @@ namespace Web.Infrastructure.Services
             _db = dBContext;
         }
 
-        public async Task<bool> AddCourse(Course course, int batchId)
+        public async Task<bool> AddCourse(Course course, int semesterId, int batchId)
         {
             var oldCourse = await _db.Courses
-                                     .FirstOrDefaultAsync(x => x.Id == course.Id &&
+                                     .FirstOrDefaultAsync(x => x.CourseId == course.CourseId &&
                                                                x.Semester.Batch.Id == batchId);
             if (oldCourse != null) return false;
             else
             {
                 var batch = await _db.Batches.FirstOrDefaultAsync(x => x.Id == batchId);
-                if (batch == null) return false;
+                var semester = await _db.Semesters.FirstOrDefaultAsync(x => x.Id == semesterId);
+                if (batch == null || semester == null) return false;
                 else
                 {
+                    course.Semester = semester;
                     _db.Entry(course).State = EntityState.Added;
                     await _db.SaveChangesAsync();
                     return true;
@@ -47,6 +49,15 @@ namespace Web.Infrastructure.Services
                 await _db.SaveChangesAsync();
                 return true;
             }
+        }
+
+        public async Task<Semester> GetSemesterAsync(int semesterId)
+        {
+            var semester = await _db.Semesters
+                                    .Include(m => m.Batch)
+                                    .Include(x => x.Courses)
+                                    .FirstOrDefaultAsync(x => x.Id == semesterId);
+            return semester;
         }
     }
 }

@@ -6,16 +6,16 @@ namespace Web.Areas.Admin.ViewComponents
 {
     public class CoursesViewComponent : ViewComponent
     {
-        private readonly BatchService _batchService;
+        private readonly CourseService _couseService;
 
-        public CoursesViewComponent(BatchService batchService)
+        public CoursesViewComponent(CourseService course)
         {
-            _batchService = batchService;
+            _couseService = course;
         }
 
         public async Task<IViewComponentResult> InvokeAsync(int semesterId)
         {
-            var items = await _batchService.GetCoursesAsync(semesterId);
+            var items = await _couseService.GetSemesterAsync(semesterId);
             return View(items);
         }
     }

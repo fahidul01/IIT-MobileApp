@@ -1,4 +1,5 @@
-﻿@model Batch
+﻿@using Web.Areas.Admin.ViewModels
+@model Batch
 @{
     ViewData["Title"] = "Edit";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
@@ -46,7 +47,12 @@
 
     <div id="@semester.Name" class="pl-4 list-inline collapse sub-menu">
         <hr class="p-0" />
-        @await Component.InvokeAsync("Courses",new { semesterId = semester.Id})
+        <div id="@semester.Id" class="row">
+            @await Component.InvokeAsync("Courses", new { semesterId = semester.Id })
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                @await Html.PartialAsync("_CreateCourse", new CreateCoursePopupModel(semester.Id, Model.Id))
+            </div>
+        </div>
         <hr class="p-0" />
     </div>
 }

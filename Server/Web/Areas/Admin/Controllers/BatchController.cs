@@ -124,11 +124,5 @@ namespace Web.Areas.Admin.Controllers
                 return PartialView("_Students", new List<User>());
             }
         }
-
-        public async Task<IActionResult> GetCourses(int id)
-        {
-            var courses = await _batchService.GetCoursesAsync(id);
-            return PartialView("_Courses", courses);
-        }
     }
 }

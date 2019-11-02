@@ -1,0 +1,60 @@
+﻿@model Web.Areas.Admin.ViewModels.CreateCoursePopupModel
+@{ 
+    var modalId = "modal_" + Model.SemesterId;
+}
+<div class="col-md-4">
+    <button type="button" class="btn btn-outline-primary"
+            data-toggle="modal"
+            data-target="#@modalId">
+        <i class="fa fa-plus"></i>
+        <h3>Create New</h3>
+    </button>
+    <div class="modal fade" id="@modalId" tabindex="-1" role="dialog" aria-labelledby="modal-default" aria-hidden="true">
+        <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h6 class="modal-title" id="modal-title-default">Type your modal title</h6>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form asp-action="Create"
+                          asp-controller="Course"
+                          data-ajax="true"
+                          data-ajax-method="POST"
+                          data-ajax-update="#@Model.SemesterId">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="SemesterId" />
+                        <input type="hidden" asp-for="BatchId" />
+                        <div class="row">
+                            <div class="form-group col-lg-6 col-md-12 col-sm-12">
+                                <label asp-for="CourseId" class="control-label"></label>
+                                <input asp-for="CourseId" class="form-control" />
+                                <span asp-validation-for="CourseId" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-lg-6 col-md-12 col-sm-12">
+                                <label asp-for="CourseName" class="control-label"></label>
+                                <input asp-for="CourseName" class="form-control" />
+                                <span asp-validation-for="CourseName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-lg-6 col-md-6 col-sm-12">
+                                <label asp-for="CourseCredit" class="control-label"></label>
+                                <input asp-for="CourseCredit" class="form-control" />
+                                <span asp-validation-for="CourseCredit" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Update" 
+                                   class="btn btn-outline-primary" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
