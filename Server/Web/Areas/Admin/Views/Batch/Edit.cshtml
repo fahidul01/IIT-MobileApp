@@ -40,15 +40,17 @@
 <h1>Semesters</h1>
 @foreach (var semester in Model.Semesters)
 {
-    <a class="nav-link" href="#@semester.Name" aria-expanded="false"
+    <a class="nav-link" href="#collapse_@semester.Id" aria-expanded="false"
        data-toggle="collapse">
         <h3>@semester.Name</h3>
     </a>
 
-    <div id="@semester.Name" class="pl-4 list-inline collapse sub-menu">
+    <div id="collapse_@semester.Id" class="pl-4 list-inline collapse sub-menu">
         <hr class="p-0" />
-        <div id="@semester.Id" class="row">
-            @await Component.InvokeAsync("Courses", new { semesterId = semester.Id })
+        <div class="row">
+            <div id="@semester.Id">
+                @await Component.InvokeAsync("Courses", new { semesterId = semester.Id })
+            </div>
             <div class="col-lg-3 col-md-4 col-sm-6">
                 @await Html.PartialAsync("_CreateCourse", new CreateCoursePopupModel(semester.Id, Model.Id))
             </div>

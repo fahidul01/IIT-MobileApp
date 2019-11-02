@@ -1,5 +1,5 @@
 ﻿@model Web.Areas.Admin.ViewModels.CreateCoursePopupModel
-@{ 
+@{
     var modalId = "modal_" + Model.SemesterId;
 }
 <div class="col-md-4">
@@ -48,8 +48,14 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <input type="submit" value="Update" 
+                            <input value="Update"
+                                   onclick="javascript: document.getElementById('submit_@Model.SemesterId').click();"
+                                   data-dismiss="modal"
                                    class="btn btn-outline-primary" />
+                            <button id="submit_@Model.SemesterId"
+                                    hidden
+                                    class="btn btn-info btn-block my-4" type="submit">
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -57,4 +63,3 @@
         </div>
     </div>
 </div>
-

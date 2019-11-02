@@ -22,8 +22,5 @@
             showSubtext: true
         });
     }
-    if ($(".datepicker").length !== 0) {
-        $('.datepicker').datepicker();
-    }
 });
 
