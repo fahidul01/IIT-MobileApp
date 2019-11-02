@@ -4,7 +4,7 @@ using CoreEngine.Model.DBModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using System.Threading.Tasks;
 using Web.Infrastructure.DBModel;
 
@@ -26,7 +26,7 @@ namespace Web.Infrastructure.Services
             var batch = await _db.Batches.FindAsync(batchID);
             foreach (var student in students)
             {
-                var oldUser = _db.Users.FirstOrDefaultAsync(x => x.UserName == student.UserName);
+                var oldUser = await _db.Users.FirstOrDefaultAsync(x => x.UserName == student.UserName);
                 if (oldUser != null) continue;
 
                 var password = CryptoService.GenerateRandomPassword();
@@ -39,6 +39,32 @@ namespace Web.Infrastructure.Services
                 }
             }
             return users;
+        }
+
+        public async Task<List<User>> UploadCSVStudents(string filePath, int batchId)
+        {
+            var students = new List<DBUser>();
+            using var stream = File.OpenRead(filePath);
+            using var reader = new StreamReader(stream);
+            while (!reader.EndOfStream)
+            {
+                var line = await reader.ReadLineAsync();
+                var splitter = line.Split(',');
+                var roll = int.Parse(splitter[0]);
+                var name = splitter[1];
+                var email = splitter[2];
+                var phone = splitter[3];
+                var student = new DBUser()
+                {
+                    Roll = roll,
+                    UserName = roll.ToString(),
+                    Email = email,
+                    Name = name,
+                    PhoneNumber = phone
+                };
+                students.Add(student);
+            }
+            return await AddStudents(students, batchId);
         }
     }
 }

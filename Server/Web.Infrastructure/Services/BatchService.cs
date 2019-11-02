@@ -39,7 +39,7 @@ namespace Web.Infrastructure.Services
                     var sem = new Semester()
                     {
                         Duration = batch.SemesterDuration,
-                        Name = "Semester" + counter + 1,
+                        Name = "Semester " + (counter + 1).ToString(),
                         StartsOn = batch.StartsOn.AddMonths(counter * batch.SemesterDuration),
                         EndsOn = batch.StartsOn.AddMonths((counter + 1) * batch.SemesterDuration).AddMinutes(-1)
                     };
@@ -57,10 +57,12 @@ namespace Web.Infrastructure.Services
 
         public async Task<Batch> GetBatchAsync(int id)
         {
-            return await _db.Batches
-                            .Include(x => x.Semesters)
-                            .Include(y => y.Students)
-                            .FirstOrDefaultAsync(x => x.Id == id);
+            var res = await _db.Batches
+                               .Include(x => x.Students)
+                               .Include(x => x.Semesters)
+                               .FirstOrDefaultAsync(x => x.Id == id);
+            res.LoadUsers();
+            return res;
         }
 
         public async Task<bool> UpdateBatch(Batch batch)
@@ -92,5 +94,7 @@ namespace Web.Infrastructure.Services
                 return true;
             }
         }
+
+        
     }
 }

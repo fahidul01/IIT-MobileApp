@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CoreEngine.Model.DBModel
 {
@@ -26,6 +27,17 @@ namespace CoreEngine.Model.DBModel
         {
             Students = new HashSet<DBUser>();
             Semesters = new HashSet<Semester>();
+        }
+
+        [NotMapped]
+        public List<User> ExternalUsers { get; set; }
+        public void LoadUsers()
+        {
+            ExternalUsers = new List<User>();
+            foreach (var user in Students)
+            {
+                ExternalUsers.Add(User.FromDBUser(user, ""));
+            }
         }
     }
 }

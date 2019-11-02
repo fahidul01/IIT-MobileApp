@@ -1,27 +1,27 @@
-﻿@model List<DBUser>
-<div class="table-responsive">
+﻿@model List<User>
+<div>
     <table class="table align-items-center">
         <thead class="thead-light">
             <tr>
                 <th scope="col">Name</th>
+                <th scope="col">Roll</th>
+                <th scope="col">Email</th>
+                <th scope="col">Phone</th>
                 <th scope="col">Role</th>
-                <th scope="col">Status</th>
-                <th scope="col">Users</th>
-                <th scope="col">Completion</th>
                 <th scope="col"></th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var student in Model)
+            @foreach (var student in Model.OrderBy(x=>x.Roll))
             {
                 <tr>
                     <th scope="row">
                         <div class="media align-items-center">
                             <a href="#" class="avatar rounded-circle mr-3">
-                                <img alt="Image placeholder" src="/img/theme/bootstrap.jpg">
+                                @Html.Identicon(student.UserName, 60)
                             </a>
                             <div class="media-body">
-                                <span class="mb-0 text-sm">@student.FullName</span>
+                                <span class="mb-0 text-sm">@student.Name</span>
                             </div>
                         </div>
                     </th>
@@ -32,6 +32,12 @@
                         <span class="badge badge-dot mr-4">
                             <i class="bg-warning"></i> @student.Email
                         </span>
+                    </td>
+                    <td>
+                        @student.PhoneNumber
+                    </td>
+                    <td>
+                        @student.ClassRepresentative
                     </td>
                     <td class="text-right">
                         <div class="dropdown">
@@ -48,4 +54,11 @@
             }
         </tbody>
     </table>
+
+    @if (ViewData["FailedMessage"] is string failed && !string.IsNullOrWhiteSpace(failed))
+    {
+        <div>
+            <h2 class="mt-5 text-center text-danger">@failed</h2> 
+        </div>
+    }
 </div>

@@ -1,5 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
 using CoreEngine.Model.DBModel;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Web.Controllers;
 using Web.Infrastructure.Services;
@@ -10,10 +14,12 @@ namespace Web.Areas.Admin.Controllers
     public class BatchController : BaseController
     {
         private readonly BatchService _batchService;
+        private readonly UserService _userService;
 
-        public BatchController(BatchService batchService)
+        public BatchController(BatchService batchService, UserService userService)
         {
             _batchService = batchService;
+            _userService = userService;
         }
         public async Task<IActionResult> Index(int page = 1)
         {
@@ -36,7 +42,7 @@ namespace Web.Areas.Admin.Controllers
                 if (res)
                 {
                     Success();
-                    return RedirectToAction(nameof(Edit), batch.Id);
+                    return RedirectToAction(nameof(Edit), new { id = batch.Id });
                 }
                 else
                 {
@@ -67,7 +73,7 @@ namespace Web.Areas.Admin.Controllers
                 if (res)
                 {
                     Success();
-                    return RedirectToAction(nameof(Edit), batch.Id);
+                    return RedirectToAction(nameof(Index));
                 }
                 else
                 {
@@ -76,6 +82,47 @@ namespace Web.Areas.Admin.Controllers
                 }
             }
             else return View(batch);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateStudents(int id, IFormFile file)
+        {
+#if DEBUG
+            await Task.Delay(5000);
+#endif
+            if (id > 0 && file != null && file.Length > 0)
+            {
+                var filePath = Path.GetTempFileName();
+
+                try
+                {
+                    using (var stream = System.IO.File.Create(filePath))
+                    {
+                        await file.CopyToAsync(stream);
+                    }
+
+                    if (file.FileName.EndsWith("csv"))
+                    {
+                        var res = await _userService.UploadCSVStudents(filePath, id);
+                        return PartialView("_Students", res);
+                    }
+                    else
+                    {
+                        Failed("Invalid File format");
+                        return PartialView("_Students", new List<User>());
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Failed(ex.Message);
+                    return PartialView("_Students", new List<User>());
+                }
+            }
+            else
+            {
+                Failed("Invalid File format");
+                return PartialView("_Students", new List<User>());
+            }
         }
     }
 }
