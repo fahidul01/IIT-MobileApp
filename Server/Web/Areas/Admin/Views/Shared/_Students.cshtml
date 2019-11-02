@@ -1,0 +1,64 @@
+﻿@model List<User>
+<div>
+    <table class="table align-items-center">
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Roll</th>
+                <th scope="col">Email</th>
+                <th scope="col">Phone</th>
+                <th scope="col">Role</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var student in Model.OrderBy(x=>x.Roll))
+            {
+                <tr>
+                    <th scope="row">
+                        <div class="media align-items-center">
+                            <a href="#" class="avatar rounded-circle mr-3">
+                                @Html.Identicon(student.UserName, 60)
+                            </a>
+                            <div class="media-body">
+                                <span class="mb-0 text-sm">@student.Name</span>
+                            </div>
+                        </div>
+                    </th>
+                    <td>
+                        @student.UserName
+                    </td>
+                    <td>
+                        <span class="badge badge-dot mr-4">
+                            <i class="bg-warning"></i> @student.Email
+                        </span>
+                    </td>
+                    <td>
+                        @student.PhoneNumber
+                    </td>
+                    <td>
+                        @student.ClassRepresentative
+                    </td>
+                    <td class="text-right">
+                        <div class="dropdown">
+                            <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                                <a class="dropdown-item">Edit</a>
+                                <a class="dropdown-item">Delete</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @if (ViewData["FailedMessage"] is string failed && !string.IsNullOrWhiteSpace(failed))
+    {
+        <div>
+            <h2 class="mt-5 text-center text-danger">@failed</h2> 
+        </div>
+    }
+</div>

@@ -46,7 +46,7 @@
 
     <div id="@semester.Name" class="pl-4 list-inline collapse sub-menu">
         <hr class="p-0" />
-        Semester Information and courses
+        @await Component.InvokeAsync("Courses",new { semesterId = semester.Id})
         <hr class="p-0" />
     </div>
 }

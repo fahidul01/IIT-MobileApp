@@ -95,6 +95,12 @@ namespace Web.Infrastructure.Services
             }
         }
 
+        public async Task<List<Course>> GetCoursesAsync(int semesterId)
+        {
+            var courses = await _db.Courses.Where(x => x.Semester.Id == semesterId)
+                                      .ToListAsync();
+            return courses;
+        }
         
     }
 }
