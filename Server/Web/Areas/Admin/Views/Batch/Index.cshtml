@@ -25,7 +25,9 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>@item.Name</td>
+                    <td>
+                        <a class="dropdown-item" asp-action="viewBatch" asp-route-id="@item.Id">@item.Name</a>
+                    </td>
                     <td>@item.StartsOn.ToString("dd MMMM, yyyy")</td>
                     <td>@item.NumberOfSemester</td>
                     <td>@item.SemesterDuration</td>

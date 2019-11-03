@@ -1,0 +1,68 @@
+﻿@model IEnumerable<Notice>
+
+<div>
+    <table class="table align-items-center">
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Type</th>
+                <th scope="col">Date</th>
+                <th scope="col">End</th>
+                <th scope="col">Batch</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var notice in Model.OrderByDescending(x => x.CreatedOn))
+            {
+                <tr>
+                    <th scope="row">
+                        <div class="media align-items-center">
+                            <div class="media-body">
+                                <span class="mb-0 text-sm">@notice.Title</span>
+                            </div>
+                        </div>
+                    </th>
+                    <td>
+                        @notice.PostType
+                    </td>
+                    <td>
+                        @notice.CreatedOn.ToString("dd MMMM, yyyy");
+                    </td>
+                    <td>
+                        @notice.EventDate.ToString("dd MMMM, yyyy");
+                    </td>
+                    <td>
+                        @if (notice.Batch == null)
+                        {
+                            <h3>All Batch</h3>
+                        }
+                        else
+                        {
+                            <h3>@notice.Batch.Name</h3>
+                        }
+                    </td>
+                    <td class="text-right">
+                        <div class="dropdown">
+                            <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                                <a class="dropdown-item">Edit</a>
+                                <a class="dropdown-item">Delete</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @if (ViewData["FailedMessage"] is string failed && !string.IsNullOrWhiteSpace(failed))
+    {
+        <div>
+            <h2 class="mt-5 text-center text-danger">@failed</h2>
+        </div>
+    }
+</div>
+

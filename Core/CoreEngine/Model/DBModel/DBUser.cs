@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System;
 
 namespace CoreEngine.Model.DBModel
 {
@@ -8,6 +9,8 @@ namespace CoreEngine.Model.DBModel
         public string Name { get; set; }
         public bool ClassRepresentative { get; set; }
         public int Roll { get; set; }
+        public string UserRole { get; set; }
+        public DateTime EnrolledIn { get; set; }
     }
 
     public class User

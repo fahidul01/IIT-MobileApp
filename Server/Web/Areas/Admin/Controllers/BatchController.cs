@@ -24,7 +24,7 @@ namespace Web.Areas.Admin.Controllers
         public async Task<IActionResult> Index(int page = 1)
         {
             ViewData["CurrentPage"] = page;
-            ViewData["TotalPage"] = await _batchService.GetCount();
+            ViewData["TotalPage"] = Math.Max(1, await _batchService.GetCount() / 10);
             return View(await _batchService.GetBatchesAsync(page));
         }
 
@@ -42,7 +42,7 @@ namespace Web.Areas.Admin.Controllers
                 if (res)
                 {
                     Success();
-                    return RedirectToAction(nameof(Edit), new { id = batch.Id });
+                    return RedirectToAction(nameof(ViewBatch), new { id = batch.Id });
                 }
                 else
                 {
@@ -51,6 +51,16 @@ namespace Web.Areas.Admin.Controllers
                 }
             }
             else return View(batch);
+        }
+        [HttpGet]
+        public async Task<IActionResult> ViewBatch(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var batch = await _batchService.GetBatchAsync(id.Value);
+            return View(batch);
         }
 
         [HttpGet]
@@ -63,6 +73,8 @@ namespace Web.Areas.Admin.Controllers
             var batch = await _batchService.GetBatchAsync(id.Value);
             return View(batch);
         }
+
+        
 
         [HttpPost]
         public async Task<IActionResult> Edit(Batch batch)
@@ -87,9 +99,6 @@ namespace Web.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateStudents(int id, IFormFile file)
         {
-#if DEBUG
-            await Task.Delay(5000);
-#endif
             if (id > 0 && file != null && file.Length > 0)
             {
                 var filePath = Path.GetTempFileName();

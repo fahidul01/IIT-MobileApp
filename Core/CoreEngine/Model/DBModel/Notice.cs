@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace CoreEngine.Model.DBModel
@@ -10,11 +11,16 @@ namespace CoreEngine.Model.DBModel
         public string Message { get; set; }
         public PostType PostType { get; set; }
         public bool FutureNotification { get; set; }
-        public DateTime EventDate { get; set; }
-        public string File { get; set; }
+        public DateTime CreatedOn { get; set; } = DateTime.Now;
+        public DateTime EventDate { get; set; } = DateTime.Now;
+        public ICollection<DBFile> DBFiles { get; set; }
         public virtual Batch Batch { get; set; }
         [Required]
         public virtual DBUser Owner { get; set; }
+        public Notice()
+        {
+            DBFiles = new HashSet<DBFile>();
+        }
     }
 
     public enum PostType

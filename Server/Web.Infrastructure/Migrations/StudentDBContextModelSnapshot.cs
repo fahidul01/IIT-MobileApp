@@ -122,9 +122,14 @@ namespace Web.Infrastructure.Migrations
                     b.Property<string>("FilePath")
                         .HasColumnType("TEXT");
 
+                    b.Property<int?>("NoticeId")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CourseMaterialId");
+
+                    b.HasIndex("NoticeId");
 
                     b.ToTable("DBFile");
                 });
@@ -153,6 +158,9 @@ namespace Web.Infrastructure.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("EnrolledIn")
+                        .HasColumnType("TEXT");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("INTEGER");
@@ -192,6 +200,9 @@ namespace Web.Infrastructure.Migrations
                     b.Property<string>("UserName")
                         .HasColumnType("TEXT")
                         .HasMaxLength(256);
+
+                    b.Property<string>("UserRole")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -233,10 +244,10 @@ namespace Web.Infrastructure.Migrations
                     b.Property<int?>("BatchId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("EventDate")
+                    b.Property<DateTime>("CreatedOn")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("File")
+                    b.Property<DateTime>("EventDate")
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("FutureNotification")
@@ -486,6 +497,10 @@ namespace Web.Infrastructure.Migrations
                     b.HasOne("CoreEngine.Model.DBModel.CourseMaterial", null)
                         .WithMany("Files")
                         .HasForeignKey("CourseMaterialId");
+
+                    b.HasOne("CoreEngine.Model.DBModel.Notice", null)
+                        .WithMany("DBFiles")
+                        .HasForeignKey("NoticeId");
                 });
 
             modelBuilder.Entity("CoreEngine.Model.DBModel.DBUser", b =>

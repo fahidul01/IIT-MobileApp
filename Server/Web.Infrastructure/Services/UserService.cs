@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Web.Infrastructure.DBModel;
 
@@ -20,7 +21,7 @@ namespace Web.Infrastructure.Services
             _db = studentDB;
         }
 
-        public async Task<List<User>> AddStudents(IList<DBUser> students, int batchID)
+        private async Task<List<User>> AddStudents(IList<DBUser> students, int batchID)
         {
             var users = new List<User>();
             var batch = await _db.Batches.FindAsync(batchID);
@@ -31,6 +32,7 @@ namespace Web.Infrastructure.Services
 
                 var password = CryptoService.GenerateRandomPassword();
                 student.Batch = batch;
+                student.UserRole = AppConstants.Student;
                 var res = await _usermanager.CreateAsync(student);
                 if (res.Succeeded)
                 {
@@ -39,6 +41,37 @@ namespace Web.Infrastructure.Services
                 }
             }
             return users;
+        }
+
+        public async Task<List<User>> SearchStudent(string value)
+        {
+            var users = new List<User>();
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                var res = await _db.Users.Where(x => x.UserRole == AppConstants.Student)
+                                        .OrderByDescending(x => x.EnrolledIn)
+                                        .Take(100)
+                                        .ToListAsync();
+                foreach (var item in res)
+                {
+                    users.Add(User.FromDBUser(item, ""));
+                }
+                return users;
+            }
+            else
+            {
+                var res = await _db.Users.Where(x => x.UserRole == AppConstants.Student &&
+                                                (x.UserName.IndexOf(value) >= 0 ||
+                                                 x.Name.IndexOf(value) >= 0))
+                                           .OrderByDescending(x => x.EnrolledIn)
+                                           .Take(100)
+                                           .ToListAsync();
+                foreach (var item in res)
+                {
+                    users.Add(User.FromDBUser(item, ""));
+                }
+                return users;
+            }
         }
 
         public async Task<List<User>> UploadCSVStudents(string filePath, int batchId)
