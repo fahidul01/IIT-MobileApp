@@ -1,10 +1,10 @@
-﻿using System;
+﻿using CoreEngine.Model.DBModel;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using CoreEngine.Model.DBModel;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Web.Controllers;
 using Web.Infrastructure.Services;
 
@@ -74,7 +74,7 @@ namespace Web.Areas.Admin.Controllers
             return View(batch);
         }
 
-        
+
 
         [HttpPost]
         public async Task<IActionResult> Edit(Batch batch)

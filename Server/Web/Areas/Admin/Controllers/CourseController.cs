@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using CoreEngine.Model.DBModel;
+﻿using CoreEngine.Model.DBModel;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 using Web.Areas.Admin.ViewModels;
 using Web.Controllers;
 using Web.Infrastructure.Services;

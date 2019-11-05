@@ -2,7 +2,7 @@
 
 namespace Mobile.Core.ViewModels
 {
-    public class LoginViewModel : BaseViewModel
+    public class SplashViewModel : BaseViewModel
     {
         public override void OnAppear(params object[] args)
         {

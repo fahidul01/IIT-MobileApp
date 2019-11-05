@@ -1,4 +1,5 @@
 ﻿using CoreEngine.Engine;
+using Mobile.Core.Models.Core;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -33,6 +34,7 @@ namespace Mobile.Core.Worker
         public void Logout()
         {
             _httpClient.DefaultRequestHeaders.Authorization = null;
+            AppService.HasCRRole = false;
         }
 
         public async Task<string> SendRequest(HttpMethod method, string requestPath, Dictionary<string, string> parameters)
@@ -46,31 +48,25 @@ namespace Mobile.Core.Worker
                     if (parameters != null && parameters.Count > 0)
                     {
                         requestPath += "?";
-                        using (var httpContent = new FormUrlEncodedContent(parameters))
-                        {
-                            var data = await httpContent.ReadAsStringAsync();
-                            requestPath += data;
-                        }
+                        using var httpContent = new FormUrlEncodedContent(parameters);
+                        var data = await httpContent.ReadAsStringAsync();
+                        requestPath += data;
                     }
                     msg = await _httpClient.GetAsync(requestPath);
                 }
                 else if (method == HttpMethod.Post)
                 {
-                    parameters = parameters ?? new Dictionary<string, string>();
-                    using (var httpContent = new FormUrlEncodedContent(parameters))
-                    {
-                        msg = await _httpClient.PostAsync(requestPath, httpContent);
-                        log = await msg.Content.ReadAsStringAsync();
-                    }
+                    parameters ??= new Dictionary<string, string>();
+                    using var httpContent = new FormUrlEncodedContent(parameters);
+                    msg = await _httpClient.PostAsync(requestPath, httpContent);
+                    log = await msg.Content.ReadAsStringAsync();
                 }
                 else if (method == HttpMethod.Put)
                 {
-                    parameters = parameters ?? new Dictionary<string, string>();
-                    using (var httpContent = new FormUrlEncodedContent(parameters))
-                    {
-                        msg = await _httpClient.PutAsync(requestPath, httpContent);
-                        log = await msg.Content.ReadAsStringAsync();
-                    }
+                    parameters ??= new Dictionary<string, string>();
+                    using var httpContent = new FormUrlEncodedContent(parameters);
+                    msg = await _httpClient.PutAsync(requestPath, httpContent);
+                    log = await msg.Content.ReadAsStringAsync();
                 }
 
                 if (msg == null)
@@ -89,8 +85,6 @@ namespace Mobile.Core.Worker
                 return string.Empty;
             }
         }
-
-
         public async Task<T> SendRequest<T>(HttpMethod method, string requestPath, Dictionary<string, string> parameters)
         {
             var res = await SendRequest(method, requestPath, parameters);

@@ -26,7 +26,7 @@ namespace CoreEngine.Engine
                 "0123456789",                   // digits
                 };
 
-            
+
             List<char> chars = new List<char>();
 
             if (opts.RequireUppercase)

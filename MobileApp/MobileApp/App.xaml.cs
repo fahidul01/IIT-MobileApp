@@ -1,30 +1,46 @@
-﻿using System;
-using Xamarin.Essentials;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Mobile.Core.Engines.Dependency;
+using Mobile.Core.Engines.Services;
+using Mobile.Core.ViewModels;
+using MobileApp.Service;
+using System;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
-using MobileApp.Services;
-using MobileApp.Views;
 
 namespace MobileApp
 {
     public partial class App : Application
     {
-        //TODO: Replace with *.azurewebsites.net url after deploying backend to Azure
-        //To debug on Android emulators run the web backend against .NET Core not IIS
-        //If using other emulators besides stock Google images you may need to adjust the IP address
-        public static string AzureBackendUrl =
-            DeviceInfo.Platform == DevicePlatform.Android ? "http://10.0.2.2:5000" : "http://localhost:5000";
-        public static bool UseMockDataStore = true;
-
-        public App()
+        public App(INavigationService navigation)
         {
             InitializeComponent();
+            var vs = new ViewService();
+            vs.Init(Locator.GetInstance<INavigationService>());
+            navigation.Init<SplashViewModel>();
+        }
 
-            if (UseMockDataStore)
-                DependencyService.Register<MockDataStore>();
-            else
-                DependencyService.Register<AzureDataStore>();
-            MainPage = new AppShell();
+        public static App Init(Action<HostBuilderContext, IServiceCollection> nativeConfigureServices)
+        {
+            var host = new HostBuilder()
+                            //ConfigureHostConfiguration
+                            .ConfigureServices((c, x) =>
+                            {
+                                nativeConfigureServices(c, x);
+                                ConfigureServices(c, x);
+                            })
+                            .ConfigureLogging(l => l.AddConsole(o => o.DisableColors = true))
+                            .Build();
+
+
+            return Locator.GetInstance<App>();
+        }
+
+        private static void ConfigureServices(HostBuilderContext c, IServiceCollection services)
+        {
+            services.AddSingleton<App>();
+            services.AddSingleton<INavigationService, NavigationService>();
+            Locator.Build(services);
         }
 
         protected override void OnStart()

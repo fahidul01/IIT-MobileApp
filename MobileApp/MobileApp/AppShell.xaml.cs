@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-using Xamarin.Forms;
-
-namespace MobileApp
+﻿namespace MobileApp
 {
     public partial class AppShell : Xamarin.Forms.Shell
     {

@@ -2,5 +2,6 @@
 {
     public interface IPlatformService
     {
+        void OpenToast(string text);
     }
 }
