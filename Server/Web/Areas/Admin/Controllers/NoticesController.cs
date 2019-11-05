@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Web.Infrastructure.Services;
 using System;
 using Web.Areas.Admin.ViewModels;
+using CoreEngine.Model.DBModel;
 
 namespace Web.Areas.Admin.Controllers
 {
@@ -38,8 +39,29 @@ namespace Web.Areas.Admin.Controllers
         // GET: Admin/Notices/Create
         public async Task<IActionResult> Create()
         {
-            var currentBatch = await _batchService.GetBatchesAsync(1);
-            return View();
+            var currentBatches = await _batchService.GetBatchesAsync(1);
+            return View(new CreateNoticeViewModel(currentBatches));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(CreateNoticeViewModel createNoticeViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var notice = new Notice()
+                {
+                    EventDate = createNoticeViewModel.EventDate,
+                    Title = createNoticeViewModel.Title,
+                    PostType = createNoticeViewModel.PostType
+                };
+                var res = await _noticeService.AddNotice(notice, null);
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                return View(createNoticeViewModel);
+            }
         }
 
 
@@ -49,4 +71,4 @@ namespace Web.Areas.Admin.Controllers
             return View();
         }
     }
-}
+} 

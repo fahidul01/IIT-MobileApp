@@ -14,6 +14,8 @@ namespace Web.Areas.Admin.ViewModels
         public string Title { get; set; }
         public string Message { get; set; }
         public DateTime EventDate { get; set; } = DateTime.Now;
+        public PostType PostType { get; internal set; }
+
         public CreateNoticeViewModel(List<Batch> batches)
         {
             BatchList = new SelectList(batches, nameof(Batch.Id), nameof(Batch.Name), Batch);
