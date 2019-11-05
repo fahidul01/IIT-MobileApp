@@ -50,7 +50,10 @@ namespace Web.Areas.Admin.Controllers
                     return View(batch);
                 }
             }
-            else return View(batch);
+            else
+            {
+                return View(batch);
+            }
         }
         [HttpGet]
         public async Task<IActionResult> ViewBatch(int? id)
@@ -93,7 +96,10 @@ namespace Web.Areas.Admin.Controllers
                     return View(batch);
                 }
             }
-            else return View(batch);
+            else
+            {
+                return View(batch);
+            }
         }
 
         [HttpPost]

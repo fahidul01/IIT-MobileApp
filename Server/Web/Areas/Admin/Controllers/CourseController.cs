@@ -38,7 +38,11 @@ namespace Web.Areas.Admin.Controllers
                     CourseName = popupModel.CourseName
                 };
                 var res = await _courseService.AddCourse(course, popupModel.SemesterId, popupModel.BatchId);
-                if (!res) Failed("Failed to Update Course");
+                if (!res)
+                {
+                    Failed("Failed to Update Course");
+                }
+
                 return ViewComponent("Courses", popupModel.SemesterId);
             }
             else

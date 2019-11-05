@@ -28,19 +28,23 @@ namespace Web.Controllers
         //    return languageService[data];
         //}
 
-        internal protected string Translate(string data)
+        protected internal string Translate(string data)
         {
             return data.Replace("_", " ");
         }
 
-        internal protected void Success()
+        protected internal void Success()
         {
             SuccessMessage = Translate("Operation_Success");
         }
 
-        internal protected void Failed(string data, bool translate = false)
+        protected internal void Failed(string data, bool translate = false)
         {
-            if (translate) data = Translate(data);
+            if (translate)
+            {
+                data = Translate(data);
+            }
+
             FailedMessage = data;
         }
     }

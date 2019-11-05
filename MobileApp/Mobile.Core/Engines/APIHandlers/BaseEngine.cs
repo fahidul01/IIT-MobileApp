@@ -2,7 +2,7 @@
 
 namespace Mobile.Core.Engines.APIHandlers
 {
-    class BaseEngine
+    internal class BaseEngine
     {
         private readonly HttpWorker _httpWorker;
 

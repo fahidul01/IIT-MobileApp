@@ -7,7 +7,7 @@ namespace Web.Areas.Admin.Controllers
     [Area("Admin")]
     public class StudentController : Controller
     {
-        private UserService _userService;
+        private readonly UserService _userService;
 
         public StudentController(UserService userService)
         {

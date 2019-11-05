@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Mobile.Core.Engines.APIHandlers
 {
-    class CourseEngine : BaseEngine, ICourseHandler
+    internal class CourseEngine : BaseEngine, ICourseHandler
     {
         public CourseEngine(HttpWorker httpWorker) : base(httpWorker)
         {

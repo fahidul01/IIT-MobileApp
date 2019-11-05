@@ -40,7 +40,10 @@ namespace Mobile.Core.Engines.Dependency
                                       !myType.IsAbstract &&
                                       myType.IsSubclassOf(typeof(T)));
 
-            foreach (var type in types) services.AddTransient(type);
+            foreach (var type in types)
+            {
+                services.AddTransient(type);
+            }
         }
     }
 }

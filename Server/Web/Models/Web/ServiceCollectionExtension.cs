@@ -15,7 +15,9 @@ namespace Web.Models.Web
                                       myType.IsSubclassOf(typeof(T)));
 
             foreach (var type in types)
+            {
                 services.AddScoped(type);
+            }
         }
     }
 }

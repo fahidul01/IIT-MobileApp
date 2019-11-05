@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Mobile.Core.Engines.APIHandlers
 {
-    class ClassEngine : IClassHandler
+    internal class ClassEngine : IClassHandler
     {
         public Task<List<Class>> GetClasses()
         {

@@ -26,9 +26,16 @@ namespace Web.Api
         [Authorize]
         public async Task<IdentityResult> ChangePassword(string currentPassword, string newPassword)
         {
-            if (HttpContext.User == null) return IdentityResult.Failed();
+            if (HttpContext.User == null)
+            {
+                return IdentityResult.Failed();
+            }
+
             var dbUser = await _userManager.FindByNameAsync(HttpContext.User.Identity.Name);
-            if (dbUser == null) return IdentityResult.Failed();
+            if (dbUser == null)
+            {
+                return IdentityResult.Failed();
+            }
             else
             {
                 var res = await _signInmanager.CheckPasswordSignInAsync(dbUser, currentPassword, false);
@@ -38,7 +45,10 @@ namespace Web.Api
                     dbUser.PasswordHash = hashedPass;
                     return await _userManager.UpdateAsync(dbUser);
                 }
-                else return IdentityResult.Failed();
+                else
+                {
+                    return IdentityResult.Failed();
+                }
             }
         }
 

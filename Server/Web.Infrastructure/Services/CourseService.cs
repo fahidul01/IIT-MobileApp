@@ -20,12 +20,18 @@ namespace Web.Infrastructure.Services
             var oldCourse = await _db.Courses
                                      .FirstOrDefaultAsync(x => x.CourseId == course.CourseId &&
                                                                x.Semester.Batch.Id == batchId);
-            if (oldCourse != null) return false;
+            if (oldCourse != null)
+            {
+                return false;
+            }
             else
             {
                 var batch = await _db.Batches.FirstOrDefaultAsync(x => x.Id == batchId);
                 var semester = await _db.Semesters.FirstOrDefaultAsync(x => x.Id == semesterId);
-                if (batch == null || semester == null) return false;
+                if (batch == null || semester == null)
+                {
+                    return false;
+                }
                 else
                 {
                     course.Semester = semester;

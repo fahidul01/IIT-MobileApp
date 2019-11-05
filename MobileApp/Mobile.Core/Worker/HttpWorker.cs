@@ -70,9 +70,13 @@ namespace Mobile.Core.Worker
                 }
 
                 if (msg == null)
+                {
                     throw new Exception("Invalid Method");
+                }
                 else if (msg.StatusCode != HttpStatusCode.OK)
+                {
                     throw new Exception(msg.ReasonPhrase + " " + log);
+                }
                 else
                 {
                     var data = await msg.Content.ReadAsStringAsync();
@@ -88,7 +92,10 @@ namespace Mobile.Core.Worker
         public async Task<T> SendRequest<T>(HttpMethod method, string requestPath, Dictionary<string, string> parameters)
         {
             var res = await SendRequest(method, requestPath, parameters);
-            if (string.IsNullOrEmpty(res)) return default;
+            if (string.IsNullOrEmpty(res))
+            {
+                return default;
+            }
             else
             {
                 try

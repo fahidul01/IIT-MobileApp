@@ -13,8 +13,8 @@ namespace Web.Infrastructure.Services
 {
     public class UserService : BaseService
     {
-        readonly UserManager<DBUser> _usermanager;
-        readonly StudentDBContext _db;
+        private readonly UserManager<DBUser> _usermanager;
+        private readonly StudentDBContext _db;
         public UserService(UserManager<DBUser> userManager, StudentDBContext studentDB)
         {
             _usermanager = userManager;
@@ -28,7 +28,10 @@ namespace Web.Infrastructure.Services
             foreach (var student in students)
             {
                 var oldUser = await _db.Users.FirstOrDefaultAsync(x => x.UserName == student.UserName);
-                if (oldUser != null) continue;
+                if (oldUser != null)
+                {
+                    continue;
+                }
 
                 var password = CryptoService.GenerateRandomPassword();
                 student.Batch = batch;

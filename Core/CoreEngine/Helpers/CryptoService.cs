@@ -7,7 +7,7 @@ namespace CoreEngine.Engine
 {
     public class CryptoService
     {
-        static readonly Random rand = new Random();
+        private static readonly Random rand = new Random();
         public static string GenerateRandomPassword(int length = 8)
         {
             var opts = new PasswordOptions()
@@ -30,20 +30,28 @@ namespace CoreEngine.Engine
             List<char> chars = new List<char>();
 
             if (opts.RequireUppercase)
+            {
                 chars.Insert(rand.Next(0, chars.Count),
                     randomChars[0][rand.Next(0, randomChars[0].Length)]);
+            }
 
             if (opts.RequireLowercase)
+            {
                 chars.Insert(rand.Next(0, chars.Count),
                     randomChars[1][rand.Next(0, randomChars[1].Length)]);
+            }
 
             if (opts.RequireDigit)
+            {
                 chars.Insert(rand.Next(0, chars.Count),
                     randomChars[2][rand.Next(0, randomChars[2].Length)]);
+            }
 
             if (opts.RequireNonAlphanumeric)
+            {
                 chars.Insert(rand.Next(0, chars.Count),
                     randomChars[3][rand.Next(0, randomChars[3].Length)]);
+            }
 
             for (int i = chars.Count; i < opts.RequiredLength
                 || chars.Distinct().Count() < opts.RequiredUniqueChars; i++)

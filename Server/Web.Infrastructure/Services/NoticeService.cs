@@ -36,7 +36,10 @@ namespace Web.Infrastructure.Services
                 await _db.SaveChangesAsync();
                 return true;
             }
-            else return false;
+            else
+            {
+                return false;
+            }
         }
 
         public async Task<bool> UpdateNotice(Notice notice)

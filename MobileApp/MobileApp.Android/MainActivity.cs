@@ -32,7 +32,7 @@ namespace MobileApp.Droid
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
 
-        void ConfigureServices(HostBuilderContext ctx, IServiceCollection services)
+        private void ConfigureServices(HostBuilderContext ctx, IServiceCollection services)
         {
             services.AddSingleton<IPlatformService, PlatformService>();
         }

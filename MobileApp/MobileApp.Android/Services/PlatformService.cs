@@ -4,7 +4,7 @@ using Mobile.Core.Engines.Services;
 
 namespace MobileApp.Droid.Services
 {
-    class PlatformService : IPlatformService
+    internal class PlatformService : IPlatformService
     {
         public void OpenToast(string text)
         {

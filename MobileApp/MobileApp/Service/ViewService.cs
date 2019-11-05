@@ -2,7 +2,7 @@
 
 namespace MobileApp.Service
 {
-    class ViewService
+    internal class ViewService
     {
         internal void Init(INavigationService navigation)
         {
