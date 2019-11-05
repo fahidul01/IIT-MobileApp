@@ -23,10 +23,14 @@ namespace Web.Infrastructure.Services
             return await _db.Notices.CountAsync();
         }
 
-        public async Task<bool> AddNotice(Notice notice, DBUser dBUser)
+        public async Task<bool> AddNotice(Notice notice, DBUser dBUser, int batchId)
         {
             if (notice.Id == 0 && dBUser != null)
             {
+                if (batchId != 0)
+                {
+                    notice.Batch = await _db.Batches.FindAsync(batchId);
+                }
                 notice.Owner = dBUser;
                 _db.Notices.Add(notice);
                 await _db.SaveChangesAsync();
@@ -55,7 +59,7 @@ namespace Web.Infrastructure.Services
             var nextWeek = DateTime.Now.AddDays(7);
             var notices = await _db.Notices.Where(x => x.EventDate > DateTime.Now &&
                                                      x.EventDate <= nextWeek)
-                                            .ToListAsync();
+                                           .ToListAsync();
             return notices;
         }
 

@@ -4,18 +4,24 @@ using Web.Infrastructure.Services;
 using System;
 using Web.Areas.Admin.ViewModels;
 using CoreEngine.Model.DBModel;
+using Microsoft.AspNetCore.Identity;
+using CoreEngine.Model.Common;
+using System.Linq;
 
 namespace Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class NoticesController : Controller
     {
+        private readonly UserManager<DBUser> _usermanager;
         private readonly BatchService _batchService;
         private readonly NoticeService _noticeService;
 
         public NoticesController(NoticeService noticeService,
-            BatchService batchService)
+            BatchService batchService,
+            UserManager<DBUser> userManager)
         {
+            _usermanager = userManager;
             _batchService = batchService;
             _noticeService = noticeService;
         }
@@ -39,36 +45,38 @@ namespace Web.Areas.Admin.Controllers
         // GET: Admin/Notices/Create
         public async Task<IActionResult> Create()
         {
-            var currentBatches = await _batchService.GetBatchesAsync(1);
-            return View(new CreateNoticeViewModel(currentBatches));
+            var currentBatch = await _batchService.GetBatchesAsync(1);
+            return View(new CreateNoticeViewModel(currentBatch));
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CreateNoticeViewModel createNoticeViewModel)
+        public async Task<IActionResult> Create(CreateNoticeViewModel noticeViewModel)
         {
             if (ModelState.IsValid)
             {
+                var owners = await _usermanager.GetUsersInRoleAsync(AppConstants.Admin);
+                var owner = owners.FirstOrDefault();
+                var batch = noticeViewModel.IsAllBatch ? 0 : noticeViewModel.BatchId;
                 var notice = new Notice()
                 {
-                    EventDate = createNoticeViewModel.EventDate,
-                    Title = createNoticeViewModel.Title,
-                    PostType = createNoticeViewModel.PostType
+                    EventDate = noticeViewModel.EventDate,
+                    FutureNotification = noticeViewModel.EventDate.Date > DateTime.Now.Date,
+                    Message = noticeViewModel.Message,
+                    Title = noticeViewModel.Title,
+                    PostType = noticeViewModel.PostType,
                 };
-                var res = await _noticeService.AddNotice(notice, null);
+                await _noticeService.AddNotice(notice, owner, batch);
                 return RedirectToAction(nameof(Index));
             }
             else
             {
-                return View(createNoticeViewModel);
+                return View(noticeViewModel);
             }
         }
-
-
         // GET: Admin/Notices/Edit/5
         public IActionResult Edit(int? id)
         {
             return View();
         }
     }
-} 
+}

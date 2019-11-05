@@ -8,9 +8,8 @@ namespace Web.Areas.Admin.ViewModels
     public class CreateNoticeViewModel
     {
         public SelectList BatchList { get; private set; }
-        public Batch Batch { get; set; }
+        public int BatchId { get; set; }
         public bool IsAllBatch { get; set; }
-        public bool ShowNotification { get; set; } = true;
         public string Title { get; set; }
         public string Message { get; set; }
         public DateTime EventDate { get; set; } = DateTime.Now;
@@ -18,7 +17,11 @@ namespace Web.Areas.Admin.ViewModels
 
         public CreateNoticeViewModel(List<Batch> batches)
         {
-            BatchList = new SelectList(batches, nameof(Batch.Id), nameof(Batch.Name), Batch);
+            BatchList = new SelectList(batches, nameof(Batch.Id), nameof(Batch.Name), BatchId);
+        }
+        public CreateNoticeViewModel()
+        {
+
         }
     }
 

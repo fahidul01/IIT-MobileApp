@@ -3,6 +3,7 @@ using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -50,7 +51,7 @@ namespace Web.Infrastructure.Services
             {
                 var res = await _db.Users.Where(x => x.UserRole == AppConstants.Student)
                                         .OrderByDescending(x => x.EnrolledIn)
-                                        .Take(100)
+                                        .Take(50)
                                         .ToListAsync();
                 foreach (var item in res)
                 {
@@ -61,8 +62,8 @@ namespace Web.Infrastructure.Services
             else
             {
                 var res = await _db.Users.Where(x => x.UserRole == AppConstants.Student &&
-                                                (x.UserName.IndexOf(value) >= 0 ||
-                                                 x.Name.IndexOf(value) >= 0))
+                                                (x.UserName == value ||
+                                                 EF.Functions.Like(x.Name, $"%{value}%")))
                                            .OrderByDescending(x => x.EnrolledIn)
                                            .Take(100)
                                            .ToListAsync();

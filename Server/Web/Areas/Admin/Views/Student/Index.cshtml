@@ -1,1 +1,35 @@
-﻿<h1>Student</h1>
+﻿@model IEnumerable<User>
+<h1>Student</h1>
+<form asp-controller="Student"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-update="#student_table"
+      data-ajax-loading="#spinner"
+      asp-action="SearchStudents"
+      enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="input-group mb-4">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-search"></i></span>
+                    </div>
+                    <input class="form-control" name="value" placeholder="Search" type="text">
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-outline-secondary col-2" type="submit">
+            Search
+        </button>
+        <div class="text-center">
+    <div id="spinner" style="display:none" class="spinner-border"></div>
+</div>
+    </div>
+</form>
+<div id="student_table">
+    @await Html.PartialAsync("_Students", Model)
+</div>
+@section Scripts
+{
+    <script src="~/lib/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.min.js" asp-append-version="true"></script>
+}

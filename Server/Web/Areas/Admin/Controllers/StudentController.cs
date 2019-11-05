@@ -14,9 +14,10 @@ namespace Web.Areas.Admin.Controllers
             _userService = userService;
         }
         // GET: Student
-        public ActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var students = await _userService.SearchStudent("");
+            return View(students);
         }
 
         // GET: Student/Details/5
