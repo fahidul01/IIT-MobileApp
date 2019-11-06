@@ -3,18 +3,17 @@
     var modalId = "modal_" + Model.SemesterId;
 }
 <div class="col-md-4">
-    <button type="button" class="btn btn-outline-primary"
-            data-toggle="modal"
-            data-target="#@modalId">
+    <a class="btn btn-outline-secondary"
+       data-toggle="modal"
+       data-target="#@modalId">
         <i class="fa fa-plus"></i>
         <h3>Create New</h3>
-    </button>
+    </a>
     <div class="modal fade" id="@modalId" tabindex="-1" role="dialog" aria-labelledby="modal-default" aria-hidden="true">
         <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
             <div class="modal-content">
-
                 <div class="modal-header">
-                    <h6 class="modal-title" id="modal-title-default">Type your modal title</h6>
+                    <h3 class="modal-title" id="modal-title-default">Add Course to Semester</h3>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
@@ -47,7 +46,7 @@
                                 <span asp-validation-for="CourseCredit" class="text-danger"></span>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group justify-content-center">
                             <input value="Update"
                                    onclick="javascript: document.getElementById('submit_@Model.SemesterId').click();"
                                    data-dismiss="modal"

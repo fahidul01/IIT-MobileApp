@@ -13,14 +13,14 @@ namespace Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Authorize(Roles = AppConstants.Admin)]
-    public class NoticesController : Controller
+    public class NoticeController : Controller
     {
         private readonly FileService _fileService;
         private readonly UserManager<DBUser> _usermanager;
         private readonly BatchService _batchService;
         private readonly NoticeService _noticeService;
 
-        public NoticesController(NoticeService noticeService,
+        public NoticeController(NoticeService noticeService,
             BatchService batchService,
             FileService fileService,
             UserManager<DBUser> userManager)

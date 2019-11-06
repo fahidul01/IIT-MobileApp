@@ -11,11 +11,15 @@ namespace CoreEngine.Model.DBModel
         [Required]
         public string Name { get; set; }
         [Required]
+        [Range(1,100)]
+        [Display(Name = "Number of Semester")]
         public int NumberOfSemester { get; set; }
         /// <summary>
         /// In Months
         /// </summary>
         [Required]
+        [Range(1,100)]
+        [Display(Name = "Semester duration in months")]
         public int SemesterDuration { get; set; } = 1;
         public virtual ICollection<DBUser> Students { get; set; }
         public virtual ICollection<Semester> Semesters { get; set; }

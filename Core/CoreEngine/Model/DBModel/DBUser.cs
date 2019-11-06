@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
+using System.Collections.Generic;
 
 namespace CoreEngine.Model.DBModel
 {
@@ -15,6 +16,7 @@ namespace CoreEngine.Model.DBModel
 
     public class User
     {
+        public string Id { get; private set; }
         public string UserName { get; set; }
         public string Password { get; set; }
         public string Email { get; set; }
@@ -23,18 +25,22 @@ namespace CoreEngine.Model.DBModel
         public bool IsCR { get; set; }
         public string ClassRepresentative => IsCR ? "CR" : "";
         public int Roll { get; set; }
+        public Batch Batch { get; set; }
+        public List<StudentCourse> Courses { get; set; }
+
 
         public static User FromDBUser(DBUser dBUser, string password)
         {
             return new User()
             {
+                Id = dBUser.Id,
                 UserName = dBUser.UserName,
                 Password = password,
                 Email = dBUser.Email,
                 Name = dBUser.Name,
                 PhoneNumber = dBUser.PhoneNumber,
                 Roll = dBUser.Roll,
-                IsCR = dBUser.ClassRepresentative
+                IsCR = dBUser.ClassRepresentative,
             };
         }
     }

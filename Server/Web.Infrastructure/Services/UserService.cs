@@ -47,6 +47,24 @@ namespace Web.Infrastructure.Services
             return users;
         }
 
+        public async Task<User> GetStudent(string id)
+        {
+            var user = await _db.Users.Include(x => x.Batch)
+                                      .FirstOrDefaultAsync(x => x.Id == id);
+            if (user != null)
+            {
+                var terminalUser = User.FromDBUser(user, "");
+                terminalUser.Batch = user.Batch;
+                var courses = await _db.StudentCourses.Where(x => x.Student.Id == user.Id)
+                                                      .Include(x => x.Course)
+                                                      .Include(m => m.Grade)
+                                                      .ToListAsync();
+                terminalUser.Courses = courses;
+                return terminalUser;
+            }
+            else return null;
+        }
+
         public async Task<List<User>> GetCurrentCr()
         {
             var users = await _db.Users.Where(x => x.Batch.EndsOn <= DateTime.Now &&

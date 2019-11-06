@@ -1,0 +1,26 @@
+﻿@model User
+@{
+    ViewData["Title"] = "Detail";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="card p-2">
+    <div>
+        <span class="d-inline rounded-circle">
+            @Html.Identicon(Model.Name, 60)
+        </span>
+        <div class="d-inline-block ml-1">
+            <h3> @Model.Name</h3>
+        </div>
+    </div>
+    <dl>
+        <dt>@Model.Batch.Name</dt>
+        <dt>@Model.Roll</dt>
+    </dl>
+</div>
+
+
+
+
+
+

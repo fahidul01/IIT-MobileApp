@@ -41,8 +41,7 @@ namespace Web.Areas.Admin.Controllers
                 var res = await _batchService.AddBatch(batch);
                 if (res)
                 {
-                    Success();
-                    return RedirectToAction(nameof(Detail), new { id = batch.Id });
+                    return RedirectToAction(nameof(Details), new { id = batch.Id });
                 }
                 else
                 {
@@ -56,13 +55,9 @@ namespace Web.Areas.Admin.Controllers
             }
         }
         [HttpGet]
-        public async Task<IActionResult> Detail(int? id)
+        public async Task<IActionResult> Details(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            var batch = await _batchService.GetBatchAsync(id.Value);
+            var batch = await _batchService.GetBatchAsync(id);
             return View(batch);
         }
 

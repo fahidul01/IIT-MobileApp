@@ -7,26 +7,15 @@ namespace Web.Controllers
     public abstract class BaseController : Controller
     {
         [ViewData]
-        public string SuccessMessage { get; set; }
+        public string SuccessMessage { get; set; } = string.Empty;
         [ViewData]
-        public string FailedMessage { get; set; }
+        public string FailedMessage { get; set; } = string.Empty;
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-
-        //private LanguageService languageService;
-        //internal string Translate(string data)
-        //{
-        //    if (languageService == null)
-        //    {
-        //        languageService = Startup.ServiceProvider
-        //                                 .GetRequiredService<LanguageService>();
-        //    }
-        //    return languageService[data];
-        //}
 
         protected internal string Translate(string data)
         {

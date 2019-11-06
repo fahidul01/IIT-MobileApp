@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Controllers
 {
-    public class LoginController : Controller
+    public class LoginController : BaseController
     {
         private readonly SignInManager<DBUser> _signInManager;
 
@@ -23,6 +23,11 @@ namespace Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(string userName, string password, bool isPersistent = true)
         {
+            if(string.IsNullOrWhiteSpace(userName) || string.IsNullOrWhiteSpace(password))
+            {
+                Failed("Failed to Login. Empty credentials");
+                return View(nameof(Index));
+            }
             var res = await _signInManager.PasswordSignInAsync(userName, password, isPersistent, false);
             if (res == Microsoft.AspNetCore.Identity.SignInResult.Success)
             {
@@ -30,6 +35,7 @@ namespace Web.Controllers
             }
             else
             {
+                Failed("Failed to Login. Invalid credentials");
                 return RedirectToAction(nameof(Index));
             }
         }

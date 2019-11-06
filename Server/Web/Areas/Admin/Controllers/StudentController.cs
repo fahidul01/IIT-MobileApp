@@ -21,9 +21,11 @@ namespace Web.Areas.Admin.Controllers
         }
 
         // GET: Student/Details/5
-        public ActionResult Details(int id)
+        public async Task<IActionResult> Details(string id)
         {
-            return View();
+            var student = await _userService.GetStudent(id);
+            if (student == null) return NotFound();
+            return View(student);
         }
 
         [HttpPost]

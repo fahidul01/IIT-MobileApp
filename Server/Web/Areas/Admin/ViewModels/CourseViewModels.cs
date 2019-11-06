@@ -9,10 +9,14 @@ namespace Web.Areas.Admin.ViewModels
         [Required]
         public int BatchId { get; set; }
         [Required]
+        [Display(Name = "Course Name")]
         public string CourseName { get; set; }
         [Required]
+        [Display(Name = "Course Id")]
         public string CourseId { get; set; }
         [Required]
+        [Range(0.5,10)]
+        [Display(Name = "Total Course Credit")]
         public decimal CourseCredit { get; set; }
         public CreateCoursePopupModel()
         {
