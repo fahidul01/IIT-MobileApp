@@ -6,5 +6,6 @@
         public const string Student = "Student";
         public const string Admin = "Admin";
         public static string BaseUrl;
+        public static string DataPath;
     }
 }

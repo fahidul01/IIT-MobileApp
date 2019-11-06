@@ -3,6 +3,7 @@ using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -44,6 +45,21 @@ namespace Web.Infrastructure.Services
                 }
             }
             return users;
+        }
+
+        public async Task<List<User>> GetCurrentCr()
+        {
+            var users = await _db.Users.Where(x => x.Batch.EndsOn <= DateTime.Now &&
+                                             x.ClassRepresentative)
+                                 .OrderByDescending(x => x.Batch.Id)
+                                 .Include(x => x.Batch)
+                                 .ToListAsync();
+            var userList = new List<User>();
+            foreach (var item in users)
+            {
+                userList.Add(User.FromDBUser(item, ""));
+            }
+            return userList;
         }
 
         public async Task<List<User>> SearchStudent(string value)

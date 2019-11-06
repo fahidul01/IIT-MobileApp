@@ -1,20 +1,36 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+﻿using CoreEngine.Model.Common;
+using CoreEngine.Model.DBModel;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly UserManager<DBUser> _usermanager;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(UserManager<DBUser> userManager)
         {
-            _logger = logger;
+            _usermanager = userManager;
         }
 
-        public IActionResult Index()
+        [Authorize]
+        public async Task<IActionResult> Index()
         {
-            return Redirect("/admin/dashboard");
+            var user = await _usermanager.GetUserAsync(HttpContext.User);
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                var adminRole = await _usermanager.IsInRoleAsync(user, AppConstants.Admin);
+
+                if (adminRole) return RedirectToAction("index", "Dashboard", new { area = "admin" });
+                else return View();
+            }
         }
     }
 }

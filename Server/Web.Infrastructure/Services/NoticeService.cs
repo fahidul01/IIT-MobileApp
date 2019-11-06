@@ -42,6 +42,30 @@ namespace Web.Infrastructure.Services
             }
         }
 
+        public async Task<bool> AddUpdateNotice(Notice post, string user)
+        {
+            var dbUser = await _db.Users
+                                  .Include(m => m.Batch)
+                                  .FirstOrDefaultAsync(x => x.UserRole == AppConstants.Student &&
+                                                            x.UserName == user);
+            if (dbUser == null) return false;
+            else
+            {
+                post.Owner = dbUser;
+                post.Batch = dbUser.Batch;
+                if (post.Id == 0)
+                {
+                    _db.Entry(post).State = EntityState.Added;
+                }
+                else
+                {
+                    _db.Entry(post).State = EntityState.Modified;
+                }
+                await _db.SaveChangesAsync();
+                return true;
+            }
+        }
+
         public async Task<bool> UpdateNotice(Notice notice)
         {
             var dbNotice = await _db.Notices.FindAsync(notice);
@@ -57,11 +81,14 @@ namespace Web.Infrastructure.Services
             }
         }
 
+
+
         public async Task<List<Notice>> GetUpcomingEvents()
         {
             var nextWeek = DateTime.Now.AddDays(7);
             var notices = await _db.Notices.Where(x => x.EventDate > DateTime.Now &&
                                                      x.EventDate <= nextWeek)
+                                           .Include(m => m.Batch)
                                            .ToListAsync();
             return notices;
         }
@@ -71,8 +98,31 @@ namespace Web.Infrastructure.Services
             var notices = await _db.Notices.OrderByDescending(m => m.CreatedOn)
                                            .Skip((page - 1) * itemPerPage)
                                            .Take(itemPerPage)
+                                           .Include(m => m.Batch)
                                            .ToListAsync();
             return notices;
+        }
+
+        public async Task<bool> Delete(int id)
+        {
+            var notice = await _db.Notices.Include(x => x.Batch)
+                                          .FirstOrDefaultAsync(x => x.Id == id);
+            if (notice == null) return false;
+            else
+            {
+                _db.Entry(notice).State = EntityState.Deleted;
+                await _db.SaveChangesAsync();
+                return true;
+            }
+        }
+
+        public async Task<Notice> GetNotice(int id)
+        {
+            var notice = await _db.Notices
+                                  .Include(x => x.Batch)
+                                  .Include(x => x.Owner)
+                                  .FirstOrDefaultAsync(x => x.Id == id);
+            return notice;
         }
     }
 }

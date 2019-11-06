@@ -42,7 +42,7 @@ namespace Web.Areas.Admin.Controllers
                 if (res)
                 {
                     Success();
-                    return RedirectToAction(nameof(ViewBatch), new { id = batch.Id });
+                    return RedirectToAction(nameof(Detail), new { id = batch.Id });
                 }
                 else
                 {
@@ -56,7 +56,7 @@ namespace Web.Areas.Admin.Controllers
             }
         }
         [HttpGet]
-        public async Task<IActionResult> ViewBatch(int? id)
+        public async Task<IActionResult> Detail(int? id)
         {
             if (id == null)
             {

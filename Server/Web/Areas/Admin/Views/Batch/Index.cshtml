@@ -26,7 +26,7 @@
             {
                 <tr>
                     <td>
-                        <a class="dropdown-item" asp-action="viewBatch" asp-route-id="@item.Id">@item.Name</a>
+                        <a class="dropdown-item" asp-action="Detail" asp-route-id="@item.Id">@item.Name</a>
                     </td>
                     <td>@item.StartsOn.ToString("dd MMMM, yyyy")</td>
                     <td>@item.NumberOfSemester</td>
@@ -46,8 +46,8 @@
             }
         </tbody>
     </table>
-    <div class="float-right mt-5">
-        <ul class="pagination">
+    <div class=" mt-5">
+        <ul class="float-right d-inline pagination">
             @for (var i = 1; i <= totalPage; i++)
             {
                 <li class="page-item @(i == page ? "active" : "")">

@@ -1,5 +1,6 @@
 ﻿using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -11,6 +12,7 @@ using Web.Infrastructure.Services;
 namespace Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = AppConstants.Admin)]
     public class NoticesController : Controller
     {
         private readonly UserManager<DBUser> _usermanager;
@@ -56,14 +58,18 @@ namespace Web.Areas.Admin.Controllers
             {
                 var owners = await _usermanager.GetUsersInRoleAsync(AppConstants.Admin);
                 var owner = owners.FirstOrDefault();
-                var batch = noticeViewModel.IsAllBatch ? 0 : noticeViewModel.BatchId;
+                var batch = noticeViewModel.BatchId ?? 0;
+                foreach (var file in noticeViewModel.FormFiles)
+                {
+
+                }
                 var notice = new Notice()
                 {
                     EventDate = noticeViewModel.EventDate,
                     FutureNotification = noticeViewModel.EventDate.Date > DateTime.Now.Date,
                     Message = noticeViewModel.Message,
                     Title = noticeViewModel.Title,
-                    PostType = noticeViewModel.PostType,
+                    PostType = PostType.Notice,
                 };
                 await _noticeService.AddNotice(notice, owner, batch);
                 return RedirectToAction(nameof(Index));
@@ -73,10 +79,50 @@ namespace Web.Areas.Admin.Controllers
                 return View(noticeViewModel);
             }
         }
-        // GET: Admin/Notices/Edit/5
-        public IActionResult Edit(int? id)
+
+        public async Task<IActionResult> Edit(int id)
         {
-            return View();
+            var currentBatch = await _batchService.GetBatchesAsync(1);
+            return View(new CreateNoticeViewModel(id, currentBatch));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(CreateNoticeViewModel noticeViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var owners = await _usermanager.GetUsersInRoleAsync(AppConstants.Admin);
+                var owner = owners.FirstOrDefault();
+                var batch = noticeViewModel.BatchId ?? 0;
+                var notice = new Notice()
+                {
+                    Id = noticeViewModel.Id,
+                    EventDate = noticeViewModel.EventDate,
+                    FutureNotification = noticeViewModel.EventDate.Date > DateTime.Now.Date,
+                    Message = noticeViewModel.Message,
+                    Title = noticeViewModel.Title,
+                    PostType = PostType.Notice,
+                };
+                await _noticeService.AddNotice(notice, owner, batch);
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                return View(noticeViewModel);
+            }
+        }
+
+        public async Task<IActionResult> Details(int id)
+        {
+            var notice = await _noticeService.GetNotice(id);
+            return View(notice);
+        }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            var result = await _noticeService.Delete(id);
+            if (result) return RedirectToAction(nameof(Index));
+            else return RedirectToAction(nameof(Details), new { id });
         }
     }
 }

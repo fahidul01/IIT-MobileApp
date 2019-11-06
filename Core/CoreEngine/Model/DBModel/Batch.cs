@@ -22,6 +22,7 @@ namespace CoreEngine.Model.DBModel
         [Required]
         [DataType(DataType.Date)]
         public DateTime StartsOn { get; set; }
+        public DateTime EndsOn { get; set; }
 
         public Batch()
         {

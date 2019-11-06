@@ -48,7 +48,7 @@ namespace Web
                 options.Cookie.HttpOnly = true;
                 options.ExpireTimeSpan = TimeSpan.FromDays(1);
                 options.SlidingExpiration = true;
-                options.LoginPath = "/Accounts/Login";
+                options.LoginPath = "/Login";
             });
             services.AddTransient<IEmailSender, EmailSender>();
             services.Configure<AuthMessageSenderOptions>(Configuration);
@@ -59,6 +59,7 @@ namespace Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
         {
+            AppConstants.DataPath = env.ContentRootPath;
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -69,12 +70,14 @@ namespace Web
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
             //app.UseHttpsRedirection();
             app.UseJdenticon();
             app.UseStaticFiles();
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

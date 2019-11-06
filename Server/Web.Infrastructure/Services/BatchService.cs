@@ -45,6 +45,9 @@ namespace Web.Infrastructure.Services
                     };
                     batch.Semesters.Add(sem);
                 }
+                batch.EndsOn = batch.StartsOn
+                                    .AddMonths(batch.SemesterDuration * batch.NumberOfSemester)
+                                    .AddDays(7);
                 _db.Batches.Add(batch);
                 await _db.SaveChangesAsync();
                 return true;

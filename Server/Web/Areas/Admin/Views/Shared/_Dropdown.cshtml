@@ -24,12 +24,10 @@
             <span>Support</span>
         </a>
         <div class="dropdown-divider"></div>
-        <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new {area = ""})">
-            <button type="submit" class="dropdown-item logout">
-                <i class="ni ni-user-run"></i>
-                <span class="logout">Logout</span>
-            </button>
-        </form>
+        <a asp-area="" asp-action="Logout" asp-controller="Login" class="dropdown-item">
+            <i class="fa fa-sign-out-alt"></i>
+            <span>Logout</span>
+        </a>
     }
     else
     {

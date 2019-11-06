@@ -12,5 +12,7 @@ namespace CoreEngine.Model.DBModel
         public virtual Batch Batch { get; set; }
         [Required]
         public virtual Course Course { get; set; }
+        public int TeacherId { get; set; }
+        public string TeacherName { get; set; }
     }
 }
