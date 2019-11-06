@@ -120,6 +120,7 @@ namespace Web.Infrastructure.Services
         {
             var notice = await _db.Notices
                                   .Include(x => x.Batch)
+                                  .Include(x => x.DBFiles)
                                   .Include(x => x.Owner)
                                   .FirstOrDefaultAsync(x => x.Id == id);
             return notice;

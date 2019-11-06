@@ -2,7 +2,7 @@
 {
     public class DBFile
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
         /// <summary>
         /// Can be duplicate
         /// </summary>
@@ -11,5 +11,6 @@
         /// Should be unique
         /// </summary>
         public string FilePath { get; set; }
+        public string FileHash { get; set; }
     }
 }

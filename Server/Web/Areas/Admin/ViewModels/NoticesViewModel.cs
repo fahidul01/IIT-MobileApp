@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Web.Models.Web;
 
 namespace Web.Areas.Admin.ViewModels
 {
@@ -15,8 +16,9 @@ namespace Web.Areas.Admin.ViewModels
         public string Title { get; set; }
         public string Message { get; set; }
         public DateTime EventDate { get; set; } = DateTime.Now;
-        [FileExtensions(Extensions="jpg,jpeg,png,pdf")]
-        [Display(Name = "Attach File")]
+        [DataType(DataType.Upload)]
+        [MaxFileSize(5 * 1024 * 1024)]
+        [AllowedExtensions(new string[] { ".jpg", ".png",".pdf",".xls",".xlxs",".docx" })]
         public IFormFileCollection FormFiles { get; set; }
         public CreateNoticeViewModel(int id, List<Batch> batches)
         {

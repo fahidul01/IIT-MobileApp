@@ -15,14 +15,17 @@ namespace Web.Areas.Admin.Controllers
     [Authorize(Roles = AppConstants.Admin)]
     public class NoticesController : Controller
     {
+        private readonly FileService _fileService;
         private readonly UserManager<DBUser> _usermanager;
         private readonly BatchService _batchService;
         private readonly NoticeService _noticeService;
 
         public NoticesController(NoticeService noticeService,
             BatchService batchService,
+            FileService fileService,
             UserManager<DBUser> userManager)
         {
+            _fileService = fileService;
             _usermanager = userManager;
             _batchService = batchService;
             _noticeService = noticeService;
@@ -59,10 +62,8 @@ namespace Web.Areas.Admin.Controllers
                 var owners = await _usermanager.GetUsersInRoleAsync(AppConstants.Admin);
                 var owner = owners.FirstOrDefault();
                 var batch = noticeViewModel.BatchId ?? 0;
-                foreach (var file in noticeViewModel.FormFiles)
-                {
-
-                }
+                
+                
                 var notice = new Notice()
                 {
                     EventDate = noticeViewModel.EventDate,
@@ -71,6 +72,10 @@ namespace Web.Areas.Admin.Controllers
                     Title = noticeViewModel.Title,
                     PostType = PostType.Notice,
                 };
+                if (noticeViewModel.FormFiles != null)
+                {
+                    notice.DBFiles = await _fileService.UploadFiles(noticeViewModel.FormFiles);
+                }
                 await _noticeService.AddNotice(notice, owner, batch);
                 return RedirectToAction(nameof(Index));
             }

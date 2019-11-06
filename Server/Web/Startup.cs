@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.IO;
 using Web.Infrastructure.DBModel;
 using Web.Models.Web;
 using Web.WebServices;
@@ -59,7 +60,7 @@ namespace Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
         {
-            AppConstants.DataPath = env.ContentRootPath;
+            AppConstants.DataPath = env.WebRootPath;
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
