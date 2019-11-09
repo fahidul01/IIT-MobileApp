@@ -26,7 +26,7 @@
             <tbody>
                 @foreach (var student in Model.OrderByDescending(x => x.Batch.StartsOn))
                 {
-                    <tr onclick="location.href = '@(Url.Action("Details", "Batch", new { id = student.Id }))'">
+                    <tr onclick="location.href = '@(Url.Action("Details", "Batch", new { id = student.Batch.Id }))'">
                         <th scope="row">
                             <div class="media align-items-center">
                                 <a href="#" class="avatar rounded-circle mr-3">
