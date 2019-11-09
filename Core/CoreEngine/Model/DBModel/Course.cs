@@ -10,7 +10,7 @@ namespace CoreEngine.Model.DBModel
         public string CourseId { get; set; }
         public string CourseName { get; set; }
         public virtual ICollection<StudentCourse> StudentCourses { get; set; }
-        public virtual ICollection<Class> Classes { get; set; }
+        public virtual ICollection<Lesson> Lessons { get; set; }
         public virtual ICollection<CourseMaterial> CourseMaterials { get; set; }
         [Required]
         public virtual Semester Semester { get; set; }
@@ -18,7 +18,7 @@ namespace CoreEngine.Model.DBModel
         public Course()
         {
             StudentCourses = new HashSet<StudentCourse>();
-            Classes = new HashSet<Class>();
+            Lessons = new HashSet<Lesson>();
         }
     }
 

@@ -7,7 +7,7 @@ namespace CoreEngine.APIHandlers
 {
     public interface IClassHandler
     {
-        Task<List<Class>> GetClasses();
-        Task<List<Class>> GetClasses(DateTime dateTime);
+        Task<List<Lesson>> GetClasses();
+        Task<List<Lesson>> GetClasses(DateTime dateTime);
     }
 }

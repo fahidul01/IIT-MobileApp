@@ -22,7 +22,7 @@ namespace Web.Infrastructure.Services
             _db = studentDB;
         }
 
-        private async Task<List<User>> AddStudents(IList<DBUser> students, int batchID)
+        internal async Task<List<User>> AddStudents(IList<DBUser> students, int batchID)
         {
             var users = new List<User>();
             var batch = await _db.Batches.FindAsync(batchID);
@@ -67,15 +67,17 @@ namespace Web.Infrastructure.Services
 
         public async Task<List<User>> GetCurrentCr()
         {
-            var users = await _db.Users.Where(x => x.Batch.EndsOn <= DateTime.Now &&
-                                             x.ClassRepresentative)
+            var users = await _db.Users.Where(x => x.Batch.EndsOn >= DateTime.Now &&
+                                                   x.ClassRepresentative)
                                  .OrderByDescending(x => x.Batch.Id)
                                  .Include(x => x.Batch)
                                  .ToListAsync();
             var userList = new List<User>();
             foreach (var item in users)
             {
-                userList.Add(User.FromDBUser(item, ""));
+                var user = User.FromDBUser(item, "");
+                user.Batch = item.Batch;
+                userList.Add(user);
             }
             return userList;
         }
@@ -91,7 +93,8 @@ namespace Web.Infrastructure.Services
                                         .ToListAsync();
                 foreach (var item in res)
                 {
-                    users.Add(User.FromDBUser(item, ""));
+                    var user = User.FromDBUser(item, "");
+                    users.Add(user);
                 }
                 return users;
             }

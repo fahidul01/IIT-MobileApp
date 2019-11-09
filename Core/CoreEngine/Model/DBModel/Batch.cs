@@ -36,6 +36,7 @@ namespace CoreEngine.Model.DBModel
 
         [NotMapped]
         public List<User> ExternalUsers { get; set; }
+
         public void LoadUsers()
         {
             ExternalUsers = new List<User>();

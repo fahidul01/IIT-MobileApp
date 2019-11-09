@@ -1,0 +1,50 @@
+﻿@model CoreEngine.Model.DBModel.Notice
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="card p-lg-3">
+    <div>
+        <span class="text-lg font-weight-bold">
+            @Model.Title
+        </span>
+        <span class="float-right">
+            <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+        </span>
+    </div>
+   
+    <h3>@Model.Owner.Name</h3>
+    @if (Model.Batch == null)
+    {
+        <span>All Batch</span>
+    }
+    else
+    {
+        <span>@Model.Batch.Name</span>
+    }
+    <br />
+    <span class="text-sm">
+        @Model.CreatedOn.ToString("dd MMMM, yyyy")
+    </span>
+
+    <p class="mt-5 mb-5">
+        @Model.Message
+    </p>
+    <br />
+    @if (Model.DBFiles != null)
+    {
+        foreach (var file in Model.DBFiles)
+        {
+            <a asp-area="" asp-controller="Files" asp-action="Index"
+               asp-route-id="@file.Id">@file.FileName</a>
+            <br />
+        }
+    }
+
+</div>
+<div class="mt-5 float-right">
+    <a asp-action="Index">Back to List</a>
+</div>
+

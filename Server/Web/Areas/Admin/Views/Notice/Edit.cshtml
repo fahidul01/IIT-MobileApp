@@ -1,0 +1,52 @@
+﻿@model CreateNoticeViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>Notice</h4>
+<hr />
+<form asp-action="Edit">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="row">
+        <input type="hidden" asp-for="Id" />
+        <div class="form-group col-md-6 col-lg-4 col-sm-12">
+            <label asp-for="EventDate" class="control-label"></label>
+            <input type="date" asp-for="EventDate" class="form-control" />
+            <span asp-validation-for="EventDate" class="text-danger"></span>
+        </div>
+        <div class="col-lg-2"></div>
+        <div class="form-group col-md-6 col-lg-4 col-sm-12">
+            <label asp-for="BatchId" class="control-label"></label>
+            <select class="form-control"
+                    asp-for="@Model.BatchId"
+                    asp-items="@Model.BatchList">
+                <option selected>All Running Batch</option>
+            </select>
+        </div>
+        <div class="form-group col-lg-6 col-md-6 col-sm-12">
+            <label asp-for="Title" class="control-label"></label>
+            <input asp-for="Title" class="form-control" />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+        <div class="form-group col-12">
+            <label asp-for="Message" class="control-label"></label>
+            <textarea asp-for="Message" rows="5" class="form-control"></textarea>
+            <span asp-validation-for="Message" class="text-danger"></span>
+        </div>
+
+    </div>
+    <div class="form-group mt-5">
+        <input type="submit" value="Update" class="btn btn-primary float-right" />
+    </div>
+</form>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

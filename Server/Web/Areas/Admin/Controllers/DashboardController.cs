@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Web.Areas.Admin.ViewModels;
 using Web.Controllers;
 using Web.Infrastructure.Services;
 
@@ -23,10 +24,11 @@ namespace Web.Areas.Admin.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var recent = await _noticeService.GetRecentNotice(1);
-            var upcoming = await _noticeService.GetUpcomingEvents();
+            //var recent = await _noticeService.GetRecentNotice(1);
+            var notices = await _noticeService.GetUpcomingEvents();
             var batch = await _userService.GetCurrentCr();
-            return View();
+            var lessons = await _courseService.UpcomingLessons();
+            return View(new DashboardViewModel(lessons, notices, batch));
         }
     }
 }

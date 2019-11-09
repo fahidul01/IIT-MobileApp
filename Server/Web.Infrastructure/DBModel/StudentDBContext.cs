@@ -14,6 +14,7 @@ namespace Web.Infrastructure.DBModel
         public DbSet<Notice> Notices { get; internal set; }
         public DbSet<DBFile> DBFiles { get; internal set; }
         public DbSet<StudentCourse> StudentCourses { get; internal set; }
+        public DbSet<Lesson> Lessons { get; internal set; }
 
         public StudentDBContext(DbContextOptions<StudentDBContext> opt) : base(opt)
         {

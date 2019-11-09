@@ -1,0 +1,60 @@
+﻿@model IEnumerable<User>
+<div>
+    @if (Model == null || Model.Count() == 0)
+    {
+        <h3>No Students Found</h3>
+        @if (ViewData["FailedMessage"] is string failed && !string.IsNullOrWhiteSpace(failed))
+        {
+            <div>
+                <h2 class="mt-5 text-center text-danger">@failed</h2>
+            </div>
+        }
+    }
+    else
+    {
+
+        <table class="table align-items-center">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">Batch</th>
+                    <th scope="col">Statrts On</th>
+                    <th scope="col">Ends On</th>
+                    <th scope="col">Class Representative</th>
+                    <th scope="col">Phone</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var student in Model.OrderByDescending(x => x.Batch.StartsOn))
+                {
+                    <tr onclick="location.href = '@(Url.Action("Details", "Batch", new { id = student.Id }))'">
+                        <th scope="row">
+                            <div class="media align-items-center">
+                                <a href="#" class="avatar rounded-circle mr-3">
+                                    @Html.Identicon(student.Batch.Name, 60)
+                                </a>
+                                <div class="media-body">
+                                    <span class="mb-0 text-sm">@student.Batch.Name</span>
+                                </div>
+                            </div>
+                        </th>
+                        <td>
+                            @student.Batch.StartsOn
+                        </td>
+                        <td>
+                            <span class="badge badge-dot mr-4">
+                                <i class="bg-warning"></i> @student.Batch.EndsOn
+                            </span>
+                        </td>
+                        <td>
+                            @student.Name
+                        </td>
+                        <td>
+                            @student.PhoneNumber
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+</div>

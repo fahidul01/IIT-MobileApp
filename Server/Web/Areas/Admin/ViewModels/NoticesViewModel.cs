@@ -20,9 +20,13 @@ namespace Web.Areas.Admin.ViewModels
         [MaxFileSize(5 * 1024 * 1024)]
         [AllowedExtensions(new string[] { ".jpg", ".png",".pdf",".xls",".xlxs",".docx" })]
         public IFormFileCollection FormFiles { get; set; }
-        public CreateNoticeViewModel(int id, List<Batch> batches)
+        public CreateNoticeViewModel(Notice notice, List<Batch> batches)
         {
-            Id = id;
+            Id = notice.Id;
+            BatchId = notice.Batch?.Id;
+            Title = notice.Title;
+            Message = notice.Message;
+            EventDate = notice.EventDate;
             BatchList = new SelectList(batches, nameof(Batch.Id), nameof(Batch.Name));
         }
 

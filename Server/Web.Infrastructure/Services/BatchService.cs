@@ -30,7 +30,7 @@ namespace Web.Infrastructure.Services
             return await _db.Batches.CountAsync();
         }
 
-        public async Task<bool> AddBatch(Batch batch)
+        public async Task<Batch> AddBatch(Batch batch)
         {
             if (batch.Id == 0)
             {
@@ -50,11 +50,11 @@ namespace Web.Infrastructure.Services
                                     .AddDays(7);
                 _db.Batches.Add(batch);
                 await _db.SaveChangesAsync();
-                return true;
+                return batch;
             }
             else
             {
-                return false;
+                return batch;
             }
         }
 

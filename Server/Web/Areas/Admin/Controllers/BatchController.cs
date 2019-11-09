@@ -39,14 +39,14 @@ namespace Web.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 var res = await _batchService.AddBatch(batch);
-                if (res)
-                {
-                    return RedirectToAction(nameof(Details), new { id = batch.Id });
-                }
-                else
+                if (res == null)
                 {
                     Failed("Failed to update");
                     return View(batch);
+                }
+                else
+                {
+                    return View(nameof(Details), batch);
                 }
             }
             else

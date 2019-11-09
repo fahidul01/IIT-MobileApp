@@ -11,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.IO;
 using Web.Infrastructure.DBModel;
+using Web.Infrastructure.Services;
 using Web.Models.Web;
 using Web.WebServices;
 
@@ -91,6 +92,11 @@ namespace Web
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
             CreateUserRoles(serviceProvider);
+            if (env.IsDevelopment())
+            {
+                var feed = serviceProvider.GetRequiredService<FeedDataService>();
+                feed.Init();
+            }
         }
 
         private async void CreateUserRoles(IServiceProvider serviceProvider)
@@ -120,6 +126,8 @@ namespace Web
                 await UserManager.CreateAsync(user, "pass_WORD_1234");
             }
             await UserManager.AddToRoleAsync(user, "Admin");
+
+            
         }
     }
 }

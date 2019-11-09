@@ -1,6 +1,9 @@
 ﻿using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Web.Infrastructure.DBModel;
 
@@ -15,14 +18,14 @@ namespace Web.Infrastructure.Services
             _db = dBContext;
         }
 
-        public async Task<bool> AddCourse(Course course, int semesterId, int batchId)
+        public async Task<Course> AddCourse(Course course, int semesterId, int batchId)
         {
             var oldCourse = await _db.Courses
                                      .FirstOrDefaultAsync(x => x.CourseId == course.CourseId &&
                                                                x.Semester.Batch.Id == batchId);
             if (oldCourse != null)
             {
-                return false;
+                return null;
             }
             else
             {
@@ -30,16 +33,35 @@ namespace Web.Infrastructure.Services
                 var semester = await _db.Semesters.FirstOrDefaultAsync(x => x.Id == semesterId);
                 if (batch == null || semester == null)
                 {
-                    return false;
+                    return null;
                 }
                 else
                 {
                     course.Semester = semester;
                     _db.Entry(course).State = EntityState.Added;
                     await _db.SaveChangesAsync();
-                    return true;
+                    return course;
                 }
             }
+        }
+
+        public async Task<List<Lesson>> UpcomingLessons()
+        {
+            var today = DateTime.Now.DayOfWeek;
+            var dayLessons = await _db.Lessons
+                                      .Where(x => x.Course.Semester.EndsOn >= DateTime.Now &&
+                                                  x.DayOfWeek == today)
+                                      .Include(x => x.Course)
+                                      .ThenInclude(x => x.Semester)
+                                      .ThenInclude(x => x.Batch)
+                                      .ToListAsync();
+
+            //var dayLessons = await _db.Semesters//.Where(x => x.EndsOn <= DateTime.Now)
+            //                         .SelectMany(x => x.Courses)
+            //                         .SelectMany(x => x.Lessons)
+            //                         .Where(m => m.DayOfWeek == today)
+            //                         .ToListAsync();
+            return dayLessons;
         }
 
         public async Task<bool> ModifyCourse(Course course)
@@ -64,6 +86,19 @@ namespace Web.Infrastructure.Services
                                     .Include(x => x.Courses)
                                     .FirstOrDefaultAsync(x => x.Id == semesterId);
             return semester;
+        }
+
+        public async Task<Lesson> AddLesson(Lesson lesson, int courseId)
+        {
+            var course = await _db.Courses.FirstOrDefaultAsync(x => x.Id == courseId);
+            if (course == null) return null;
+            else
+            {
+                lesson.Course = course;
+                _db.Entry(lesson).State = EntityState.Added;
+                await _db.SaveChangesAsync();
+                return lesson;
+            }
         }
     }
 }
