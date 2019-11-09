@@ -92,7 +92,7 @@ namespace Web
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
             CreateUserRoles(serviceProvider);
-            if (env.IsDevelopment())
+            //if (env.IsDevelopment())
             {
                 var feed = serviceProvider.GetRequiredService<FeedDataService>();
                 feed.Init();
