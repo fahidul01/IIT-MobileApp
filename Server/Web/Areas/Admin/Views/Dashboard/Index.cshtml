@@ -7,27 +7,36 @@
 {
     <div class="card p-3">
         <h2>Upcoming Classes</h2>
-        <div class="row">
-            @foreach (var lesson in Model.Lessons)
-            {
-            <div class="p-1 col-lg-3 col-md-4 col-sm-6">
-                <div class="card p-2 ">
-                    <h4 class="text-center">@lesson.Course.Semester.Batch.Name</h4>
-                    <div>
-                        <span class="float-left small">
-                            @lesson.TimeOfDay.ToString()
-                        </span>
-                        <span class="float-right small">
-                            @DateTime.Today.ToString("dd MMMM, yyyy")
-                        </span>
-                    </div>
-                    <p>@lesson.Course.CourseName</p>
-                    <p>@lesson.Course.Semester.Name</p>
-                    <p>@lesson.Course.CourseId</p>
-                    <p>@lesson.TeacherName</p>
-                </div>
-            </div>
-            }
+        <div class="table-responsive">
+            <table class="table table-hover align-items-center">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">Course Name</th>
+                        <th scope="col">Batch</th>
+                        <th scope="col">Teacher</th>
+                        <th scope="col">Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var lesson in Model.Lessons)
+                    {
+                        <tr onclick="location.href = '@(Url.Action("Details", "Course", new { id = lesson.Id }))'">
+                            <td>
+                                @lesson.Course.CourseName (@lesson.Course.CourseId)
+                            </td>
+                            <td>
+                                @lesson.Course.Semester.Batch.Name
+                            </td>
+                            <td>
+                                @lesson.TeacherName
+                            </td>
+                            <td>
+                                @lesson.TimeOfDay
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
         </div>
     </div>
 }

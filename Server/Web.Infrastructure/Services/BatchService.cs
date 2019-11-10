@@ -63,6 +63,7 @@ namespace Web.Infrastructure.Services
             var res = await _db.Batches
                                .Include(x => x.Students)
                                .Include(x => x.Semesters)
+                               .ThenInclude(x => x.Courses)
                                .FirstOrDefaultAsync(x => x.Id == id);
             res.LoadUsers();
             return res;
