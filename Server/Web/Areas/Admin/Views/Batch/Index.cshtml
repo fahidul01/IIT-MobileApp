@@ -4,33 +4,41 @@
     ViewData["Action"] = "Index";
     ViewData["Controller"] = "Batch";
 }
-<div class="row card p-2">
-    <div class="col-12">
+<div class="card">
+    <div class="card-header">
         <h1 class="d-inline">Current Batches</h1>
-        <a class="btn btn-info d-inline float-right" asp-action="Create">Create</a>
+        <a class="btn d-inline float-right" asp-action="Create">
+            <i class="fa fa-plus-circle mr-1"></i>
+            Add
+        </a>
     </div>
-    <table class="table mt-3 table-hover table-striped">
-        <thead class="thead-light">
-            <tr>
-                <th scope="col">Name</th>
-                <th scope="col">Starts On</th>
-                <th scope="col">Number of semesters</th>
-                <th scope="col">Semester Duration (months)</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr onclick="location.href = '@(Url.Action("Details", "Batch", new { id = item.Id }))'">
-                    <td> @item.Name</td>
-                    <td>@item.StartsOn.ToString("dd MMMM, yyyy")</td>
-                    <td>@item.NumberOfSemester</td>
-                    <td>@item.SemesterDuration</td>
+    <div class="card-body pt-2 pb-2">
+        <table class="table mt-3 table-hover table-striped">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Starts On</th>
+                    <th scope="col">Ends On</th>
+                    <th scope="col">Number of semesters</th>
+                    <th scope="col">Semester Duration (months)</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr onclick="location.href = '@(Url.Action("Details", "Batch", new { id = item.Id }))'">
+                        <td> @item.Name</td>
+                        <td>@item.StartsOn.ToString("dd MMMM, yyyy")</td>
+                        <td>@item.EndsOn.ToString("dd MMMM, yyyy")</td>
+                        <td>@item.NumberOfSemester</td>
+                        <td>@item.SemesterDuration</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
 </div>
 <div class="float-right mt-5">
-   <partial name="_Pagination"/>
+    <partial name="_Pagination" />
 </div>

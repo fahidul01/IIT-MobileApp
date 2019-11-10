@@ -89,6 +89,7 @@ namespace Web.Infrastructure.Services
             var notices = await _db.Notices.Where(x => x.EventDate > CurrentTime &&
                                                      x.EventDate <= nextWeek)
                                            .Include(m => m.Batch)
+                                           .OrderBy(x=>x.EventDate)
                                            .ToListAsync();
             return notices;
         }

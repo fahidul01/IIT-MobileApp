@@ -1,9 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using CoreEngine.Model.DBModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace Web.Areas.Admin.ViewModels
 {
     public class CreateCoursePopupModel
     {
+        public Semester Semester { get; private set; }
         [Required]
         public int SemesterId { get; set; }
         [Required]
@@ -23,9 +25,10 @@ namespace Web.Areas.Admin.ViewModels
 
         }
 
-        public CreateCoursePopupModel(int semester, int batch)
+        public CreateCoursePopupModel(Semester semester, int batch)
         {
-            SemesterId = semester;
+            Semester = semester;
+            SemesterId = semester.Id;
             BatchId = batch;
         }
     }

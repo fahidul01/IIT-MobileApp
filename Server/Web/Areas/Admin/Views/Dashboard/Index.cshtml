@@ -1,13 +1,15 @@
 ﻿@model DashboardViewModel
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Dashboard";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
 @if (Model.Lessons != null && Model.Lessons.Count > 0)
 {
-    <div class="card p-3">
-        <h2>Upcoming Classes</h2>
-        <div class="table-responsive">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="mb-0">Upcoming Class</h3>
+        </div>
+        <div class="table-responsive card-body">
             <table class="table table-hover align-items-center">
                 <thead class="thead-light">
                     <tr>
@@ -41,11 +43,12 @@
     </div>
 }
 
-<div class="card mt-3 p-2">
-    <h2> Upcoming Notices</h2>
-    @await Html.PartialAsync("_Notices", Model.Notices)
+<div class="card">
+    <div class="card-header bg-transparent">
+        <h3 class="m-0">Upcoming Notices</h3>
+    </div>
+        @await Html.PartialAsync("_Notices", Model.Notices)
 </div>
-
 <div class="card mt-3 p-2">
     <h2> Current Batch and Class Represesntatives</h2>
     @await Html.PartialAsync("_ClassRepresentatives", Model.Batches)

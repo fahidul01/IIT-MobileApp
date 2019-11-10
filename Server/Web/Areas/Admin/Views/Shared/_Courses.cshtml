@@ -1,28 +1,29 @@
 ﻿@model ICollection<Course>
+
 <div class="table-responsive">
-    <table class="table table-hover align-items-center">
-        <thead class="thead-light">
-            <tr>
-                <th scope="col">Course Name</th>
-                <th scope="col">Credit</th>
-                <th scope="col">Total Students</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var course in Model)
-            {
-                <tr onclick="location.href = '@(Url.Action("Details", "Course", new { id = course.Id }))'">
-                    <td>
-                        @course.CourseName (@course.CourseId)
-                    </td>
-                    <td>
-                        @course.CourseCredit
-                    </td>
-                    <td>
-                        @course.StudentCourses.Count
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
+            <table class="table table-hover align-items-center">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">Course Name</th>
+                        <th scope="col">Credit</th>
+                        <th scope="col">Total Students</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var course in Model)
+                    {
+                        <tr onclick="location.href = '@(Url.Action("Details", "Course", new { id = course.Id }))'">
+                            <td>
+                                @course.CourseName (@course.CourseId)
+                            </td>
+                            <td>
+                                @course.CourseCredit
+                            </td>
+                            <td>
+                                @course.StudentCourses.Count
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>

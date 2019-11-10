@@ -26,5 +26,25 @@ namespace Web.Areas.Admin.Controllers
             var course = await _courseService.GetCourseAsync(id);
             return View(course);
         }
+
+        public async Task<IActionResult> Create(CreateCoursePopupModel createCoursePopupModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var course = new Course()
+                {
+                    CourseCredit = createCoursePopupModel.CourseCredit,
+                    CourseId = createCoursePopupModel.CourseId,
+                    CourseName = createCoursePopupModel.CourseName
+                };
+                var newCourse = await _courseService.AddCourse(course, createCoursePopupModel.SemesterId, createCoursePopupModel.BatchId);
+                if (newCourse != null)
+                {
+                    var res = await _courseService.GetSemesterAsync(createCoursePopupModel.SemesterId);
+                    return PartialView("_Courses", res.Courses);
+                }
+            }
+            return BadRequest();
+        }
     }
 }

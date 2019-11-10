@@ -2,44 +2,75 @@
 @{
     ViewData["Title"] = "Batch";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+
 }
 
-<div class="card p-2">
-    <div>
-        <h2 class="d-inline-block align-content-center">@Model.Name</h2>
-        <a class="btn btn-outline-secondary d-inline" asp-action="Edit" asp-route-id="@Model.Id">
-            <i class="fa fa-edit"></i>
+<div class="card">
+    <div class="card-header">
+        <h1 class="d-inline">Semesters</h1>
+        <a class="btn d-inline float-right" asp-action="Edit"
+           asp-route-id="@Model.Id">
+            <i class="fa fa-user-edit mr-1"></i>
+            Edit
         </a>
     </div>
-    <hr />
-    <h3>Semesters</h3>
+    <div class="card-body nav-wrapper m-1">
+        <ul class="nav nav-pills nav-fill flex-column flex-md-row"
+            id="tabs-icons-text"
+            role="tablist">
+            @foreach (var semester in Model.Semesters.OrderBy(x => x.StartsOn))
+            {
+                <li class="nav-item">
+                    <a class="nav-link btn btn-outline-neutral mb-sm-3 mb-md-0"
+                       data-toggle="tab"
+                       href="#tab_@semester.Id"
+                       role="tab"
+                       aria-controls="tabs-icons-text-1"
+                       aria-selected="true">
+                        @semester.Name
+                    </a>
+                </li>
+            }
+        </ul>
+    </div>
+</div>
 
-    @foreach (var semester in Model.Semesters)
+
+
+<div class="card shadow">
+    <div class="card-body">
+        <div class="tab-content" id="myTabContent">
+            @foreach (var semester in Model.Semesters)
+            {
+
+                <div class="tab-pane fade show"
+                     id="tab_@semester.Id"
+                     role="tabpanel"
+                     aria-labelledby="tabs-icons-text-1-tab">
+                    @await Html.PartialAsync("_CreateCourse", new CreateCoursePopupModel(semester, Model.Id))
+                    <div class="partial_@semester.Id">
+                        @await Html.PartialAsync("_Courses", semester.Courses)
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+@*@foreach (var semester in Model.Semesters)
     {
         <a class="nav-link" href="#collapse_@semester.Id" aria-expanded="false"
            data-toggle="collapse">
             <h3>@semester.Name</h3>
             (@semester.StartsOn.ToShortDateString() - @semester.EndsOn.ToShortDateString())
         </a>
-        <div id="collapse_@semester.Id" class="pl-4 list-inline collapse sub-menu">
+        <div id="collapse_@semester.Id" class="row">
             @await Html.PartialAsync("_Courses", semester.Courses)
         </div>
-        @*<div id="collapse_@semester.Id" class="pl-4 list-inline collapse sub-menu">
-                <hr class="p-0" />
-                <div class="row" id="@semester.Id">
-                    @await Component.InvokeAsync("Courses", new { semesterId = semester.Id })
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 p-3">
-                    @await Html.PartialAsync("_CreateCourse", new CreateCoursePopupModel(semester.Id, Model.Id))
-                </div>
-                <hr class="p-0" />
-            </div>*@
-    }
-</div>
-<div class="card p-2 mt-5">
-    <div class="row">
-        <h1 class="col-10">Students</h1>
-        <form class="col-2"
+    }*@
+<div class="card mt-3">
+    <div class="card-header">
+        <h2 class="d-inline">Students</h2>
+        <form class="d-inline float-right"
               asp-controller="Batch"
               data-ajax="true"
               data-ajax-method="POST"
@@ -61,13 +92,18 @@
             </div>
         </form>
     </div>
-    <div class="text-center">
-        <div id="spinner" style="display:none" class="spinner-border"></div>
-    </div>
+    <div class="card-body">
 
 
-    <div id="student_table" style="min-height:50%">
-        @await Html.PartialAsync("_Students", Model.ExternalUsers)
+
+        <div class="text-center">
+            <div id="spinner" style="display:none" class="spinner-border"></div>
+        </div>
+
+
+        <div id="student_table" style="min-height:50%">
+            @await Html.PartialAsync("_Students", Model.ExternalUsers)
+        </div>
     </div>
 </div>
 

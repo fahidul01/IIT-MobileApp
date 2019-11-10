@@ -5,13 +5,17 @@
     ViewData["Action"] = "Index";
     ViewData["Controller"] = "Notice";
 }
-<div class="card p-2">
-    <h3> Upcoming Notices</h3>
+<div class="card">
+    <div class="card-header">
+        <h3 class="m-0"> Upcoming Notices</h3>
+    </div>
     @await Html.PartialAsync("_Notices", Model.UpComingNotices)
 </div>
 
-<div class="card mt-2 p-2">
-    <h3> Recent Notices</h3>
+<div class="card mt-4">
+    <div class="card-header">
+        <h3 class="m-0"> Recently published</h3>
+    </div>
     @await Html.PartialAsync("_Notices", Model.RecentNotices)
 </div>
 <div class="float-right mt-5">
