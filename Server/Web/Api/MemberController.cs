@@ -1,10 +1,13 @@
 ﻿using CoreEngine.APIHandlers;
+using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using Web.WebServices;
 
 namespace Web.Api
 {
@@ -14,27 +17,30 @@ namespace Web.Api
     {
         private readonly SignInManager<DBUser> _signInmanager;
         private readonly UserManager<DBUser> _userManager;
+        private readonly TokenService _tokenService;
 
         public MemberController(
             SignInManager<DBUser> signInManager,
-            UserManager<DBUser> userManager)
+            UserManager<DBUser> userManager,
+            TokenService tokenService)
         {
             _signInmanager = signInManager;
             _userManager = userManager;
+            _tokenService = tokenService;
         }
 
         [Authorize]
-        public async Task<IdentityResult> ChangePassword(string currentPassword, string newPassword)
+        public async Task<SignInResponse> ChangePassword(string currentPassword, string newPassword)
         {
             if (HttpContext.User == null)
             {
-                return IdentityResult.Failed();
+                return new SignInResponse(false);
             }
 
             var dbUser = await _userManager.FindByNameAsync(HttpContext.User.Identity.Name);
             if (dbUser == null)
             {
-                return IdentityResult.Failed();
+                return new SignInResponse(false);
             }
             else
             {
@@ -43,11 +49,12 @@ namespace Web.Api
                 {
                     var hashedPass = _userManager.PasswordHasher.HashPassword(dbUser, newPassword);
                     dbUser.PasswordHash = hashedPass;
-                    return await _userManager.UpdateAsync(dbUser);
+                    var updateRes = await _userManager.UpdateAsync(dbUser);
+                    return new SignInResponse(updateRes.Succeeded);
                 }
                 else
                 {
-                    return IdentityResult.Failed();
+                    return new SignInResponse(false);
                 }
             }
         }
@@ -58,9 +65,26 @@ namespace Web.Api
         }
 
         [HttpPost]
-        public Task<Microsoft.AspNetCore.Identity.SignInResult> Login(string username, string password)
+        public async Task<SignInResponse> Login(string username, string password)
         {
-            return _signInmanager.PasswordSignInAsync(username, password, true, false);
+            var res = await _signInmanager.PasswordSignInAsync(username, password, true, false);
+            if (res.Succeeded)
+            {
+                var dbUser = await _userManager.FindByNameAsync(username);
+                var token = _tokenService.GenerateJwtToken(username, dbUser);
+                return new SignInResponse(true, token);
+            }
+            else return new SignInResponse(false);
+        }
+
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public void Logout()
+        {
+            var user = HttpContext.User;
+            if (user != null)
+            {
+                _signInmanager.SignOutAsync();
+            }
         }
 
         public Task<bool> Register(User user)
@@ -72,6 +96,13 @@ namespace Web.Api
         public string Test()
         {
            return "Routing is ok";
+        }
+
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public Task<bool> TouchLogin()
+        {
+            var user = HttpContext.User;
+            return Task.FromResult(true);
         }
     }
 }

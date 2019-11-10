@@ -1,4 +1,5 @@
 ﻿using CoreEngine.Model.Common;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ using Web.Infrastructure.Services;
 namespace Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    //[Authorize(Roles = AppConstants.Admin,AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Authorize(Roles = AppConstants.Admin)]
     public class DashboardController : BaseController
     {

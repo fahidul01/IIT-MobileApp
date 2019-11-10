@@ -31,18 +31,18 @@ namespace Mobile.Core.Engines.APIHandlers
         }
         protected async Task<bool> SendBoolRequest(HttpMethod httpMethod, object data, [CallerMemberName]string member = "")
         {
-            var jsonData = JsonConvert.SerializeObject(data);
-            using var byteContent = new ByteArrayContent(Encoding.UTF8.GetBytes(jsonData));
-            var res = await _httpWorker.SendRequest<string>(httpMethod, controller + "/" + member, byteContent);
+            var jsonData = await FormHelper.GetPair(data);
+            using var content = new FormUrlEncodedContent(jsonData);
+            var res = await _httpWorker.SendRequest<string>(httpMethod, controller + "/" + member, content);
             bool.TryParse(res, out bool response);
             return response;
         }
 
         protected async Task<T> SendRequest<T>(HttpMethod httpMethod, object data, [CallerMemberName]string member = "")
         {
-            var jsonData = JsonConvert.SerializeObject(data);
-            using var byteContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            return await _httpWorker.SendRequest<T>(httpMethod, controller + "/" + member, byteContent);
+            var jsonData = await FormHelper.GetPair(data);
+            using var content = new FormUrlEncodedContent(jsonData);
+            return await _httpWorker.SendRequest<T>(httpMethod, controller + "/" + member, content);
         }
     }
 }

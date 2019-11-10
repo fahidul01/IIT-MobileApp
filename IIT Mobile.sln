@@ -25,7 +25,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mobile.Core", "MobileApp\Mo
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{159574DB-3F4A-4D4C-B6CA-DC1146DC1625}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MobileTest", "Test\MobileTest\MobileTest.csproj", "{AEBFA8FB-53DF-4500-A8CB-94D1F76C71F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MobileTest", "Test\MobileTest\MobileTest.csproj", "{AEBFA8FB-53DF-4500-A8CB-94D1F76C71F6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

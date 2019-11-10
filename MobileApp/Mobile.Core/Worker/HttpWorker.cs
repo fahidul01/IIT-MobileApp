@@ -26,9 +26,8 @@ namespace Mobile.Core.Worker
 
         public void LoggedIn(string sessionKey)
         {
-            var data = Encoding.UTF8.GetBytes((sessionKey + ":" + sessionKey).ToCharArray());
             _httpClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Basic", Convert.ToBase64String(data));
+                new AuthenticationHeaderValue("Bearer", sessionKey);
         }
 
         public void Logout()

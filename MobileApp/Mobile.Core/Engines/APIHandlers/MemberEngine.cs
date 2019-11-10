@@ -1,11 +1,9 @@
 ﻿using CoreEngine.APIHandlers;
+using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
-using Microsoft.AspNetCore.Identity;
 using Mobile.Core.Worker;
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Mobile.Core.Engines.APIHandlers
@@ -16,7 +14,7 @@ namespace Mobile.Core.Engines.APIHandlers
         {
         }
 
-        public Task<IdentityResult> ChangePassword(string currentPassword, string newPassword)
+        public Task<SignInResponse> ChangePassword(string currentPassword, string newPassword)
         {
             throw new NotImplementedException();
         }
@@ -26,14 +24,30 @@ namespace Mobile.Core.Engines.APIHandlers
             throw new NotImplementedException();
         }
 
-        public Task<SignInResult> Login(string username, string password)
+        public async Task<SignInResponse> Login(string username, string password)
         {
-            return SendRequest<SignInResult>(HttpMethod.Post, new { username, password });
+            var res = await SendRequest<SignInResponse>(HttpMethod.Post, new { username, password });
+            if (res != null && res.Success)
+            {
+                _httpWorker.LoggedIn(res.Token);
+            }
+            return res;
+        }
+
+        public async void Logout()
+        {
+            await SendBoolRequest(HttpMethod.Get, null);
+            _httpWorker.Logout();
         }
 
         public Task<bool> Register(User user)
         {
             return SendBoolRequest(HttpMethod.Post, user);
+        }
+
+        public Task<bool> TouchLogin()
+        {
+            return SendBoolRequest(HttpMethod.Get, null);
         }
     }
 }

@@ -1,6 +1,7 @@
 using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
 using Jdenticon.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -8,8 +9,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using System;
-using System.IO;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
 using Web.Infrastructure.DBModel;
 using Web.Infrastructure.Services;
 using Web.Models.Web;
@@ -24,7 +27,7 @@ namespace Web
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        public static IConfiguration Configuration { get; private set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -44,6 +47,27 @@ namespace Web
                     .AddEntityFrameworkStores<StudentDBContext>()
                     .AddDefaultTokenProviders();
 
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear(); // => remove default claims
+            services
+                .AddAuthentication(options =>
+                {
+                    //options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                    //options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    //options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(x =>
+                {
+                    x.RequireHttpsMetadata = false;
+                    x.SaveToken = true;
+                    x.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JwtKey"])),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
+                });
+
             services.ConfigureApplicationCookie(options =>
             {
                 // Cookie settings
@@ -53,7 +77,9 @@ namespace Web
                 options.LoginPath = "/Login";
             });
             services.AddTransient<IEmailSender, EmailSender>();
+            services.AddTransient<TokenService>();
             services.Configure<AuthMessageSenderOptions>(Configuration);
+
 
             services.AddControllersWithViews();
         }
