@@ -9,15 +9,15 @@ namespace Mobile.Core.ViewModels
 {
     public class HomeViewModel : BaseViewModel
     {
-        private readonly IClassHandler _classHandler;
+        private readonly ILessonHandler _classHandler;
         private readonly ICourseHandler _courseHandler;
         private readonly INoticeHandler _noticeHandler;
         public List<Notice> UpcomingEvents { get; set; }
         public List<Notice> RecentNotices { get; set; }
-        public List<Class> UpcomingClasses { get; set; }
+        public List<Lesson> UpcomingClasses { get; set; }
         public List<Course> CurrentCourses { get; set; }
 
-        public HomeViewModel(IClassHandler classHandler, ICourseHandler courseHandler, INoticeHandler postHandler)
+        public HomeViewModel(ILessonHandler classHandler, ICourseHandler courseHandler, INoticeHandler postHandler)
         {
             _classHandler = classHandler;
             _courseHandler = courseHandler;
@@ -31,13 +31,13 @@ namespace Mobile.Core.ViewModels
         private async void LoadEvents()
         {
             IsBusy = true;
-            UpcomingClasses = await _classHandler.GetClasses();
+            UpcomingClasses = await _classHandler.GetLessons();
             UpcomingEvents = await _noticeHandler.GetUpcomingEvents(1, PostType.All);
             RecentNotices = await _noticeHandler.GetPosts(1, PostType.All);
             CurrentCourses = await _courseHandler.GetCourses();
         }
 
-        public ICommand SelectClassCommand => new RelayCommand<Class>(SelectClassAction);
+        public ICommand SelectLessonCommand => new RelayCommand<Lesson>(SelectLessonAction);
         public ICommand SelectNoticeCommand => new RelayCommand<Notice>(SelectNoticeAction);
         public ICommand SelectCourseCommand => new RelayCommand<Course>(SelectCourseAction);
 
@@ -51,7 +51,7 @@ namespace Mobile.Core.ViewModels
             throw new NotImplementedException();
         }
 
-        private void SelectClassAction(Class obj)
+        private void SelectLessonAction(Lesson obj)
         {
             throw new NotImplementedException();
         }

@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace Web.Api
 {
-    [Route("api/[controller]")]
-    [ApiController]
+    //[Route("api/[controller]")]
+    //[ApiController]
     public class MemberController : Controller, IMemberHandler
     {
         private readonly SignInManager<DBUser> _signInmanager;
@@ -57,6 +57,7 @@ namespace Web.Api
             throw new NotImplementedException();
         }
 
+        [HttpPost]
         public Task<Microsoft.AspNetCore.Identity.SignInResult> Login(string username, string password)
         {
             return _signInmanager.PasswordSignInAsync(username, password, true, false);
@@ -65,6 +66,12 @@ namespace Web.Api
         public Task<bool> Register(User user)
         {
             return Task.FromResult(false);
+        }
+
+        [HttpGet]
+        public string Test()
+        {
+           return "Routing is ok";
         }
     }
 }

@@ -28,7 +28,7 @@ namespace Mobile.Core.Engines.Dependency
         public static void Build(IServiceCollection services)
         {
             RegisterAllTypes<BaseViewModel>(services, typeof(BaseViewModel).Assembly);
-            services.AddSingleton<IClassHandler, ClassEngine>();
+            services.AddSingleton<ILessonHandler, LessonEngine>();
             services.AddSingleton(new HttpWorker(AppConstants.BaseUrl));
         }
 

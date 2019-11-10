@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace CoreEngine.APIHandlers
 {
-    public interface IClassHandler
+    public interface ILessonHandler
     {
-        Task<List<Lesson>> GetClasses();
-        Task<List<Lesson>> GetClasses(DateTime dateTime);
+        Task<List<Lesson>> GetLessons();
+        Task<List<Lesson>> GetLessons(DateTime dateTime);
     }
 }

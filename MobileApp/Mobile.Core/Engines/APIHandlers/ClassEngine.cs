@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace Mobile.Core.Engines.APIHandlers
 {
-    internal class ClassEngine : IClassHandler
+    internal class LessonEngine : ILessonHandler
     {
-        public Task<List<Class>> GetClasses()
+        Task<List<Lesson>> ILessonHandler.GetLessons()
         {
             throw new NotImplementedException();
         }
 
-        public Task<List<Class>> GetClasses(DateTime dateTime)
+        Task<List<Lesson>> ILessonHandler.GetLessons(DateTime dateTime)
         {
             throw new NotImplementedException();
         }

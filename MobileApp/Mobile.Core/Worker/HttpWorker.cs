@@ -37,7 +37,7 @@ namespace Mobile.Core.Worker
             AppService.HasCRRole = false;
         }
 
-        public async Task<string> SendRequest(HttpMethod method, string requestPath, Dictionary<string, string> parameters)
+        public async Task<string> SendRequest(HttpMethod method, string requestPath, HttpContent httpContent)
         {
             try
             {
@@ -45,26 +45,18 @@ namespace Mobile.Core.Worker
                 var log = string.Empty;
                 if (method == HttpMethod.Get)
                 {
-                    if (parameters != null && parameters.Count > 0)
-                    {
-                        requestPath += "?";
-                        using var httpContent = new FormUrlEncodedContent(parameters);
-                        var data = await httpContent.ReadAsStringAsync();
-                        requestPath += data;
-                    }
+                    requestPath += "?";
+                    var data = await httpContent.ReadAsStringAsync();
+                    requestPath += data;
                     msg = await _httpClient.GetAsync(requestPath);
                 }
                 else if (method == HttpMethod.Post)
                 {
-                    parameters ??= new Dictionary<string, string>();
-                    using var httpContent = new FormUrlEncodedContent(parameters);
                     msg = await _httpClient.PostAsync(requestPath, httpContent);
                     log = await msg.Content.ReadAsStringAsync();
                 }
                 else if (method == HttpMethod.Put)
                 {
-                    parameters ??= new Dictionary<string, string>();
-                    using var httpContent = new FormUrlEncodedContent(parameters);
                     msg = await _httpClient.PutAsync(requestPath, httpContent);
                     log = await msg.Content.ReadAsStringAsync();
                 }
@@ -89,9 +81,9 @@ namespace Mobile.Core.Worker
                 return string.Empty;
             }
         }
-        public async Task<T> SendRequest<T>(HttpMethod method, string requestPath, Dictionary<string, string> parameters)
+        public async Task<T> SendRequest<T>(HttpMethod method, string requestPath, HttpContent httpContent)
         {
-            var res = await SendRequest(method, requestPath, parameters);
+            var res = await SendRequest(method, requestPath, httpContent);
             if (string.IsNullOrEmpty(res))
             {
                 return default;
