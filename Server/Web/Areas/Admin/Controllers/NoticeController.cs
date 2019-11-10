@@ -7,13 +7,14 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Web.Areas.Admin.ViewModels;
+using Web.Controllers;
 using Web.Infrastructure.Services;
 
 namespace Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Authorize(Roles = AppConstants.Admin)]
-    public class NoticeController : Controller
+    public class NoticeController : BaseController
     {
         private readonly FileService _fileService;
         private readonly UserManager<DBUser> _usermanager;
@@ -67,7 +68,7 @@ namespace Web.Areas.Admin.Controllers
                 var notice = new Notice()
                 {
                     EventDate = noticeViewModel.EventDate,
-                    FutureNotification = noticeViewModel.EventDate.Date > DateTime.Now.Date,
+                    FutureNotification = noticeViewModel.EventDate.Date > CurrentTime.Date,
                     Message = noticeViewModel.Message,
                     Title = noticeViewModel.Title,
                     PostType = PostType.Notice,
@@ -104,7 +105,7 @@ namespace Web.Areas.Admin.Controllers
                 {
                     Id = noticeViewModel.Id,
                     EventDate = noticeViewModel.EventDate,
-                    FutureNotification = noticeViewModel.EventDate.Date > DateTime.Now.Date,
+                    FutureNotification = noticeViewModel.EventDate.Date > CurrentTime.Date,
                     Message = noticeViewModel.Message,
                     Title = noticeViewModel.Title,
                     PostType = PostType.Notice,

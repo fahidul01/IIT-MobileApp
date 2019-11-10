@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Diagnostics;
 using Web.Models;
 
@@ -6,6 +7,7 @@ namespace Web.Controllers
 {
     public abstract class BaseController : Controller
     {
+        public DateTime CurrentTime => DateTime.UtcNow.AddHours(6);
         [ViewData]
         public string SuccessMessage { get; set; } = string.Empty;
         [ViewData]

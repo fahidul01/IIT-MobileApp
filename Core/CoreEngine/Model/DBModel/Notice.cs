@@ -1,18 +1,19 @@
-﻿using System;
+﻿using CoreEngine.Model.Common;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace CoreEngine.Model.DBModel
 {
-    public class Notice
+    public class Notice: BaseModel
     {
         public int Id { get; set; }
         public string Title { get; set; }
         public string Message { get; set; }
         public PostType PostType { get; set; }
         public bool FutureNotification { get; set; }
-        public DateTime CreatedOn { get; set; } = DateTime.Now;
-        public DateTime EventDate { get; set; } = DateTime.Now;
+        public DateTime CreatedOn { get; set; }
+        public DateTime EventDate { get; set; }
         public ICollection<DBFile> DBFiles { get; set; }
         public virtual Batch Batch { get; set; }
         [Required]
@@ -20,6 +21,8 @@ namespace CoreEngine.Model.DBModel
         public Notice()
         {
             DBFiles = new HashSet<DBFile>();
+            CreatedOn = CurrentTime;
+            EventDate = CurrentTime;
         }
     }
 

@@ -44,7 +44,7 @@ namespace Web.Infrastructure.Services
 
         private async Task CreateNotice()
         {
-            var intDate = DateTime.Now.AddYears(-3);
+            var intDate = CurrentTime.AddYears(-3);
 
             var crUsers = new List<DBUser>();
             var batches = await _batchService.GetBatchesAsync(1);
@@ -65,7 +65,7 @@ namespace Web.Infrastructure.Services
                 msg = await fileStream.ReadToEndAsync();
             }
 
-            while (intDate <= DateTime.Now)
+            while (intDate <= CurrentTime)
             {
                 var user = crUsers[rnd.Next(0, crUsers.Count - 1)];
                 var dbUser = await _userService.GetStudent(user.Id);

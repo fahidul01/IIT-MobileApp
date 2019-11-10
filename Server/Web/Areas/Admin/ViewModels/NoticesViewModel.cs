@@ -15,7 +15,7 @@ namespace Web.Areas.Admin.ViewModels
         public int? BatchId { get; set; }
         public string Title { get; set; }
         public string Message { get; set; }
-        public DateTime EventDate { get; set; } = DateTime.Now;
+        public DateTime EventDate { get; set; }
         [DataType(DataType.Upload)]
         [MaxFileSize(5 * 1024 * 1024)]
         [AllowedExtensions(new string[] { ".jpg", ".png",".pdf",".xls",".xlxs",".docx" })]
@@ -33,6 +33,7 @@ namespace Web.Areas.Admin.ViewModels
         public CreateNoticeViewModel(List<Batch> batches)
         {
             BatchList = new SelectList(batches, nameof(Batch.Id), nameof(Batch.Name));
+            EventDate = DateTime.UtcNow.AddHours(6);
         }
         public CreateNoticeViewModel()
         {

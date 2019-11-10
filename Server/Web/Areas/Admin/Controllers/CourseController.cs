@@ -21,35 +21,10 @@ namespace Web.Areas.Admin.Controllers
             return View();
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Details(int id)
         {
-            return View();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Create(CreateCoursePopupModel popupModel)
-        {
-            if (ModelState.IsValid)
-            {
-                var course = new Course()
-                {
-                    CourseCredit = popupModel.CourseCredit,
-                    CourseId = popupModel.CourseId,
-                    CourseName = popupModel.CourseName
-                };
-                var res = await _courseService.AddCourse(course, popupModel.SemesterId, popupModel.BatchId);
-                if (res == null)
-                {
-                    Failed("Failed to Update Course");
-                }
-
-                return ViewComponent("Courses", popupModel.SemesterId);
-            }
-            else
-            {
-                Failed("Failed to update Course");
-                return ViewComponent("Courses", popupModel.SemesterId);
-            }
+            var course = await _courseService.GetCourseAsync(id);
+            return View(course);
         }
     }
 }

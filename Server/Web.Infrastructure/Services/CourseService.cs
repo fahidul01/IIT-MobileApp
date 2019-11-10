@@ -45,22 +45,25 @@ namespace Web.Infrastructure.Services
             }
         }
 
+        public async Task<Course> GetCourseAsync(int id)
+        {
+            return await _db.Courses
+                            .Include(x => x.Semester)
+                            .Include(x => x.Lessons)
+                            .Include(x => x.CourseMaterials)
+                            .FirstOrDefaultAsync(x => x.Id == id);
+        }
+
         public async Task<List<Lesson>> UpcomingLessons()
         {
-            var today = DateTime.Now.DayOfWeek;
+            var today = CurrentTime.DayOfWeek;
             var dayLessons = await _db.Lessons
-                                      .Where(x => x.Course.Semester.EndsOn >= DateTime.Now &&
+                                      .Where(x => x.Course.Semester.EndsOn >= CurrentTime &&
                                                   x.DayOfWeek == today)
                                       .Include(x => x.Course)
                                       .ThenInclude(x => x.Semester)
                                       .ThenInclude(x => x.Batch)
                                       .ToListAsync();
-
-            //var dayLessons = await _db.Semesters//.Where(x => x.EndsOn <= DateTime.Now)
-            //                         .SelectMany(x => x.Courses)
-            //                         .SelectMany(x => x.Lessons)
-            //                         .Where(m => m.DayOfWeek == today)
-            //                         .ToListAsync();
             return dayLessons;
         }
 

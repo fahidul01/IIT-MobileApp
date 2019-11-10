@@ -67,7 +67,7 @@ namespace Web.Infrastructure.Services
 
         public async Task<List<User>> GetCurrentCr()
         {
-            var users = await _db.Users.Where(x => x.Batch.EndsOn >= DateTime.Now &&
+            var users = await _db.Users.Where(x => x.Batch.EndsOn >= CurrentTime &&
                                                    x.ClassRepresentative)
                                  .OrderByDescending(x => x.Batch.Id)
                                  .Include(x => x.Batch)

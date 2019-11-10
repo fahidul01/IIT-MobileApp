@@ -85,8 +85,8 @@ namespace Web.Infrastructure.Services
 
         public async Task<List<Notice>> GetUpcomingEvents()
         {
-            var nextWeek = DateTime.Now.AddDays(7);
-            var notices = await _db.Notices.Where(x => x.EventDate > DateTime.Now &&
+            var nextWeek = CurrentTime.AddDays(7);
+            var notices = await _db.Notices.Where(x => x.EventDate > CurrentTime &&
                                                      x.EventDate <= nextWeek)
                                            .Include(m => m.Batch)
                                            .ToListAsync();
