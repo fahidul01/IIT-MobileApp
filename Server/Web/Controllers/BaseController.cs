@@ -13,11 +13,6 @@ namespace Web.Controllers
         [ViewData]
         public string FailedMessage { get; set; } = string.Empty;
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new MessageViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
 
         protected internal string Translate(string data)
         {

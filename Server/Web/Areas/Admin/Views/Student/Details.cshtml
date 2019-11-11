@@ -55,6 +55,19 @@
             <input type="submit" value="Update"
                    class="btn btn-outline-primary" />
         </form>
+        <span class="float-right">
+            <a href=""
+               class="btn btn-outline-danger"
+               data-ajax="true"
+               data-ajax-loading="#spnnier"
+               data-ajax-url="/Admin/Student/RecoverPassword/@Model.Id"
+               data-ajax-update="#panel">Recover Password</a>
+
+            <span id="spinner" style="display:none;">
+                <i class="fas fa-spinner fa-spin"></i>
+            </span>
+        </span>
+        <div class="float-right" id="panel"></div>
     </div>
 </div>
 
@@ -76,23 +89,26 @@
             <tbody>
                 @foreach (var course in Model.Courses)
                 {
-                <tr>
-                    <td>
-                        @course.Course.CourseName
-                    </td>
-                    <td>
-                        @course.Course.CourseId
-                    </td>
-                    <td>
-                        @course.Course.CourseCredit
-                    </td>
-                </tr>
+                    <tr>
+                        <td>
+                            @course.Course.CourseName
+                        </td>
+                        <td>
+                            @course.Course.CourseId
+                        </td>
+                        <td>
+                            @course.Course.CourseCredit
+                        </td>
+                    </tr>
                 }
             </tbody>
         </table>
     </div>
 </div>
-
+@section Scripts
+{
+    <script src="~/lib/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.min.js" asp-append-version="true"></script>
+}
 
 
 

@@ -1,12 +1,13 @@
 ﻿using CoreEngine.Model.DBModel;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Web.Controllers;
 using Web.Infrastructure.Services;
 
 namespace Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class StudentController : Controller
+    public class StudentController : BaseController
     {
         private readonly UserService _userService;
 
@@ -57,5 +58,13 @@ namespace Web.Areas.Admin.Controllers
             if (user == null) return NotFound();
             return (View(nameof(Details), user));
         }
+
+        [HttpGet]
+        public async Task<IActionResult> RecoverPassword(string id)
+        {
+            SuccessMessage = await _userService.RecoverPassword(id);
+            return PartialView("_Message");
+        }
+
     }
 }

@@ -186,18 +186,18 @@ namespace Web.Infrastructure.Services
             return await AddStudents(students, batchId);
         }
 
-        public async Task<bool> RecoverPassword(string id)  // Supports username too
+        public async Task<string> RecoverPassword(string id)  // Supports username too
         {
             var user = await _usermanager.FindByIdAsync(id);
             if (user == null)
             {
                 user = await _usermanager.FindByNameAsync(id);
             }
-            if (user == null) return false;
+            if (user == null) return "Invalid User";
             else return await ResetPassword(user);
         }
 
-        private async Task<bool> ResetPassword(DBUser dBUser)
+        private async Task<string> ResetPassword(DBUser dBUser)
         {
             try
             {
@@ -206,12 +206,12 @@ namespace Web.Infrastructure.Services
                 var msg = new EmailMessageCreator().CreatePasswordRecovery(password);
                 await _emailSender.SendEmailAsync(dBUser.Email, "Password Recover", msg);
                 await _usermanager.ResetPasswordAsync(dBUser, token, password);
-                return true;
+                return "Password reset mail Has been sent";
             }
             catch (Exception ex)
             {
                 LogEngine.Error(ex);
-                return false;
+                return ex.Message;
             }
         }
     }
