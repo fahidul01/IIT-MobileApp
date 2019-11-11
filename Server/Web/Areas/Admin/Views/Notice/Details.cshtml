@@ -5,8 +5,8 @@
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<div class="card p-lg-3">
-    <div>
+<div class="card">
+    <div class="card-header">
         <span class="text-lg font-weight-bold">
             @Model.Title
         </span>
@@ -15,33 +15,36 @@
         </span>
     </div>
    
-    <h3>@Model.Owner.Name</h3>
-    @if (Model.Batch == null)
-    {
-        <span>All Batch</span>
-    }
-    else
-    {
-        <span>@Model.Batch.Name</span>
-    }
-    <br />
-    <span class="text-sm">
-        @Model.CreatedOn.ToString("dd MMMM, yyyy")
-    </span>
-
-    <p class="mt-5 mb-5">
-        @Model.Message
-    </p>
-    <br />
-    @if (Model.DBFiles != null)
-    {
-        foreach (var file in Model.DBFiles)
+    <div class=" card-body">
+        <h3>@Model.Owner.Name</h3>
+        @if (Model.Batch == null)
         {
-            <a asp-area="" asp-controller="Files" asp-action="Index"
-               asp-route-id="@file.Id">@file.FileName</a>
-            <br />
+            <span>All Batch</span>
         }
-    }
+        else
+        {
+            <span>@Model.Batch.Name</span>
+        }
+        <br />
+        <span class="text-sm">
+            @Model.CreatedOn.ToString("dd MMMM, yyyy")
+        </span>
+
+        <p class="mt-5 mb-5">
+            @Model.Message
+        </p>
+        <br />
+        @if (Model.DBFiles != null)
+        {
+            foreach (var file in Model.DBFiles)
+            {
+                <a asp-area="" asp-controller="Files" asp-action="Index"
+                   asp-route-id="@file.Id">@file.FileName</a>
+                <br />
+            }
+        }
+    </div>
+  
 
 </div>
 <div class="mt-5 float-right">

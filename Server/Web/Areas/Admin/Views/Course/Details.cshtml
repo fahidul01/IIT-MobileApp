@@ -10,6 +10,81 @@
         <h3>@Model.CourseName</h3>
     </div>
     <div class="card-body">
-
+        <form asp-action="Update">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="row">
+                <div class="form-group col-6">
+                    <label asp-for="CourseName" class="control-label"></label>
+                    <input asp-for="CourseName" class="form-control" />
+                    <span asp-validation-for="CourseName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-6">
+                    <label asp-for="CourseCredit" class="control-label"></label>
+                    <input asp-for="CourseCredit" class="form-control" />
+                    <span asp-validation-for="CourseCredit" class="text-danger"></span>
+                </div>
+            </div>
+            <input type="submit" value="Update"
+                   class="btn btn-outline-primary" />
+        </form>
     </div>
 </div>
+
+<div class="card mt-3">
+    <div class="card-body">
+        <h3>Lessons</h3>
+    </div>
+    <div class="card-body">
+       <table class="table table-striped">
+           <thead>
+               <tr>
+                   <th scope="col">Name</th>
+                   <th scope="col">Teacher</th>
+                   <th scope="col">WeekDays</th>
+                   <th scope="col"></th>
+               </tr>
+           </thead>
+           <tbody>
+               @foreach (var lesson in Model.Lessons)
+               {
+               <tr>
+                   <td>
+                       @lesson.TeacherName
+                   </td>
+                   <td>
+                       @lesson.TimeOfDay
+                   </td>
+                   <td>
+                       @lesson.DayOfWeek
+                   </td>
+                   <td>
+                       <span>
+                           <a asp-action="EditLesson"
+                              asp-route-id="@lesson.Id">
+                               <i class="fa fa-edit"></i>
+                           </a>
+                           <a asp-action="DeleteLesson"
+                              asp-route-id="@lesson.Id">
+                               <i class="fa fa-recycle"></i>
+                           </a>
+                       </span>
+                   </td>
+               </tr>
+               }
+           </tbody>
+       </table>
+    </div>
+</div>
+
+@if (Model.CourseMaterials != null)
+{
+    foreach (var file in Model.CourseMaterials.SelectMany(x => x.Files))
+    {
+        <a asp-area="" asp-controller="Files" asp-action="Index"
+           asp-route-id="@file.Id">@file.FileName</a>
+        <br />
+    }
+}
