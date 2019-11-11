@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Mobile.Core.Engines.Services;
 using MobileApp.Droid.Services;
+using Xamarin.Forms;
 
 namespace MobileApp.Droid
 {
@@ -20,9 +21,12 @@ namespace MobileApp.Droid
 
             base.OnCreate(savedInstanceState);
 
-            global::Xamarin.Forms.Forms.SetFlags("CollectionView_Experimental");
+            Forms.Init(this, savedInstanceState);
+
+            //global::Xamarin.Forms.Forms.SetFlags("CollectionView_Experimental");
+            FormsMaterial.Init(this, savedInstanceState);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
-            global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
+           
             LoadApplication(App.Init(ConfigureServices));
         }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)

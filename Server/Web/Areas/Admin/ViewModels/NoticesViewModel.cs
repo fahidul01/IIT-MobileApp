@@ -12,6 +12,7 @@ namespace Web.Areas.Admin.ViewModels
     {
         public int Id { get; set; }
         public SelectList BatchList { get; private set; }
+        [Display(Description ="Batch")]
         public int? BatchId { get; set; }
         public string Title { get; set; }
         public string Message { get; set; }
@@ -19,6 +20,7 @@ namespace Web.Areas.Admin.ViewModels
         [DataType(DataType.Upload)]
         [MaxFileSize(5 * 1024 * 1024)]
         [AllowedExtensions(new string[] { ".jpg", ".png",".pdf",".xls",".xlxs",".docx" })]
+        [Display(Description = "Upload Notice files")]
         public IFormFileCollection FormFiles { get; set; }
         public CreateNoticeViewModel(Notice notice, List<Batch> batches)
         {

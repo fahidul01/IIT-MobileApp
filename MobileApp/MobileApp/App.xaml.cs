@@ -30,9 +30,10 @@ namespace MobileApp
                                 ConfigureServices(c, x);
                             })
                             .ConfigureLogging(l => l.AddConsole(o => o.DisableColors = true))
+                            .UseContentRoot(Environment.CurrentDirectory)
                             .Build();
 
-
+            Locator.Init(host.Services);
             return Locator.GetInstance<App>();
         }
 

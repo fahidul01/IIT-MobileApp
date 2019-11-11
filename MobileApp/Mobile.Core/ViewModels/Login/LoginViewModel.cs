@@ -6,7 +6,7 @@ namespace Mobile.Core.ViewModels
     {
         public override void OnAppear(params object[] args)
         {
-            throw new NotImplementedException();
+            
         }
     }
 }
