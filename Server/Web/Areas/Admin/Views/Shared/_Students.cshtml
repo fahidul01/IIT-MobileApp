@@ -3,16 +3,10 @@
     @if (Model == null || Model.Count() == 0)
     {
         <h3>No Students Found</h3>
-        @if (ViewData["FailedMessage"] is string failed && !string.IsNullOrWhiteSpace(failed))
-        {
-            <div>
-                <h2 class="mt-5 text-center text-danger">@failed</h2>
-            </div>
-        }
+        <partial name="_Message" />
     }
     else
     {
-
         <table class="table align-items-center">
             <thead class="thead-light">
                 <tr>

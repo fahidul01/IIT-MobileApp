@@ -17,20 +17,7 @@
         <!-- Page content -->
         <div class="container-fluid mt--8 vh-100">
             <!-- Page content -->
-                @RenderBody()
-
-            @if (ViewData["SuccessMessage"] is string success && !string.IsNullOrWhiteSpace(success))
-            {
-                <div>
-                    @await Html.PartialAsync("_Success")
-                </div>
-            }
-            @if (ViewData["FailedMessage"] is string failed && !string.IsNullOrWhiteSpace(failed))
-            {
-                <div>
-                    @await Html.PartialAsync("_Failed")
-                </div>
-            }
+            @RenderBody()
         </div>
     </div>
 

@@ -3,10 +3,12 @@ using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Web.Infrastructure.AppServices;
 using Web.Infrastructure.DBModel;
 
 namespace Web.Infrastructure.Services
@@ -15,10 +17,13 @@ namespace Web.Infrastructure.Services
     {
         private readonly UserManager<DBUser> _usermanager;
         private readonly StudentDBContext _db;
-        public UserService(UserManager<DBUser> userManager, StudentDBContext studentDB)
+        private readonly IEmailSender _emailSender;
+
+        public UserService(UserManager<DBUser> userManager, StudentDBContext studentDB, IEmailSender emailSender)
         {
             _usermanager = userManager;
             _db = studentDB;
+            _emailSender = emailSender;
         }
 
         internal async Task<List<User>> AddStudents(IList<DBUser> students, int batchID)
@@ -49,7 +54,7 @@ namespace Web.Infrastructure.Services
         public async Task<User> Update(User user)
         {
             var dbUser = await _db.Users.FirstOrDefaultAsync(x => x.Id == user.Id);
-            if(dbUser != null)
+            if (dbUser != null)
             {
                 dbUser.UpdateUser(user);
                 _db.Entry(dbUser).State = EntityState.Modified;
@@ -181,20 +186,33 @@ namespace Web.Infrastructure.Services
             return await AddStudents(students, batchId);
         }
 
-        public async Task<bool> RecoverPassword(string id)
+        public async Task<bool> RecoverPassword(string id)  // Supports username too
         {
-
-        }
-
-        public async Task<bool> RecoverPassword(string username) //Supports mail too
-        {
-
+            var user = await _usermanager.FindByIdAsync(id);
+            if (user == null)
+            {
+                user = await _usermanager.FindByNameAsync(id);
+            }
+            if (user == null) return false;
+            else return await ResetPassword(user);
         }
 
         private async Task<bool> ResetPassword(DBUser dBUser)
         {
-            var password = CryptoService.GenerateRandomPassword();
-            _usermanager.passw
+            try
+            {
+                var password = CryptoService.GenerateRandomPassword();
+                var token = await _usermanager.GeneratePasswordResetTokenAsync(dBUser);
+                var msg = new EmailMessageCreator().CreatePasswordRecovery(password);
+                await _emailSender.SendEmailAsync(dBUser.Email, "Password Recover", msg);
+                await _usermanager.ResetPasswordAsync(dBUser, token, password);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                LogEngine.Error(ex);
+                return false;
+            }
         }
     }
 }
