@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CoreEngine.Model.DBModel;
+using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Web.Infrastructure.Services;
 
@@ -29,10 +30,32 @@ namespace Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        public async Task<IActionResult> Update(User user)
+        {
+            var student = await _userService.Update(user);
+            if (student == null) return NotFound();
+            return View(nameof(Details), student);
+        }
+
+        [HttpPost]
         public async Task<ActionResult> SearchStudents(string value = "")
         {
             var students = await _userService.SearchStudent(value);
             return PartialView("_Students", students);
+        }
+
+        public async Task<IActionResult> MakeCR(string id)
+        {
+            var user = await _userService.MakeCR(id);
+            if (user == null) return NotFound();
+            return (View(nameof(Details), user));
+        }
+
+        public async Task<IActionResult> RemoveCR(string id)
+        {
+            var user = await _userService.RemoveCR(id);
+            if (user == null) return NotFound();
+            return (View(nameof(Details), user));
         }
     }
 }

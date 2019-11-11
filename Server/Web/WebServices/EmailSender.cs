@@ -1,50 +1,44 @@
 ﻿using Microsoft.Extensions.Options;
-using SendGrid;
-using SendGrid.Helpers.Mail;
+using System.Net;
+using System.Net.Mail;
 using System.Threading.Tasks;
-using Web.Models.Web;
+using Web.Infrastructure.AppServices;
 
 namespace Web.WebServices
 {
     public class EmailSender : IEmailSender
     {
+        public AuthMessageSenderOptions Options { get; }
+
         public EmailSender(IOptions<AuthMessageSenderOptions> optionsAccessor)
         {
             Options = optionsAccessor.Value;
         }
 
-        public AuthMessageSenderOptions Options { get; } //set only via Secret Manager
 
         public Task SendEmailAsync(string email, string subject, string message)
         {
-            return Execute(Options.SendGridKey, subject, message, email);
+            return Execute(email, subject, message);
         }
 
-        public Task Execute(string apiKey, string subject, string message, string email)
+        public Task Execute(string email, string subject, string message)
         {
-            var client = new SendGridClient(apiKey);
-            var msg = new SendGridMessage()
+            var mailMessage = new MailMessage
             {
-                From = new EmailAddress("Joe@contoso.com", Options.SendGridUser),
+                Body = message,
                 Subject = subject,
-                PlainTextContent = message,
-                HtmlContent = message
+                From = new MailAddress(Options.From)
             };
-            msg.AddTo(new EmailAddress(email));
+            mailMessage.To.Add(email);
 
-            // Disable click tracking.
-            // See https://sendgrid.com/docs/User_Guide/Settings/tracking.html
-            msg.SetClickTracking(false, false);
 
-            return client.SendEmailAsync(msg);
+            using var client = new SmtpClient(Options.SMTPServer)
+            {
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(Options.Username, Options.Password)
+            };
+            return client.SendMailAsync(mailMessage);
+
         }
-    }
-
-    public interface IEmailSender
-    {
-        AuthMessageSenderOptions Options { get; }
-
-        Task Execute(string apiKey, string subject, string message, string email);
-        Task SendEmailAsync(string email, string subject, string message);
     }
 }

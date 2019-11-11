@@ -12,11 +12,18 @@ namespace CoreEngine.Model.DBModel
         public int Roll { get; set; }
         public string UserRole { get; set; }
         public DateTime EnrolledIn { get; set; }
+
+        public void UpdateUser(User user)
+        {
+            Name = user.Name;
+            Email = user.Email;
+            PhoneNumber = user.PhoneNumber;
+        }
     }
 
     public class User
     {
-        public string Id { get; private set; }
+        public string Id { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
         public string Email { get; set; }

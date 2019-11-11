@@ -15,7 +15,7 @@
         @if (Model.IsCR)
         {
             <a class="btn btn-outline-danger float-right"
-               asp-action="MakeCR"
+               asp-action="RemoveCR"
                asp-route-id="@Model.Id">
                 Remove CR
             </a>
@@ -23,7 +23,7 @@
         else
         {
             <a class="btn btn-outline-primary float-right"
-               asp-action="RemoveCR"
+               asp-action="MakeCR"
                asp-route-id="@Model.Id">
                 Make CR
             </a>
@@ -50,13 +50,6 @@
                     <label asp-for="Email" class="control-label"></label>
                     <input asp-for="Email" class="form-control" />
                     <span asp-validation-for="Email" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-6">
-                    <label asp-for="Name" class="control-label"></label>
-                    <input asp-for="Name" class="form-control" />
-                    <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
             </div>
             <input type="submit" value="Update"

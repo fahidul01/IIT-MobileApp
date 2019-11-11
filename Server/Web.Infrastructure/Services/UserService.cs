@@ -3,7 +3,6 @@ using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -47,6 +46,22 @@ namespace Web.Infrastructure.Services
             return users;
         }
 
+        public async Task<User> Update(User user)
+        {
+            var dbUser = await _db.Users.FirstOrDefaultAsync(x => x.Id == user.Id);
+            if(dbUser != null)
+            {
+                dbUser.UpdateUser(user);
+                _db.Entry(dbUser).State = EntityState.Modified;
+                await _db.SaveChangesAsync();
+                return await GetStudent(dbUser.Id);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         public async Task<User> GetStudent(string id)
         {
             var user = await _db.Users.Include(x => x.Batch)
@@ -63,6 +78,32 @@ namespace Web.Infrastructure.Services
                 return terminalUser;
             }
             else return null;
+        }
+
+        public async Task<User> MakeCR(string id)
+        {
+            var user = await _db.Users.FirstOrDefaultAsync(x => x.Id == id);
+            if (user == null) return null;
+            else
+            {
+                user.ClassRepresentative = true;
+                _db.Entry(user).State = EntityState.Modified;
+                await _db.SaveChangesAsync();
+                return await GetStudent(id);
+            }
+        }
+
+        public async Task<User> RemoveCR(string id)
+        {
+            var user = await _db.Users.FirstOrDefaultAsync(x => x.Id == id);
+            if (user == null) return null;
+            else
+            {
+                user.ClassRepresentative = false;
+                _db.Entry(user).State = EntityState.Modified;
+                await _db.SaveChangesAsync();
+                return await GetStudent(id);
+            }
         }
 
         public async Task<List<User>> GetCurrentCr()
@@ -138,6 +179,22 @@ namespace Web.Infrastructure.Services
                 students.Add(student);
             }
             return await AddStudents(students, batchId);
+        }
+
+        public async Task<bool> RecoverPassword(string id)
+        {
+
+        }
+
+        public async Task<bool> RecoverPassword(string username) //Supports mail too
+        {
+
+        }
+
+        private async Task<bool> ResetPassword(DBUser dBUser)
+        {
+            var password = CryptoService.GenerateRandomPassword();
+            _usermanager.passw
         }
     }
 }
