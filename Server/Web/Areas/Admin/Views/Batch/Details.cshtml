@@ -48,7 +48,7 @@
                      role="tabpanel"
                      aria-labelledby="tabs-icons-text-1-tab">
                     @await Html.PartialAsync("_CreateCourse", new CreateCoursePopupModel(semester, Model.Id))
-                    <div class="partial_@semester.Id">
+                    <div id="partial_@semester.Id">
                         @await Html.PartialAsync("_Courses", semester.Courses)
                     </div>
                 </div>

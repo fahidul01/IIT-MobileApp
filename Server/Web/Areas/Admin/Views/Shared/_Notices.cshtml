@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<Notice>
 
 
-@foreach (var notice in Model.OrderByDescending(x => x.EventDate))
+@foreach (var notice in Model)
 {
     <div class="card-body pt-1 pb-1">
-        <a class="btn text-left"
+        <a class="btn col-12 text-left"
            asp-action="Details"
            asp-controller="Notice"
            asp-route-id="@notice.Id">

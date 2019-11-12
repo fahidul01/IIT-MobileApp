@@ -11,10 +11,10 @@ namespace Web.Infrastructure.Services
 {
     public class FeedDataService : BaseService
     {
-        private BatchService _batchService;
-        private NoticeService _noticeService;
-        private CourseService _courseService;
-        private UserService _userService;
+        private readonly BatchService _batchService;
+        private readonly NoticeService _noticeService;
+        private readonly CourseService _courseService;
+        private readonly UserService _userService;
 
         public FeedDataService(BatchService batchService,
             NoticeService noticeService,
@@ -126,8 +126,8 @@ namespace Web.Infrastructure.Services
         private async Task LoadDemoBatches()
         {
             var dbUsers = new List<DBUser>();
-            int batchNo = 20;
-
+            int batchNo = 19;
+            int lastBacth = 16;
             var assembly = typeof(FeedDataService).Assembly;
             var name = "Web.Infrastructure.Resources.template.csv";
 
@@ -152,25 +152,21 @@ namespace Web.Infrastructure.Services
                         await CreateBatch(batchNo, dbUsers);
                         dbUsers.Clear();
                         batchNo--;
+                        if (batchNo <= lastBacth) break;
                     }
-                }
-                if (dbUsers.Count > 0)
-                {
-                    await CreateBatch(batchNo, dbUsers);
-                    dbUsers.Clear();
-                    batchNo--;
                 }
             };
         }
 
         private async Task CreateBatch(int batchNo, List<DBUser> dbUsers)
         {
+            var batchType = (batchNo % 2 == 0) ? "MIT " : "PGDIT ";
             var batch = new Batch()
             {
                 StartsOn = new DateTime(2000 + batchNo, 1, 1),
                 NumberOfSemester = 4,
                 SemesterDuration = 4,
-                Name = "MIT" + batchNo.ToString(),
+                Name = batchType + batchNo.ToString(),
             };
             var dBbatch = await _batchService.AddBatch(batch);
             dbUsers.FirstOrDefault().ClassRepresentative = true;
