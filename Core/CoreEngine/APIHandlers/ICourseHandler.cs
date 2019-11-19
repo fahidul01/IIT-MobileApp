@@ -12,7 +12,7 @@ namespace CoreEngine.APIHandlers
         Task<List<Course>> GetCourses(int batchId);
         Task<ActionResponse> UpdateCourse(Course course);
         Task<ActionResponse> DeleteCourse(Course course);
-        Task<Lesson> GetLessons(string courseId);
+        Task<List<Lesson>> GetLessons(string courseId);
         Task<ActionResponse> Update(Lesson lesson);
     }
 }
