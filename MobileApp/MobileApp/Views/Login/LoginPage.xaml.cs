@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Xamarin.Forms;
+﻿using Mobile.Core.ViewModels;
+using MobileApp.Controls;
 using Xamarin.Forms.Xaml;
 
 namespace MobileApp.Views.Login
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class LoginPage : ContentPage
+    public partial class LoginPage : CustomPage<LoginViewModel>
     {
         public LoginPage()
         {

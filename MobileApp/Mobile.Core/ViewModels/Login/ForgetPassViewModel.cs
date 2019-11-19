@@ -1,6 +1,10 @@
-﻿namespace Mobile.Core.ViewModels.Login
+﻿namespace Mobile.Core.ViewModels
 {
-    internal class ForgetPassViewModel
+    public class ForgetPassViewModel : BaseViewModel
     {
+        public override void OnAppear(params object[] args)
+        {
+           
+        }
     }
 }

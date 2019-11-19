@@ -1,7 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using Mobile.Core.Engines.Dependency;
 using Mobile.Core.Engines.Services;
+using Mobile.Core.Models.Core;
 using System.Windows.Input;
 
 namespace Mobile.Core.ViewModels
@@ -10,13 +10,18 @@ namespace Mobile.Core.ViewModels
     {
         public bool IsBusy { get; set; }
         protected readonly INavigationService _nav;
+        protected readonly IDialogService _dialog;
         public BaseViewModel()
         {
-            _nav = Locator.GetInstance<INavigationService>();
+            _nav = AppService.Nav;
+            _dialog = AppService.Dialog;
         }
         public ICommand RefreshCommand => new RelayCommand(RefreshAction);
 
-        public abstract void OnAppear(params object[] args);
+        public virtual void OnAppear(params object[] args)
+        {
+
+        }
 
         protected virtual void RefreshAction()
         {

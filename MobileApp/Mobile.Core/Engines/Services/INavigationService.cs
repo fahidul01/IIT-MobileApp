@@ -1,4 +1,5 @@
 ﻿using Mobile.Core.ViewModels;
+using System;
 using System.Threading.Tasks;
 
 namespace Mobile.Core.Engines.Services
@@ -10,7 +11,7 @@ namespace Mobile.Core.Engines.Services
         Task NavigateTo<T>(params object[] parameter) where T : BaseViewModel;
         Task NavigateToModal<T>(params object[] parameter) where T : BaseViewModel;
         void GoModalBack();
-        void Configure<baseViewModel, page>() where baseViewModel : BaseViewModel;
+        void Configure(Type viewModel, Type page);
         void Init<T>() where T : BaseViewModel;
     }
 }

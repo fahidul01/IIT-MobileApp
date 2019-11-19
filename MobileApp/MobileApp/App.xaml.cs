@@ -3,21 +3,26 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Mobile.Core.Engines.Dependency;
 using Mobile.Core.Engines.Services;
+using Mobile.Core.Models.Core;
 using Mobile.Core.ViewModels;
+using MobileApp.Controls;
 using MobileApp.Service;
 using System;
+using System.Linq;
+using System.Reflection;
 using Xamarin.Forms;
 
 namespace MobileApp
 {
     public partial class App : Application
     {
-        public App(INavigationService navigation)
+        public App(IPlatformService platformService)
         {
             InitializeComponent();
-            var vs = new ViewService();
-            vs.Init(Locator.GetInstance<INavigationService>());
-            navigation.Init<SplashViewModel>();
+            var nav = new NavigationService(platformService);
+            RegisterPages(nav);
+            AppService.Init(nav, nav);
+            nav.Init<SplashViewModel>();
         }
 
         public static App Init(Action<HostBuilderContext, IServiceCollection> nativeConfigureServices)
@@ -40,8 +45,29 @@ namespace MobileApp
         private static void ConfigureServices(HostBuilderContext c, IServiceCollection services)
         {
             services.AddSingleton<App>();
-            services.AddSingleton<INavigationService, NavigationService>();
             Locator.Build(services);
+        }
+
+        private static void RegisterPages(INavigationService _nav)
+        {
+            var assembly = typeof(App).Assembly;
+            //var types = assembly.GetTypes()
+            //                   .Where(myType => myType.IsClass &&
+            //                         !myType.IsAbstract &&
+            //                         myType.IsSubclassOf(typeof(CustomPage<SplashScreenModel>)));
+
+            var types = from x in Assembly.GetAssembly(typeof(App)).GetTypes()
+                        let y = x.BaseType
+                        where !x.IsAbstract && !x.IsInterface &&
+                        y != null && y.IsGenericType &&
+                        y.GetGenericTypeDefinition() == typeof(CustomPage<>)
+                        select x;
+
+            foreach (var type in types)
+            {
+                var page = type.BaseType.GetGenericArguments().FirstOrDefault();
+                _nav.Configure(page, type);
+            }
         }
 
         protected override void OnStart()

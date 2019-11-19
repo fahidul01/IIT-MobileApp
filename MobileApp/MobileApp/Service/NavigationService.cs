@@ -117,9 +117,9 @@ namespace MobileApp.Service
             _semaphoreSlim.Release();
         }
 
-        public void Configure<baseViewModel, page>() where baseViewModel : BaseViewModel
+        public void Configure(Type baseViewModel,Type page)
         {
-            Pages.Add(typeof(baseViewModel), typeof(page));
+            Pages.Add(baseViewModel, page);
         }
 
         public void ShowMessage(string title, string message)

@@ -1,11 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d"
-             NavigationPage.HasNavigationBar="False"
-             x:Class="MobileApp.Views.Login.LoginPage">
+<controls:CustomPage xmlns="http://xamarin.com/schemas/2014/forms"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                     xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                     mc:Ignorable="d"
+                     xmlns:controls="clr-namespace:MobileApp.Controls"
+                     NavigationPage.HasNavigationBar="False"
+                     xmlns:vm="clr-namespace:Mobile.Core.ViewModels;assembly=Mobile.Core"
+                     BindingContext="{x:Static vm:DesignLocator.LoginViewModel}"
+                     x:DataType="vm:LoginViewModel"
+                     x:TypeArguments="vm:LoginViewModel"
+                     x:Class="MobileApp.Views.Login.LoginPage">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -16,7 +21,7 @@
                Aspect="AspectFit"
                Margin="20"
                HorizontalOptions="Center"
-               WidthRequest="170"/>
+               WidthRequest="170" />
         <StackLayout Margin="20"
                      Grid.Row="1"
                      VerticalOptions="Center">
@@ -29,6 +34,5 @@
                     VerticalOptions="Center"
                     Text="Login" />
         </StackLayout>
-       
     </Grid>
-</ContentPage>
+</controls:CustomPage>
