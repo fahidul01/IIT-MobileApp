@@ -43,7 +43,7 @@ namespace Web.Api
 
         public async Task<List<Notice>> GetUpcomingEvents(int page, PostType all)
         {
-            return await _noticeService.GetUpcomingEvents(page);
+            return await _noticeService.GetUpcomingEvents();
         }
 
         public async Task<ActionResponse> UpdatePost(Notice post)

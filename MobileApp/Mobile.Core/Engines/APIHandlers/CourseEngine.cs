@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Mobile.Core.Engines.APIHandlers
 {
-    internal class CourseEngine : BaseEngine, ICourseHandler
+    public class CourseEngine : BaseEngine, ICourseHandler
     {
         private const string controllerName = "Courses";
         public CourseEngine(HttpWorker httpWorker) : base(httpWorker, controllerName)
@@ -21,10 +21,6 @@ namespace Mobile.Core.Engines.APIHandlers
             return SendRequest<ActionResponse>(HttpMethod.Post, new { courseId, dbFile });
         }
 
-        public Task<ActionResponse> CreateCourse(Course course)
-        {
-            return SendRequest<ActionResponse>(HttpMethod.Post, course);
-        }
 
         public Task<ActionResponse> DeleteCourse(Course course)
         {
@@ -70,5 +66,10 @@ namespace Mobile.Core.Engines.APIHandlers
         {
             return SendRequest<List<Semester>>(HttpMethod.Get, null);
         }
-}
+
+        public Task<ActionResponse> CreateCourse(Course course, int semesterId)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

@@ -16,18 +16,18 @@ namespace Web.WebServices
         }
 
 
-        public Task SendEmailAsync(string email, string subject, string message)
+        public async Task<bool> SendEmailAsync(string email, string subject, string message)
         {
-            return Execute(email, subject, message);
+            return await Execute(email, subject, message);
         }
 
-        public Task Execute(string email, string subject, string message)
+        private async Task<bool> Execute(string email, string subject, string message)
         {
-            var mailMessage = new MailMessage
+            var mailMessage = new MailMessage()
             {
                 Body = message,
                 Subject = subject,
-                From = new MailAddress(Options.From)
+                From = new MailAddress(Options.From,"IIT WebMail"),
             };
             mailMessage.To.Add(email);
 
@@ -35,10 +35,12 @@ namespace Web.WebServices
             using var client = new SmtpClient(Options.SMTPServer)
             {
                 UseDefaultCredentials = false,
-                Credentials = new NetworkCredential(Options.Username, Options.Password)
+                Port = 587,
+                EnableSsl = true
             };
-            return client.SendMailAsync(mailMessage);
-
+            client.Credentials = new NetworkCredential(Options.From, Options.Password);
+            await client.SendMailAsync(mailMessage);
+            return true;
         }
     }
 }

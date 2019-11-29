@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
@@ -81,8 +82,12 @@ namespace Web
             services.AddTransient<TokenService>();
             services.Configure<AuthMessageSenderOptions>(Configuration);
 
-
-            services.AddControllersWithViews();
+            services.AddControllersWithViews()
+                    .AddNewtonsoftJson(x =>
+                    {
+                        x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                        x.SerializerSettings.MaxDepth = 3;
+                    });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

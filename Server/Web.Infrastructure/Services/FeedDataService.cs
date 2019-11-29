@@ -28,18 +28,18 @@ namespace Web.Infrastructure.Services
         }
         public async void Init()
         {
-            var allBatch = await _batchService.GetCount();
-            if (allBatch == 0)
-            {
-                await LoadDemoBatches();
-                await CreateCourse();
-            }
+            //var allBatch = await _batchService.GetCount();
+            //if (allBatch == 0)
+            //{
+            //    await LoadDemoBatches();
+            //    await CreateCourse();
+            //}
 
-            var notices = await _noticeService.GetTotalNoticeAsync();
-            if(notices == 0)
-            {
-                await CreateNotice();
-            }
+            //var notices = await _noticeService.GetTotalNoticeAsync();
+            //if(notices == 0)
+            //{
+            //    await CreateNotice();
+            //}
         }
 
         private async Task CreateNotice()

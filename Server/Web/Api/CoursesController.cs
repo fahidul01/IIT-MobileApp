@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using CoreEngine.APIHandlers;
 using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Web.Infrastructure.Services;
 
@@ -15,11 +17,13 @@ namespace Web.Api
     {
         private readonly CourseService _courseService;
         private readonly UserService _userservice;
+        private readonly UserManager<DBUser> _usermanager;
 
-        public CoursesController(CourseService courseService, UserService userService)
+        public CoursesController(CourseService courseService, UserService userService, UserManager<DBUser> userManager)
         {
             _courseService = courseService;
             _userservice = userService;
+            _usermanager = userManager;
         }
 
         public Task<ActionResponse> AddMaterial(int courseId, DBFile dbFile)
@@ -76,6 +80,13 @@ namespace Web.Api
         public async Task<List<Course>> GetCourses(int batchId)
         {
             return await _courseService.GetCoursesAsync(batchId);
+        }
+
+        public async Task<List<Semester>> GetCurrentSemester()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var batch = await _userservice.GetBatch(userId);
+            return await _courseService.GetSemestersAsync(batch.Id);
         }
 
         public Task<ActionResponse> Update(Lesson lesson)

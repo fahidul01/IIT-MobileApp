@@ -81,7 +81,7 @@
 
 @if (Model.CourseMaterials != null)
 {
-    foreach (var file in Model.CourseMaterials.SelectMany(x => x.Files))
+    foreach (var file in Model.CourseMaterials)
     {
         <a asp-area="" asp-controller="Files" asp-action="Index"
            asp-route-id="@file.Id">@file.FileName</a>

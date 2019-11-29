@@ -17,5 +17,6 @@ namespace CoreEngine.APIHandlers
         Task<ActionResponse> AddMaterial(int courseId, DBFile dbFile);
         Task<Course> GetCourse(int courseId);
         Task<ActionResponse> DeleteLesson(int lessonId);
+        Task<List<Semester>> GetCurrentSemester();
     }
 }

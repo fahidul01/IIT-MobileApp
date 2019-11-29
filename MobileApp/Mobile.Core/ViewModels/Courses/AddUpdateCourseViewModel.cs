@@ -1,5 +1,8 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CoreEngine.APIHandlers;
@@ -17,6 +20,8 @@ namespace Mobile.Core.ViewModels
         public Course CurrentCourse { get; private set; }
         public ObservableCollection<Lesson> Lessons { get; private set; }
         public ObservableCollection<DBFile> DBFiles { get; private set; }
+        public List<Semester> Semesters { get; private set; }
+        public Semester CurrentSemester { get; set; }
 
         public AddUpdateCourseViewModel(ICourseHandler courseHandler, IFilePicker filePicker)
         {
@@ -55,6 +60,8 @@ namespace Mobile.Core.ViewModels
                     Lessons.Add(item);
                 }
             }
+            Semesters = await _courseHandler.GetCurrentSemester();
+            CurrentSemester = Semesters.FirstOrDefault(x => x.StartsOn >= DateTime.Now);
         }
 
         public ICommand SaveCommand => new RelayCommand(SaveAction);
@@ -74,7 +81,7 @@ namespace Mobile.Core.ViewModels
             }
         }
 
-        
+
 
         private void EditLessonAction(Lesson obj)
         {
@@ -128,7 +135,7 @@ namespace Mobile.Core.ViewModels
             {
                 if (CurrentCourse.Id == 0)
                 {
-                    var res = await _courseHandler.CreateCourse(CurrentCourse);
+                    var res = await _courseHandler.CreateCourse(CurrentCourse, CurrentSemester.Id);
                     if (res.Actionstatus) _nav.GoBack();
                     _dialog.ShowToastMessage("Created Course Successfully");
                 }

@@ -51,10 +51,10 @@ namespace Web.Infrastructure.Services
             return users;
         }
 
-        public async Task<Batch> GetBatch(string name)
+        public async Task<Batch> GetBatch(string userId)
         {
             var user = await _db.Users.Include(x => x.Batch)
-                                      .FirstOrDefaultAsync(x => x.UserName == name);
+                                      .FirstOrDefaultAsync(x => x.Id == userId);
             return user?.Batch;
         }
 
@@ -219,7 +219,7 @@ namespace Web.Infrastructure.Services
                 var password = CryptoService.GenerateRandomPassword();
                 var token = await _usermanager.GeneratePasswordResetTokenAsync(dBUser);
                 var msg = new EmailMessageCreator().CreatePasswordRecovery(password);
-                await _emailSender.SendEmailAsync(dBUser.Email, "Password Recover", msg);
+                var res =  await _emailSender.SendEmailAsync(dBUser.Email, "Password Recover", msg);
                 await _usermanager.ResetPasswordAsync(dBUser, token, password);
                 return true;
             }

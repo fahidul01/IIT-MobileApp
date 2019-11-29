@@ -62,7 +62,9 @@ namespace Web.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> RecoverPassword(string id)
         {
-            SuccessMessage = await _userService.RecoverPassword(id);
+            var res = await _userService.RecoverPassword(id);
+            if (res) SuccessMessage = "Updated Password Successfully";
+            else SuccessMessage = "Failed to update";
             return PartialView("_Message");
         }
 

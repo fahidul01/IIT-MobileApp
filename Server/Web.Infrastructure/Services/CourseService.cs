@@ -126,6 +126,14 @@ namespace Web.Infrastructure.Services
             return semester;
         }
 
+        public async Task<List<Semester>> GetSemestersAsync(int batchId)
+        {
+            var res = await _db.Semesters
+                               .Where(x => x.Batch.Id == batchId)
+                               .ToListAsync();
+            return res;
+        }
+
         public async Task<Lesson> AddLesson(Lesson lesson, int courseId)
         {
             var course = await _db.Courses.FirstOrDefaultAsync(x => x.Id == courseId);

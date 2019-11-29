@@ -21,8 +21,8 @@ namespace CoreEngine.Model.DBModel
         [Range(1,100)]
         [Display(Name = "Semester duration in months")]
         public int SemesterDuration { get; set; } = 1;
-        public virtual ICollection<DBUser> Students { get; set; }
-        public virtual ICollection<Semester> Semesters { get; set; }
+        public ICollection<DBUser> Students { get; set; }
+        public ICollection<Semester> Semesters { get; set; }
         [Required]
         [DataType(DataType.Date)]
         public DateTime StartsOn { get; set; }

@@ -23,16 +23,16 @@ namespace MobileTest.Api
         [Test]
         public async Task Login()
         {
-            var res = await member.Login("admin", "pass_WORD_1234");
+            var res = await member.Login("181909", "qbQ890ZC");
             Assert.IsTrue(res.Success);
 
             var response = await member.TouchLogin();
-            Assert.IsTrue(response);
+            Assert.NotNull(response);
 
             member.Logout();
             await Task.Delay(250);
             response = await member.TouchLogin();
-            Assert.IsFalse(response);
+            Assert.Null(response);
         }
     }
 }
