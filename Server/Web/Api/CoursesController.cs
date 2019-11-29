@@ -1,95 +1,75 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Web.Infrastructure.DBModel;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using CoreEngine.APIHandlers;
+using CoreEngine.Model.Common;
+using CoreEngine.Model.DBModel;
+using Microsoft.AspNetCore.Mvc;
+using Web.Infrastructure.Services;
 
 namespace Web.Api
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class CoursesController : ControllerBase
+    public class CoursesController : ControllerBase, ICourseHandler
     {
-        private readonly StudentDBContext _context;
+        private readonly CourseService _courseService;
 
-        public CoursesController(StudentDBContext context)
+        public CoursesController(CourseService courseService)
         {
-            _context = context;
+            _courseService = courseService;
         }
 
-        // GET: api/Courses
-        //[HttpGet]
-        //public async Task<ActionResult<IEnumerable<Course>>> GetCourses()
-        //{
-        //    //return await _context.Courses.ToListAsync();
-        //}
+        public Task<ActionResponse> AddMaterial(int courseId, DBFile dbFile)
+        {
+            throw new System.NotImplementedException();
+        }
 
-        //// GET: api/Courses/5
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<Course>> GetCourse(int id)
-        //{
-        //    //
-        //}
+        public Task<ActionResponse> CreateCourse(Course course)
+        {
+           
+        }
 
-        //// PUT: api/Courses/5
-        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        //// more details see https://aka.ms/RazorPagesCRUD.
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> PutCourse(int id, Course course)
-        //{
-        //    if (id != course.Id)
-        //    {
-        //        return BadRequest();
-        //    }
+        public Task<ActionResponse> DeleteCourse(Course course)
+        {
+            throw new System.NotImplementedException();
+        }
 
-        //    _context.Entry(course).State = EntityState.Modified;
+        public Task<ActionResponse> DeleteCouseMaterial(DBFile obj)
+        {
+            throw new System.NotImplementedException();
+        }
 
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!CourseExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
+        public Task<ActionResponse> DeleteLesson(int lessonId)
+        {
+            throw new System.NotImplementedException();
+        }
 
-        //    return NoContent();
-        //}
+        public Task<Course> GetCourse(int courseId)
+        {
+            throw new System.NotImplementedException();
+        }
 
-        //// POST: api/Courses
-        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        //// more details see https://aka.ms/RazorPagesCRUD.
-        //[HttpPost]
-        //public async Task<Course> PostCourse(Course course)
-        //{
-        //    _context.Courses.Add(course);
-        //    await _context.SaveChangesAsync();
-        //    return course;
-        //}
+        public Task<List<Course>> GetCourses()
+        {
+            throw new System.NotImplementedException();
+        }
 
-        //// DELETE: api/Courses/5
-        //[HttpDelete("{id}")]
-        //public async Task<ActionResult<Course>> DeleteCourse(int id)
-        //{
-        //    var course = await _context.Courses.FindAsync(id);
-        //    if (course == null)
-        //    {
-        //        return NotFound();
-        //    }
+        public Task<List<Course>> GetCourses(int batchId)
+        {
+            throw new System.NotImplementedException();
+        }
 
-        //    _context.Courses.Remove(course);
-        //    await _context.SaveChangesAsync();
+        public Task<List<Semester>> GetCurrentSemester()
+        {
+            throw new System.NotImplementedException();
+        }
 
-        //    return course;
-        //}
+        public Task<ActionResponse> Update(Lesson lesson)
+        {
+            throw new System.NotImplementedException();
+        }
 
-        //private bool CourseExists(int id)
-        //{
-        //    return _context.Courses.Any(e => e.Id == id);
-        //}
+        public Task<ActionResponse> UpdateCourse(Course course)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

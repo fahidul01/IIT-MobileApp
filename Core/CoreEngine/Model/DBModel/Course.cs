@@ -11,7 +11,7 @@ namespace CoreEngine.Model.DBModel
         public string CourseName { get; set; }
         public virtual ICollection<StudentCourse> StudentCourses { get; set; }
         public virtual ICollection<Lesson> Lessons { get; set; }
-        public virtual ICollection<CourseMaterial> CourseMaterials { get; set; }
+        public virtual ICollection<DBFile> CourseMaterials { get; set; }
         [Required]
         public virtual Semester Semester { get; set; }
 
@@ -20,15 +20,6 @@ namespace CoreEngine.Model.DBModel
             StudentCourses = new HashSet<StudentCourse>();
             Lessons = new HashSet<Lesson>();
         }
-    }
-
-    public class CourseMaterial
-    {
-        public int Id { get; set; }
-        public string Information { get; set; }
-        [Required]
-        public virtual Course Course { get; set; }
-        public ICollection<DBFile> Files { get; set; }
     }
 
     public class StudentCourse

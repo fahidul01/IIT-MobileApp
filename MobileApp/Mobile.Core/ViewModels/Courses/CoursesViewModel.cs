@@ -1,6 +1,7 @@
 ﻿namespace Mobile.Core.ViewModels
 {
-    internal class CoursesViewModel
+    public class CoursesViewModel : BaseViewModel
     {
+
     }
 }

@@ -1,4 +1,5 @@
-﻿using GalaSoft.MvvmLight;
+﻿using CoreEngine.Model.Common;
+using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Mobile.Core.Engines.Services;
 using Mobile.Core.Models.Core;
@@ -31,6 +32,14 @@ namespace Mobile.Core.ViewModels
         protected void GoBack()
         {
             _nav.GoBack();
+        }
+
+        protected void ShowResponse(ActionResponse response)
+        {
+            if (response != null)
+            {
+                _dialog.ShowToastMessage(response.Message);
+            }
         }
     }
 }

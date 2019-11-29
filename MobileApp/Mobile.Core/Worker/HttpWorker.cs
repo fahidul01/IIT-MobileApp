@@ -34,6 +34,7 @@ namespace Mobile.Core.Worker
         {
             _httpClient.DefaultRequestHeaders.Authorization = null;
             AppService.HasCRRole = false;
+            AppService.CurrentUser = null;
         }
 
         public async Task<string> SendRequest(HttpMethod method, string requestPath, HttpContent httpContent)

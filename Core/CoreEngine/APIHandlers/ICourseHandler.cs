@@ -12,7 +12,11 @@ namespace CoreEngine.APIHandlers
         Task<List<Course>> GetCourses(int batchId);
         Task<ActionResponse> UpdateCourse(Course course);
         Task<ActionResponse> DeleteCourse(Course course);
-        Task<List<Lesson>> GetLessons(string courseId);
         Task<ActionResponse> Update(Lesson lesson);
+        Task<ActionResponse> DeleteCouseMaterial(DBFile obj);
+        Task<ActionResponse> AddMaterial(int courseId, DBFile dbFile);
+        Task<Course> GetCourse(int courseId);
+        Task<ActionResponse> DeleteLesson(int lessonId);
+        Task<List<Semester>> GetCurrentSemester();
     }
 }

@@ -8,12 +8,12 @@ namespace Mobile.Core.ViewModels
 {
     public class ProfilesViewModel : BaseViewModel
     {
-        private readonly IUserHandler _userHandler;
+        private readonly IMemberHandler _memberHandler;
         public List<User> CurrentStudents { get; set; }
 
-        public ProfilesViewModel(IUserHandler userHandler)
+        public ProfilesViewModel(IMemberHandler userHandler)
         {
-            _userHandler = userHandler;
+            _memberHandler = userHandler;
         }
 
         public override void OnAppear(params object[] args)
@@ -30,7 +30,7 @@ namespace Mobile.Core.ViewModels
         private async void LoadCurrentStudents()
         {
             IsBusy = true;
-            CurrentStudents = await _userHandler.GetUsers();
+            CurrentStudents = await _memberHandler.GetCurrentBatchUsers();
             IsBusy = false;
         }
 
@@ -38,7 +38,7 @@ namespace Mobile.Core.ViewModels
 
         private void ViewProfileAction(User obj)
         {
-
+            _nav.NavigateTo<ProfileDetailViewModel>(obj);
         }
     }
 }

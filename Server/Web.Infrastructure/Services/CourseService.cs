@@ -1,7 +1,6 @@
 ﻿using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -29,7 +28,9 @@ namespace Web.Infrastructure.Services
             }
             else
             {
-                var batch = await _db.Batches.FirstOrDefaultAsync(x => x.Id == batchId);
+                var batch = await _db.Batches
+                                     .Include(x=>x.Students)
+                                     .FirstOrDefaultAsync(x => x.Id == batchId);
                 var semester = await _db.Semesters.FirstOrDefaultAsync(x => x.Id == semesterId);
                 if (batch == null || semester == null)
                 {
@@ -37,6 +38,15 @@ namespace Web.Infrastructure.Services
                 }
                 else
                 {
+                    foreach(var student in batch.Students)
+                    {
+                        var courseStudent = new StudentCourse()
+                        {
+                            Course = course,
+                            Student = student,
+                        };
+                        _db.Entry(courseStudent).State = EntityState.Added;
+                    }
                     course.Semester = semester;
                     _db.Entry(course).State = EntityState.Added;
                     await _db.SaveChangesAsync();

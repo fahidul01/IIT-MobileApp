@@ -6,41 +6,47 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using Web.Infrastructure.Services;
 using Web.WebServices;
 
 namespace Web.Api
 {
     //[Route("api/[controller]")]
     //[ApiController]
+
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class MemberController : Controller, IMemberHandler
     {
+        private readonly UserService _userService;
         private readonly SignInManager<DBUser> _signInmanager;
         private readonly UserManager<DBUser> _userManager;
         private readonly TokenService _tokenService;
 
         public MemberController(
+            UserService userService,
             SignInManager<DBUser> signInManager,
             UserManager<DBUser> userManager,
             TokenService tokenService)
         {
+            _userService = userService;
             _signInmanager = signInManager;
             _userManager = userManager;
             _tokenService = tokenService;
         }
 
-        [Authorize]
-        public async Task<SignInResponse> ChangePassword(string currentPassword, string newPassword)
+        public async Task<ActionResponse> ChangePassword(string currentPassword, string newPassword)
         {
             if (HttpContext.User == null)
             {
-                return new SignInResponse(false);
+                return new ActionResponse(false, "Invalid User");
             }
 
             var dbUser = await _userManager.FindByNameAsync(HttpContext.User.Identity.Name);
             if (dbUser == null)
             {
-                return new SignInResponse(false);
+                return new ActionResponse(false, "Invalid User");
             }
             else
             {
@@ -50,21 +56,36 @@ namespace Web.Api
                     var hashedPass = _userManager.PasswordHasher.HashPassword(dbUser, newPassword);
                     dbUser.PasswordHash = hashedPass;
                     var updateRes = await _userManager.UpdateAsync(dbUser);
-                    return new SignInResponse(updateRes.Succeeded);
+                    return new ActionResponse(updateRes.Succeeded, "Password Updated");
                 }
                 else
                 {
-                    return new SignInResponse(false);
+                    return new ActionResponse(false, "Failed to match Password");
                 }
             }
         }
 
-        public Task<bool> ForgetPassword(string username)
+        public Task<ActionResponse> DeleteUser(User user)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(new ActionResponse(false, "Not Allowed"));
+        }
+
+        public async Task<ActionResponse> ForgetPassword(string username)
+        {
+            var res = await _userService.RecoverPassword(username);
+            if (res) return new ActionResponse(true, "A Password reset has been accepted. Please check your mail");
+            else return new ActionResponse(false, "Failed to reset password. Try again");
+        }
+
+        public async Task<List<User>> GetCurrentBatchUsers()
+        {
+            var dbUser = await _userManager.GetUserAsync(HttpContext.User);
+            if (dbUser == null) return null;
+            else return await _userService.GetAllStudent(dbUser);
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<SignInResponse> Login(string username, string password)
         {
             var res = await _signInmanager.PasswordSignInAsync(username, password, true, false);
@@ -77,7 +98,6 @@ namespace Web.Api
             else return new SignInResponse(false);
         }
 
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public void Logout()
         {
             var user = HttpContext.User;
@@ -87,22 +107,33 @@ namespace Web.Api
             }
         }
 
-        public Task<bool> Register(User user)
+        public Task<ActionResponse> Register(User user)
         {
-            return Task.FromResult(false);
+            return Task.FromResult(new ActionResponse(false, "Not Authorize"));
         }
 
         [HttpGet]
         public string Test()
         {
-           return "Routing is ok";
+            return "Routing is ok";
         }
 
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public Task<bool> TouchLogin()
+        public async Task<User> TouchLogin()
         {
             var user = HttpContext.User;
-            return Task.FromResult(true);
+            var res = await _userManager.GetUserAsync(user);
+            return CoreEngine.Model.DBModel.User.FromDBUser(res, "");
+        }
+
+        public async Task<ActionResponse> UpdateUser(User user)
+        {
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            if (currentUser?.Id == user.Id)
+            {
+                var res = await _userService.Update(user);
+                if (res != null) return new ActionResponse(true, "User Update Successfull");
+            }
+            return new ActionResponse(false, "Failed to update User");
         }
     }
 }

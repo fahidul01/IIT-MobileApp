@@ -3,6 +3,7 @@ using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
 using Mobile.Core.Worker;
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -14,14 +15,21 @@ namespace Mobile.Core.Engines.APIHandlers
         {
         }
 
-        public Task<SignInResponse> ChangePassword(string currentPassword, string newPassword)
+        public Task<ActionResponse> ChangePassword(string currentPassword, string newPassword)
         {
-            throw new NotImplementedException();
+            return SendRequest<ActionResponse>(HttpMethod.Post, new { currentPassword, newPassword });
         }
 
-        public Task<bool> ForgetPassword(string username)
+        public Task<ActionResponse> DeleteUser(User user)
         {
-            throw new NotImplementedException();
+            return SendRequest<ActionResponse>(HttpMethod.Get, user);
+        }
+
+       
+
+        public Task<List<User>> GetCurrentBatchUsers()
+        {
+            return SendRequest<List<User>>(HttpMethod.Get, null);
         }
 
         public async Task<SignInResponse> Login(string username, string password)
@@ -36,18 +44,28 @@ namespace Mobile.Core.Engines.APIHandlers
 
         public async void Logout()
         {
-            await SendBoolRequest(HttpMethod.Get, null);
+            await SendRequest<ActionResponse>(HttpMethod.Get, null);
             _httpWorker.Logout();
         }
 
-        public Task<bool> Register(User user)
+        public Task<ActionResponse> Register(User user)
         {
-            return SendBoolRequest(HttpMethod.Post, user);
+            return SendRequest<ActionResponse>(HttpMethod.Post, user);
         }
 
-        public Task<bool> TouchLogin()
+        public Task<ActionResponse> UpdateUser(User user)
         {
-            return SendBoolRequest(HttpMethod.Get, null);
+            return SendRequest<ActionResponse>(HttpMethod.Post, user);
+        }
+
+        public Task<User> TouchLogin()
+        {
+            return SendRequest<User>(HttpMethod.Get, null);
+        }
+
+        public Task<ActionResponse> ForgetPassword(string username)
+        {
+            return SendRequest<ActionResponse>(HttpMethod.Post, new { username });
         }
     }
 }

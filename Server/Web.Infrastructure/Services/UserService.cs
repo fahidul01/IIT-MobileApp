@@ -85,6 +85,14 @@ namespace Web.Infrastructure.Services
             else return null;
         }
 
+        public async Task<List<User>> GetAllStudent(DBUser dbUser)
+        {
+            var batch = await _db.Batches.Include(x => x.Students)
+                                   .FirstOrDefaultAsync(x => x.Students.Any(m => m.Id == dbUser.Id));
+            batch?.LoadUsers();
+            return batch?.ExternalUsers;
+        }
+
         public async Task<User> MakeCR(string id)
         {
             var user = await _db.Users.FirstOrDefaultAsync(x => x.Id == id);
@@ -186,18 +194,18 @@ namespace Web.Infrastructure.Services
             return await AddStudents(students, batchId);
         }
 
-        public async Task<string> RecoverPassword(string id)  // Supports username too
+        public async Task<bool> RecoverPassword(string id)  // Supports username too
         {
             var user = await _usermanager.FindByIdAsync(id);
             if (user == null)
             {
                 user = await _usermanager.FindByNameAsync(id);
             }
-            if (user == null) return "Invalid User";
+            if (user == null) return false;
             else return await ResetPassword(user);
         }
 
-        private async Task<string> ResetPassword(DBUser dBUser)
+        private async Task<bool> ResetPassword(DBUser dBUser)
         {
             try
             {
@@ -206,12 +214,12 @@ namespace Web.Infrastructure.Services
                 var msg = new EmailMessageCreator().CreatePasswordRecovery(password);
                 await _emailSender.SendEmailAsync(dBUser.Email, "Password Recover", msg);
                 await _usermanager.ResetPasswordAsync(dBUser, token, password);
-                return "Password reset mail Has been sent";
+                return true;
             }
             catch (Exception ex)
             {
                 LogEngine.Error(ex);
-                return ex.Message;
+                return false;
             }
         }
     }
