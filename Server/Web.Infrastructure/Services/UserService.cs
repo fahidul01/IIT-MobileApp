@@ -51,6 +51,13 @@ namespace Web.Infrastructure.Services
             return users;
         }
 
+        public async Task<Batch> GetBatch(string name)
+        {
+            var user = await _db.Users.Include(x => x.Batch)
+                                      .FirstOrDefaultAsync(x => x.UserName == name);
+            return user?.Batch;
+        }
+
         public async Task<User> Update(User user)
         {
             var dbUser = await _db.Users.FirstOrDefaultAsync(x => x.Id == user.Id);

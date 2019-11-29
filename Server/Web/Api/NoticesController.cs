@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CoreEngine.APIHandlers;
+using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
 using Microsoft.AspNetCore.Mvc;
 using Web.Infrastructure.Services;
@@ -19,33 +20,42 @@ namespace Web.Api
             _noticeService = noticeService;
         }
 
-        public async Task<bool> AddPost(Notice post)
+        public async Task<ActionResponse> AddPost(Notice post)
         {
             var user = HttpContext.User.Identity.Name;
-            if (string.IsNullOrWhiteSpace(user)) return false;
-            else return await _noticeService.AddUpdateNotice(post, user);
+            if (string.IsNullOrWhiteSpace(user)) return new ActionResponse(false, "Invalid User");
+            else
+            {
+                var res = await _noticeService.AddUpdateNotice(post, user);
+                return new ActionResponse(res, res ? "Success" : "Failure");
+            }
         }
 
-        public Task<bool> DeletePost(Notice post)
+        public async Task<ActionResponse> DeletePost(Notice post)
         {
-            throw new NotImplementedException();
+            return new ActionResponse(await _noticeService.Delete(post.Id));
         }
 
-        public Task<List<Notice>> GetPosts(int page, PostType postType = PostType.All)
+        public async Task<List<Notice>> GetPosts(int page, PostType postType = PostType.All)
         {
-            throw new NotImplementedException();
+            return await _noticeService.GetRecentNotice(page);
         }
 
-        public Task<List<Notice>> GetUpcomingEvents(int v, PostType all)
+        public async Task<List<Notice>> GetUpcomingEvents(int page, PostType all)
         {
-            throw new NotImplementedException();
+            return await _noticeService.GetUpcomingEvents(page);
         }
 
-        public async Task<bool> UpdatePost(Notice post)
+        public async Task<ActionResponse> UpdatePost(Notice post)
         {
             var user = HttpContext.User.Identity.Name;
-            if (string.IsNullOrWhiteSpace(user)) return false;
-            else return await _noticeService.AddUpdateNotice(post, user);
+            if (string.IsNullOrWhiteSpace(user)) return new ActionResponse(false, "Invalid User");
+            else
+            {
+                var res = await _noticeService.AddUpdateNotice(post, user);
+                return new ActionResponse(res, res ? "Success" : "Failure");
+            }
         }
+
     }
 }

@@ -10,5 +10,11 @@
             Actionstatus = state;
             Message = message;
         }
+
+        public ActionResponse(bool res)
+        {
+            Actionstatus = res;
+            Message = res ? "Success" : "Failed to complete the operation";
+        }
     }
 }

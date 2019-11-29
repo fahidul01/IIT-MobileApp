@@ -1,6 +1,7 @@
 ﻿using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -51,6 +52,30 @@ namespace Web.Infrastructure.Services
                     _db.Entry(course).State = EntityState.Added;
                     await _db.SaveChangesAsync();
                     return course;
+                }
+            }
+        }
+
+        public async Task<bool> Delete(int courseId, int batchId)
+        {
+            var course = await _db.Courses.Include(x => x.Semester)
+                                    .ThenInclude(x => x.Batch)
+                                    .FirstOrDefaultAsync(x => x.Id == courseId);
+            if (course == null)
+            {
+                return false;
+            }
+            else
+            {
+                if (batchId == course.Semester.Batch.Id)
+                {
+                    _db.Entry(course).State = EntityState.Deleted;
+                    await _db.SaveChangesAsync();
+                    return true;
+                }
+                else
+                {
+                    return false;
                 }
             }
         }
@@ -112,6 +137,13 @@ namespace Web.Infrastructure.Services
                 await _db.SaveChangesAsync();
                 return lesson;
             }
+        }
+
+        public async Task<List<Course>> GetCoursesAsync(int batchId)
+        {
+            return await _db.Courses.Include(x => x.Semester)
+                                    .Where(x => x.Semester.Batch.Id == batchId)
+                                    .ToListAsync();
         }
     }
 }
