@@ -1,4 +1,5 @@
 ﻿using Mobile.Core.Engines.Services;
+using Xamarin.Essentials;
 
 namespace MobileApp.Service
 {
@@ -6,12 +7,12 @@ namespace MobileApp.Service
     {
         public string GetSetting(string key, string value)
         {
-            throw new System.NotImplementedException();
+            return Preferences.Get(key, value);
         }
 
         public void SetSetting(string key, string value)
         {
-            throw new System.NotImplementedException();
+            Preferences.Set(key, value);
         }
     }
 }

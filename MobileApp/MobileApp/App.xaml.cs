@@ -1,3 +1,4 @@
+using CoreEngine.Engine;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -21,9 +22,10 @@ namespace MobileApp
         {
             InitializeComponent();
             var nav = new NavigationService(platformService);
+            LogEngine.ErrorOccured += (s, e) => nav.ShowMessage("Error", e);
             RegisterPages(nav);
             AppService.Init(nav, nav);
-            nav.Init<SplashViewModel>();
+            nav.Init<HomeViewModel>();
         }
 
         public static App Init(Action<HostBuilderContext, IServiceCollection> nativeConfigureServices)
@@ -46,6 +48,7 @@ namespace MobileApp
         private static void ConfigureServices(HostBuilderContext c, IServiceCollection services)
         {
             services.AddSingleton<App>();
+            services.AddSingleton<IPreferenceEngine, PreferenceEngine>();
             Locator.Build(services);
         }
 

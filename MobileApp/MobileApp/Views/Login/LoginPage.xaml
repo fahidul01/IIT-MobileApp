@@ -26,8 +26,10 @@
                      Grid.Row="1"
                      IsVisible="{Binding IsBusy, Converter={StaticResource BoolInverter}}"
                      VerticalOptions="End">
-            <Entry Placeholder="Username/Roll" />
+            <Entry Placeholder="Username/Roll" 
+                   Text="{Binding UserName}"/>
             <Entry Placeholder="Password"
+                   Text="{Binding Password}"
                    IsPassword="True" />
             <Button Margin="20"
                     Grid.Row="2"

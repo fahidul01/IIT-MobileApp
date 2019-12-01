@@ -8,12 +8,20 @@
              xmlns:themes = "clr-namespace:MobileApp.Themes;assembly=MobileApp"
              x:Class="MobileApp.App">
     <Application.Resources>
-
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <themes:LightTheme />
             </ResourceDictionary.MergedDictionaries >
         </ResourceDictionary>
+        <OnPlatform x:Key="MaterialFontFamily"
+                    x:TypeArguments="x:String">
+            <On Platform="iOS"
+                Value="Material Design Icons" />
+            <On Platform="Android"
+                Value="MaterialIcons-Regular.ttf#Material Icons" />
+            <On Platform="UWP"
+                Value="Assets/Fonts/materialdesignicons-webfont.ttf#Material Design Icons" />
+        </OnPlatform>
         <Color x:Key="colorPrimary">#3F51B5</Color>
         <Color x:Key="colorPrimaryDark">#2E3192</Color>
         <Color x:Key="colorAccent">#3F51B5</Color>

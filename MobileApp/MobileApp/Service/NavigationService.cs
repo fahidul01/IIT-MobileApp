@@ -1,6 +1,9 @@
-﻿using Mobile.Core.Engines.Dependency;
+﻿using GalaSoft.MvvmLight.Command;
 using Mobile.Core.Engines.Services;
 using Mobile.Core.ViewModels;
+using MobileApp.Controls;
+using MobileApp.Helpers;
+using MobileApp.Views.Home;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +18,10 @@ namespace MobileApp.Service
         private readonly SemaphoreSlim _semaphoreSlim;
         private readonly Dictionary<Type, Type> Pages;
         private readonly IPlatformService _platformService;
-        private NavigationPage _nav;
+        private Type CurrentPage;
+
+        private Page _nav;
+
         public NavigationService(IPlatformService platformService)
         {
             Pages = new Dictionary<Type, Type>();
@@ -31,12 +37,26 @@ namespace MobileApp.Service
             var page = Activator.CreateInstance(Pages[vm]) as Page;
             _nav = new NavigationPage(page)
             {
-                BarBackgroundColor = Color.Transparent,
+                BarBackgroundColor = Color.DarkBlue,
                 BarTextColor = Color.White
             };
-            Application.Current.MainPage = _nav;
+            
+            if (vm == typeof(HomeViewModel))
+            {
+                Application.Current.MainPage = new MainPage(_nav);
+                _nav.ToolbarItems.Add(new ToolbarItem()
+                {
+                    Command = new RelayCommand(async () => await NavigateTo<NoticesViewModel>()),
+                    IconImageSource = IconFont.GetSource(IconType.Notifications, Color.White)
+                });
+            }
+            else
+            {
+                Application.Current.MainPage = _nav;
+            }
+            
 
-            page.BindingContext = Locator.GetInstance<T>();
+            //page.BindingContext = Locator.GetInstance<T>();
 
             if (page.BindingContext is BaseViewModel viewModel)
             {
@@ -75,18 +95,43 @@ namespace MobileApp.Service
 
         public async Task NavigateTo<T>(params object[] parameter) where T : BaseViewModel
         {
-            await _semaphoreSlim.WaitAsync();
             var type = typeof(T);
+            if (type == CurrentPage) return;
+            CurrentPage = type;
+            await _semaphoreSlim.WaitAsync();
             if (Pages.ContainsKey(type))
             {
                 var page = Activator.CreateInstance(Pages[type]) as Page;
-                var vm = Locator.GetInstance<T>();
-                page.BindingContext = vm;
+               // var vm = Locator.GetInstance<T>();
+                //page.BindingContext = vm;
                 if (page.BindingContext is BaseViewModel viewModel)
                 {
                     viewModel.OnAppear(parameter);
                 }
-                await _nav.PushAsync(page);
+                await _nav.Navigation.PushAsync(page);
+            }
+            else
+            {
+                ShowMessage("Error", "Invalid Page");
+            }
+            _semaphoreSlim.Release();
+        }
+
+        public async Task NavigateTo(Type type, params object[] parameter)
+        {
+            if (type == CurrentPage) return;
+            CurrentPage = type;
+            await _semaphoreSlim.WaitAsync();
+            if (Pages.ContainsKey(type))
+            {
+                var page = Activator.CreateInstance(Pages[type]) as Page;
+                // var vm = Locator.GetInstance<T>();
+                //page.BindingContext = vm;
+                if (page.BindingContext is BaseViewModel viewModel)
+                {
+                    viewModel.OnAppear(parameter);
+                }
+                await _nav.Navigation.PushAsync(page);
             }
             else
             {
@@ -102,8 +147,8 @@ namespace MobileApp.Service
             if (Pages.ContainsKey(type))
             {
                 var page = Activator.CreateInstance(Pages[type]) as Page;
-                var vm = Locator.GetInstance<T>();
-                page.BindingContext = vm;
+               // var vm = Locator.GetInstance<T>();
+               // page.BindingContext = vm;
                 if (page.BindingContext is BaseViewModel viewModel)
                 {
                     viewModel.OnAppear(parameter);

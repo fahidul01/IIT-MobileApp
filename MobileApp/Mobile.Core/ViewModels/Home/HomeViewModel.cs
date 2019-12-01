@@ -1,6 +1,7 @@
 ﻿using CoreEngine.APIHandlers;
 using CoreEngine.Model.DBModel;
 using GalaSoft.MvvmLight.Command;
+using Mobile.Core.Models.Core;
 using System;
 using System.Collections.Generic;
 using System.Windows.Input;
@@ -16,16 +17,22 @@ namespace Mobile.Core.ViewModels
         public List<Notice> RecentNotices { get; set; }
         public List<Lesson> UpcomingClasses { get; set; }
         public List<Course> CurrentCourses { get; set; }
+        public User User { get; private set; }
+        public string Today { get; private set; }
+        public string Date { get; private set; }
 
         public HomeViewModel(ILessonHandler classHandler, ICourseHandler courseHandler, INoticeHandler postHandler)
         {
             _classHandler = classHandler;
             _courseHandler = courseHandler;
             _noticeHandler = postHandler;
+            Today = DateTime.Now.DayOfWeek.ToString();
+            Date = DateTime.Now.ToString("dd MMMM yyyy");
         }
         public override void OnAppear(params object[] args)
         {
-            LoadEvents();
+            User = AppService.CurrentUser;
+            //LoadEvents();
         }
 
         private async void LoadEvents()
@@ -43,17 +50,17 @@ namespace Mobile.Core.ViewModels
 
         private void SelectCourseAction(Course obj)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         private void SelectNoticeAction(Notice obj)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         private void SelectLessonAction(Lesson obj)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
     }
 }

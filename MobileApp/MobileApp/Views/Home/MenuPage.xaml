@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             xmlns:vm="clr-namespace:Mobile.Core.ViewModels;assembly=Mobile.Core" 
+             xmlns:helpers="clr-namespace:MobileApp.Helpers"
+             x:Class="MobileApp.Views.Home.MenuPage">
+    <ListView helpers:CommandListView.ItemTappedCommand="{Binding FlyoutCommand}"
+              ItemsSource="{Binding MenuItems}">
+        <d:ListView.ItemsSource>
+            <x:Array Type="{x:Type x:String}">
+                <x:String>Page 1</x:String>
+                <x:String>Page 2</x:String>
+                <x:String>Page 3</x:String>
+                <x:String>Page 4</x:String>
+                <x:String>Page 5</x:String>
+            </x:Array>
+        </d:ListView.ItemsSource>
+        <ListView.Header>
+            <Grid BackgroundColor="WhiteSmoke">
+                <Image Source="iitlogo.png"
+                       Aspect="AspectFit"
+                       Margin="20"
+                       HorizontalOptions="Center"
+                       WidthRequest="170" />
+            </Grid>
+        </ListView.Header>
+        <ListView.ItemTemplate>
+            <DataTemplate x:DataType="vm:MenuItem">
+                <ViewCell>
+                    <StackLayout Padding="15,10"
+                                 HorizontalOptions="FillAndExpand">
+                        <Label VerticalOptions="FillAndExpand"
+                               VerticalTextAlignment="Center"
+                               Text="{Binding Title}"
+                               d:Text="{Binding .}"
+                               FontSize="Medium" />
+                    </StackLayout>
+                </ViewCell>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+    </ListView>
+</ContentPage>

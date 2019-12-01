@@ -2,6 +2,7 @@
 using CoreEngine.Model.Common;
 using Microsoft.Extensions.DependencyInjection;
 using Mobile.Core.Engines.APIHandlers;
+using Mobile.Core.Engines.Services;
 using Mobile.Core.ViewModels;
 using Mobile.Core.Worker;
 using System;
@@ -32,6 +33,7 @@ namespace Mobile.Core.Engines.Dependency
             services.AddSingleton<ICourseHandler, CourseEngine>();
             services.AddSingleton<IMemberHandler, MemberEngine>();
             services.AddSingleton<INoticeHandler, NoticeEngine>();
+            services.AddSingleton<SettingService>();
             services.AddSingleton(new HttpWorker(AppConstants.BaseUrl));
         }
 
