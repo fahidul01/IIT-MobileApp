@@ -29,6 +29,9 @@ namespace Mobile.Core.Engines.Dependency
         {
             RegisterAllTypes<BaseViewModel>(services, typeof(BaseViewModel).Assembly);
             services.AddSingleton<ILessonHandler, LessonEngine>();
+            services.AddSingleton<ICourseHandler, CourseEngine>();
+            services.AddSingleton<IMemberHandler, MemberEngine>();
+            services.AddSingleton<INoticeHandler, NoticeEngine>();
             services.AddSingleton(new HttpWorker(AppConstants.BaseUrl));
         }
 

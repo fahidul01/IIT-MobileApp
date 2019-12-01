@@ -24,7 +24,8 @@
                WidthRequest="170" />
         <StackLayout Margin="20"
                      Grid.Row="1"
-                     VerticalOptions="Center">
+                     IsVisible="{Binding IsBusy, Converter={StaticResource BoolInverter}}"
+                     VerticalOptions="End">
             <Entry Placeholder="Username/Roll" />
             <Entry Placeholder="Password"
                    IsPassword="True" />
@@ -32,7 +33,10 @@
                     Grid.Row="2"
                     BackgroundColor="DarkBlue"
                     VerticalOptions="Center"
+                    Command="{Binding LoginCommand}"
                     Text="Login" />
         </StackLayout>
+        <ActivityIndicator Grid.Row="1"
+                           IsRunning="{Binding IsBusy}" />
     </Grid>
 </controls:CustomPage>

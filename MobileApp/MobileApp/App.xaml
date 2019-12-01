@@ -1,11 +1,23 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <Application xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
+             xmlns:converters="clr-namespace:MobileApp.Converters"
+             xmlns:themes = "clr-namespace:MobileApp.Themes;assembly=MobileApp"
              x:Class="MobileApp.App">
     <Application.Resources>
+
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <themes:LightTheme />
+            </ResourceDictionary.MergedDictionaries >
+        </ResourceDictionary>
+        <Color x:Key="colorPrimary">#3F51B5</Color>
+        <Color x:Key="colorPrimaryDark">#2E3192</Color>
+        <Color x:Key="colorAccent">#3F51B5</Color>
+        <converters:BoolInverter x:Key="BoolInverter" />
         <Style TargetType="ContentPage" ApplyToDerivedTypes="True">
             <Setter Property="Visual"
                     Value="Material" />
@@ -14,6 +26,18 @@
                ApplyToDerivedTypes="True">
             <Setter Property="BackgroundColor"
                     Value="Transparent" />
+        </Style>
+        <Style TargetType="ActivityIndicator">
+            <Setter Property="Color"
+                    Value="{StaticResource colorPrimary}" />
+            <Setter Property="HorizontalOptions"
+                    Value="Center" />
+            <Setter Property="VerticalOptions"
+                    Value="Center" />
+            <Setter Property="HeightRequest"
+                    Value="40" />
+            <Setter Property="WidthRequest"
+                    Value="40" />
         </Style>
     </Application.Resources>
 </Application>

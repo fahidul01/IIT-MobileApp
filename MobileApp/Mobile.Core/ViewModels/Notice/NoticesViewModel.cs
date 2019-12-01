@@ -1,6 +1,6 @@
 ﻿namespace Mobile.Core.ViewModels
 {
-    internal class NoticesViewModel
+    public class NoticesViewModel:BaseViewModel
     {
     }
 }

@@ -39,15 +39,12 @@ namespace Mobile.Core.ViewModels
             {
                 IsBusy = true;
                 var res = await _memberHandler.Login(UserName, Password);
-                if (res != null)
+                if (res != null && res.Success)
                 {
-                    if (res.Success)
+                    var user = await _memberHandler.TouchLogin();
+                    if (user != null)
                     {
-                        var user = await _memberHandler.TouchLogin();
-                        if (user != null)
-                        {
-                            AppService.CurrentUser = user;
-                        }
+                        AppService.CurrentUser = user;
                     }
                 }
                 IsBusy = false;

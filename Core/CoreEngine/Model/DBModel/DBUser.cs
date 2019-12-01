@@ -12,6 +12,7 @@ namespace CoreEngine.Model.DBModel
         public int Roll { get; set; }
         public string UserRole { get; set; }
         public DateTime EnrolledIn { get; set; }
+        public bool RequirePasswordChange { get; set; }
 
         public void UpdateUser(User user)
         {
