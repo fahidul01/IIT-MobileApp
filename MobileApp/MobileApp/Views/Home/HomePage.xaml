@@ -32,7 +32,7 @@
                         </StackLayout>
                         <Label Text="{Binding User.Name}"
                                TextColor="White"
-                               FontSize="Large"
+                               FontSize="Title"
                                FontAttributes="Bold"
                                d:Text="UserName Last" />
                         <Button Padding="-10"
