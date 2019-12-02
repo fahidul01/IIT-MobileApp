@@ -15,9 +15,9 @@
     <ScrollView>
         <StackLayout>
             <pk:PancakeView HeightRequest="150"
-                            CornerRadius="0,0,30,0"
+                            CornerRadius="0,0,0,30"
                             BorderGradientAngle="0"
-                            BackgroundGradientEndColor="LightBlue"
+                            BackgroundGradientEndColor="{StaticResource colorPrimary}"
                             BackgroundGradientStartColor="DarkBlue">
                 <Grid d:BackgroundColor="DarkBlue">
                     <StackLayout HorizontalOptions="Start"
@@ -29,7 +29,7 @@
                             <Label Text="Hi,"
                                    TextColor="White"
                                    VerticalOptions="Center" />
-                            <Image Source="{controls:IconFont IconType=People, FontSize=10}" />
+                            <Image Source="{controls:IconFont IconType=People, FontSize=14}" />
                         </StackLayout>
                         <Label Text="{Binding User.Name}"
                                TextColor="White"
