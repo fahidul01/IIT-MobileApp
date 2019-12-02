@@ -16,7 +16,6 @@
         <StackLayout>
             <pk:PancakeView HeightRequest="150"
                             CornerRadius="0,0,0,30"
-                            BorderGradientAngle="0"
                             BackgroundGradientEndColor="{StaticResource colorPrimary}"
                             BackgroundGradientStartColor="DarkBlue">
                 <Grid d:BackgroundColor="DarkBlue">

@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight.Command;
+using Mobile.Core.Engines.Dependency;
 using Mobile.Core.Engines.Services;
 using Mobile.Core.ViewModels;
 using MobileApp.Controls;
@@ -35,6 +36,7 @@ namespace MobileApp.Service
             var vm = typeof(T);
 
             var page = Activator.CreateInstance(Pages[vm]) as Page;
+            page.BindingContext = Locator.GetInstance<T>();
             _nav = new NavigationPage(page)
             {
                 BarBackgroundColor = Color.DarkBlue,
@@ -102,8 +104,7 @@ namespace MobileApp.Service
             if (Pages.ContainsKey(type))
             {
                 var page = Activator.CreateInstance(Pages[type]) as Page;
-               // var vm = Locator.GetInstance<T>();
-                //page.BindingContext = vm;
+                page.BindingContext = Locator.GetInstance<T>();
                 if (page.BindingContext is BaseViewModel viewModel)
                 {
                     viewModel.OnAppear(parameter);
@@ -125,8 +126,7 @@ namespace MobileApp.Service
             if (Pages.ContainsKey(type))
             {
                 var page = Activator.CreateInstance(Pages[type]) as Page;
-                // var vm = Locator.GetInstance<T>();
-                //page.BindingContext = vm;
+                page.BindingContext = Locator.GetInstance(type);
                 if (page.BindingContext is BaseViewModel viewModel)
                 {
                     viewModel.OnAppear(parameter);
