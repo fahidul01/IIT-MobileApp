@@ -10,9 +10,9 @@
                      x:DataType="vm:HomeViewModel"
                      Title="Home"
                      x:TypeArguments="vm:HomeViewModel"
-                     BindingContext="{x:Static vm:DesignLocator.HomeViewModel}"
+                     
                      x:Class="MobileApp.Views.Home.HomePage">
-    <ScrollView>
+    <ScrollView d:BindingContext="{x:Static vm:DesignLocator.HomeViewModel}">
         <StackLayout>
             <pk:PancakeView HeightRequest="150"
                             CornerRadius="0,0,0,30"

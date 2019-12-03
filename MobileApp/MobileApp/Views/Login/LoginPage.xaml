@@ -17,12 +17,23 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Image Source="iitlogo.png"
-               Aspect="AspectFit"
-               Margin="20"
-               HorizontalOptions="Center"
-               WidthRequest="170" />
-        <StackLayout Margin="20"
+        <Image Aspect="AspectFill"
+               Source="front_bg.ong" />
+        <BoxView BackgroundColor="DarkBlue"
+                 Opacity="0.5" />
+        <Frame CornerRadius="60"
+               HeightRequest="120"
+               Padding="0"
+               Margin="-40"
+               WidthRequest="120"
+               VerticalOptions="End"
+               HorizontalOptions="Center">
+            <Image Source="iitlogo.png"
+                   Margin="20"
+                   Aspect="AspectFit"/>
+        </Frame>
+       
+        <StackLayout Margin="30,40,30,0"
                      Grid.Row="1"
                      IsVisible="{Binding IsBusy, Converter={StaticResource BoolInverter}}"
                      VerticalOptions="End">
@@ -31,13 +42,23 @@
             <Entry Placeholder="Password"
                    Text="{Binding Password}"
                    IsPassword="True" />
-            <Button Margin="20"
+            <Button Margin="40"
                     Grid.Row="2"
+                    CornerRadius="10"
+                    HorizontalOptions="Center"
+                    WidthRequest="150"
                     BackgroundColor="DarkBlue"
                     VerticalOptions="Center"
                     Command="{Binding LoginCommand}"
                     Text="Login" />
         </StackLayout>
+        <Button Grid.Row="2"
+                BackgroundColor="Transparent"
+                Visual="Default"
+                VerticalOptions="End"
+                Margin="30"
+                Text="ForgetPassword"
+                TextColor="Maroon" />
         <ActivityIndicator Grid.Row="1"
                            IsRunning="{Binding IsBusy}" />
     </Grid>
