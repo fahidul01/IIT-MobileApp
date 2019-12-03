@@ -2,12 +2,12 @@
 using MobileApp.Controls;
 using Xamarin.Forms.Xaml;
 
-namespace MobileApp.Views.Notice
+namespace MobileApp.Views.Media
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class AddNoticePage : CustomPage<AddUpdateNoticeViewModel>
+    public partial class EditorPage : CustomPage<EditorViewModel>
     {
-        public AddNoticePage()
+        public EditorPage()
         {
             InitializeComponent();
         }

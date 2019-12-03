@@ -1,15 +1,64 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d"
-             x:Class="MobileApp.Views.Notice.AddNoticePage">
-    <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
-    </ContentPage.Content>
-</ContentPage>
+<controls:CustomPage xmlns="http://xamarin.com/schemas/2014/forms"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                     xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                     mc:Ignorable="d"
+                     xmlns:pk="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
+                     xmlns:controls="clr-namespace:MobileApp.Controls"
+                     x:DataType="vm:AddUpdateNoticeViewModel"
+                     x:TypeArguments="vm:AddUpdateNoticeViewModel"
+                     xmlns:vm="clr-namespace:Mobile.Core.ViewModels;assembly=Mobile.Core"
+                     x:Class="MobileApp.Views.Notice.AddNoticePage">
+    <Grid d:BindingContext="{x:Static vm:AddUpdateNoticeViewModel}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <pk:PancakeView BackgroundColor="Blue"
+                        VerticalOptions="Start"
+                        HeightRequest="200"/>
+        <ScrollView>
+            <Frame Margin="20">
+                <StackLayout>
+                    <Entry Text="{Binding CurrentNotice.Title}" 
+                           Placeholder="Title"/>
+                    <Editor Text="{Binding CurrentNotice.Message}"
+                            Placeholder="Message"
+                            HeightRequest="200"
+                            BackgroundColor="Transparent">
+                        <Editor.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding EditorCommand}" />
+                        </Editor.GestureRecognizers>
+                    </Editor>
+                    <StackLayout Orientation="Vertical"
+                                 Spacing="0">
+                        <Label Text="EventDate"
+                               VerticalOptions="Center" />
+                        <DatePicker Date="{Binding CurrentNotice.EventDate}"
+                                    BackgroundColor="Transparent" />
+                    </StackLayout>
+                    <StackLayout Spacing="0" Orientation="Horizontal">
+                        <CheckBox IsChecked="{Binding FutureNotification}" />
+                        <Label Text="Remind Before EventDate" 
+                               VerticalOptions="Center"/>
+                    </StackLayout>
+                    <Grid>
+                        <Label Text="Files"
+                               Margin="0,20,0,0" />
+                        <Button HorizontalOptions="End"
+                                Visual="Default"
+                                BackgroundColor="Transparent"
+                                ImageSource="{controls:IconFont IconType=Add, Color=DarkBlue}" />
+                    </Grid>
+                   
+                </StackLayout>
+            </Frame>
+        </ScrollView>
+        <Button Grid.Row="1"
+                Command="{Binding SaveCommand}" 
+                Text="Save"
+                Margin="0,0,0,5"
+                Style="{StaticResource SaveButton}"/>
+    </Grid>
+</controls:CustomPage>

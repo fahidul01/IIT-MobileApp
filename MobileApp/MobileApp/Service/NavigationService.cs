@@ -2,6 +2,7 @@
 using Mobile.Core.Engines.Dependency;
 using Mobile.Core.Engines.Services;
 using Mobile.Core.ViewModels;
+using Mobile.Core.ViewModels.Core;
 using MobileApp.Controls;
 using MobileApp.Helpers;
 using MobileApp.Views.Home;
@@ -10,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace MobileApp.Service
@@ -140,7 +142,7 @@ namespace MobileApp.Service
             _semaphoreSlim.Release();
         }
 
-        public async Task NavigateToModal<T>(params object[] parameter) where T : BaseViewModel
+        public async Task NavigateToModal<T>(ICommand dataCommand, params object[] parameter) where T : BaseViewModel
         {
             await _semaphoreSlim.WaitAsync();
             var type = typeof(T);
@@ -154,6 +156,10 @@ namespace MobileApp.Service
                     viewModel.OnAppear(parameter);
                 }
                 await _nav.Navigation.PushModalAsync(page);
+                if(page.BindingContext is IPopupModel popupModel)
+                {
+                    popupModel.DataCommand = dataCommand;
+                }
             }
             else
             {

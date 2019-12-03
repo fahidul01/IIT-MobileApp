@@ -11,7 +11,7 @@ namespace CoreEngine.Model.DBModel
         public string Title { get; set; }
         public string Message { get; set; }
         public PostType PostType { get; set; }
-        public bool FutureNotification { get; set; }
+        public bool FutureNotification { get; set; } = true;
         public DateTime CreatedOn { get; set; }
         public DateTime EventDate { get; set; }
         public ICollection<DBFile> DBFiles { get; set; }

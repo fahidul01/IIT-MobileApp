@@ -85,12 +85,12 @@ namespace Mobile.Core.ViewModels
 
         private void EditLessonAction(Lesson obj)
         {
-            _nav.NavigateToModal<AddUpdateLessonViewModel>(CurrentCourse, obj);
+            _nav.NavigateTo<AddUpdateLessonViewModel>(CurrentCourse, obj);
         }
 
         private void AddLessonAction()
         {
-            _nav.NavigateToModal<AddUpdateLessonViewModel>(CurrentCourse, new Lesson());
+            _nav.NavigateTo<AddUpdateLessonViewModel>(CurrentCourse, new Lesson());
         }
 
         private async void DeleteMaterialAction(DBFile obj)
