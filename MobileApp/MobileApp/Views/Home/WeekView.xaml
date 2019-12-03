@@ -34,7 +34,7 @@
                        VerticalOptions="Center"
                        Margin="10"
                        Opacity="0.8"
-                       Source="{controls:IconFont IconType=PermContactCalendar, FontSize=20,Color=DarkBlue}" />
+                       Source="{controls:IconFont IconType=Timeline, FontSize=20,Color=DarkBlue}" />
             </Grid>
             <CollectionView Grid.Row="1"
                             HeightRequest="40"

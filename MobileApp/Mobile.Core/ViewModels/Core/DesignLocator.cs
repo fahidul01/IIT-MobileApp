@@ -20,7 +20,7 @@ namespace Mobile.Core.ViewModels
         public static ProfileDetailViewModel ProfileDetailViewModel => GetLocator<ProfileDetailViewModel>();
         public static ProfilesViewModel ProfilesViewModel => GetLocator<ProfilesViewModel>();
         public static SplashViewModel SplashViewModel => GetLocator<SplashViewModel>();
-        public static MainViewModel MainViewModel => GetLocator<MainViewModel>();
+        public static MainViewModel MainViewModel => Locator.GetInstance<MainViewModel>();
 
         private static T GetLocator<T>()
         {
