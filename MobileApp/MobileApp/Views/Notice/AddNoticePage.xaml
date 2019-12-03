@@ -39,7 +39,7 @@
                                     BackgroundColor="Transparent" />
                     </StackLayout>
                     <StackLayout Spacing="0" Orientation="Horizontal">
-                        <CheckBox IsChecked="{Binding FutureNotification}" />
+                        <CheckBox IsChecked="{Binding CurrentNotice.FutureNotification}" />
                         <Label Text="Remind Before EventDate" 
                                VerticalOptions="Center"/>
                     </StackLayout>

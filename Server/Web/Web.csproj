@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <None Remove="mydata.db-shm" />
+    <None Remove="mydata.db-wal" />
   </ItemGroup>
 
   <ItemGroup>

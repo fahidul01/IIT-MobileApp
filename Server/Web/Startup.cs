@@ -14,6 +14,7 @@ using Newtonsoft.Json;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using System.Threading.Tasks;
 using Web.Infrastructure.AppServices;
 using Web.Infrastructure.DBModel;
 using Web.Infrastructure.Services;
@@ -36,6 +37,8 @@ namespace Web
         {
             services.AddDbContext<StudentDBContext>(opt =>
                  opt.UseSqlite("Filename=mydata.db"));
+           //services.AddDbContext<StudentDBContext>(opt =>
+            //   opt.UseSqlServer(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=D:\Temp\MITServer.mdf;Integrated Security=True;Connect Timeout=300"));
             services.RegisterAllTypes<BaseService>(typeof(StudentDBContext).Assembly);
 
             services.AddIdentity<DBUser, IdentityRole>(options =>
@@ -125,9 +128,9 @@ namespace Web
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
-               
+
             });
-            CreateUserRoles(serviceProvider);
+            Task.Run(() => CreateUserRoles(serviceProvider));
             //if (env.IsDevelopment())
             {
                 var feed = serviceProvider.GetRequiredService<FeedDataService>();
@@ -135,7 +138,7 @@ namespace Web
             }
         }
 
-        private async void CreateUserRoles(IServiceProvider serviceProvider)
+        private async Task CreateUserRoles(IServiceProvider serviceProvider)
         {
             var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var UserManager = serviceProvider.GetRequiredService<UserManager<DBUser>>();

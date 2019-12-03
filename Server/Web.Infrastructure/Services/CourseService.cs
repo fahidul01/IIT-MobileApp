@@ -46,7 +46,7 @@ namespace Web.Infrastructure.Services
                             Course = course,
                             Student = student,
                         };
-                        _db.Entry(courseStudent).State = EntityState.Added;
+                        course.StudentCourses.Add(courseStudent);
                     }
                     course.Semester = semester;
                     _db.Entry(course).State = EntityState.Added;
@@ -54,6 +54,11 @@ namespace Web.Infrastructure.Services
                     return course;
                 }
             }
+        }
+
+        public Task<Course> UpdateCourse(Course course)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<bool> Delete(int courseId, int batchId)
@@ -117,6 +122,16 @@ namespace Web.Infrastructure.Services
             }
         }
 
+        public Task<ActionResponse> DeleteLesson(string userId, int lessonId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ActionResponse> DeleteLesson(string userId, Lesson lesson)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<Semester> GetSemesterAsync(int semesterId)
         {
             var semester = await _db.Semesters
@@ -129,6 +144,7 @@ namespace Web.Infrastructure.Services
         public async Task<List<Semester>> GetSemestersAsync(int batchId)
         {
             var res = await _db.Semesters
+                               .Include(x=>x.Courses)
                                .Where(x => x.Batch.Id == batchId)
                                .ToListAsync();
             return res;

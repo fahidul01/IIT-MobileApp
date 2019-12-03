@@ -20,6 +20,7 @@ namespace CoreEngine.Engine
                 msg = ex.Message;
             }
             ErrorOccured?.Invoke(null, msg);
+            Console.WriteLine(msg);
         }
     }
 }

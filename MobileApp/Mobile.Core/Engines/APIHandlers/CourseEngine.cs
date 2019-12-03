@@ -1,8 +1,10 @@
 ﻿using CoreEngine.APIHandlers;
 using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
+using Microsoft.AspNetCore.Http;
 using Mobile.Core.Worker;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -16,9 +18,17 @@ namespace Mobile.Core.Engines.APIHandlers
         {
         }
 
-        public Task<ActionResponse> AddMaterial(int courseId, DBFile dbFile)
+        public Task<ActionResponse> AddMaterial(int courseId, DBFile dbFile, IFormFile formFile = null)
         {
-            return SendRequest<ActionResponse>(HttpMethod.Post, new { courseId, dbFile });
+            using (var requestContent = new MultipartFormDataContent())
+            {
+                var streamContent = new StreamContent(File.OpenRead(dbFile.FilePath));
+                var fName = Path.GetFileName(dbFile.FilePath);
+
+                requestContent.Add(new StringContent(nameof(courseId)), courseId.ToString());
+                requestContent.Add(streamContent, nameof(formFile), fName);
+                return SendFileRequest<ActionResponse>(HttpMethod.Post, requestContent);
+            }
         }
 
 
@@ -27,9 +37,9 @@ namespace Mobile.Core.Engines.APIHandlers
             return SendRequest<ActionResponse>(HttpMethod.Post, course);
         }
 
-        public Task<ActionResponse> DeleteCouseMaterial(DBFile obj)
+        public Task<ActionResponse> DeleteCouseMaterial(DBFile dBFile)
         {
-            return SendRequest<ActionResponse>(HttpMethod.Post, obj);
+            return SendRequest<ActionResponse>(HttpMethod.Post, dBFile);
         }
 
         public Task<ActionResponse> DeleteLesson(int lessonId)

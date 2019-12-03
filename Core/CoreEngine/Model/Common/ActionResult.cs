@@ -16,5 +16,10 @@
             Actionstatus = res;
             Message = res ? "Success" : "Failed to complete the operation";
         }
+
+        public ActionResponse()
+        {
+
+        }
     }
 }

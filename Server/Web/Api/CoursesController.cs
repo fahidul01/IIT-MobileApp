@@ -6,6 +6,7 @@ using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Web.Infrastructure.Services;
@@ -25,15 +26,11 @@ namespace Web.Api
             _userservice = userService;
             _usermanager = userManager;
         }
-
-        public Task<ActionResponse> AddMaterial(int courseId, DBFile dbFile)
-        {
-            throw new System.NotImplementedException();
-        }
-
+        #region Course
         public async Task<ActionResponse> CreateCourse(Course course, int semesterId)
         {
-            var batch = await _userservice.GetBatch(HttpContext.User.Identity.Name);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var batch = await _userservice.GetBatch(userId);
             if (batch == null)
             {
                 return new ActionResponse(false, "Invalid User");
@@ -45,9 +42,25 @@ namespace Web.Api
             }
         }
 
+        public async Task<ActionResponse> UpdateCourse(Course course)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var batch = await _userservice.GetBatch(userId);
+            if (batch == null)
+            {
+                return new ActionResponse(false, "Invalid User");
+            }
+            else
+            {
+                var res = await _courseService.UpdateCourse(course);
+                return new ActionResponse(res != null);
+            }
+        }
+
         public async Task<ActionResponse> DeleteCourse(Course course)
         {
-            var batch = await _userservice.GetBatch(HttpContext.User.Identity.Name);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var batch = await _userservice.GetBatch(userId);
             if (batch == null)
             {
                 return new ActionResponse(false, "Invalid User");
@@ -56,16 +69,7 @@ namespace Web.Api
                 return new ActionResponse(await _courseService.Delete(course.Id, batch.Id));
         }
 
-        public Task<ActionResponse> DeleteCouseMaterial(DBFile obj)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task<ActionResponse> DeleteLesson(int lessonId)
-        {
-            throw new System.NotImplementedException();
-        }
-
+       
         public async Task<Course> GetCourse(int courseId)
         {
             return await _courseService.GetCourseAsync(courseId);
@@ -73,9 +77,35 @@ namespace Web.Api
 
         public async Task<List<Course>> GetCourses()
         {
-            var batch = _userservice.GetBatch(HttpContext.User.Identity.Name);
-            return await _courseService.GetCoursesAsync(batch.Id);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var batch = await _userservice.GetBatch(userId);
+            if (batch == null)
+            {
+                return null;
+            }
+            else
+            {
+                return await _courseService.GetCoursesAsync(batch.Id);
+            }
+           
         }
+        #endregion
+
+        #region Course Material
+
+        public async Task<ActionResponse> AddMaterial(int courseId, DBFile dbFile, IFormFile formFile)
+        {
+            return new ActionResponse(formFile!= null && formFile.Length>0);
+        }
+
+        public Task<ActionResponse> DeleteCouseMaterial(DBFile obj)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        #endregion
+
+       
 
         public async Task<List<Course>> GetCourses(int batchId)
         {
@@ -89,14 +119,16 @@ namespace Web.Api
             return await _courseService.GetSemestersAsync(batch.Id);
         }
 
-        public Task<ActionResponse> Update(Lesson lesson)
+        public async Task<ActionResponse> DeleteLesson(int lessonId)
         {
-            throw new System.NotImplementedException();
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return await _courseService.DeleteLesson(userId, lessonId);
         }
 
-        public Task<ActionResponse> UpdateCourse(Course course)
+        public async Task<ActionResponse> Update(Lesson lesson)
         {
-            throw new System.NotImplementedException();
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return await _courseService.DeleteLesson(userId, lesson);
         }
     }
 }

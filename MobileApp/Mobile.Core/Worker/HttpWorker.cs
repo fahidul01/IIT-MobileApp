@@ -60,7 +60,6 @@ namespace Mobile.Core.Worker
                     msg = await _httpClient.PutAsync(requestPath, httpContent);
                     log = await msg.Content.ReadAsStringAsync();
                 }
-
                 if (msg == null)
                 {
                     throw new Exception("Invalid Method");
