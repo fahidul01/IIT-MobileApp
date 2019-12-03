@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace MobileApp.Controls
@@ -12,12 +13,17 @@ namespace MobileApp.Controls
                 typeof(StackLIstLayout),
                 default(IEnumerable<object>),
                 BindingMode.TwoWay, propertyChanged: ItemsSourceChanged);
-
+        public static readonly BindableProperty SelectedCommandProperty =
+            BindableProperty.Create(nameof(SelectedCommand), typeof(ICommand), typeof(StackLIstLayout), null);
 
         public static readonly BindableProperty ItemTemplateProperty =
             BindableProperty.Create(nameof(ItemTemplate), typeof(DataTemplate), typeof(StackLayout), default(DataTemplate));
 
-
+        public ICommand SelectedCommand
+        {
+            get { return (ICommand)GetValue(SelectedCommandProperty); }
+            set { SetValue(SelectedCommandProperty, value); }
+        }
         public IEnumerable ItemsSource
         {
             get { return (IEnumerable)GetValue(ItemsSourceProperty); }
@@ -54,7 +60,6 @@ namespace MobileApp.Controls
             var counter = 0;
             foreach (var item in ItemsSource)
             {
-               
                 var v = GetItemView(item);
                 Children.Add(v);
                 counter++;
@@ -72,6 +77,12 @@ namespace MobileApp.Controls
             }
 
             view.BindingContext = item;
+            var gesture = new TapGestureRecognizer
+            {
+                Command = SelectedCommand,
+                CommandParameter = item
+            };
+            view.GestureRecognizers.Add(gesture);
             return view;
         }
     }
