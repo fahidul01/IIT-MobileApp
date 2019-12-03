@@ -2,6 +2,7 @@
 using CoreEngine.Model.DBModel;
 using GalaSoft.MvvmLight.Command;
 using Mobile.Core.Models.Core;
+using Mobile.Core.Models.Partials;
 using System;
 using System.Collections.Generic;
 using System.Windows.Input;
@@ -20,9 +21,11 @@ namespace Mobile.Core.ViewModels
         public User User { get; private set; }
         public string Today { get; private set; }
         public string Date { get; private set; }
+        public RoutineViewModel RoutineViewModel { get; private set; }
 
         public HomeViewModel(ILessonHandler classHandler, ICourseHandler courseHandler, INoticeHandler postHandler)
         {
+            RoutineViewModel = new RoutineViewModel();
             _classHandler = classHandler;
             _courseHandler = courseHandler;
             _noticeHandler = postHandler;

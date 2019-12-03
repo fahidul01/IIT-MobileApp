@@ -4,6 +4,7 @@
                      xmlns:d="http://xamarin.com/schemas/2014/forms/design"
                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                      mc:Ignorable="d"
+                     xmlns:local="clr-namespace:MobileApp.Views.Home"
                      xmlns:pk="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
                      xmlns:controls="clr-namespace:MobileApp.Controls"
                      xmlns:vm="clr-namespace:Mobile.Core.ViewModels;assembly=Mobile.Core"
@@ -68,6 +69,7 @@
                     </StackLayout>
                 </Grid>
             </pk:PancakeView>
+            <local:WeekView />
         </StackLayout>
     </ScrollView>
 </controls:CustomPage>
