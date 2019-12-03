@@ -67,7 +67,20 @@ namespace MobileApp
                         y.GetGenericTypeDefinition() == typeof(CustomPage<>)
                         select x;
 
+            var tabTypes = from x in Assembly.GetAssembly(typeof(App)).GetTypes()
+                           let y = x.BaseType
+                           where !x.IsAbstract && !x.IsInterface &&
+                           y != null && y.IsGenericType &&
+                           y.GetGenericTypeDefinition() == typeof(CustomTabPage<>)
+                           select x;
+
             foreach (var type in types)
+            {
+                var page = type.BaseType.GetGenericArguments().FirstOrDefault();
+                _nav.Configure(page, type);
+            }
+
+            foreach (var type in tabTypes)
             {
                 var page = type.BaseType.GetGenericArguments().FirstOrDefault();
                 _nav.Configure(page, type);
