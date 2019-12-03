@@ -2,7 +2,6 @@
 using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
 using Mobile.Core.Worker;
-using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -12,6 +11,7 @@ namespace Mobile.Core.Engines.APIHandlers
     public class CourseEngine : BaseEngine, ICourseHandler
     {
         private const string controllerName = "Courses";
+        List<Semester> Semesters;
         public CourseEngine(HttpWorker httpWorker) : base(httpWorker, controllerName)
         {
         }
@@ -59,17 +59,23 @@ namespace Mobile.Core.Engines.APIHandlers
 
         public Task<ActionResponse> UpdateCourse(Course course)
         {
+            Semesters = null;
             return SendRequest<ActionResponse>(HttpMethod.Post, course);
         }
 
-        public Task<List<Semester>> GetCurrentSemester()
+        public async Task<List<Semester>> GetCurrentSemester()
         {
-            return SendRequest<List<Semester>>(HttpMethod.Get, null);
+            if (Semesters == null)
+            {
+                Semesters = await SendRequest<List<Semester>>(HttpMethod.Get, null);
+            }
+            return Semesters;
         }
 
         public Task<ActionResponse> CreateCourse(Course course, int semesterId)
         {
-            throw new NotImplementedException();
+            Semesters = null;
+            return SendRequest<ActionResponse>(HttpMethod.Post, new { course, semesterId });
         }
     }
 }
