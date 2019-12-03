@@ -45,12 +45,6 @@ namespace Mobile.Core.Models.Partials
                                                .OrderBy(x => x.TimeOfDay)
                                                .ToList();
                 if (todayActivity.Count > 0) item.Activities = todayActivity;
-                if (item.DayOfWeek == DateTime.Now.DayOfWeek)
-                {
-                    item.IsSelected = true;
-                    Activities = item.Activities;
-                }
-                else item.IsSelected = false;
             }
         }
     }
@@ -64,6 +58,7 @@ namespace Mobile.Core.Models.Partials
             DayOfWeek = dayOfWeek;
             Day = DayOfWeek.ToString().Substring(0, 3);
             Activities = new List<Activity>();
+            IsSelected = DayOfWeek == DateTime.Now.DayOfWeek;
         }
 
         public string Day { get; set; }

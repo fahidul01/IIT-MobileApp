@@ -4,12 +4,17 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
+             xmlns:converters="clr-namespace:MobileApp.Converters"
+             xmlns:partials="clr-namespace:Mobile.Core.Models.Partials;assembly=Mobile.Core"
              d:BackgroundColor="LightGray"
              xmlns:controls="clr-namespace:MobileApp.Controls"
              xmlns:pk="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
              xmlns:vm="clr-namespace:Mobile.Core.ViewModels;assembly=Mobile.Core"
              d:BindingContext="{x:Static vm:HomeViewModel}"
              x:Class="MobileApp.Views.Home.WeekView">
+    <ContentView.Resources>
+        <converters:WeekButtonColorConverter x:Key="weekColor" />
+    </ContentView.Resources>
     <Frame Margin="15"
            Padding="3">
         <Grid>
@@ -31,11 +36,15 @@
                        Opacity="0.8"
                        Source="{controls:IconFont IconType=PermContactCalendar, FontSize=20,Color=DarkBlue}" />
             </Grid>
-            <CollectionView Grid.Row="1" HorizontalOptions="Center">
+            <CollectionView Grid.Row="1"
+                            HeightRequest="40"
+                            ItemsSource="{Binding RoutineViewModel.Routines}"
+                            HorizontalOptions="Center">
                 <CollectionView.ItemsLayout>
-                    <GridItemsLayout Span="7" Orientation="Vertical" />
+                    <GridItemsLayout Span="7"
+                                     Orientation="Vertical" />
                 </CollectionView.ItemsLayout>
-                <CollectionView.ItemsSource>
+                <d:CollectionView.ItemsSource>
                     <x:Array Type="{x:Type x:String}">
                         <x:String>Sat</x:String>
                         <x:String>Sun</x:String>
@@ -45,31 +54,40 @@
                         <x:String>Thu</x:String>
                         <x:String>Fri</x:String>
                     </x:Array>
-                </CollectionView.ItemsSource>
+                </d:CollectionView.ItemsSource>
                 <CollectionView.ItemTemplate>
-                    <DataTemplate>
+                    <DataTemplate x:DataType="partials:Routine">
                         <Grid>
                             <Grid HeightRequest="25"
                                   VerticalOptions="Start"
                                   BackgroundColor="WhiteSmoke" />
-                            <Frame Padding="0"
-                                   HorizontalOptions="Center"
-                                   WidthRequest="30"
-                                   BorderColor="Transparent"
-                                   HeightRequest="40"
-                                   HasShadow="False"
-                                   BackgroundColor="Transparent">
-                                <Label Text="{Binding}"
-                                       Margin="0"
-                                       VerticalOptions="Start"
-                                       HorizontalOptions="Center"/>
-                            </Frame>
+                            <pk:PancakeView Padding="0"
+                                            HorizontalOptions="Center"
+                                            WidthRequest="35"
+                                            BorderColor="Transparent"
+                                            HeightRequest="40"
+                                            HasShadow="False"
+                                            IsVisible="{Binding IsSelected}"
+                                            BackgroundColor="DarkBlue"
+                                            CornerRadius="0,0,10,10">
+                               
+                            </pk:PancakeView>
+                            <Label Text="{Binding Day}"
+                                   d:Text="{Binding}"
+                                   Margin="0"
+                                   VerticalOptions="Start"
+                                   HorizontalOptions="Center" />
+                            <Label Text="{Binding Day}"
+                                   d:Text="{Binding}"
+                                   Margin="0"
+                                   TextColor="White"
+                                   VerticalOptions="Start"
+                                   IsVisible="{Binding IsSelected}"
+                                   HorizontalOptions="Center" />
                         </Grid>
-                        
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
         </Grid>
     </Frame>
-    
 </ContentView>
