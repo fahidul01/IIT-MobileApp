@@ -1,4 +1,5 @@
 ﻿using CoreEngine.Model.DBModel;
+using Mobile.Core.Models.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,7 +50,7 @@ namespace Mobile.Core.Models.Partials
         }
     }
 
-    public class Routine
+    public class Routine:NotifyModel
     {
         public DayOfWeek DayOfWeek { get; private set; }
 

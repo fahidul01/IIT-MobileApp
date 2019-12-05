@@ -50,6 +50,12 @@ namespace Mobile.Core.ViewModels
         public ICommand SelectLessonCommand => new RelayCommand<Lesson>(SelectLessonAction);
         public ICommand SelectNoticeCommand => new RelayCommand<Notice>(SelectNoticeAction);
         public ICommand SelectCourseCommand => new RelayCommand<Course>(SelectCourseAction);
+        public ICommand DaySelectCommand => new RelayCommand<Routine>(WeekAction);
+
+        private void WeekAction(Routine obj)
+        {
+            RoutineViewModel.SelectRoutine(obj);
+        }
 
         private void SelectCourseAction(Course obj)
         {

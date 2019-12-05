@@ -21,7 +21,7 @@ namespace Mobile.Core.ViewModels
         {
             if (string.IsNullOrWhiteSpace(_settingServicce.Token))
             {
-                await _nav.NavigateTo<LoginViewModel>();
+                 _nav.Init<LoginViewModel>();
             }
             else
             {
@@ -37,7 +37,7 @@ namespace Mobile.Core.ViewModels
                 {
                     AppService.CurrentUser = res;
                     AppService.HasCRRole = res.IsCR;
-                    await _nav.NavigateTo<HomeViewModel>();
+                    _nav.Init<HomeViewModel>();
                 }
             }
         }

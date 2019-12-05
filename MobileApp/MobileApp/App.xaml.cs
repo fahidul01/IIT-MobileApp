@@ -25,7 +25,7 @@ namespace MobileApp
             LogEngine.ErrorOccured += (s, e) => nav.ShowMessage("Error", e);
             RegisterPages(nav);
             AppService.Init(nav, nav);
-            nav.Init<HomeViewModel>();
+            nav.Init<SplashViewModel>();
         }
 
         public static App Init(Action<HostBuilderContext, IServiceCollection> nativeConfigureServices)

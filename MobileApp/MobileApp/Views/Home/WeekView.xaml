@@ -16,6 +16,7 @@
         <converters:WeekButtonColorConverter x:Key="weekColor" />
     </ContentView.Resources>
     <Frame Margin="15"
+           x:Name="WeekGrid"
            Padding="3">
         <Grid>
             <Grid.RowDefinitions>
@@ -58,6 +59,10 @@
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="partials:Routine">
                         <Grid>
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding BindingContext.DaySelectCommand, Source={x:Reference WeekGrid}}"
+                                                      CommandParameter="{Binding}"/>
+                            </Grid.GestureRecognizers>
                             <Grid HeightRequest="25"
                                   VerticalOptions="Start"
                                   BackgroundColor="WhiteSmoke" />
@@ -87,6 +92,10 @@
                         </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
+            </CollectionView>
+            <CollectionView Grid.Row="2"
+                            ItemsSource="{Binding RoutineViewModel.Activities}">
+                
             </CollectionView>
         </Grid>
     </Frame>

@@ -1,7 +1,7 @@
 ﻿using CoreEngine.APIHandlers;
 using GalaSoft.MvvmLight.Command;
 using Mobile.Core.Models.Core;
-using System;
+using Mobile.Core.Worker;
 using System.Windows.Input;
 
 namespace Mobile.Core.ViewModels
@@ -9,18 +9,25 @@ namespace Mobile.Core.ViewModels
     public class LoginViewModel : BaseViewModel
     {
         private readonly IMemberHandler _memberHandler;
+        private readonly SettingService _settingService;
 
         public string UserName { get; set; }
         public string Password { get; set; }
 
-        public LoginViewModel(IMemberHandler memberHandler)
+        public LoginViewModel(IMemberHandler memberHandler, SettingService settingService)
         {
             _memberHandler = memberHandler;
+            _settingService = settingService;
+
         }
         public override void OnAppear(params object[] args)
         {
             UserName = string.Empty;
             Password = string.Empty;
+#if DEBUG
+            UserName = "181909";
+            Password = "qbQ890ZC";
+#endif
         }
 
         public ICommand LoginCommand => new RelayCommand(LoginAction);
@@ -45,6 +52,8 @@ namespace Mobile.Core.ViewModels
                     if (user != null)
                     {
                         AppService.CurrentUser = user;
+                        _settingService.Token = res.Token;
+                        _nav.Init<HomeViewModel>();
                     }
                 }
                 IsBusy = false;

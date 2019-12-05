@@ -4,12 +4,19 @@
                      xmlns:d="http://xamarin.com/schemas/2014/forms/design"
                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                      mc:Ignorable="d"
+                     xmlns:local="clr-namespace:MobileApp.Views.Course"
                      xmlns:vm="clr-namespace:Mobile.Core.ViewModels;assembly=Mobile.Core"
                      xmlns:controls="clr-namespace:MobileApp.Controls"
                      x:DataType="vm:CoursesViewModel"
                      x:TypeArguments="vm:CoursesViewModel"
                      x:Class="MobileApp.Views.Course.CoursesPage">
     <Grid d:BindingContext="{x:Static vm:CoursesViewModel}">
-        <CollectionView ItemsSource="{Binding Courses}" />
+        <CollectionView ItemsSource="{Binding Semesters}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <local:CoursePartialView BindingContext="{Binding}" />
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
     </Grid>
 </controls:CustomPage>

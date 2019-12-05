@@ -7,15 +7,14 @@
                      xmlns:controls="clr-namespace:MobileApp.Controls"
                      NavigationPage.HasNavigationBar="False"
                      xmlns:vm="clr-namespace:Mobile.Core.ViewModels;assembly=Mobile.Core"
-                     BindingContext="{x:Static vm:DesignLocator.LoginViewModel}"
                      x:DataType="vm:LoginViewModel"
                      x:TypeArguments="vm:LoginViewModel"
                      x:Class="MobileApp.Views.Login.LoginPage">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="3*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Image Aspect="AspectFill"
                Source="front_bg.ong" />
@@ -30,20 +29,18 @@
                HorizontalOptions="Center">
             <Image Source="iitlogo.png"
                    Margin="20"
-                   Aspect="AspectFit"/>
+                   Aspect="AspectFit" />
         </Frame>
-       
-        <StackLayout Margin="30,40,30,0"
+        <StackLayout Margin="30,0,30,0"
                      Grid.Row="1"
                      IsVisible="{Binding IsBusy, Converter={StaticResource BoolInverter}}"
-                     VerticalOptions="End">
-            <Entry Placeholder="Username/Roll" 
-                   Text="{Binding UserName}"/>
+                     VerticalOptions="Center">
+            <Entry Placeholder="Username/Roll"
+                   Text="{Binding UserName}" />
             <Entry Placeholder="Password"
                    Text="{Binding Password}"
                    IsPassword="True" />
-            <Button Margin="40"
-                    Grid.Row="2"
+            <Button Margin="40,20"
                     CornerRadius="10"
                     HorizontalOptions="Center"
                     WidthRequest="150"
@@ -56,7 +53,7 @@
                 BackgroundColor="Transparent"
                 Visual="Default"
                 VerticalOptions="End"
-                Margin="30"
+                Margin="30,0"
                 Text="ForgetPassword"
                 TextColor="Maroon" />
         <ActivityIndicator Grid.Row="1"

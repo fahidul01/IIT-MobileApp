@@ -9,12 +9,19 @@
              xmlns:controls="clr-namespace:MobileApp.Controls"
              x:Class="MobileApp.Views.Course.CoursePartialView">
     <Frame d:BindingContext="{x:Static model:Semester}">
-        <controls:StackLIstLayout ItemsSource="{Binding Courses}">
-            <controls:StackLIstLayout.ItemTemplate>
-                <DataTemplate x:DataType="model:Course">
-                    <StackLayout Orientation="Horizontal" />
-                </DataTemplate>
-            </controls:StackLIstLayout.ItemTemplate>
-        </controls:StackLIstLayout>
+        <StackLayout>
+            <Label Text="Semeseter" />
+            <Label Text="{Binding Name}" />
+            <controls:StackLIstLayout ItemsSource="{Binding Courses}">
+                <controls:StackLIstLayout.ItemTemplate>
+                    <DataTemplate x:DataType="model:Course">
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="{Binding CourseId}" />
+                        </StackLayout>
+                    </DataTemplate>
+                </controls:StackLIstLayout.ItemTemplate>
+            </controls:StackLIstLayout>
+        </StackLayout>
+       
     </Frame>
 </ContentView>
