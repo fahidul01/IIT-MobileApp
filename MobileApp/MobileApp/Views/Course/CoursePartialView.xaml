@@ -8,20 +8,61 @@
              x:DataType="model:Semester"
              xmlns:controls="clr-namespace:MobileApp.Controls"
              x:Class="MobileApp.Views.Course.CoursePartialView">
-    <Frame d:BindingContext="{x:Static model:Semester}">
-        <StackLayout>
-            <Label Text="Semeseter" />
-            <Label Text="{Binding Name}" />
-            <controls:StackLIstLayout ItemsSource="{Binding Courses}">
-                <controls:StackLIstLayout.ItemTemplate>
-                    <DataTemplate x:DataType="model:Course">
-                        <StackLayout Orientation="Horizontal">
-                            <Label Text="{Binding CourseId}" />
-                        </StackLayout>
-                    </DataTemplate>
-                </controls:StackLIstLayout.ItemTemplate>
-            </controls:StackLIstLayout>
-        </StackLayout>
-       
-    </Frame>
+    <Grid d:BindingContext="{x:Static model:Semester}">
+        <Frame Margin="10"
+               Padding="5">
+            <StackLayout>
+                <Label Text="{Binding Name, StringFormat='{}[{0}]'}"
+                       FontSize="Medium"
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource colorPrimary}"
+                       d:Text="[Semester]" />
+                <Grid>
+                    <Label Text="Course"
+                           FontSize="Small"
+                           FontAttributes="Bold" />
+                    <Label Text="Course Name"
+                           FontSize="Small"
+                           FontAttributes="Bold"
+                           Grid.Column="1"
+                           Grid.ColumnSpan="2" />
+                    <Label Text="Credit"
+                           FontSize="Small"
+                           Grid.Column="3"
+                           HorizontalTextAlignment="Center"
+                           FontAttributes="Bold" />
+                </Grid>
+                <controls:StackLIstLayout ItemsSource="{Binding Courses}">
+                    <controls:StackLIstLayout.ItemTemplate>
+                        <DataTemplate x:DataType="model:Course">
+                            <Grid>
+                                <Grid.Resources>
+                                    <Style TargetType="Label">
+                                        <Setter Property="FontSize"
+                                                Value="Small" />
+                                        <Setter Property="TextColor"
+                                                Value="DarkGray" />
+                                    </Style>
+                                </Grid.Resources>
+                                <Label Text="{Binding CourseId}"
+                                       d:Text="{Binding}" />
+                                <Label Text="{Binding CourseName}"
+                                       Grid.Column="1"
+                                       MaxLines="2"
+                                       LineBreakMode="TailTruncation"
+                                       d:Text="Lengthy Course Name can be in multiple line"
+                                       Grid.ColumnSpan="2" />
+                                <Label Text="{Binding CourseCredit}"
+                                       d:Text="3.00"
+                                       HorizontalOptions="Center"
+                                       FontSize="Small"
+                                       Grid.Column="3"
+                                       FontAttributes="Bold" />
+                            </Grid>
+                        </DataTemplate>
+                    </controls:StackLIstLayout.ItemTemplate>
+                </controls:StackLIstLayout>
+            </StackLayout>
+        </Frame>
+    </Grid>
 </ContentView>
