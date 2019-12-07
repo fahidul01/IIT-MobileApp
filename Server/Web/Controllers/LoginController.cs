@@ -1,8 +1,8 @@
-﻿using System.Threading.Tasks;
-using CoreEngine.Model.DBModel;
+﻿using CoreEngine.Model.DBModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Web.Controllers
 {
@@ -23,7 +23,7 @@ namespace Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(string userName, string password, bool isPersistent = true)
         {
-            if(string.IsNullOrWhiteSpace(userName) || string.IsNullOrWhiteSpace(password))
+            if (string.IsNullOrWhiteSpace(userName) || string.IsNullOrWhiteSpace(password))
             {
                 Failed("Failed to Login. Empty credentials");
                 return View(nameof(Index));

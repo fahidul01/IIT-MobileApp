@@ -3,7 +3,6 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Mobile.Core.Engines.Services;
 using Mobile.Core.Models.Core;
-using PropertyChanged;
 using System.Windows.Input;
 
 namespace Mobile.Core.ViewModels

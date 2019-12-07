@@ -1,7 +1,6 @@
 ﻿using CoreEngine.APIHandlers;
 using Mobile.Core.Models.Core;
 using Mobile.Core.Worker;
-using System;
 
 namespace Mobile.Core.ViewModels
 {
@@ -17,11 +16,11 @@ namespace Mobile.Core.ViewModels
             _settingServicce = settingService;
             _memberHandler = memberHandler;
         }
-        public async override void OnAppear(params object[] args)
+        public override async void OnAppear(params object[] args)
         {
             if (string.IsNullOrWhiteSpace(_settingServicce.Token))
             {
-                 _nav.Init<LoginViewModel>();
+                _nav.Init<LoginViewModel>();
             }
             else
             {

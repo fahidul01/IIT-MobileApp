@@ -1,8 +1,5 @@
-﻿using System;
+﻿using CoreEngine.Model.DBModel;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using CoreEngine.Model.DBModel;
 
 namespace Web.Areas.Admin.ViewModels
 {
@@ -14,9 +11,9 @@ namespace Web.Areas.Admin.ViewModels
 
         public DashboardViewModel(List<Lesson> lessons, List<Notice> notices, List<User> batch)
         {
-            this.Lessons = lessons;
-            this.Notices = notices;
-            this.Batches = batch;
+            Lessons = lessons;
+            Notices = notices;
+            Batches = batch;
         }
     }
 }

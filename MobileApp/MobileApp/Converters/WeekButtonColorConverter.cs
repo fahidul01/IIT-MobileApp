@@ -12,7 +12,10 @@ namespace MobileApp.Converters
             {
                 return Color.WhiteSmoke;
             }
-            else return Color.Transparent;
+            else
+            {
+                return Color.Transparent;
+            }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

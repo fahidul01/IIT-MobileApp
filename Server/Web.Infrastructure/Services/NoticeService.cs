@@ -1,7 +1,6 @@
 ﻿using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -48,7 +47,10 @@ namespace Web.Infrastructure.Services
                                   .Include(m => m.Batch)
                                   .FirstOrDefaultAsync(x => x.UserRole == AppConstants.Student &&
                                                             x.UserName == user);
-            if (dbUser == null) return false;
+            if (dbUser == null)
+            {
+                return false;
+            }
             else
             {
                 post.Owner = dbUser;
@@ -89,7 +91,7 @@ namespace Web.Infrastructure.Services
             var notices = await _db.Notices.Where(x => x.EventDate > CurrentTime &&
                                                      x.EventDate <= nextWeek)
                                            .Include(m => m.Batch)
-                                           .OrderBy(x=>x.EventDate)
+                                           .OrderBy(x => x.EventDate)
                                            .ToListAsync();
             return notices;
         }
@@ -108,7 +110,10 @@ namespace Web.Infrastructure.Services
         {
             var notice = await _db.Notices.Include(x => x.Batch)
                                           .FirstOrDefaultAsync(x => x.Id == id);
-            if (notice == null) return false;
+            if (notice == null)
+            {
+                return false;
+            }
             else
             {
                 _db.Entry(notice).State = EntityState.Deleted;

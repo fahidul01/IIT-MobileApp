@@ -6,10 +6,10 @@ using System.Linq;
 
 namespace Mobile.Core.Models.Partials
 {
-    public  class RoutineViewModel
+    public class RoutineViewModel
     {
-        public List<Activity> Activities { get;private set; }
-        public List<Routine> Routines { get;private set; }
+        public List<Activity> Activities { get; private set; }
+        public List<Routine> Routines { get; private set; }
 
         public RoutineViewModel()
         {
@@ -30,7 +30,10 @@ namespace Mobile.Core.Models.Partials
             foreach (var item in Routines)
             {
                 item.IsSelected = item == routine;
-                if (item.IsSelected) Activities = item.Activities;
+                if (item.IsSelected)
+                {
+                    Activities = item.Activities;
+                }
             }
         }
 
@@ -40,17 +43,20 @@ namespace Mobile.Core.Models.Partials
             lessons.ForEach(x => allActivity.Add(new Activity(x.Course?.CourseName, x.DayOfWeek, x.TimeOfDay)));
             notices.ForEach(x => allActivity.Add(new Activity(x.Title, x.EventDate.DayOfWeek, TimeSpan.FromHours(9))));
 
-            foreach(var item in Routines)
+            foreach (var item in Routines)
             {
                 var todayActivity = allActivity.Where(x => x.DayOfWeek == item.DayOfWeek)
                                                .OrderBy(x => x.TimeOfDay)
                                                .ToList();
-                if (todayActivity.Count > 0) item.Activities = todayActivity;
+                if (todayActivity.Count > 0)
+                {
+                    item.Activities = todayActivity;
+                }
             }
         }
     }
 
-    public class Routine:NotifyModel
+    public class Routine : NotifyModel
     {
         public DayOfWeek DayOfWeek { get; private set; }
 

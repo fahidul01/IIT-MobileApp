@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CoreEngine.Model.Common
+﻿namespace CoreEngine.Model.Common
 {
     public class SignInResponse
     {

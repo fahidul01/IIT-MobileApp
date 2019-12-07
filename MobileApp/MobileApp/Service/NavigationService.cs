@@ -44,7 +44,7 @@ namespace MobileApp.Service
                 BarBackgroundColor = Color.DarkBlue,
                 BarTextColor = Color.White
             };
-            
+
             if (vm == typeof(HomeViewModel))
             {
                 Application.Current.MainPage = new MainPage(_nav);
@@ -58,7 +58,7 @@ namespace MobileApp.Service
             {
                 Application.Current.MainPage = _nav;
             }
-            
+
 
             //page.BindingContext = Locator.GetInstance<T>();
 
@@ -100,7 +100,11 @@ namespace MobileApp.Service
         public async Task NavigateTo<T>(params object[] parameter) where T : BaseViewModel
         {
             var type = typeof(T);
-            if (type == CurrentPage) return;
+            if (type == CurrentPage)
+            {
+                return;
+            }
+
             CurrentPage = type;
             await _semaphoreSlim.WaitAsync();
             if (Pages.ContainsKey(type))
@@ -122,7 +126,11 @@ namespace MobileApp.Service
 
         public async Task NavigateTo(Type type, params object[] parameter)
         {
-            if (type == CurrentPage) return;
+            if (type == CurrentPage)
+            {
+                return;
+            }
+
             CurrentPage = type;
             await _semaphoreSlim.WaitAsync();
             if (Pages.ContainsKey(type))
@@ -149,14 +157,14 @@ namespace MobileApp.Service
             if (Pages.ContainsKey(type))
             {
                 var page = Activator.CreateInstance(Pages[type]) as Page;
-               // var vm = Locator.GetInstance<T>();
-               // page.BindingContext = vm;
+                // var vm = Locator.GetInstance<T>();
+                // page.BindingContext = vm;
                 if (page.BindingContext is BaseViewModel viewModel)
                 {
                     viewModel.OnAppear(parameter);
                 }
                 await _nav.Navigation.PushModalAsync(page);
-                if(page.BindingContext is IPopupModel popupModel)
+                if (page.BindingContext is IPopupModel popupModel)
                 {
                     popupModel.DataCommand = dataCommand;
                 }
@@ -168,7 +176,7 @@ namespace MobileApp.Service
             _semaphoreSlim.Release();
         }
 
-        public void Configure(Type baseViewModel,Type page)
+        public void Configure(Type baseViewModel, Type page)
         {
             Pages.Add(baseViewModel, page);
         }

@@ -1,11 +1,9 @@
 ﻿using CoreEngine.APIHandlers;
 using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Web.Infrastructure.Services;
@@ -73,15 +71,27 @@ namespace Web.Api
         public async Task<ActionResponse> ForgetPassword(string username)
         {
             var res = await _userService.RecoverPassword(username);
-            if (res) return new ActionResponse(true, "A Password reset has been accepted. Please check your mail");
-            else return new ActionResponse(false, "Failed to reset password. Try again");
+            if (res)
+            {
+                return new ActionResponse(true, "A Password reset has been accepted. Please check your mail");
+            }
+            else
+            {
+                return new ActionResponse(false, "Failed to reset password. Try again");
+            }
         }
 
         public async Task<List<User>> GetCurrentBatchUsers()
         {
             var dbUser = await _userManager.GetUserAsync(HttpContext.User);
-            if (dbUser == null) return null;
-            else return await _userService.GetAllStudent(dbUser);
+            if (dbUser == null)
+            {
+                return null;
+            }
+            else
+            {
+                return await _userService.GetAllStudent(dbUser);
+            }
         }
 
         [HttpPost]
@@ -95,7 +105,10 @@ namespace Web.Api
                 var token = _tokenService.GenerateJwtToken(username, dbUser);
                 return new SignInResponse(true, token);
             }
-            else return new SignInResponse(false);
+            else
+            {
+                return new SignInResponse(false);
+            }
         }
 
         public void Logout()
@@ -131,7 +144,10 @@ namespace Web.Api
             if (currentUser?.Id == user.Id)
             {
                 var res = await _userService.Update(user);
-                if (res != null) return new ActionResponse(true, "User Update Successfull");
+                if (res != null)
+                {
+                    return new ActionResponse(true, "User Update Successfull");
+                }
             }
             return new ActionResponse(false, "Failed to update User");
         }

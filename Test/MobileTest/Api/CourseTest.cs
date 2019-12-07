@@ -6,10 +6,8 @@ using Mobile.Core.Worker;
 using MobileTest.Core;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace MobileTest.Api
@@ -39,7 +37,11 @@ namespace MobileTest.Api
             var course = semesters.SelectMany(x => x.Courses).FirstOrDefault();
             var file = Path.GetTempFileName();
             var data = "This is a test File\n";
-            for (var i = 0; i < 1000; i++) File.AppendAllText(file, data);
+            for (var i = 0; i < 1000; i++)
+            {
+                File.AppendAllText(file, data);
+            }
+
             var db = new DBFile()
             {
                 FilePath = file,

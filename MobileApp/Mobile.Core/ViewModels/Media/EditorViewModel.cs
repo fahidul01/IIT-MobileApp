@@ -1,8 +1,5 @@
 ﻿using GalaSoft.MvvmLight.Command;
 using Mobile.Core.ViewModels.Core;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows.Input;
 
 namespace Mobile.Core.ViewModels

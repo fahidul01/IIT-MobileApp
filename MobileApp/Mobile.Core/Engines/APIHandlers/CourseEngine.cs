@@ -4,7 +4,6 @@ using CoreEngine.Model.DBModel;
 using Microsoft.AspNetCore.Http;
 using Mobile.Core.Worker;
 using System.Collections.Generic;
-using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -78,6 +77,11 @@ namespace Mobile.Core.Engines.APIHandlers
         {
             Semesters = null;
             return SendRequest<ActionResponse>(HttpMethod.Post, new { course, semesterId });
+        }
+
+        public Task<ActionResponse> UploadCourseResult(int courseId, DBFile dBFile, IFormFile formFile)
+        {
+            return SendMultiPartRequest<ActionResponse>(new { courseId }, dBFile);
         }
     }
 }

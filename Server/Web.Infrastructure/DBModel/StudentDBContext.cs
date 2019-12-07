@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using CoreEngine.Model.DBModel;
+﻿using CoreEngine.Model.DBModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -18,7 +17,7 @@ namespace Web.Infrastructure.DBModel
 
         public StudentDBContext(DbContextOptions<StudentDBContext> opt) : base(opt)
         {
-            this.Database.EnsureCreated();
+            Database.EnsureCreated();
         }
     }
 }

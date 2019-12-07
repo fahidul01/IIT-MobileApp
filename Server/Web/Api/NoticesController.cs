@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using CoreEngine.APIHandlers;
+﻿using CoreEngine.APIHandlers;
 using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Web.Infrastructure.Services;
 
 namespace Web.Api
@@ -23,7 +22,10 @@ namespace Web.Api
         public async Task<ActionResponse> AddPost(Notice post)
         {
             var user = HttpContext.User.Identity.Name;
-            if (string.IsNullOrWhiteSpace(user)) return new ActionResponse(false, "Invalid User");
+            if (string.IsNullOrWhiteSpace(user))
+            {
+                return new ActionResponse(false, "Invalid User");
+            }
             else
             {
                 var res = await _noticeService.AddUpdateNotice(post, user);
@@ -49,7 +51,10 @@ namespace Web.Api
         public async Task<ActionResponse> UpdatePost(Notice post)
         {
             var user = HttpContext.User.Identity.Name;
-            if (string.IsNullOrWhiteSpace(user)) return new ActionResponse(false, "Invalid User");
+            if (string.IsNullOrWhiteSpace(user))
+            {
+                return new ActionResponse(false, "Invalid User");
+            }
             else
             {
                 var res = await _noticeService.AddUpdateNotice(post, user);

@@ -5,9 +5,9 @@ using System.Collections.ObjectModel;
 
 namespace Mobile.Core.ViewModels
 {
-    public class NoticesViewModel:BaseViewModel
+    public class NoticesViewModel : BaseViewModel
     {
-        private INoticeHandler _noticeHandler;
+        private readonly INoticeHandler _noticeHandler;
         public List<Notice> UpcomingNotices { get; private set; }
         public ObservableCollection<Notice> Notices { get; private set; }
 

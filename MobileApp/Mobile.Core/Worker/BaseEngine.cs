@@ -1,11 +1,9 @@
 ﻿using CoreEngine.Model.DBModel;
 using Mobile.Core.Worker;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Mobile.Core.Engines.APIHandlers
@@ -28,21 +26,36 @@ namespace Mobile.Core.Engines.APIHandlers
             return await _httpWorker.SendRequest<T>(httpMethod, controller + "/" + member, content);
         }
 
-        protected async Task<T> SendMultiPartRequest<T>(object data, List<DBFile> dBFiles,[CallerMemberName]string member = "")
+        protected async Task<T> SendMultiPartRequest<T>(object data, List<DBFile> dBFiles, [CallerMemberName]string member = "")
         {
             using var requestContent = new MultipartFormDataContent();
             var jsonData = await FormHelper.GetPair(data);
-            foreach(var item in jsonData)
+            foreach (var item in jsonData)
             {
-                requestContent.Add(new StringContent(item.Value),item.Key);
+                requestContent.Add(new StringContent(item.Value), item.Key);
             }
 
-            foreach(var dbFile in dBFiles)
+            foreach (var dbFile in dBFiles)
             {
                 var streamContent = new StreamContent(File.OpenRead(dbFile.FilePath));
                 var fName = Path.GetFileName(dbFile.FilePath);
                 requestContent.Add(streamContent, "formfiles", fName);
             }
+            return await _httpWorker.SendRequest<T>(HttpMethod.Post, controller + "/" + member, requestContent);
+        }
+
+        protected async Task<T> SendMultiPartRequest<T>(object data, DBFile dBFile, [CallerMemberName]string member = "")
+        {
+            using var requestContent = new MultipartFormDataContent();
+            var jsonData = await FormHelper.GetPair(data);
+            foreach (var item in jsonData)
+            {
+                requestContent.Add(new StringContent(item.Value), item.Key);
+            }
+
+            var streamContent = new StreamContent(File.OpenRead(dBFile.FilePath));
+            var fName = Path.GetFileName(dBFile.FilePath);
+            requestContent.Add(streamContent, "formfile", fName);
             return await _httpWorker.SendRequest<T>(HttpMethod.Post, controller + "/" + member, requestContent);
         }
     }

@@ -7,7 +7,7 @@ namespace MobileApp.Controls
     {
     }
 
-    public partial class CustomTabPage<T> : TabbedPage where T: BaseViewModel
+    public partial class CustomTabPage<T> : TabbedPage where T : BaseViewModel
     {
 
     }

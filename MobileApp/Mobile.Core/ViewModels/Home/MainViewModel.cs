@@ -32,7 +32,7 @@ namespace Mobile.Core.ViewModels
         public string Icon { get; private set; }
         public Type Type { get; private set; }
 
-        public MenuItem(string title,string icon, Type type)
+        public MenuItem(string title, string icon, Type type)
         {
             Title = title;
             Icon = icon;

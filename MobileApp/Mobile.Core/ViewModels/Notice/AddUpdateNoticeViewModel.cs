@@ -1,7 +1,6 @@
 ﻿using CoreEngine.APIHandlers;
 using CoreEngine.Model.DBModel;
 using GalaSoft.MvvmLight.Command;
-using System;
 using System.Windows.Input;
 
 namespace Mobile.Core.ViewModels
@@ -15,7 +14,7 @@ namespace Mobile.Core.ViewModels
             _noticeHandler = noticeHandler;
         }
 
-       
+
 
         public override void OnAppear(params object[] args)
         {

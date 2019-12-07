@@ -2,7 +2,6 @@
 using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
 using Mobile.Core.Worker;
-using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -25,7 +24,7 @@ namespace Mobile.Core.Engines.APIHandlers
             return SendRequest<ActionResponse>(HttpMethod.Get, user);
         }
 
-       
+
 
         public Task<List<User>> GetCurrentBatchUsers()
         {

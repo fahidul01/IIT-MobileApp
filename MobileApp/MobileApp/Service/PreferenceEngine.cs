@@ -2,7 +2,6 @@
 using Mobile.Core.Engines.Services;
 using Plugin.FilePicker;
 using System.Threading.Tasks;
-using Xamarin.Essentials;
 
 namespace MobileApp.Service
 {
@@ -21,12 +20,18 @@ namespace MobileApp.Service
         public async Task<DBFile> PickFile()
         {
             var fileData = await CrossFilePicker.Current.PickFile();
-            if (fileData == null) return null;
-            else return new DBFile()
+            if (fileData == null)
             {
-                FileName = fileData.FileName,
-                FilePath = fileData.FilePath,
-            };
+                return null;
+            }
+            else
+            {
+                return new DBFile()
+                {
+                    FileName = fileData.FileName,
+                    FilePath = fileData.FilePath,
+                };
+            }
         }
     }
 }

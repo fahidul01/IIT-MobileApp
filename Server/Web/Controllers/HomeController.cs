@@ -28,8 +28,14 @@ namespace Web.Controllers
             {
                 var adminRole = await _usermanager.IsInRoleAsync(user, AppConstants.Admin);
 
-                if (adminRole) return RedirectToAction("index", "Dashboard", new { area = "admin" });
-                else return View();
+                if (adminRole)
+                {
+                    return RedirectToAction("index", "Dashboard", new { area = "admin" });
+                }
+                else
+                {
+                    return View();
+                }
             }
         }
     }

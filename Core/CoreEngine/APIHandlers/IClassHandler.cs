@@ -1,4 +1,5 @@
-﻿using CoreEngine.Model.DBModel;
+﻿using CoreEngine.Model.Common;
+using CoreEngine.Model.DBModel;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -9,5 +10,7 @@ namespace CoreEngine.APIHandlers
     {
         Task<List<Lesson>> GetLessons();
         Task<List<Lesson>> GetLessons(DateTime dateTime);
+        Task<ActionResponse> AddLesson(int courseId, Lesson lesson);
+        Task<ActionResponse> UpdateLesson(Lesson lesson);
     }
 }

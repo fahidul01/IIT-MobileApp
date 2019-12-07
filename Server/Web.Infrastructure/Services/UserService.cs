@@ -89,7 +89,10 @@ namespace Web.Infrastructure.Services
                 terminalUser.Courses = courses;
                 return terminalUser;
             }
-            else return null;
+            else
+            {
+                return null;
+            }
         }
 
         public async Task<List<User>> GetAllStudent(DBUser dbUser)
@@ -103,7 +106,10 @@ namespace Web.Infrastructure.Services
         public async Task<User> MakeCR(string id)
         {
             var user = await _db.Users.FirstOrDefaultAsync(x => x.Id == id);
-            if (user == null) return null;
+            if (user == null)
+            {
+                return null;
+            }
             else
             {
                 user.ClassRepresentative = true;
@@ -116,7 +122,10 @@ namespace Web.Infrastructure.Services
         public async Task<User> RemoveCR(string id)
         {
             var user = await _db.Users.FirstOrDefaultAsync(x => x.Id == id);
-            if (user == null) return null;
+            if (user == null)
+            {
+                return null;
+            }
             else
             {
                 user.ClassRepresentative = false;
@@ -208,8 +217,14 @@ namespace Web.Infrastructure.Services
             {
                 user = await _usermanager.FindByNameAsync(id);
             }
-            if (user == null) return false;
-            else return await ResetPassword(user);
+            if (user == null)
+            {
+                return false;
+            }
+            else
+            {
+                return await ResetPassword(user);
+            }
         }
 
         private async Task<bool> ResetPassword(DBUser dBUser)
@@ -219,7 +234,7 @@ namespace Web.Infrastructure.Services
                 var password = CryptoService.GenerateRandomPassword();
                 var token = await _usermanager.GeneratePasswordResetTokenAsync(dBUser);
                 var msg = new EmailMessageCreator().CreatePasswordRecovery(password);
-                var res =  await _emailSender.SendEmailAsync(dBUser.Email, "Password Recover", msg);
+                var res = await _emailSender.SendEmailAsync(dBUser.Email, "Password Recover", msg);
                 await _usermanager.ResetPasswordAsync(dBUser, token, password);
                 return true;
             }

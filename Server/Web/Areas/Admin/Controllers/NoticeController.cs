@@ -128,8 +128,14 @@ namespace Web.Areas.Admin.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var result = await _noticeService.Delete(id);
-            if (result) return RedirectToAction(nameof(Index));
-            else return RedirectToAction(nameof(Details), new { id });
+            if (result)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                return RedirectToAction(nameof(Details), new { id });
+            }
         }
     }
 }

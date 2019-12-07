@@ -17,7 +17,7 @@ namespace Web.Areas.Admin.ViewModels
         [Display(Name = "Course Id")]
         public string CourseId { get; set; }
         [Required]
-        [Range(0.5,10)]
+        [Range(0.5, 10)]
         [Display(Name = "Total Course Credit")]
         public decimal CourseCredit { get; set; }
         public CreateCoursePopupModel()

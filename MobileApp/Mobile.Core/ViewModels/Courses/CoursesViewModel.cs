@@ -1,7 +1,6 @@
 ﻿using CoreEngine.APIHandlers;
 using CoreEngine.Model.DBModel;
 using GalaSoft.MvvmLight.Command;
-using System;
 using System.Collections.Generic;
 using System.Windows.Input;
 
@@ -23,7 +22,7 @@ namespace Mobile.Core.ViewModels
             RefreshAction();
         }
 
-        protected async override void RefreshAction()
+        protected override async void RefreshAction()
         {
             base.RefreshAction();
             Semesters = await _courseHandler.GetCurrentSemester();

@@ -26,7 +26,11 @@ namespace Web.Areas.Admin.Controllers
         public async Task<IActionResult> Details(string id)
         {
             var student = await _userService.GetStudent(id);
-            if (student == null) return NotFound();
+            if (student == null)
+            {
+                return NotFound();
+            }
+
             return View(student);
         }
 
@@ -34,7 +38,11 @@ namespace Web.Areas.Admin.Controllers
         public async Task<IActionResult> Update(User user)
         {
             var student = await _userService.Update(user);
-            if (student == null) return NotFound();
+            if (student == null)
+            {
+                return NotFound();
+            }
+
             return View(nameof(Details), student);
         }
 
@@ -48,14 +56,22 @@ namespace Web.Areas.Admin.Controllers
         public async Task<IActionResult> MakeCR(string id)
         {
             var user = await _userService.MakeCR(id);
-            if (user == null) return NotFound();
+            if (user == null)
+            {
+                return NotFound();
+            }
+
             return (View(nameof(Details), user));
         }
 
         public async Task<IActionResult> RemoveCR(string id)
         {
             var user = await _userService.RemoveCR(id);
-            if (user == null) return NotFound();
+            if (user == null)
+            {
+                return NotFound();
+            }
+
             return (View(nameof(Details), user));
         }
 
@@ -63,8 +79,15 @@ namespace Web.Areas.Admin.Controllers
         public async Task<IActionResult> RecoverPassword(string id)
         {
             var res = await _userService.RecoverPassword(id);
-            if (res) SuccessMessage = "Updated Password Successfully";
-            else SuccessMessage = "Failed to update";
+            if (res)
+            {
+                SuccessMessage = "Updated Password Successfully";
+            }
+            else
+            {
+                SuccessMessage = "Failed to update";
+            }
+
             return PartialView("_Message");
         }
 

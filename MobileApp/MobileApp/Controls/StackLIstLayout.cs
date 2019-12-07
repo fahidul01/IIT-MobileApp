@@ -44,14 +44,14 @@ namespace MobileApp.Controls
 
         public StackLIstLayout()
         {
-            
+
         }
 
         protected virtual void SetItems()
         {
             Children.Clear();
 
-           
+
             if (ItemsSource == null)
             {
                 return;

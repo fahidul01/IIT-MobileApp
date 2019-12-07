@@ -1,18 +1,12 @@
 using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
-using Jdenticon.AspNetCore;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
 using System;
-using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using System.Threading.Tasks;
 using Web.Infrastructure.AppServices;
@@ -37,7 +31,7 @@ namespace Web
         {
             services.AddDbContext<StudentDBContext>(opt =>
                  opt.UseSqlite("Filename=mydata.db"));
-           //services.AddDbContext<StudentDBContext>(opt =>
+            //services.AddDbContext<StudentDBContext>(opt =>
             //   opt.UseSqlServer(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=D:\Temp\MITServer.mdf;Integrated Security=True;Connect Timeout=300"));
             services.RegisterAllTypes<BaseService>(typeof(StudentDBContext).Assembly);
 
@@ -166,7 +160,7 @@ namespace Web
             }
             await UserManager.AddToRoleAsync(user, "Admin");
 
-            
+
         }
     }
 }

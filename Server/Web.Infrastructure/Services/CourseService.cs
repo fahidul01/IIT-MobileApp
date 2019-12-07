@@ -30,7 +30,7 @@ namespace Web.Infrastructure.Services
             else
             {
                 var batch = await _db.Batches
-                                     .Include(x=>x.Students)
+                                     .Include(x => x.Students)
                                      .FirstOrDefaultAsync(x => x.Id == batchId);
                 var semester = await _db.Semesters.FirstOrDefaultAsync(x => x.Id == semesterId);
                 if (batch == null || semester == null)
@@ -39,7 +39,7 @@ namespace Web.Infrastructure.Services
                 }
                 else
                 {
-                    foreach(var student in batch.Students)
+                    foreach (var student in batch.Students)
                     {
                         var courseStudent = new StudentCourse()
                         {
@@ -144,7 +144,7 @@ namespace Web.Infrastructure.Services
         public async Task<List<Semester>> GetSemestersAsync(int batchId)
         {
             var res = await _db.Semesters
-                               .Include(x=>x.Courses)
+                               .Include(x => x.Courses)
                                .Where(x => x.Batch.Id == batchId)
                                .ToListAsync();
             return res;
@@ -153,7 +153,10 @@ namespace Web.Infrastructure.Services
         public async Task<Lesson> AddLesson(Lesson lesson, int courseId)
         {
             var course = await _db.Courses.FirstOrDefaultAsync(x => x.Id == courseId);
-            if (course == null) return null;
+            if (course == null)
+            {
+                return null;
+            }
             else
             {
                 lesson.Course = course;

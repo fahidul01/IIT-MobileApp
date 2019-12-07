@@ -27,7 +27,7 @@ namespace Web.WebServices
             {
                 Body = message,
                 Subject = subject,
-                From = new MailAddress(Options.From,"IIT WebMail"),
+                From = new MailAddress(Options.From, "IIT WebMail"),
             };
             mailMessage.To.Add(email);
 

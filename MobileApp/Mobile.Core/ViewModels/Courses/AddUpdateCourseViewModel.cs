@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using CoreEngine.APIHandlers;
+﻿using CoreEngine.APIHandlers;
 using CoreEngine.Model.DBModel;
 using GalaSoft.MvvmLight.Command;
 using Mobile.Core.Engines.Services;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace Mobile.Core.ViewModels
 {
@@ -30,7 +29,7 @@ namespace Mobile.Core.ViewModels
             Lessons = new ObservableCollection<Lesson>();
             DBFiles = new ObservableCollection<DBFile>();
         }
-        public async override void OnAppear(params object[] args)
+        public override async void OnAppear(params object[] args)
         {
             base.OnAppear(args);
             if (args != null && args[0] is Course course)
@@ -100,8 +99,16 @@ namespace Mobile.Core.ViewModels
             {
                 IsBusy = true;
                 var res = await _courseHandler.DeleteCouseMaterial(obj);
-                if (res != null) _dialog.ShowToastMessage(res.Message);
-                if (res.Actionstatus) DBFiles.Remove(obj);
+                if (res != null)
+                {
+                    _dialog.ShowToastMessage(res.Message);
+                }
+
+                if (res.Actionstatus)
+                {
+                    DBFiles.Remove(obj);
+                }
+
                 IsBusy = false;
             }
         }
@@ -112,14 +119,17 @@ namespace Mobile.Core.ViewModels
             var file = await _filePicker.PickFile();
             if (file != null)
             {
-                
+
                 if (CurrentCourse.Id != 0)
                 {
-                    var res = await _courseHandler.AddMaterial(CurrentCourse.Id, file);
+                    var res = await _courseHandler.AddMaterial(CurrentCourse.Id, new List<DBFile> { file });
                     if (res != null)
                     {
                         _dialog.ShowToastMessage(res.Message);
-                        if (res.Actionstatus) DBFiles.Add(file);
+                        if (res.Actionstatus)
+                        {
+                            DBFiles.Add(file);
+                        }
                     }
                 }
                 else
@@ -132,21 +142,38 @@ namespace Mobile.Core.ViewModels
 
         private async void SaveAction()
         {
-            if (string.IsNullOrEmpty(CurrentCourse.CourseName)) _dialog.ShowToastMessage("Invalid Name");
-            else if (string.IsNullOrEmpty(CurrentCourse.CourseId)) _dialog.ShowToastMessage("Incalid Course ID");
-            else if (CurrentCourse.CourseCredit <= 0) _dialog.ShowToastMessage("Credit hour should be greater than 0");
+            if (string.IsNullOrEmpty(CurrentCourse.CourseName))
+            {
+                _dialog.ShowToastMessage("Invalid Name");
+            }
+            else if (string.IsNullOrEmpty(CurrentCourse.CourseId))
+            {
+                _dialog.ShowToastMessage("Incalid Course ID");
+            }
+            else if (CurrentCourse.CourseCredit <= 0)
+            {
+                _dialog.ShowToastMessage("Credit hour should be greater than 0");
+            }
             else
             {
                 if (CurrentCourse.Id == 0)
                 {
                     var res = await _courseHandler.CreateCourse(CurrentSemester.Id, CurrentCourse, DBFiles.ToList());
-                    if (res.Actionstatus) _nav.GoBack();
+                    if (res.Actionstatus)
+                    {
+                        _nav.GoBack();
+                    }
+
                     _dialog.ShowToastMessage("Created Course Successfully");
                 }
                 else
                 {
                     var res = await _courseHandler.UpdateCourse(CurrentCourse);
-                    if (res.Actionstatus) _nav.GoBack();
+                    if (res.Actionstatus)
+                    {
+                        _nav.GoBack();
+                    }
+
                     _dialog.ShowToastMessage("Updated Course Successfully");
                 }
             }

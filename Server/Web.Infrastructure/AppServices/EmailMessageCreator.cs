@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Web.Infrastructure.AppServices
+﻿namespace Web.Infrastructure.AppServices
 {
     class EmailMessageCreator
     {

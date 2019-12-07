@@ -1,8 +1,6 @@
 ﻿using CoreEngine.APIHandlers;
 using CoreEngine.Model.DBModel;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Mobile.Core.ViewModels
 {

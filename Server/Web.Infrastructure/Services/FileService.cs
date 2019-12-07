@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
 using Web.Infrastructure.DBModel;
 
@@ -26,7 +25,7 @@ namespace Web.Infrastructure.Services
         public async Task<List<DBFile>> UploadFiles(IEnumerable<IFormFile> formFiles)
         {
             var files = new List<DBFile>();
-            foreach (var file in formFiles.Where(x=>x.Length>0))
+            foreach (var file in formFiles.Where(x => x.Length > 0))
             {
                 files.Add(await UploadFile(file));
             }
@@ -44,7 +43,7 @@ namespace Web.Infrastructure.Services
         public async Task<DBFile> UploadFile(IFormFile formFile)
         {
             var target = GetTargetFolder();
-            
+
             var filePath = Path.GetTempFileName();
 
             using (var stream = File.Create(filePath))
@@ -85,7 +84,9 @@ namespace Web.Infrastructure.Services
         {
             var file = await _db.DBFiles.FindAsync(id);
             if (file == null)
+            {
                 return null;
+            }
             else
             {
                 var target = GetTargetFolder();

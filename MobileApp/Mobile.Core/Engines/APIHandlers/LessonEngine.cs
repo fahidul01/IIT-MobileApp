@@ -1,4 +1,5 @@
 ﻿using CoreEngine.APIHandlers;
+using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
 using Mobile.Core.Worker;
 using System;
@@ -15,6 +16,11 @@ namespace Mobile.Core.Engines.APIHandlers
         {
         }
 
+        public Task<ActionResponse> AddLesson(int courseId, Lesson lesson)
+        {
+            return SendRequest<ActionResponse>(HttpMethod.Post, new { courseId, lesson });
+        }
+
         public Task<List<Lesson>> GetLessons()
         {
             return SendRequest<List<Lesson>>(HttpMethod.Get, null);
@@ -23,6 +29,11 @@ namespace Mobile.Core.Engines.APIHandlers
         public Task<List<Lesson>> GetLessons(DateTime dateTime)
         {
             return SendRequest<List<Lesson>>(HttpMethod.Post, dateTime);
+        }
+
+        public Task<ActionResponse> UpdateLesson(Lesson lesson)
+        {
+            return SendRequest<ActionResponse>(HttpMethod.Post, lesson);
         }
     }
 }

@@ -1,7 +1,4 @@
 ﻿using Mobile.Core.Engines.Dependency;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Mobile.Core.ViewModels
 {

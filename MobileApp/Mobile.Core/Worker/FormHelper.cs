@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Mobile.Core.Worker
@@ -13,7 +12,11 @@ namespace Mobile.Core.Worker
     {
         public static async Task<IDictionary<string, string>> GetPair(object data)
         {
-            if (data == null) return new Dictionary<string, string>();
+            if (data == null)
+            {
+                return new Dictionary<string, string>();
+            }
+
             try
             {
                 return await Task.Run(() => ToKeyValue(data));

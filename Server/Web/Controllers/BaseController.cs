@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Diagnostics;
-using Web.Models;
 
 namespace Web.Controllers
 {

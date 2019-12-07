@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 using Web.Infrastructure.Services;
 
 namespace Web.Controllers
@@ -26,7 +23,10 @@ namespace Web.Controllers
                 var contentType = "APPLICATION/octet-stream";
                 return File(System.IO.File.OpenRead(file.FilePath), contentType, file.FileName);
             }
-            else return NotFound();
+            else
+            {
+                return NotFound();
+            }
         }
     }
 }

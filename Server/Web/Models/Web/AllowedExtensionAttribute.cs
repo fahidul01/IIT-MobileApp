@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Web.Models.Web
 {
@@ -30,7 +28,7 @@ namespace Web.Models.Web
                     }
                 }
             }
-            else if(value is IFormFileCollection formFiles)
+            else if (value is IFormFileCollection formFiles)
             {
                 foreach (var file in formFiles)
                 {

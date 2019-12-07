@@ -1,8 +1,5 @@
 ﻿using Mobile.Core.Engines.Services;
-using System;
-using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace Mobile.Core.Worker
 {

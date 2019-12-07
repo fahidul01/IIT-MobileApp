@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Web.Infrastructure.Services
@@ -52,7 +51,10 @@ namespace Web.Infrastructure.Services
             {
                 var dbbatch = await _batchService.GetBatchAsync(batch.Id);
                 var cr = dbbatch.Students.FirstOrDefault(x => x.ClassRepresentative);
-                if (cr != null) crUsers.Add(cr);
+                if (cr != null)
+                {
+                    crUsers.Add(cr);
+                }
             }
             var rnd = new Random();
 
@@ -89,7 +91,7 @@ namespace Web.Infrastructure.Services
             for (var counter = 1; counter <= total; counter++)
             {
                 var batches = await _batchService.GetBatchesAsync(counter);
-                foreach(var batch in batches)
+                foreach (var batch in batches)
                 {
                     await FilleCourse(batch);
                 }
@@ -152,7 +154,10 @@ namespace Web.Infrastructure.Services
                         await CreateBatch(batchNo, dbUsers);
                         dbUsers.Clear();
                         batchNo--;
-                        if (batchNo <= lastBacth) break;
+                        if (batchNo <= lastBacth)
+                        {
+                            break;
+                        }
                     }
                 }
             };

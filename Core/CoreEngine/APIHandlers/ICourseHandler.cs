@@ -8,7 +8,7 @@ namespace CoreEngine.APIHandlers
 {
     public interface ICourseHandler
     {
-        Task<ActionResponse> CreateCourse(int semesterId,Course course,List<DBFile> dBFiles, List<IFormFile> formFiles = null);
+        Task<ActionResponse> CreateCourse(int semesterId, Course course, List<DBFile> dBFiles, List<IFormFile> formFiles = null);
         Task<List<Course>> GetCourses();
         Task<List<Course>> GetCourses(int batchId);
         Task<ActionResponse> UpdateCourse(Course course);
@@ -19,5 +19,6 @@ namespace CoreEngine.APIHandlers
         Task<Course> GetCourse(int courseId);
         Task<ActionResponse> DeleteLesson(int lessonId);
         Task<List<Semester>> GetCurrentSemester();
+        Task<ActionResponse> UploadCourseResult(int courseId, DBFile dBFile, IFormFile formFile);
     }
 }

@@ -34,12 +34,12 @@ namespace Mobile.Core.ViewModels
             }
         }
 
-        protected async override void RefreshAction()
+        protected override async void RefreshAction()
         {
             base.RefreshAction();
             IsBusy = true;
             CurrentCourse = await _courseHandler.GetCourse(CurrentCourse.Id);
-            
+
             IsBusy = false;
         }
 
@@ -60,12 +60,12 @@ namespace Mobile.Core.ViewModels
 
         private void CourseGradeAction()
         {
-            
+
         }
 
         private void AddMaterialAction()
         {
-            
+
         }
     }
 }

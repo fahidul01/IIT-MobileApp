@@ -1,9 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.IO;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
-
-namespace CoreEngine.Model.DBModel
+﻿namespace CoreEngine.Model.DBModel
 {
     public class DBFile
     {
