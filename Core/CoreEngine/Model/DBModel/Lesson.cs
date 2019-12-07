@@ -12,5 +12,6 @@ namespace CoreEngine.Model.DBModel
         public virtual Course Course { get; set; }
         public int TeacherId { get; set; }
         public string TeacherName { get; set; }
+        public string RoomNo { get; set; }
     }
 }

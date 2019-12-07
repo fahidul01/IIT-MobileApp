@@ -1,4 +1,7 @@
-﻿using Mobile.Core.Engines.Services;
+﻿using CoreEngine.Model.DBModel;
+using Mobile.Core.Engines.Services;
+using Plugin.FilePicker;
+using System.Threading.Tasks;
 using Xamarin.Essentials;
 
 namespace MobileApp.Service
@@ -13,6 +16,17 @@ namespace MobileApp.Service
         public void SetSetting(string key, string value)
         {
             Preferences.Set(key, value);
+        }
+
+        public async Task<DBFile> PickFile()
+        {
+            var fileData = await CrossFilePicker.Current.PickFile();
+            if (fileData == null) return null;
+            else return new DBFile()
+            {
+                FileName = fileData.FileName,
+                FilePath = fileData.FilePath,
+            };
         }
     }
 }

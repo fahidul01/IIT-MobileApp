@@ -24,7 +24,7 @@
             </d:CollectionView.ItemsSource>
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="model:Semester">
-                    <local:CoursePartialView />
+                    <local:CoursesPartialView />
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>

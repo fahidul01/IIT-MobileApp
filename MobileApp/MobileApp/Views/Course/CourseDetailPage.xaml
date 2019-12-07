@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<controls:CustomPage xmlns="http://xamarin.com/schemas/2014/forms"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                     xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                     mc:Ignorable="d"
+                     Title="Course"
+                     xmlns:pk="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
+                     xmlns:controls="clr-namespace:MobileApp.Controls"
+                     xmlns:vm="clr-namespace:Mobile.Core.ViewModels;assembly=Mobile.Core"
+                     xmlns:model="clr-namespace:CoreEngine.Model.DBModel;assembly=CoreEngine"
+                     x:DataType="vm:CourseDetailViewModel"
+                     x:TypeArguments="vm:CourseDetailViewModel"
+                     x:Class="MobileApp.Views.Course.CourseDetailPage">
+    <Grid d:BindingContext="{x:Static vm:CourseDetailViewModel}">
+        <pk:PancakeView HeightRequest="200"
+                        VerticalOptions="Start"
+                        BackgroundGradientStartColor="DarkBlue"
+                        BackgroundGradientEndColor="Blue"
+                        BackgroundColor="Blue" />
+        <ScrollView Padding="10">
+            <StackLayout>
+                <Frame Padding="10">
+                    <StackLayout>
+                        <Label Text="{Binding CurrentCourse.CourseId}"
+                               d:Text="CourseId"
+                               FontSize="Large"
+                               TextColor="{StaticResource colorPrimaryDark}"
+                               FontAttributes="Bold" />
+                        <Label Text="{Binding CurrentCourse.CourseName}"
+                               d:Text="Name of the course. Can be multiline and long" />
+                        <Label Text="{Binding CurrentCourse.Description}"
+                               FontSize="Small"
+                               TextColor="DarkGray"
+                               d:Text="This text supports  Html Tags"
+                               TextType="Html" />
+                    </StackLayout>
+                </Frame>
+                <Frame Padding="10">
+                    <StackLayout>
+                        <Label Text="Lessons" 
+                               FontSize="Medium"
+                               TextColor="{StaticResource colorPrimaryDark}"/>
+                        <CollectionView ItemsSource="{Binding CurrentCourse.Lessons}">
+                            <d:CollectionView.ItemsSource>
+                                <x:Array Type="{x:Type x:String}">
+                                    <x:String>Lesson 1</x:String>
+                                    <x:String>Lesson 2</x:String>
+                                    <x:String>Lesson 3</x:String>
+                                    <x:String>Lesson 4</x:String>
+                                    <x:String>Lesson 5</x:String>
+                                </x:Array>
+                            </d:CollectionView.ItemsSource>
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="model:Lesson">
+                                    <pk:PancakeView Padding="5"
+                                                    Margin="5"
+                                                    BorderDrawingStyle="Outside"
+                                                    BorderThickness="1">
+                                        <StackLayout>
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label Text="{Binding DayOfWeek}"
+                                                       FontSize="Small"
+                                                       d:Text="Wednesday" />
+                                                <Label Text="{Binding TimeOfDay}"
+                                                       FontSize="Small"
+                                                       d:Text="7.00 PM" />
+                                            </StackLayout>
+                                            <Label Text="{Binding TeacherName}" 
+                                                   d:Text="Teacher"/>
+                                        </StackLayout>
+                                    </pk:PancakeView>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </StackLayout>
+                </Frame>
+            </StackLayout>
+        </ScrollView>
+        <Button VerticalOptions="End"
+                HorizontalOptions="End"
+                HeightRequest="50"
+                WidthRequest="50"
+                CornerRadius="25"
+                Margin="20"
+                ImageSource="{controls:IconFont IconType=Add}"
+                BackgroundColor="DarkBlue" />
+    </Grid>
+</controls:CustomPage>

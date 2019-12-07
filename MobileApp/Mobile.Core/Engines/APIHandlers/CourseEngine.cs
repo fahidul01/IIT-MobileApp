@@ -18,17 +18,9 @@ namespace Mobile.Core.Engines.APIHandlers
         {
         }
 
-        public Task<ActionResponse> AddMaterial(int courseId, DBFile dbFile, IFormFile formFile = null)
+        public Task<ActionResponse> AddMaterial(int courseId, List<DBFile> dbFile, List<IFormFile> formFiles = null)
         {
-            using (var requestContent = new MultipartFormDataContent())
-            {
-                var streamContent = new StreamContent(File.OpenRead(dbFile.FilePath));
-                var fName = Path.GetFileName(dbFile.FilePath);
-
-                requestContent.Add(new StringContent(nameof(courseId)), courseId.ToString());
-                requestContent.Add(streamContent, nameof(formFile), fName);
-                return SendFileRequest<ActionResponse>(HttpMethod.Post, requestContent);
-            }
+            return SendMultiPartRequest<ActionResponse>(new { courseId }, dbFile);
         }
 
 
@@ -82,7 +74,7 @@ namespace Mobile.Core.Engines.APIHandlers
             return Semesters;
         }
 
-        public Task<ActionResponse> CreateCourse(Course course, int semesterId)
+        public Task<ActionResponse> CreateCourse(int semesterId, Course course, List<DBFile> dBFiles, List<IFormFile> formFiles = null)
         {
             Semesters = null;
             return SendRequest<ActionResponse>(HttpMethod.Post, new { course, semesterId });

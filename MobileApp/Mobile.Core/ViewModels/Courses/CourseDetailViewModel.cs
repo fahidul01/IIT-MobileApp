@@ -1,6 +1,10 @@
 ﻿using CoreEngine.APIHandlers;
 using CoreEngine.Model.DBModel;
+using GalaSoft.MvvmLight.Command;
 using Mobile.Core.Models.Core;
+using System;
+using System.Collections.Generic;
+using System.Windows.Input;
 
 namespace Mobile.Core.ViewModels
 {
@@ -35,7 +39,33 @@ namespace Mobile.Core.ViewModels
             base.RefreshAction();
             IsBusy = true;
             CurrentCourse = await _courseHandler.GetCourse(CurrentCourse.Id);
+            
             IsBusy = false;
+        }
+
+        public ICommand EditCourseCommand => new RelayCommand(CourseAction);
+
+        private void CourseAction()
+        {
+            var actionList = new Dictionary<string, Action>();
+
+            actionList.Add("Add Event", () => _nav.NavigateTo<AddUpdateNoticeViewModel>(PostType.ClassCancel, CurrentCourse));
+            actionList.Add("Modify Course", () => _nav.NavigateTo<AddUpdateCourseViewModel>(CurrentCourse));
+            actionList.Add("Add Lesson", () => _nav.NavigateTo<AddUpdateLessonViewModel>(CurrentCourse));
+            actionList.Add("Add Course Material", AddMaterialAction);
+            actionList.Add("Upload Course Grade", CourseGradeAction);
+
+            _dialog.ShowAction(CurrentCourse.CourseName, "Cancel", actionList);
+        }
+
+        private void CourseGradeAction()
+        {
+            
+        }
+
+        private void AddMaterialAction()
+        {
+            
         }
     }
 }

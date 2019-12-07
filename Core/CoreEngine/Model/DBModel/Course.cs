@@ -9,6 +9,7 @@ namespace CoreEngine.Model.DBModel
         public decimal CourseCredit { get; set; }
         public string CourseId { get; set; }
         public string CourseName { get; set; }
+        public string Description { get; set; }
         public virtual ICollection<StudentCourse> StudentCourses { get; set; }
         public virtual ICollection<Lesson> Lessons { get; set; }
         public virtual ICollection<DBFile> CourseMaterials { get; set; }

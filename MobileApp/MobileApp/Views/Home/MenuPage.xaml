@@ -9,6 +9,7 @@
              xmlns:helpers="clr-namespace:MobileApp.Helpers"
              x:Class="MobileApp.Views.Home.MenuPage">
     <ListView helpers:CommandListView.ItemTappedCommand="{Binding FlyoutCommand}"
+              SeparatorVisibility="None"
               ItemsSource="{Binding MenuItems}">
         <d:ListView.ItemsSource>
             <x:Array Type="{x:Type x:String}">

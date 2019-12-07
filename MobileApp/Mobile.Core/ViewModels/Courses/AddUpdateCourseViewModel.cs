@@ -15,7 +15,7 @@ namespace Mobile.Core.ViewModels
     public class AddUpdateCourseViewModel : BaseViewModel
     {
         private readonly ICourseHandler _courseHandler;
-        private readonly IFilePicker _filePicker;
+        private readonly IPreferenceEngine _filePicker;
 
         public Course CurrentCourse { get; private set; }
         public ObservableCollection<Lesson> Lessons { get; private set; }
@@ -23,10 +23,10 @@ namespace Mobile.Core.ViewModels
         public List<Semester> Semesters { get; private set; }
         public Semester CurrentSemester { get; set; }
 
-        public AddUpdateCourseViewModel(ICourseHandler courseHandler, IFilePicker filePicker)
+        public AddUpdateCourseViewModel(ICourseHandler courseHandler, IPreferenceEngine preferenceEngine)
         {
             _courseHandler = courseHandler;
-            _filePicker = filePicker;
+            _filePicker = preferenceEngine;
             Lessons = new ObservableCollection<Lesson>();
             DBFiles = new ObservableCollection<DBFile>();
         }
@@ -108,22 +108,26 @@ namespace Mobile.Core.ViewModels
 
         private async void AddMaterialAction()
         {
+            IsBusy = true;
             var file = await _filePicker.PickFile();
             if (file != null)
             {
-                var dbFile = new DBFile()
+                
+                if (CurrentCourse.Id != 0)
                 {
-                    FileName = Path.GetFileName(file),
-                    FilePath = file
-                };
-                IsBusy = true;
-                var res = await _courseHandler.AddMaterial(CurrentCourse.Id, dbFile);
-                if (res != null)
-                {
-                    _dialog.ShowToastMessage(res.Message);
+                    var res = await _courseHandler.AddMaterial(CurrentCourse.Id, file);
+                    if (res != null)
+                    {
+                        _dialog.ShowToastMessage(res.Message);
+                        if (res.Actionstatus) DBFiles.Add(file);
+                    }
                 }
-                IsBusy = false;
+                else
+                {
+                    DBFiles.Add(file);
+                }
             }
+            IsBusy = false;
         }
 
         private async void SaveAction()
@@ -135,7 +139,7 @@ namespace Mobile.Core.ViewModels
             {
                 if (CurrentCourse.Id == 0)
                 {
-                    var res = await _courseHandler.CreateCourse(CurrentCourse, CurrentSemester.Id);
+                    var res = await _courseHandler.CreateCourse(CurrentSemester.Id, CurrentCourse, DBFiles.ToList());
                     if (res.Actionstatus) _nav.GoBack();
                     _dialog.ShowToastMessage("Created Course Successfully");
                 }

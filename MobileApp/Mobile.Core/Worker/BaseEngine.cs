@@ -28,9 +28,22 @@ namespace Mobile.Core.Engines.APIHandlers
             return await _httpWorker.SendRequest<T>(httpMethod, controller + "/" + member, content);
         }
 
-        protected async Task<T> SendFileRequest<T>(HttpMethod httpMethod, HttpContent httpContent ,[CallerMemberName]string member = "")
+        protected async Task<T> SendMultiPartRequest<T>(object data, List<DBFile> dBFiles,[CallerMemberName]string member = "")
         {
-            return await _httpWorker.SendRequest<T>(httpMethod, controller + "/" + member, httpContent);
+            using var requestContent = new MultipartFormDataContent();
+            var jsonData = await FormHelper.GetPair(data);
+            foreach(var item in jsonData)
+            {
+                requestContent.Add(new StringContent(item.Value),item.Key);
+            }
+
+            foreach(var dbFile in dBFiles)
+            {
+                var streamContent = new StreamContent(File.OpenRead(dbFile.FilePath));
+                var fName = Path.GetFileName(dbFile.FilePath);
+                requestContent.Add(streamContent, "formfiles", fName);
+            }
+            return await _httpWorker.SendRequest<T>(HttpMethod.Post, controller + "/" + member, requestContent);
         }
     }
 }

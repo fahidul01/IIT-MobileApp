@@ -7,7 +7,7 @@
              xmlns:model="clr-namespace:CoreEngine.Model.DBModel;assembly=CoreEngine"
              x:DataType="model:Semester"
              xmlns:controls="clr-namespace:MobileApp.Controls"
-             x:Class="MobileApp.Views.Course.CoursePartialView">
+             x:Class="MobileApp.Views.Course.CoursesPartialView">
     <Grid d:BindingContext="{x:Static model:Semester}">
         <Frame Margin="10"
                Padding="5">
