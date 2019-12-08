@@ -35,7 +35,7 @@ namespace CoreEngine.Model.DBModel
         public int Roll { get; set; }
         public Batch Batch { get; set; }
         public List<StudentCourse> Courses { get; set; }
-
+        public bool RequirePasswordChange { get; set; }
 
         public static User FromDBUser(DBUser dBUser, string password)
         {
@@ -49,6 +49,7 @@ namespace CoreEngine.Model.DBModel
                 PhoneNumber = dBUser.PhoneNumber,
                 Roll = dBUser.Roll,
                 IsCR = dBUser.ClassRepresentative,
+                RequirePasswordChange = dBUser.RequirePasswordChange
             };
         }
     }

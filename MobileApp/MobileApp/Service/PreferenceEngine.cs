@@ -2,6 +2,7 @@
 using Mobile.Core.Engines.Services;
 using Plugin.FilePicker;
 using System.Threading.Tasks;
+using Xamarin.Essentials;
 
 namespace MobileApp.Service
 {

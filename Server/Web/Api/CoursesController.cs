@@ -1,10 +1,12 @@
 ﻿using CoreEngine.APIHandlers;
 using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Security.Claims;
@@ -19,12 +21,16 @@ namespace Web.Api
         private readonly CourseService _courseService;
         private readonly UserService _userservice;
         private readonly UserManager<DBUser> _usermanager;
+        private readonly FileService _fileService;
 
-        public CoursesController(CourseService courseService, UserService userService, UserManager<DBUser> userManager)
+        public CoursesController(CourseService courseService,
+            UserService userService, UserManager<DBUser> userManager,
+            FileService fileService)
         {
             _courseService = courseService;
             _userservice = userService;
             _usermanager = userManager;
+            _fileService = fileService;
         }
         #region Course
         public async Task<ActionResponse> CreateCourse(int semesterId, Course course, List<DBFile> dBFiles, List<IFormFile> formFiles = null)
@@ -50,7 +56,7 @@ namespace Web.Api
 
         public async Task<ActionResponse> UploadCourseResult(int courseId, DBFile dBFile, IFormFile formFile)
         {
-            if(courseId != 0 && formFile != null)
+            if (courseId != 0 && formFile != null)
             {
                 var filePath = Path.GetTempFileName();
 
@@ -63,22 +69,20 @@ namespace Web.Api
 
                     if (formFile.FileName.EndsWith("csv"))
                     {
-                        var res = await _userService.UploadCSVStudents(filePath, id);
-                        return PartialView("_Students", res);
+                        var uploadRes = await _courseService.UploadResult(courseId, filePath);
+                        return new ActionResponse(uploadRes);
                     }
                     else
                     {
-                        Failed("Invalid File format");
-                        return PartialView("_Students", new List<User>());
+                        return new ActionResponse(false, "Invalid File Format");
                     }
                 }
                 catch (Exception ex)
                 {
-                    Failed(ex.Message);
-                    return PartialView("_Students", new List<User>());
+                    return new ActionResponse(false, ex.Message);
                 }
             }
-            var res = await _courseService.UploadResult(courseId,formFile.)
+            else return new ActionResponse(false, "Invalid Course or file");
         }
 
 
@@ -92,8 +96,8 @@ namespace Web.Api
             }
             else
             {
-                var res = await _courseService.UpdateCourse(course);
-                return new ActionResponse(res != null);
+                var res = await _courseService.ModifyCourse(course);
+                return new ActionResponse(res);
             }
         }
 
@@ -137,12 +141,27 @@ namespace Web.Api
 
         public async Task<ActionResponse> AddMaterial(int courseId, List<DBFile> dbFiles, List<IFormFile> formFiles = null)
         {
-           return 
+            if (courseId != 0 && formFiles != null && formFiles.Count > 0)
+            {
+                try
+                {
+                    dbFiles = await _fileService.UploadFiles(formFiles);
+                    var res = await _courseService.AddMaterial(courseId, dbFiles);
+                    return new ActionResponse(res);
+                }
+                catch(Exception ex)
+                {
+                    return new ActionResponse(false, ex.Message);
+                }
+            }
+            return new ActionResponse(false, "Invalid File or Course Id");
         }
 
-        public Task<ActionResponse> DeleteCouseMaterial(DBFile obj)
+        public async Task<ActionResponse> DeleteCouseMaterial(DBFile obj)
         {
-            throw new System.NotImplementedException();
+            bool res = await _fileService.Delete(obj);
+            return new ActionResponse(res);
+
         }
 
         #endregion
@@ -169,10 +188,8 @@ namespace Web.Api
 
         public async Task<ActionResponse> Update(Lesson lesson)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            return await _courseService.DeleteLesson(userId, lesson);
+            var res =  await _courseService.AddUpdateLesson(0, lesson);
+            return new ActionResponse(res != null);
         }
-
-        
     }
 }

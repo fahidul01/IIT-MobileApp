@@ -120,7 +120,7 @@ namespace Web.Infrastructure.Services
                         TeacherName = "Test Teacher",
                         TimeOfDay = TimeSpan.FromHours(18.5),
                     };
-                    await _courseService.AddLesson(lesson, dbCourse.Id);
+                    await _courseService.AddUpdateLesson(dbCourse.Id, lesson);
                 }
             }
         }

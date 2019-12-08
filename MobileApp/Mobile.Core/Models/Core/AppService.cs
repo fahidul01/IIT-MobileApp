@@ -15,5 +15,10 @@ namespace Mobile.Core.Models.Core
             Nav = navigationService;
             Dialog = dialogService;
         }
+
+        public static void ShowAlert(string body, string title)
+        {
+            Dialog.ShowMessage(body, title);
+        }
     }
 }

@@ -68,6 +68,7 @@ namespace Web.Infrastructure.Services
             {
                 oldFile = new DBFile()
                 {
+                    Id = Guid.NewGuid().ToString().Replace("-", ""),
                     FileHash = hash,
                     FileName = actualFileName,
                     FilePath = Path.GetFileName(targetFile)
@@ -80,7 +81,7 @@ namespace Web.Infrastructure.Services
             return oldFile;
         }
 
-        public async Task<DBFile> GetFile(int id)
+        public async Task<DBFile> GetFile(string id)
         {
             var file = await _db.DBFiles.FindAsync(id);
             if (file == null)
@@ -101,6 +102,11 @@ namespace Web.Infrastructure.Services
             using var stream = File.OpenRead(fileName);
             var hash = md5.ComputeHash(stream);
             return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
+        }
+
+        public Task<bool> Delete(DBFile obj)
+        {
+            throw new NotImplementedException();
         }
     }
 }

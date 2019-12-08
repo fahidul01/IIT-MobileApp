@@ -50,7 +50,7 @@ namespace MobileApp.Service
                 Application.Current.MainPage = new MainPage(_nav);
                 _nav.ToolbarItems.Add(new ToolbarItem()
                 {
-                    Command = new RelayCommand(async () => await NavigateTo<NoticesViewModel>()),
+                    Command = new RelayCommand(() => NavigateTo<NoticesViewModel>()),
                     IconImageSource = IconFont.GetSource(IconType.Notifications, Color.White)
                 });
             }
@@ -97,7 +97,7 @@ namespace MobileApp.Service
         }
 
 
-        public async Task NavigateTo<T>(params object[] parameter) where T : BaseViewModel
+        public async void NavigateTo<T>(params object[] parameter) where T : BaseViewModel
         {
             var type = typeof(T);
             if (type == CurrentPage)
@@ -124,7 +124,7 @@ namespace MobileApp.Service
             _semaphoreSlim.Release();
         }
 
-        public async Task NavigateTo(Type type, params object[] parameter)
+        public async void NavigateTo(Type type, params object[] parameter)
         {
             if (type == CurrentPage)
             {

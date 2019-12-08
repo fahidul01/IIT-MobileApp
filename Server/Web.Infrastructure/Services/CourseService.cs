@@ -3,6 +3,7 @@ using CoreEngine.Model.DBModel;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Web.Infrastructure.DBModel;
@@ -18,6 +19,7 @@ namespace Web.Infrastructure.Services
             _db = dBContext;
         }
 
+        #region Course
         public async Task<Course> AddCourse(Course course, int semesterId, int batchId)
         {
             var oldCourse = await _db.Courses
@@ -56,11 +58,6 @@ namespace Web.Infrastructure.Services
             }
         }
 
-        public Task<Course> UpdateCourse(Course course)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<bool> Delete(int courseId, int batchId)
         {
             var course = await _db.Courses.Include(x => x.Semester)
@@ -94,17 +91,11 @@ namespace Web.Infrastructure.Services
                             .FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<List<Lesson>> UpcomingLessons()
+        public async Task<List<Course>> GetCoursesAsync(int batchId)
         {
-            var today = CurrentTime.DayOfWeek;
-            var dayLessons = await _db.Lessons
-                                      .Where(x => x.Course.Semester.EndsOn >= CurrentTime &&
-                                                  x.DayOfWeek == today)
-                                      .Include(x => x.Course)
-                                      .ThenInclude(x => x.Semester)
-                                      .ThenInclude(x => x.Batch)
-                                      .ToListAsync();
-            return dayLessons;
+            return await _db.Courses.Include(x => x.Semester)
+                                    .Where(x => x.Semester.Batch.Id == batchId)
+                                    .ToListAsync();
         }
 
         public async Task<bool> ModifyCourse(Course course)
@@ -122,6 +113,75 @@ namespace Web.Infrastructure.Services
             }
         }
 
+        public async Task<Semester> GetSemesterAsync(int semesterId)
+        {
+            var semester = await _db.Semesters
+                                    .Include(m => m.Batch)
+                                    .Include(x => x.Courses)
+                                    .FirstOrDefaultAsync(x => x.Id == semesterId);
+            return semester;
+        }
+
+        #endregion
+
+        #region Lesson
+
+        public async Task<bool> UploadResult(int courseId, string filePath)
+        {
+            var course = await _db.Courses.Include(x => x.StudentCourses)
+                                          .FirstOrDefaultAsync(x => x.Id == courseId);
+            if (course == null) return false;
+            using var stream = File.OpenRead(filePath);
+            using var reader = new StreamReader(stream);
+            while (!reader.EndOfStream)
+            {
+                var line = await reader.ReadLineAsync();
+                var splitter = line.Split(',');
+                var roll = splitter[0];
+                var name = splitter[1];
+                decimal.TryParse(splitter[2], out decimal gradePoint);
+                var gradeName = splitter[3];
+
+                var courseStudent = course.StudentCourses.FirstOrDefault(x => x.Student.UserName == roll);
+                if (courseStudent == null)
+                {
+                    var student = await _db.Users.FirstOrDefaultAsync(x => x.UserName == roll);
+                    if (student != null)
+                    {
+                        courseStudent = new StudentCourse()
+                        {
+                            Course = course,
+                            GadePoint = gradePoint,
+                            Grade = gradeName,
+                            Student = student
+                        };
+                        _db.Entry(courseStudent).State = EntityState.Added;
+                    }
+                }
+                else
+                {
+                    courseStudent.Grade = gradeName;
+                    courseStudent.GadePoint = gradePoint;
+                    _db.Entry(courseStudent).State = EntityState.Modified;
+                }
+            }
+            await _db.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<List<Lesson>> UpcomingLessons()
+        {
+            var today = CurrentTime.DayOfWeek;
+            var dayLessons = await _db.Lessons
+                                      .Where(x => x.Course.Semester.EndsOn >= CurrentTime &&
+                                                  x.DayOfWeek == today)
+                                      .Include(x => x.Course)
+                                      .ThenInclude(x => x.Semester)
+                                      .ThenInclude(x => x.Batch)
+                                      .ToListAsync();
+            return dayLessons;
+        }
+
         public Task<ActionResponse> DeleteLesson(string userId, int lessonId)
         {
             throw new NotImplementedException();
@@ -132,13 +192,21 @@ namespace Web.Infrastructure.Services
             throw new NotImplementedException();
         }
 
-        public async Task<Semester> GetSemesterAsync(int semesterId)
+        #endregion
+
+
+        #region Material
+        public async Task<bool> AddMaterial(int courseId, List<DBFile> dbFiles)
         {
-            var semester = await _db.Semesters
-                                    .Include(m => m.Batch)
-                                    .Include(x => x.Courses)
-                                    .FirstOrDefaultAsync(x => x.Id == semesterId);
-            return semester;
+            var course = await _db.Courses.Include(x=>x.CourseMaterials)
+                                    .FirstOrDefaultAsync(x => x.Id == courseId);
+            if (course == null) return false;
+            else
+            {
+                dbFiles.ForEach(x => course.CourseMaterials.Add(x));
+                await _db.SaveChangesAsync();
+                return true;
+            }
         }
 
         public async Task<List<Semester>> GetSemestersAsync(int batchId)
@@ -150,7 +218,7 @@ namespace Web.Infrastructure.Services
             return res;
         }
 
-        public async Task<Lesson> AddLesson(Lesson lesson, int courseId)
+        public async Task<Lesson> AddUpdateLesson(int courseId,Lesson lesson)
         {
             var course = await _db.Courses.FirstOrDefaultAsync(x => x.Id == courseId);
             if (course == null)
@@ -159,18 +227,21 @@ namespace Web.Infrastructure.Services
             }
             else
             {
-                lesson.Course = course;
-                _db.Entry(lesson).State = EntityState.Added;
+                if(lesson.Id == 0)
+                {
+                    lesson.Course = course;
+                    _db.Entry(lesson).State = EntityState.Added;
+                }
+                else
+                {
+                    _db.Entry(lesson).State = EntityState.Modified;
+                }
                 await _db.SaveChangesAsync();
                 return lesson;
             }
         }
 
-        public async Task<List<Course>> GetCoursesAsync(int batchId)
-        {
-            return await _db.Courses.Include(x => x.Semester)
-                                    .Where(x => x.Semester.Batch.Id == batchId)
-                                    .ToListAsync();
-        }
+        #endregion
+
     }
 }

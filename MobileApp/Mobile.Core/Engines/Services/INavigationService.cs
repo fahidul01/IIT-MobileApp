@@ -9,8 +9,8 @@ namespace Mobile.Core.Engines.Services
     {
         void GoBack();
         void GoToRoot();
-        Task NavigateTo<T>(params object[] parameter) where T : BaseViewModel;
-        Task NavigateTo(Type T, params object[] parameter);
+        void NavigateTo<T>(params object[] parameter) where T : BaseViewModel;
+        void NavigateTo(Type T, params object[] parameter);
         Task NavigateToModal<T>(ICommand dataCommand, params object[] parameter) where T : BaseViewModel;
         void GoModalBack();
         void Configure(Type viewModel, Type page);

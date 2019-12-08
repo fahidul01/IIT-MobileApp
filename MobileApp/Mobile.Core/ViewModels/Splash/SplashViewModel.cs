@@ -30,7 +30,7 @@ namespace Mobile.Core.ViewModels
                 {
                     _settingServicce.Token = string.Empty;
                     _httpFactory.Logout();
-                    await _nav.NavigateTo<LoginViewModel>();
+                    _nav.NavigateTo<LoginViewModel>();
                 }
                 else
                 {

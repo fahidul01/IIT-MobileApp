@@ -30,11 +30,7 @@ namespace CoreEngine.Model.DBModel
         public virtual Course Course { get; set; }
         [Required]
         public virtual DBUser Student { get; set; }
-
-        /// <summary>
-        /// Dont remove. Parent is determined by this
-        /// </summary>
-        public int GradeId { get; set; }
-        public virtual Grade Grade { get; set; }
+        public string Grade { get; set; }
+        public decimal GadePoint { get; set; }
     }
 }

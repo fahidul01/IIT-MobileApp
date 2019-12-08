@@ -3,7 +3,7 @@
     public class DBFile
     {
 
-        public int Id { get; set; }
+        public string Id { get; set; }
         /// <summary>
         /// Can be duplicate
         public string FileName { get; set; }
