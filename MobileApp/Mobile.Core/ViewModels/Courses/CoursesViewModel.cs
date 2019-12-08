@@ -1,6 +1,7 @@
 ﻿using CoreEngine.APIHandlers;
 using CoreEngine.Model.DBModel;
 using GalaSoft.MvvmLight.Command;
+using System;
 using System.Collections.Generic;
 using System.Windows.Input;
 
@@ -29,6 +30,12 @@ namespace Mobile.Core.ViewModels
         }
 
         public ICommand CourseCommand => new RelayCommand<Course>(CourseAction);
+        public ICommand AddCommand => new RelayCommand(AddAction);
+
+        private void AddAction()
+        {
+            _nav.NavigateTo<AddUpdateCourseViewModel>();
+        }
 
         private void CourseAction(Course obj)
         {

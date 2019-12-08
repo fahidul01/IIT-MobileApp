@@ -191,5 +191,12 @@ namespace Web.Api
             var res =  await _courseService.AddUpdateLesson(0, lesson);
             return new ActionResponse(res != null);
         }
+
+        public async Task<List<StudentCourse>> GetResult()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null) return null;
+            else return await _courseService.GetResult(userId);
+        }
     }
 }

@@ -21,12 +21,27 @@
             </x:Array>
         </d:ListView.ItemsSource>
         <ListView.Header>
-            <Grid BackgroundColor="WhiteSmoke">
-                <Image Source="iitlogo.png"
-                       Aspect="AspectFit"
-                       Margin="20"
-                       HorizontalOptions="Center"
-                       WidthRequest="170" />
+            <Grid BackgroundColor="LightBlue" HeightRequest="180">
+                <StackLayout Orientation="Horizontal"
+                             VerticalOptions="Center">
+                    <Frame HeightRequest="80"
+                           WidthRequest="80"
+                           Margin="10"
+                           Padding="0"
+                           HorizontalOptions="Start"
+                           VerticalOptions="Start"
+                           CornerRadius="40">
+                        <Image Source="iitlogo.png"
+                               Aspect="AspectFit"
+                               Margin="10"
+                               HorizontalOptions="Center" />
+                    </Frame>
+                    <Label Text="Institute of Information and Technology"
+                           FontSize="Large"
+                           HorizontalTextAlignment="Center"
+                           FontAttributes="Bold"
+                           VerticalOptions="Center" />
+                </StackLayout>
             </Grid>
         </ListView.Header>
         <ListView.ItemTemplate>

@@ -66,5 +66,16 @@
             <Setter Property="TextColor"
                     Value="DarkBlue" />
         </Style>
+        <Style TargetType="Button"
+               x:Key="FloatingButton">
+            <Setter Property="BackgroundColor"
+                    Value="DarkBlue" />
+            <Setter Property="HeightRequest"
+                    Value="60" />
+            <Setter Property="WidthRequest"
+                    Value="60" />
+            <Setter Property="CornerRadius"
+                    Value="30" />
+        </Style>
     </Application.Resources>
 </Application>

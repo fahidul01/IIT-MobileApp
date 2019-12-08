@@ -85,6 +85,7 @@ namespace Web.Infrastructure.Services
         public async Task<Course> GetCourseAsync(int id)
         {
             return await _db.Courses
+                            .Include(x=>x.StudentCourses)
                             .Include(x => x.Semester)
                             .Include(x => x.Lessons)
                             .Include(x => x.CourseMaterials)
@@ -151,7 +152,7 @@ namespace Web.Infrastructure.Services
                         courseStudent = new StudentCourse()
                         {
                             Course = course,
-                            GadePoint = gradePoint,
+                            GradePoint = gradePoint,
                             Grade = gradeName,
                             Student = student
                         };
@@ -161,7 +162,7 @@ namespace Web.Infrastructure.Services
                 else
                 {
                     courseStudent.Grade = gradeName;
-                    courseStudent.GadePoint = gradePoint;
+                    courseStudent.GradePoint = gradePoint;
                     _db.Entry(courseStudent).State = EntityState.Modified;
                 }
             }
@@ -182,14 +183,29 @@ namespace Web.Infrastructure.Services
             return dayLessons;
         }
 
-        public Task<ActionResponse> DeleteLesson(string userId, int lessonId)
+        public async Task<ActionResponse> DeleteLesson(string userId, int lessonId)
         {
-            throw new NotImplementedException();
+            var user = await _db.Users.Include(x => x.Batch)
+                                       .FirstOrDefaultAsync(x => x.UserName == userId);
+            if(user!= null && user.Batch!= null && user.ClassRepresentative)
+            {
+                var lesson = await _db.Lessons.FirstOrDefaultAsync(x => x.Id == lessonId);
+                if(lesson!= null && lesson.Course.StudentCourses.Any(x=>x.Student.Id == userId))
+                {
+                    _db.Lessons.Remove(lesson);
+                    await _db.SaveChangesAsync();
+                }
+            }
+            return new ActionResponse(false, "Invalid Request");
         }
 
-        public Task<ActionResponse> DeleteLesson(string userId, Lesson lesson)
+        public async Task<List<StudentCourse>> GetResult(string userId)
         {
-            throw new NotImplementedException();
+            var res = await _db.StudentCourses.Include(x => x.Course)
+                                              .ThenInclude(x=>x.Semester)
+                                              .Where(x => x.Student.Id == userId)
+                                              .ToListAsync();
+            return res;
         }
 
         #endregion

@@ -28,5 +28,11 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
+        <Button Style="{StaticResource FloatingButton}" 
+                HorizontalOptions="End"
+                Margin="20"
+                Command="{Binding AddCommand}"
+                ImageSource="{controls:IconFont IconType=Add}"
+                VerticalOptions="End"/>
     </Grid>
 </controls:CustomPage>

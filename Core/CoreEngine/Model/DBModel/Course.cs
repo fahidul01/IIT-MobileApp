@@ -31,6 +31,6 @@ namespace CoreEngine.Model.DBModel
         [Required]
         public virtual DBUser Student { get; set; }
         public string Grade { get; set; }
-        public decimal GadePoint { get; set; }
+        public decimal GradePoint { get; set; }
     }
 }
