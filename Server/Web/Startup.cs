@@ -83,6 +83,7 @@ namespace Web
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<TokenService>();
             services.Configure<AuthMessageSenderOptions>(Configuration);
+            services.AddHostedService<AppStartService>();
 
             services.AddControllersWithViews()
                     .AddNewtonsoftJson(x =>
@@ -129,43 +130,7 @@ namespace Web
                     pattern: "{controller=Home}/{action=Index}/{id?}");
 
             });
-            Task.Run(() => CreateUserRoles(serviceProvider));
-            //if (env.IsDevelopment())
-            {
-                var feed = serviceProvider.GetRequiredService<FeedDataService>();
-                feed.Init();
-            }
-        }
-
-        private async Task CreateUserRoles(IServiceProvider serviceProvider)
-        {
-            var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            var UserManager = serviceProvider.GetRequiredService<UserManager<DBUser>>();
-            //Adding Admin Role
-            var adminRole = await RoleManager.FindByNameAsync(AppConstants.Admin);
-            if (adminRole == null)
-            {
-                adminRole = new IdentityRole(AppConstants.Admin);
-                //create the roles and seed them to the database
-                await RoleManager.CreateAsync(adminRole);
-                await RoleManager.CreateAsync(new IdentityRole(AppConstants.Student));
-            }
-            //Assign Admin role to the main User here we have given our newly registered 
-            //login id for Admin management
-            var user = await UserManager.FindByNameAsync("admin");
-            if (user == null)
-            {
-
-                user = new DBUser()
-                {
-                    UserName = "admin",
-                    Email = "sakib.buet51@outlook.com",
-                };
-                await UserManager.CreateAsync(user, "pass_WORD_1234");
-            }
-            await UserManager.AddToRoleAsync(user, "Admin");
-
-
+          
         }
     }
 }
