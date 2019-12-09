@@ -95,6 +95,36 @@ namespace Web.Infrastructure.Services
             }
         }
 
+        public async Task<ActionResponse> AddStudent(int batchId, string roll, string name, string email, string phone)
+        {
+            var batch = await _db.Batches.FirstOrDefaultAsync(x => x.Id == batchId);
+            if (batch == null) return new ActionResponse(false, "Invalid Batch");
+            var user = await _db.Users.FirstOrDefaultAsync(x => x.UserName == roll);
+            if (user != null) return new ActionResponse(false, "Roll already exists");
+            else
+            {
+                var password = CryptoService.GenerateRandomPassword();
+                int.TryParse(roll, out int studentRoll);
+                var student = new DBUser()
+                {
+                    Batch = batch,
+                    Email = email,
+                    EnrolledIn = CurrentTime,
+                    Name = name,
+                    UserName = roll,
+                    Roll = studentRoll,
+                    UserRole = AppConstants.Student
+                };
+                var res = await _usermanager.CreateAsync(student);
+                if (res.Succeeded)
+                {
+                    var mRes = await _usermanager.AddToRoleAsync(student, AppConstants.Student);
+                    if (mRes.Succeeded) return new ActionResponse(true);
+                }
+                return new ActionResponse(false, "Failed to create User");
+            }
+        }
+
         public async Task<List<User>> GetAllStudent(DBUser dbUser)
         {
             var batch = await _db.Batches.Include(x => x.Students)

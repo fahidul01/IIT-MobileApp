@@ -101,6 +101,21 @@ namespace Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        public async Task<IAsyncResult> CreateSStident(int batchId, string role, string name, string email, string phone)
+        {
+            var res = await _userService.AddStudent(batchId, role, name, email, phone);
+            if(res == null)
+            {
+                Failed("Failed to add student");
+                return PartialView("_Students", new List<User>());
+            }
+            else
+            {
+                return PartialView("_Students", res);
+            }
+        }
+
+        [HttpPost]
         public async Task<IActionResult> CreateStudents(int id, IFormFile file)
         {
             if (id > 0 && file != null && file.Length > 0)
