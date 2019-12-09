@@ -13,5 +13,6 @@ namespace CoreEngine.Model.DBModel
         public int TeacherId { get; set; }
         public string TeacherName { get; set; }
         public string RoomNo { get; set; }
+        public string Description { get; set; }
     }
 }

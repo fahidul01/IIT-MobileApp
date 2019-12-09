@@ -47,7 +47,7 @@ namespace MobileTest.Api
                 FilePath = file,
                 FileName = Path.GetFileName(file)
             };
-            var res = await courseHandler.AddMaterial(course.Id, db);
+            var res = await courseHandler.AddMaterial(course.Id, new System.Collections.Generic.List<DBFile> { db });
             Assert.IsTrue(res.Actionstatus);
         }
     }

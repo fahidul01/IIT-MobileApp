@@ -17,7 +17,6 @@ namespace Web.Infrastructure.DBModel
 
         public StudentDBContext(DbContextOptions<StudentDBContext> opt) : base(opt)
         {
-            Database.EnsureCreated();
         }
     }
 }
