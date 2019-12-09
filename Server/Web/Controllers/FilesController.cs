@@ -15,7 +15,7 @@ namespace Web.Controllers
             _fileService = fileService;
         }
 
-        public async Task<IActionResult> Index(int id)
+        public async Task<IActionResult> Index(string id)
         {
             var file = await _fileService.GetFile(id);
             if (file != null && System.IO.File.Exists(file.FilePath))

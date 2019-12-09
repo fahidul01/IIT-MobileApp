@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
-namespace Mobile.Core.ViewModels.Courses
+namespace Mobile.Core.ViewModels
 {
     public class GradesViewModel : BaseViewModel
     {

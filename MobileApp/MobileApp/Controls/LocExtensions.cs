@@ -1,4 +1,5 @@
-﻿using MobileApp.Helpers;
+﻿using Mobile.Core.Models.Core;
+using MobileApp.Helpers;
 using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;

@@ -1,6 +1,7 @@
 ﻿using GalaSoft.MvvmLight.Command;
 using Mobile.Core.Engines.Dependency;
 using Mobile.Core.Engines.Services;
+using Mobile.Core.Models.Core;
 using Mobile.Core.ViewModels;
 using Mobile.Core.ViewModels.Core;
 using MobileApp.Controls;
@@ -36,7 +37,11 @@ namespace MobileApp.Service
         {
             await _semaphoreSlim.WaitAsync();
             var vm = typeof(T);
-
+            if(CurrentPage == vm)
+            {
+                return;
+            }
+            CurrentPage = vm;
             var page = Activator.CreateInstance(Pages[vm]) as Page;
             page.BindingContext = Locator.GetInstance<T>();
             _nav = new NavigationPage(page)

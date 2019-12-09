@@ -83,5 +83,10 @@ namespace Mobile.Core.Engines.APIHandlers
         {
             return SendMultiPartRequest<ActionResponse>(new { courseId }, dBFile);
         }
+
+        public Task<List<StudentCourse>> GetResult()
+        {
+            return SendRequest<List<StudentCourse>>(HttpMethod.Get, null);
+        }
     }
 }

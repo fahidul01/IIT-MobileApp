@@ -1,4 +1,6 @@
-﻿using CoreEngine.Model.DBModel;
+﻿using CoreEngine.Model.Common;
+using CoreEngine.Model.DBModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Web.Controllers;
@@ -7,6 +9,7 @@ using Web.Infrastructure.Services;
 namespace Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = AppConstants.Admin)]
     public class StudentController : BaseController
     {
         private readonly UserService _userService;

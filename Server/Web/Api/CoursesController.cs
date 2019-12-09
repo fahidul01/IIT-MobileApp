@@ -15,7 +15,8 @@ using Web.Infrastructure.Services;
 
 namespace Web.Api
 {
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(Roles = AppConstants.Student, 
+        AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class CoursesController : ControllerBase, ICourseHandler
     {
         private readonly CourseService _courseService;

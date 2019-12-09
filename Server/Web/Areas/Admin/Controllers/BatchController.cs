@@ -1,4 +1,6 @@
-﻿using CoreEngine.Model.DBModel;
+﻿using CoreEngine.Model.Common;
+using CoreEngine.Model.DBModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -11,6 +13,7 @@ using Web.Infrastructure.Services;
 namespace Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = AppConstants.Admin)]
     public class BatchController : BaseController
     {
         private readonly BatchService _batchService;

@@ -1,6 +1,7 @@
 ﻿using CoreEngine.APIHandlers;
 using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -11,10 +12,8 @@ using Web.WebServices;
 
 namespace Web.Api
 {
-    //[Route("api/[controller]")]
-    //[ApiController]
-
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(Roles = AppConstants.Student,
+       AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class MemberController : Controller, IMemberHandler
     {
         private readonly UserService _userService;

@@ -1,6 +1,8 @@
 ﻿using CoreEngine.APIHandlers;
 using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -8,8 +10,8 @@ using Web.Infrastructure.Services;
 
 namespace Web.Api
 {
-    [Route("api/[controller]")]
-    [ApiController]
+    [Authorize(Roles = AppConstants.Student,
+    AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class NoticesController : Controller, INoticeHandler
     {
         private readonly NoticeService _noticeService;
@@ -61,6 +63,5 @@ namespace Web.Api
                 return new ActionResponse(res, res ? "Success" : "Failure");
             }
         }
-
     }
 }

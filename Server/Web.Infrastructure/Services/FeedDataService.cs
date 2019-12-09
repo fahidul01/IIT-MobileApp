@@ -25,7 +25,7 @@ namespace Web.Infrastructure.Services
             _courseService = courseService;
             _userService = userService;
         }
-        public async void Init()
+        public void Init()
         {
             //var allBatch = await _batchService.GetCount();
             //if (allBatch == 0)
