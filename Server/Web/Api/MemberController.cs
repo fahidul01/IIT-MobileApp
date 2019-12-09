@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Web.Infrastructure.Services;
 using Web.WebServices;
@@ -20,17 +21,20 @@ namespace Web.Api
         private readonly SignInManager<DBUser> _signInmanager;
         private readonly UserManager<DBUser> _userManager;
         private readonly TokenService _tokenService;
+        private readonly BatchService _batchService;
 
         public MemberController(
             UserService userService,
             SignInManager<DBUser> signInManager,
             UserManager<DBUser> userManager,
-            TokenService tokenService)
+            TokenService tokenService,
+            BatchService batchService)
         {
             _userService = userService;
             _signInmanager = signInManager;
             _userManager = userManager;
             _tokenService = tokenService;
+            _batchService = batchService;
         }
 
         public async Task<ActionResponse> ChangePassword(string currentPassword, string newPassword)
@@ -82,15 +86,10 @@ namespace Web.Api
 
         public async Task<List<User>> GetCurrentBatchUsers()
         {
-            var dbUser = await _userManager.GetUserAsync(HttpContext.User);
-            if (dbUser == null)
-            {
-                return null;
-            }
-            else
-            {
-                return await _userService.GetAllStudent(dbUser);
-            }
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var batch = await _userService.GetBatch(userId);
+            if (batch == null) return null;
+            else return await _batchService.GetBatchStudents(batch.Id);
         }
 
         [HttpPost]
@@ -125,6 +124,7 @@ namespace Web.Api
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public string Test()
         {
             return "Routing is ok";

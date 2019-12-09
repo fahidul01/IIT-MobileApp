@@ -3,6 +3,7 @@ using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -19,7 +20,9 @@ namespace Web.Infrastructure.Services
         private readonly StudentDBContext _db;
         private readonly IEmailSender _emailSender;
 
-        public UserService(UserManager<DBUser> userManager, StudentDBContext studentDB, IEmailSender emailSender)
+        public UserService(UserManager<DBUser> userManager,
+            StudentDBContext studentDB, 
+            IEmailSender emailSender)
         {
             _usermanager = userManager;
             _db = studentDB;
@@ -84,7 +87,6 @@ namespace Web.Infrastructure.Services
                 terminalUser.Batch = user.Batch;
                 var courses = await _db.StudentCourses.Where(x => x.Student.Id == user.Id)
                                                       .Include(x => x.Course)
-                                                      .Include(m => m.Grade)
                                                       .ToListAsync();
                 terminalUser.Courses = courses;
                 return terminalUser;
@@ -113,24 +115,19 @@ namespace Web.Infrastructure.Services
                     Name = name,
                     UserName = roll,
                     Roll = studentRoll,
-                    UserRole = AppConstants.Student
+                    UserRole = AppConstants.Student,
+                    PhoneNumber = phone
                 };
                 var res = await _usermanager.CreateAsync(student);
                 if (res.Succeeded)
                 {
                     var mRes = await _usermanager.AddToRoleAsync(student, AppConstants.Student);
                     if (mRes.Succeeded) return new ActionResponse(true);
+                    var msg = EmailMessageCreator.CreateInvitation(password);
+                    await _emailSender.SendEmailAsync(student.Email, "Password Recover", msg);
                 }
                 return new ActionResponse(false, "Failed to create User");
             }
-        }
-
-        public async Task<List<User>> GetAllStudent(DBUser dbUser)
-        {
-            var batch = await _db.Batches.Include(x => x.Students)
-                                   .FirstOrDefaultAsync(x => x.Students.Any(m => m.Id == dbUser.Id));
-            batch?.LoadUsers();
-            return batch?.ExternalUsers;
         }
 
         public async Task<User> MakeCR(string id)
@@ -263,7 +260,7 @@ namespace Web.Infrastructure.Services
             {
                 var password = CryptoService.GenerateRandomPassword();
                 var token = await _usermanager.GeneratePasswordResetTokenAsync(dBUser);
-                var msg = new EmailMessageCreator().CreatePasswordRecovery(password);
+                var msg =  EmailMessageCreator.CreatePasswordRecovery(password);
                 var res = await _emailSender.SendEmailAsync(dBUser.Email, "Password Recover", msg);
                 await _usermanager.ResetPasswordAsync(dBUser, token, password);
                 return true;

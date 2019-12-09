@@ -23,23 +23,25 @@ namespace Web.WebServices
 
         private async Task<bool> Execute(string email, string subject, string message)
         {
-            var mailMessage = new MailMessage()
+
+            using (var client = new SmtpClient())
             {
-                Body = message,
-                Subject = subject,
-                From = new MailAddress(Options.From, "IIT WebMail"),
-            };
-            mailMessage.To.Add(email);
+                var mail = new MailMessage(Options.From, email)
+                {
+                    Subject = subject,
+                    Body = message
+                };
 
 
-            using var client = new SmtpClient(Options.SMTPServer)
-            {
-                UseDefaultCredentials = false,
-                Port = 587,
-                EnableSsl = true
-            };
-            client.Credentials = new NetworkCredential(Options.From, Options.Password);
-            await client.SendMailAsync(mailMessage);
+                client.Host = Options.SMTPServer;
+                client.Port = 587;
+                client.EnableSsl = true;
+                client.Timeout = 10000;
+                client.UseDefaultCredentials = false;
+                client.Credentials = new NetworkCredential(Options.Username, Options.Password);
+
+                await client.SendMailAsync(mail);
+            }
             return true;
         }
     }

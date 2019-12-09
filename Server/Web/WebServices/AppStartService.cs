@@ -49,8 +49,9 @@ namespace Web.WebServices
                     Email = "sakib.buet51@outlook.com",
                 };
                 await _userManager.CreateAsync(user, "pass_WORD_1234");
+                await _userManager.AddToRoleAsync(user, "Admin");
             }
-            await _userManager.AddToRoleAsync(user, "Admin");
+           
         }
 
         public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;

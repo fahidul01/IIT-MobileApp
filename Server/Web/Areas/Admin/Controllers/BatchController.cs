@@ -101,18 +101,25 @@ namespace Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IAsyncResult> CreateSStident(int batchId, string role, string name, string email, string phone)
+        public async Task<IActionResult> CreateStudent(int batchId, string roll, string name, string email, string phone)
         {
-            var res = await _userService.AddStudent(batchId, role, name, email, phone);
-            if(res == null)
-            {
-                Failed("Failed to add student");
-                return PartialView("_Students", new List<User>());
-            }
+            if (batchId == 0) Failed("Invalid Batch");
+            else if (string.IsNullOrWhiteSpace(roll)) Failed("Invalid Roll");
+            else if (string.IsNullOrWhiteSpace(name)) Failed("Invalid Name");
+            else if (string.IsNullOrWhiteSpace(email)) Failed("Invalid Email Address");
             else
             {
-                return PartialView("_Students", res);
+                var res = await _userService.AddStudent(batchId, roll, name, email, phone);
+                if (res.Actionstatus)
+                {
+                    return PartialView("_Students", await _batchService.GetBatchStudents(batchId));
+                }
+                else
+                {
+                    Failed(res.Message);
+                }
             }
+            return PartialView("_Students", new List<User>());
         }
 
         [HttpPost]

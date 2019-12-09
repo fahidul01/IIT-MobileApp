@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Web.Infrastructure.DBModel;
+using System;
 
 namespace Web.Infrastructure.Services
 {
@@ -99,6 +100,12 @@ namespace Web.Infrastructure.Services
             }
         }
 
-
+        public async Task<List<User>> GetBatchStudents(int batchId)
+        {
+            var batch = await _db.Batches.Include(x => x.Students)
+                                 .FirstOrDefaultAsync(x => x.Id == batchId);
+            batch.LoadUsers();
+            return batch.ExternalUsers;
+        }
     }
 }

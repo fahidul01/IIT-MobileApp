@@ -1,0 +1,54 @@
+﻿@model Batch
+
+<div class="modal fade" id="create_student_model" tabindex="-1" role="dialog" aria-labelledby="modal-default" aria-hidden="true">
+    <div class="modal-dialog modal- modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modal-title-default">Add New Student</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="CreateStudent"
+                      asp-controller="Batch"
+                      data-ajax="true"
+                      data-ajax-method="POST"
+                      data-ajax-update="#student_table">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" name="batchId" value="@Model.Id" />
+                    <div class="row">
+                        <div class="form-group col-lg-6 col-md-12 col-sm-12">
+                            <label class="control-label">Roll</label>
+                            <input name="roll" class="form-control" />
+                        </div>
+                        <div class="form-group col-lg-6 col-md-12 col-sm-12">
+                            <label class="control-label">FullName</label>
+                            <input name="name" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-6 col-md-6 col-sm-12">
+                            <label class="control-label">Email</label>
+                            <input name="email" class="form-control" />
+                        </div>
+                        <div class="form-group col-lg-6 col-md-6 col-sm-12">
+                            <label class="control-label">Phone</label>
+                            <input name="phone" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group justify-content-center">
+                        <input value="Update"
+                               onclick="javascript: document.getElementById('submit_student').click();"
+                               data-dismiss="modal"
+                               class="btn btn-outline-primary" />
+                        <button id="submit_student"
+                                hidden
+                                class="btn btn-info btn-block my-4" type="submit">
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

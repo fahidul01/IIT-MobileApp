@@ -5,8 +5,11 @@
         public const string Name = "IITMobile";
         public const string Student = "Student";
         public const string Admin = "Admin";
-        public static string BaseUrl = "http://10.0.2.2:7001/api/";
-        //public static string BaseUrl = "https://mit.techapp.ml/api/";
+#if DEBUG
+        public static string BaseUrl = "http://192.168.1.104:5001/api/";
+#else
+        public static string BaseUrl = "https://mit.techapp.ml/api/";
+#endif
         public static string DataPath;
     }
 }
