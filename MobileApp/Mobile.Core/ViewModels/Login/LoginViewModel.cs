@@ -26,7 +26,7 @@ namespace Mobile.Core.ViewModels
             Password = string.Empty;
 #if DEBUG
             UserName = "181909";
-            Password = "qbQ890ZC";
+            Password = "123456";
 #endif
         }
 

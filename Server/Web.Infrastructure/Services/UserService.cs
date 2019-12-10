@@ -259,9 +259,15 @@ namespace Web.Infrastructure.Services
             try
             {
                 var password = CryptoService.GenerateRandomPassword();
+
+#if DEBUG
+                password = "123456";
+#else
+                var res = await _emailSender.SendEmailAsync(dBUser.Email, "Password Recover", msg);
+#endif
+
                 var token = await _usermanager.GeneratePasswordResetTokenAsync(dBUser);
                 var msg =  EmailMessageCreator.CreatePasswordRecovery(password);
-                var res = await _emailSender.SendEmailAsync(dBUser.Email, "Password Recover", msg);
                 await _usermanager.ResetPasswordAsync(dBUser, token, password);
                 return true;
             }
