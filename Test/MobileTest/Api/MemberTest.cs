@@ -1,4 +1,5 @@
 ﻿using CoreEngine.APIHandlers;
+using CoreEngine.Model.Common;
 using Mobile.Core.Engines.APIHandlers;
 using Mobile.Core.Worker;
 using MobileTest.Core;
@@ -22,7 +23,7 @@ namespace MobileTest.Api
         [Test]
         public async Task Login()
         {
-            var res = await member.Login("181909", "qbQ890ZC");
+            var res = await member.Login("181909", "12345678");
             Assert.IsTrue(res.Success);
 
             var response = await member.TouchLogin();

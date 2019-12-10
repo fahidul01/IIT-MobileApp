@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -7,6 +9,8 @@ namespace MobileApp.Controls
 {
     public class StackLIstLayout : StackLayout
     {
+        private bool _locked;
+        public string EmptyText { get; set; } = "No Items"
         public static readonly BindableProperty ItemsSourceProperty =
             BindableProperty.Create(nameof(ItemsSource),
                 typeof(IEnumerable),
@@ -50,8 +54,6 @@ namespace MobileApp.Controls
         protected virtual void SetItems()
         {
             Children.Clear();
-
-
             if (ItemsSource == null)
             {
                 return;
@@ -64,8 +66,29 @@ namespace MobileApp.Controls
                 Children.Add(v);
                 counter++;
             }
+            if(Children.Count == 0)
+            {
+                Children.Add(new Label()
+                {
+                    HorizontalTextAlignment = TextAlignment.Center,
+                    Text = EmptyText
+                });
+            }
+
+            if(ItemsSource is INotifyCollectionChanged notifyCollection)
+            {
+                notifyCollection.CollectionChanged += NotifyCollection_CollectionChanged;
+            }
         }
 
+        private async void NotifyCollection_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (_locked) return;
+            _locked = true;
+            await Task.Delay(250);  //Disable Consecutive Update
+            SetItems();
+            _locked = false;
+        }
 
         protected virtual View GetItemView(object item)
         {

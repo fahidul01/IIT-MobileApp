@@ -1,6 +1,7 @@
 using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
 using Jdenticon.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;

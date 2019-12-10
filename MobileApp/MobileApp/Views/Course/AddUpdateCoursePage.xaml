@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<controls:CustomPage xmlns="http://xamarin.com/schemas/2014/forms"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                     xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                     mc:Ignorable="d"
+                     xmlns:controls="clr-namespace:MobileApp.Controls"
+                     xmlns:vm="clr-namespace:Mobile.Core.ViewModels;assembly=Mobile.Core"
+                     x:DataType="vm:AddUpdateCourseViewModel"
+                     x:TypeArguments="vm:AddUpdateCourseViewModel"
+                     x:Class="MobileApp.Views.Course.AddUpdateCoursePage">
+    <Grid d:BindingContext="{x:Static vm:AddUpdateCourseViewModel}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <ScrollView>
+            <StackLayout>
+                <Frame Margin="5"
+                       Padding="5">
+                    <StackLayout>
+                        <Label Text="Course Information"
+                               FontSize="Medium"
+                               VerticalOptions="Center"
+                               TextColor="DarkBlue" />
+                        <Entry Text="{Binding CurrentCourse.CourseId}"
+                               Placeholder="Course ID" />
+                        <Entry Text="{Binding CurrentCourse.CourseName}"
+                               Placeholder="Course Name" />
+                        <Entry Text="{Binding CurrentCourse.CourseCredit}"
+                               Keyboard="Numeric"
+                               Placeholder="Course Credit" />
+                        <Editor Text="{Binding CurrentCourse.Description}"
+                                Placeholder="LongDescription"
+                                BackgroundColor="Transparent" />
+                    </StackLayout>
+                </Frame>
+                <Frame Margin="5"
+                       Padding="5">
+                    <StackLayout>
+                        <Grid>
+                            <Label Text="Lessons"
+                                   FontSize="Medium"
+                                   VerticalOptions="Center"
+                                   TextColor="DarkBlue" />
+                            <Button HorizontalOptions="End"
+                                    VerticalOptions="End"
+                                    BackgroundColor="White"
+                                    HeightRequest="40"
+                                    WidthRequest="40"
+                                    CornerRadius="20"
+                                    ImageSource="{controls:IconFont IconType=Add, Color=DarkBlue}"
+                                    Style="{StaticResource FloatingButton}" />
+                        </Grid>
+                        <controls:StackLIstLayout ItemsSource="{Binding Lessons}">
+                            <controls:StackLIstLayout.ItemTemplate>
+                                <DataTemplate></DataTemplate>
+                            </controls:StackLIstLayout.ItemTemplate>
+                        </controls:StackLIstLayout>
+                    </StackLayout>
+                </Frame>
+            </StackLayout>
+        </ScrollView>
+        <Button Style="{StaticResource SaveButton}"
+                Grid.Row="1"
+                Text="Save"
+                Command="{Binding SaveCommand}" />
+    </Grid>
+</controls:CustomPage>

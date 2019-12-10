@@ -4,6 +4,7 @@
                      xmlns:d="http://xamarin.com/schemas/2014/forms/design"
                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                      mc:Ignorable="d"
+                     Title="Courses"
                      xmlns:local="clr-namespace:MobileApp.Views.Course"
                      xmlns:vm="clr-namespace:Mobile.Core.ViewModels;assembly=Mobile.Core"
                      xmlns:controls="clr-namespace:MobileApp.Controls"
@@ -32,7 +33,7 @@
                 HorizontalOptions="End"
                 Margin="20"
                 Command="{Binding AddCommand}"
-                ImageSource="{controls:IconFont IconType=Add}"
+                ImageSource="{controls:IconFont IconType=Add, FontSize=24}"
                 VerticalOptions="End"/>
     </Grid>
 </controls:CustomPage>
