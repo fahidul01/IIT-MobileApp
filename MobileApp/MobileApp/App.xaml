@@ -71,11 +71,11 @@
             <Setter Property="BackgroundColor"
                     Value="DarkBlue" />
             <Setter Property="HeightRequest"
-                    Value="60" />
+                    Value="50" />
             <Setter Property="WidthRequest"
-                    Value="60" />
+                    Value="50" />
             <Setter Property="CornerRadius"
-                    Value="30" />
+                    Value="25" />
         </Style>
     </Application.Resources>
 </Application>

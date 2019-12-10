@@ -10,7 +10,7 @@ namespace MobileApp.Controls
     public class StackLIstLayout : StackLayout
     {
         private bool _locked;
-        public string EmptyText { get; set; } = "No Items"
+        public string EmptyText { get; set; } = "No Items";
         public static readonly BindableProperty ItemsSourceProperty =
             BindableProperty.Create(nameof(ItemsSource),
                 typeof(IEnumerable),

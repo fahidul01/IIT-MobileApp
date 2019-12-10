@@ -4,12 +4,14 @@
                      xmlns:d="http://xamarin.com/schemas/2014/forms/design"
                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                      mc:Ignorable="d"
+                     xmlns:model="clr-namespace:CoreEngine.Model.DBModel;assembly=CoreEngine"
                      xmlns:controls="clr-namespace:MobileApp.Controls"
                      xmlns:vm="clr-namespace:Mobile.Core.ViewModels;assembly=Mobile.Core"
                      x:DataType="vm:AddUpdateCourseViewModel"
                      x:TypeArguments="vm:AddUpdateCourseViewModel"
                      x:Class="MobileApp.Views.Course.AddUpdateCoursePage">
-    <Grid d:BindingContext="{x:Static vm:AddUpdateCourseViewModel}">
+    <Grid d:BindingContext="{x:Static vm:AddUpdateCourseViewModel}"
+          x:Name="MainContainer">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
@@ -20,7 +22,7 @@
                        Padding="5">
                     <StackLayout>
                         <Label Text="Course Information"
-                               FontSize="Medium"
+                               FontSize="Large"
                                VerticalOptions="Center"
                                TextColor="DarkBlue" />
                         <Entry Text="{Binding CurrentCourse.CourseId}"
@@ -33,6 +35,12 @@
                         <Editor Text="{Binding CurrentCourse.Description}"
                                 Placeholder="LongDescription"
                                 BackgroundColor="Transparent" />
+                        <Picker ItemsSource="{Binding Semesters}"
+                                Grid.Column="1"
+                                BackgroundColor="Transparent"
+                                SelectedItem="{Binding CurrentSemester}"
+                                ItemDisplayBinding="{Binding Name}" />
+                       
                     </StackLayout>
                 </Frame>
                 <Frame Margin="5"
@@ -44,6 +52,7 @@
                                    VerticalOptions="Center"
                                    TextColor="DarkBlue" />
                             <Button HorizontalOptions="End"
+                                    Command="{Binding AddLessonCommand}"
                                     VerticalOptions="End"
                                     BackgroundColor="White"
                                     HeightRequest="40"
@@ -54,7 +63,91 @@
                         </Grid>
                         <controls:StackLIstLayout ItemsSource="{Binding Lessons}">
                             <controls:StackLIstLayout.ItemTemplate>
-                                <DataTemplate></DataTemplate>
+                                <DataTemplate x:DataType="model:Lesson">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <StackLayout Spacing="1"
+                                                     Margin="3,5">
+                                            <StackLayout.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding BindingContext.EditLessonCommand, Source={x:Reference MainContainer}}"
+                                                                      CommandParameter="{Binding}" />
+                                            </StackLayout.GestureRecognizers>
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label Text="{Binding DayOfWeek}"
+                                                       FontSize="Medium"
+                                                       d:Text="Wednesday" />
+                                                <Label Text="{Binding TimeOfDay}"
+                                                       FontSize="Medium"
+                                                       d:Text="7.00" />
+                                            </StackLayout>
+                                            <Label Text="{Binding TeacherName}"
+                                                   d:Text="Teacher Name" />
+                                        </StackLayout>
+                                        <Button Style="{StaticResource FloatingButton}"
+                                                ImageSource="{controls:IconFont IconType=Delete, Color=DarkRed}"
+                                                HeightRequest="40"
+                                                WidthRequest="40"
+                                                CornerRadius="20"
+                                                Command="{Binding BindingContext.DeleteLessonCommand, Source={x:Reference MainContainer}}"
+                                                CommandParameter="{Binding}" />
+                                    </Grid>
+                                </DataTemplate>
+                            </controls:StackLIstLayout.ItemTemplate>
+                        </controls:StackLIstLayout>
+                    </StackLayout>
+                </Frame>
+                <Frame Margin="5"
+                       Padding="5">
+                    <StackLayout>
+                        <Grid>
+                            <Label Text="Course Materials"
+                                   FontSize="Medium"
+                                   VerticalOptions="Center"
+                                   TextColor="DarkBlue" />
+                            <Button HorizontalOptions="End"
+                                    VerticalOptions="End"
+                                    BackgroundColor="White"
+                                    HeightRequest="40"
+                                    WidthRequest="40"
+                                    CornerRadius="20"
+                                    Command="{Binding AddMaterialCommand}"
+                                    ImageSource="{controls:IconFont IconType=Add, Color=DarkBlue}"
+                                    Style="{StaticResource FloatingButton}" />
+                        </Grid>
+                        <controls:StackLIstLayout ItemsSource="{Binding DBFiles}">
+                            <controls:StackLIstLayout.ItemTemplate>
+                                <DataTemplate x:DataType="model:DBFile">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <StackLayout Spacing="1"
+                                                     Margin="3,5">
+                                            <StackLayout.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding BindingContext.MaterialCommand,
+                                                    Source={x:Reference MainContainer}}"
+                                                                      CommandParameter="{Binding}" />
+                                            </StackLayout.GestureRecognizers>
+                                            <Label Text="{Binding FileName}"
+                                                   FontSize="Medium"
+                                                   d:Text="Wednesday" />
+                                            <Label Text="{Binding Description}"
+                                                   FontSize="Medium"
+                                                   d:Text="7.00" />
+                                        </StackLayout>
+                                        <Button Style="{StaticResource FloatingButton}"
+                                                ImageSource="{controls:IconFont IconType=Delete, Color=DarkRed}"
+                                                HeightRequest="40"
+                                                WidthRequest="40"
+                                                CornerRadius="20"
+                                                Command="{Binding BindingContext.DeleteMaterialCommand, Source={x:Reference MainContainer}}"
+                                                CommandParameter="{Binding}"/>
+                                    </Grid>
+                                </DataTemplate>
                             </controls:StackLIstLayout.ItemTemplate>
                         </controls:StackLIstLayout>
                     </StackLayout>

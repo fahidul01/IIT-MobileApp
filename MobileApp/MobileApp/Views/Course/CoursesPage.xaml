@@ -13,22 +13,26 @@
                      x:TypeArguments="vm:CoursesViewModel"
                      x:Class="MobileApp.Views.Course.CoursesPage">
     <Grid d:BindingContext="{x:Static vm:CoursesViewModel}">
-        <CollectionView>
-            <d:CollectionView.ItemsSource>
-                <x:Array Type="{x:Type x:String}">
-                    <x:String>Semester 1</x:String>
-                    <x:String>Semester 2</x:String>
-                    <x:String>Semester 3</x:String>
-                    <x:String>Semester 4</x:String>
-                    <x:String>Semester 5</x:String>
-                </x:Array>
-            </d:CollectionView.ItemsSource>
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="model:Semester">
-                    <local:CoursesPartialView />
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+        <RefreshView Command="{Binding RefreshCommand}"
+                     IsRefreshing="{Binding IsBusy}">
+            <CollectionView ItemsSource="{Binding Semesters}">
+                <d:CollectionView.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>Semester 1</x:String>
+                        <x:String>Semester 2</x:String>
+                        <x:String>Semester 3</x:String>
+                        <x:String>Semester 4</x:String>
+                        <x:String>Semester 5</x:String>
+                    </x:Array>
+                </d:CollectionView.ItemsSource>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:Semester">
+                        <local:CoursesPartialView />
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
+       
         <Button Style="{StaticResource FloatingButton}" 
                 HorizontalOptions="End"
                 Margin="20"

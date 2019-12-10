@@ -17,9 +17,9 @@ namespace Mobile.Core.ViewModels
         private readonly IPreferenceEngine _filePicker;
 
         public Course CurrentCourse { get; private set; }
-        public ObservableCollection<Lesson> Lessons { get; private set; }
-        public ObservableCollection<DBFile> DBFiles { get; private set; }
-        public List<Semester> Semesters { get; private set; }
+        public ObservableCollection<Lesson> Lessons { get; set; }
+        public ObservableCollection<DBFile> DBFiles { get; set; }
+        public List<Semester> Semesters { get; set; }
         public Semester CurrentSemester { get; set; }
 
         public AddUpdateCourseViewModel(ICourseHandler courseHandler, IPreferenceEngine preferenceEngine)
@@ -32,7 +32,7 @@ namespace Mobile.Core.ViewModels
         public override async void OnAppear(params object[] args)
         {
             base.OnAppear(args);
-            if (args != null && args[0] is Course course)
+            if (args.Length > 0 && args[0] is Course course)
             {
                 CurrentCourse = course;
                 await LoadCourseDataAsync(course);
@@ -41,6 +41,8 @@ namespace Mobile.Core.ViewModels
             {
                 CurrentCourse = new Course();
             }
+            Semesters = await _courseHandler.GetCurrentSemester();
+            CurrentSemester = Semesters.FirstOrDefault(x => x.StartsOn >= DateTime.Now);
         }
 
         private async Task LoadCourseDataAsync(Course course)
@@ -58,9 +60,9 @@ namespace Mobile.Core.ViewModels
                 {
                     Lessons.Add(item);
                 }
+                CurrentSemester = Semesters.FirstOrDefault(x => x.Courses.Any(m => m.Id == course.Id));
             }
-            Semesters = await _courseHandler.GetCurrentSemester();
-            CurrentSemester = Semesters.FirstOrDefault(x => x.StartsOn >= DateTime.Now);
+            
         }
 
         public ICommand SaveCommand => new RelayCommand(SaveAction);
@@ -69,6 +71,12 @@ namespace Mobile.Core.ViewModels
         public ICommand AddLessonCommand => new RelayCommand(AddLessonAction);
         public ICommand EditLessonCommand => new RelayCommand<Lesson>(EditLessonAction);
         public ICommand DeleteLessonCommand => new RelayCommand<Lesson>(DeleteLessonAction);
+        public ICommand MaterialCommand => new RelayCommand<DBFile>(MaterialAction);
+
+        private void MaterialAction(DBFile obj)
+        {
+           
+        }
 
         private async void DeleteLessonAction(Lesson obj)
         {
