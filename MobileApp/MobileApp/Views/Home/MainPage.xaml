@@ -10,9 +10,12 @@
                   x:Class="MobileApp.Views.Home.MainPage"
                   xmlns:vm="clr-namespace:Mobile.Core.ViewModels;assembly=Mobile.Core"
                   x:DataType="vm:MainViewModel"
-                  BindingContext="{x:Static vm:DesignLocator.MainViewModel}"
+                  IsPresented="{Binding IsPresented, Mode=TwoWay}"
                   xmlns:pages="clr-namespace:MobileApp.Views.Home">
+    <MasterDetailPage.BindingContext>
+        <vm:MainViewModel />
+    </MasterDetailPage.BindingContext>
     <MasterDetailPage.Master>
-        <local:MenuPage />
+        <local:MenuPage x:Name="MenuContent"/>
     </MasterDetailPage.Master>
 </MasterDetailPage>

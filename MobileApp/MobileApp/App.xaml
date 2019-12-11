@@ -77,5 +77,9 @@
             <Setter Property="CornerRadius"
                     Value="25" />
         </Style>
+        <Style TargetType="Label">
+            <Setter Property="TextColor"
+                    Value="Black" />
+        </Style>
     </Application.Resources>
 </Application>

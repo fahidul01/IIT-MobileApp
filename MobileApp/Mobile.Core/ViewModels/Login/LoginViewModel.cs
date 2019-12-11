@@ -1,5 +1,6 @@
 ﻿using CoreEngine.APIHandlers;
 using GalaSoft.MvvmLight.Command;
+using Mobile.Core.Engines.Services;
 using Mobile.Core.Models.Core;
 using Mobile.Core.Worker;
 using System.Windows.Input;
@@ -10,14 +11,16 @@ namespace Mobile.Core.ViewModels
     {
         private readonly IMemberHandler _memberHandler;
         private readonly SettingService _settingService;
+        private readonly IPlatformService _platformService;
 
         public string UserName { get; set; }
         public string Password { get; set; }
 
-        public LoginViewModel(IMemberHandler memberHandler, SettingService settingService)
+        public LoginViewModel(IMemberHandler memberHandler, IPlatformService platformService, SettingService settingService)
         {
             _memberHandler = memberHandler;
             _settingService = settingService;
+            _platformService = platformService;
 
         }
         public override void OnAppear(params object[] args)
@@ -54,6 +57,10 @@ namespace Mobile.Core.ViewModels
                         AppService.CurrentUser = user;
                         _settingService.Token = res.Token;
                         _nav.Init<HomeViewModel>();
+                        if (AppService.CurrentUser.Batch != null)
+                        {
+                            _platformService.SubsubcribeTopics(AppService.CurrentUser.Batch.Name);
+                        }
                     }
                 }
                 IsBusy = false;

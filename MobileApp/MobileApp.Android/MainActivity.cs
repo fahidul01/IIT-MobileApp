@@ -29,6 +29,7 @@ namespace MobileApp.Droid
             //global::Xamarin.Forms.Forms.SetFlags("CollectionView_Experimental");
             FormsMaterial.Init(this, savedInstanceState);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
+            CreateNotificationChannel();
 
             //PrintId();
             LoadApplication(App.Init(ConfigureServices));
@@ -55,6 +56,27 @@ namespace MobileApp.Droid
             {
                 System.Diagnostics.Debug.WriteLine(e);
             }
+        }
+
+        internal const string CHANNEL_ID = "IIT_notification";
+        internal const string CHANNEL_NAME = "IITNotificationChannel";
+        private void CreateNotificationChannel()
+        {
+            if (Build.VERSION.SdkInt < BuildVersionCodes.O)
+            {
+                // Notification channels are new in API 26 (and not a part of the
+                // support library). There is no need to create a notification
+                // channel on older versions of Android.
+                return;
+            }
+            var channel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationImportance.Default)
+            {
+                Description = CHANNEL_NAME
+            };
+
+            var notificationManager = (NotificationManager)GetSystemService(NotificationService);
+            notificationManager.CreateNotificationChannel(channel);
+
         }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)

@@ -35,12 +35,6 @@
                         <Editor Text="{Binding CurrentCourse.Description}"
                                 Placeholder="LongDescription"
                                 BackgroundColor="Transparent" />
-                        <Picker ItemsSource="{Binding Semesters}"
-                                Grid.Column="1"
-                                BackgroundColor="Transparent"
-                                SelectedItem="{Binding CurrentSemester}"
-                                ItemDisplayBinding="{Binding Name}" />
-                       
                     </StackLayout>
                 </Frame>
                 <Frame Margin="5"

@@ -24,7 +24,7 @@ namespace MobileApp.Service
         private readonly IPlatformService _platformService;
         private Type CurrentPage;
 
-        private Page _nav;
+        private NavigationPage _nav;
 
         public NavigationService(IPlatformService platformService)
         {
@@ -37,7 +37,7 @@ namespace MobileApp.Service
         {
             await _semaphoreSlim.WaitAsync();
             var vm = typeof(T);
-            if(CurrentPage == vm)
+            if (CurrentPage == vm)
             {
                 return;
             }
@@ -73,11 +73,10 @@ namespace MobileApp.Service
             }
 
             _semaphoreSlim.Release();
-            //_nav.Popped += (s, e) =>
-            //{
-            //    var currentPage = _nav.CurrentPage as CustomPage;
-            //    _navigation.BarBackgroundColor = currentPage.Transparent ? Color.Transparent : PrimaryColor;
-            //};
+            _nav.Popped += (s, e) =>
+            {
+                CurrentPage = _nav.CurrentPage.BindingContext.GetType();
+            };
         }
 
         public async void GoBack()
@@ -102,31 +101,10 @@ namespace MobileApp.Service
         }
 
 
-        public async void NavigateTo<T>(params object[] parameter) where T : BaseViewModel
+        public void NavigateTo<T>(params object[] parameter) where T : BaseViewModel
         {
             var type = typeof(T);
-            if (type == CurrentPage)
-            {
-                return;
-            }
-
-            CurrentPage = type;
-            await _semaphoreSlim.WaitAsync();
-            if (Pages.ContainsKey(type))
-            {
-                var page = Activator.CreateInstance(Pages[type]) as Page;
-                page.BindingContext = Locator.GetInstance<T>();
-                if (page.BindingContext is BaseViewModel viewModel)
-                {
-                    viewModel.OnAppear(parameter);
-                }
-                await _nav.Navigation.PushAsync(page);
-            }
-            else
-            {
-                ShowMessage("Error", "Invalid Page");
-            }
-            _semaphoreSlim.Release();
+            NavigateTo(type, parameter);
         }
 
         public async void NavigateTo(Type type, params object[] parameter)
@@ -135,7 +113,11 @@ namespace MobileApp.Service
             {
                 return;
             }
-
+            else if (type == typeof(HomeViewModel))
+            {
+                await _nav.PopToRootAsync();
+                return;
+            }
             CurrentPage = type;
             await _semaphoreSlim.WaitAsync();
             if (Pages.ContainsKey(type))

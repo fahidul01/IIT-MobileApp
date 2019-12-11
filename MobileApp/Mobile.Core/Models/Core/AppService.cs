@@ -16,9 +16,9 @@ namespace Mobile.Core.Models.Core
             Dialog = dialogService;
         }
 
-        public static void ShowAlert(string body, string title)
+        public static void ShowAlert(string title, string body)
         {
-            Dialog.ShowMessage(body, title);
+            Dialog.ShowMessage(title, body);
         }
     }
 }

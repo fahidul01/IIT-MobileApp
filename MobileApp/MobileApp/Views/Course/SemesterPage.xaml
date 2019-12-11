@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<controls:CustomPage xmlns="http://xamarin.com/schemas/2014/forms"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                     xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                     mc:Ignorable="d"
+                     xmlns:controls="clr-namespace:MobileApp.Controls"
+                     xmlns:vm="clr-namespace:Mobile.Core.ViewModels;assembly=Mobile.Core"
+                     Title="Semester"
+                     xmlns:model="clr-namespace:CoreEngine.Model.DBModel;assembly=CoreEngine"
+                     x:DataType="vm:SemesterViewModel"
+                     x:TypeArguments="vm:SemesterViewModel"
+                     x:Class="MobileApp.Views.Course.SemesterPage">
+    <Grid d:BindingContext="{x:Static vm:SemesterViewModel}"
+          x:Name="MainContainer">
+        <CollectionView ItemsSource="{Binding Courses}">
+            <d:CollectionView.ItemsSource>
+                <x:Array Type="{x:Type x:String}">
+                    <x:String>Semester 1</x:String>
+                    <x:String>Semester 2</x:String>
+                    <x:String>Semester 3</x:String>
+                    <x:String>Semester 4</x:String>
+                    <x:String>Semester 5</x:String>
+                </x:Array>
+            </d:CollectionView.ItemsSource>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="model:Course">
+                    <Grid Padding="10,5">
+                        <Frame>
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding BindingContext.CourseCommand, Source={x:Reference MainContainer}}"
+                                                      CommandParameter="{Binding}" />
+                            </Frame.GestureRecognizers>
+                            <StackLayout>
+                                <Grid>
+                                    <Label Text="{Binding CourseId}"
+                                           d:Text="MITM"
+                                           FontSize="Large"
+                                           FontAttributes="Bold" />
+                                    <Label Text="{Binding CourseCredit, StringFormat='{0:N2}'}"
+                                           HorizontalOptions="End"
+                                           d:Text="3.0"
+                                           VerticalOptions="Center"
+                                           FontAttributes="Bold"
+                                           FontSize="Medium" />
+                                </Grid>
+                                <Label Text="{Binding CourseName}"
+                                       d:Text="Course Name. Can be Multiple Line. Should Take Care of it."
+                                       FontSize="Medium" />
+                                <Label Text="{Binding Description}" 
+                                       TextColor="DarkGray"
+                                       d:Text="{Binding}"/>
+                            </StackLayout>
+                        </Frame>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        <Button Style="{StaticResource FloatingButton}"
+                HorizontalOptions="End"
+                Margin="20"
+                Command="{Binding AddCommand}"
+                ImageSource="{controls:IconFont IconType=Add, FontSize=24}"
+                VerticalOptions="End" />
+    </Grid>
+</controls:CustomPage>

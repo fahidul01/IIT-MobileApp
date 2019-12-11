@@ -31,17 +31,12 @@ namespace Mobile.Core.ViewModels
             IsBusy = false;
         }
 
-        public ICommand CourseCommand => new RelayCommand<Course>(CourseAction);
-        public ICommand AddCommand => new RelayCommand(AddAction);
+        public ICommand SemesterCommand => new RelayCommand<Semester>(SemesterAction);
+        
 
-        private void AddAction()
+        private void SemesterAction(Semester obj)
         {
-            _nav.NavigateTo<AddUpdateCourseViewModel>();
-        }
-
-        private void CourseAction(Course obj)
-        {
-            _nav.NavigateTo<CourseDetailViewModel>(obj);
+            _nav.NavigateTo<SemesterViewModel>(obj);
         }
     }
 }

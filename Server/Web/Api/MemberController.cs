@@ -132,9 +132,9 @@ namespace Web.Api
 
         public async Task<User> TouchLogin()
         {
-            var user = HttpContext.User;
-            var res = await _userManager.GetUserAsync(user);
-            return CoreEngine.Model.DBModel.User.FromDBUser(res, "");
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var res = await _userService.GetStudent(userId);
+            return res;
         }
 
         public async Task<ActionResponse> UpdateUser(User user)

@@ -12,6 +12,7 @@ using Android.Views;
 using Android.Widget;
 using Firebase.Messaging;
 using Mobile.Core.Models.Core;
+using Xamarin.Forms;
 
 namespace MobileApp.Droid.Services
 {
@@ -28,6 +29,12 @@ namespace MobileApp.Droid.Services
             SendNotification(body, message.Data);
         }
 
+        public override void OnNewToken(string p0)
+        {
+            base.OnNewToken(p0);
+            Log.Debug(TAG,p0);
+        }
+
         void SendNotification(RemoteMessage.Notification message, IDictionary<string, string> data)
         {
             using (var intent = new Intent(this, typeof(MainActivity)))
@@ -41,8 +48,10 @@ namespace MobileApp.Droid.Services
                     }
                 }
             }
-
-            AppService.ShowAlert(message.Body, message.Title);
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                AppService.ShowAlert(message.Title, message.Body);
+            });
         }
     }
 }

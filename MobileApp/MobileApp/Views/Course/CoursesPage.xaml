@@ -12,7 +12,8 @@
                      xmlns:model="clr-namespace:CoreEngine.Model.DBModel;assembly=CoreEngine"
                      x:TypeArguments="vm:CoursesViewModel"
                      x:Class="MobileApp.Views.Course.CoursesPage">
-    <Grid d:BindingContext="{x:Static vm:CoursesViewModel}">
+    <Grid d:BindingContext="{x:Static vm:CoursesViewModel}"
+          x:Name="MainContainer">
         <RefreshView Command="{Binding RefreshCommand}"
                      IsRefreshing="{Binding IsBusy}">
             <CollectionView ItemsSource="{Binding Semesters}">
@@ -27,17 +28,20 @@
                 </d:CollectionView.ItemsSource>
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="model:Semester">
-                        <local:CoursesPartialView />
+                        <Grid>
+                            <local:CoursesPartialView />
+                            <Grid>
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding BindingContext.SemesterCommand, Source={x:Reference MainContainer}}"
+                                                          CommandParameter="{Binding}" />
+                                </Grid.GestureRecognizers>
+                            </Grid>
+                        </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
         </RefreshView>
        
-        <Button Style="{StaticResource FloatingButton}" 
-                HorizontalOptions="End"
-                Margin="20"
-                Command="{Binding AddCommand}"
-                ImageSource="{controls:IconFont IconType=Add, FontSize=24}"
-                VerticalOptions="End"/>
+     
     </Grid>
 </controls:CustomPage>

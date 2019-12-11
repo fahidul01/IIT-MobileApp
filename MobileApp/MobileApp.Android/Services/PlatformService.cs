@@ -15,7 +15,7 @@ namespace MobileApp.Droid.Services
         {
             foreach (var item in topics)
             {
-                FirebaseMessaging.Instance.SubscribeToTopic(item);
+                FirebaseMessaging.Instance.SubscribeToTopic(item.ToLower().Replace(" ",""));
             }
         }
 
@@ -23,7 +23,7 @@ namespace MobileApp.Droid.Services
         {
             foreach (var item in topics)
             {
-                FirebaseMessaging.Instance.UnsubscribeFromTopic(item);
+                FirebaseMessaging.Instance.UnsubscribeFromTopic(item.ToLower().Replace(" ", ""));
             }
         }
     }

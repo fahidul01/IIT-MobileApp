@@ -1,4 +1,5 @@
 ﻿using CoreEngine.APIHandlers;
+using Mobile.Core.Engines.Services;
 using Mobile.Core.Models.Core;
 using Mobile.Core.Worker;
 
@@ -9,12 +10,14 @@ namespace Mobile.Core.ViewModels
         private readonly HttpWorker _httpFactory;
         private readonly SettingService _settingServicce;
         private readonly IMemberHandler _memberHandler;
+        private readonly IPlatformService _platformService;
 
-        public SplashViewModel(HttpWorker httpWorker, IMemberHandler memberHandler, SettingService settingService)
+        public SplashViewModel(HttpWorker httpWorker, IMemberHandler memberHandler, IPlatformService platformService, SettingService settingService)
         {
             _httpFactory = httpWorker;
             _settingServicce = settingService;
             _memberHandler = memberHandler;
+            _platformService = platformService;
         }
         public override async void OnAppear(params object[] args)
         {
@@ -37,6 +40,10 @@ namespace Mobile.Core.ViewModels
                     AppService.CurrentUser = res;
                     AppService.HasCRRole = res.IsCR;
                     _nav.Init<HomeViewModel>();
+                    if (AppService.CurrentUser.Batch != null)
+                    {
+                        _platformService.SubsubcribeTopics(AppService.CurrentUser.Batch.Name);
+                    }
                 }
             }
         }

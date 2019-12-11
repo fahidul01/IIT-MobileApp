@@ -19,7 +19,6 @@ namespace Mobile.Core.ViewModels
         public Course CurrentCourse { get; private set; }
         public ObservableCollection<Lesson> Lessons { get; set; }
         public ObservableCollection<DBFile> DBFiles { get; set; }
-        public List<Semester> Semesters { get; set; }
         public Semester CurrentSemester { get; set; }
 
         public AddUpdateCourseViewModel(ICourseHandler courseHandler, IPreferenceEngine preferenceEngine)
@@ -29,20 +28,22 @@ namespace Mobile.Core.ViewModels
             Lessons = new ObservableCollection<Lesson>();
             DBFiles = new ObservableCollection<DBFile>();
         }
-        public override async void OnAppear(params object[] args)
+        public override void OnAppear(params object[] args)
         {
             base.OnAppear(args);
-            if (args.Length > 0 && args[0] is Course course)
-            {
-                CurrentCourse = course;
-                await LoadCourseDataAsync(course);
-            }
+            if (args.Length == 0) _nav.GoBack();
             else
             {
-                CurrentCourse = new Course();
+                if(args.Length >= 1 && args[0] is Semester semester)
+                {
+                    CurrentSemester = semester;
+                }
+                if (args.Length == 2 && args[1] is Course editCourse)
+                {
+                    CurrentCourse = editCourse;
+                }
+                else CurrentCourse = new Course();
             }
-            Semesters = await _courseHandler.GetCurrentSemester();
-            CurrentSemester = Semesters.FirstOrDefault(x => x.StartsOn >= DateTime.Now);
         }
 
         private async Task LoadCourseDataAsync(Course course)
@@ -60,9 +61,8 @@ namespace Mobile.Core.ViewModels
                 {
                     Lessons.Add(item);
                 }
-                CurrentSemester = Semesters.FirstOrDefault(x => x.Courses.Any(m => m.Id == course.Id));
+                CurrentSemester = course.Semester;
             }
-            
         }
 
         public ICommand SaveCommand => new RelayCommand(SaveAction);
