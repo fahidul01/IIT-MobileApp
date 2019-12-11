@@ -12,7 +12,7 @@ namespace Mobile.Core.ViewModels
     {
         private readonly ICourseHandler _courseHandler;
         public bool CanEdit { get; private set; }
-
+        public Semester CurrentSemester { get; private set; }
         public Course CurrentCourse { get; private set; }
 
         public CourseDetailViewModel(ICourseHandler courseHandler)
@@ -25,6 +25,7 @@ namespace Mobile.Core.ViewModels
             if (args != null && args.Length > 0 && args[0] is Course course)
             {
                 CurrentCourse = course;
+                CurrentSemester = course.Semester;
                 CanEdit = AppService.HasCRRole;
                 RefreshAction();
             }
@@ -50,7 +51,7 @@ namespace Mobile.Core.ViewModels
             var actionList = new Dictionary<string, Action>();
 
             actionList.Add("Add Event", () => _nav.NavigateTo<AddUpdateNoticeViewModel>(PostType.ClassCancel, CurrentCourse));
-            actionList.Add("Modify Course", () => _nav.NavigateTo<AddUpdateCourseViewModel>(CurrentCourse));
+            actionList.Add("Modify Course", () => _nav.NavigateTo<AddUpdateCourseViewModel>(CurrentSemester, CurrentCourse));
             actionList.Add("Add Lesson", () => _nav.NavigateTo<AddUpdateLessonViewModel>(CurrentCourse));
             actionList.Add("Add Course Material", AddMaterialAction);
             actionList.Add("Upload Course Grade", CourseGradeAction);

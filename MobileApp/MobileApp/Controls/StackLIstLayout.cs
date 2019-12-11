@@ -71,7 +71,8 @@ namespace MobileApp.Controls
                 Children.Add(new Label()
                 {
                     HorizontalTextAlignment = TextAlignment.Center,
-                    Text = EmptyText
+                    Text = EmptyText,
+                    Margin = new Thickness(10)
                 });
             }
 

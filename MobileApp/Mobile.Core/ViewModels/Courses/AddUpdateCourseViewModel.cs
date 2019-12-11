@@ -177,12 +177,11 @@ namespace Mobile.Core.ViewModels
                 else
                 {
                     var res = await _courseHandler.UpdateCourse(CurrentCourse);
-                    if (res.Actionstatus)
+                    if  (res!= null && res.Actionstatus)
                     {
                         _nav.GoBack();
+                        _dialog.ShowToastMessage("Updated Course Successfully");
                     }
-
-                    _dialog.ShowToastMessage("Updated Course Successfully");
                 }
             }
         }

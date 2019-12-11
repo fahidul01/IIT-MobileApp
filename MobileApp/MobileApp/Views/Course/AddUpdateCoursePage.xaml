@@ -34,6 +34,7 @@
                                Placeholder="Course Credit" />
                         <Editor Text="{Binding CurrentCourse.Description}"
                                 Placeholder="LongDescription"
+                                HeightRequest="150"
                                 BackgroundColor="Transparent" />
                     </StackLayout>
                 </Frame>

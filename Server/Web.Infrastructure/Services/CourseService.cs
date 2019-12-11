@@ -101,7 +101,7 @@ namespace Web.Infrastructure.Services
 
         public async Task<bool> ModifyCourse(Course course)
         {
-            var dbCourse = await _db.Courses.FindAsync(course);
+            var dbCourse = await _db.Courses.FindAsync(course.Id);
             if (dbCourse == null)
             {
                 return false;

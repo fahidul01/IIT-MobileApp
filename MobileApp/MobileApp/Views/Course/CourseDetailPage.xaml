@@ -16,8 +16,7 @@
         <pk:PancakeView HeightRequest="200"
                         VerticalOptions="Start"
                         BackgroundGradientStartColor="DarkBlue"
-                        BackgroundGradientEndColor="Blue"
-                        BackgroundColor="Blue" />
+                        BackgroundGradientEndColor="LightBlue"/>
         <ScrollView Padding="10">
             <StackLayout>
                 <Frame Padding="10">
@@ -36,22 +35,14 @@
                                TextType="Html" />
                     </StackLayout>
                 </Frame>
-                <Frame Padding="10">
+                <Frame Margin="0,10" Padding="10,10">
                     <StackLayout>
                         <Label Text="Lessons" 
                                FontSize="Medium"
                                TextColor="{StaticResource colorPrimaryDark}"/>
-                        <CollectionView ItemsSource="{Binding CurrentCourse.Lessons}">
-                            <d:CollectionView.ItemsSource>
-                                <x:Array Type="{x:Type x:String}">
-                                    <x:String>Lesson 1</x:String>
-                                    <x:String>Lesson 2</x:String>
-                                    <x:String>Lesson 3</x:String>
-                                    <x:String>Lesson 4</x:String>
-                                    <x:String>Lesson 5</x:String>
-                                </x:Array>
-                            </d:CollectionView.ItemsSource>
-                            <CollectionView.ItemTemplate>
+                        <controls:StackLIstLayout ItemsSource="{Binding CurrentCourse.Lessons}"
+                                                  EmptyText="No Item Has been Added Yet">
+                            <controls:StackLIstLayout.ItemTemplate>
                                 <DataTemplate x:DataType="model:Lesson">
                                     <pk:PancakeView Padding="5"
                                                     Margin="5"
@@ -71,8 +62,39 @@
                                         </StackLayout>
                                     </pk:PancakeView>
                                 </DataTemplate>
-                            </CollectionView.ItemTemplate>
-                        </CollectionView>
+                            </controls:StackLIstLayout.ItemTemplate>
+                        </controls:StackLIstLayout>
+                    </StackLayout>
+                </Frame>
+                <Frame Padding="10,10">
+                    <StackLayout>
+                        <Label Text="Course Material"
+                               FontSize="Medium"
+                               TextColor="{StaticResource colorPrimaryDark}" />
+                        <controls:StackLIstLayout ItemsSource="{Binding CurrentCourse.Lessons}"
+                                                  EmptyText="No Item Has been Added Yet">
+                            <controls:StackLIstLayout.ItemTemplate>
+                                <DataTemplate x:DataType="model:Lesson">
+                                    <pk:PancakeView Padding="5"
+                                                    Margin="5"
+                                                    BorderDrawingStyle="Outside"
+                                                    BorderThickness="1">
+                                        <StackLayout>
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label Text="{Binding DayOfWeek}"
+                                                       FontSize="Small"
+                                                       d:Text="Wednesday" />
+                                                <Label Text="{Binding TimeOfDay}"
+                                                       FontSize="Small"
+                                                       d:Text="7.00 PM" />
+                                            </StackLayout>
+                                            <Label Text="{Binding TeacherName}"
+                                                   d:Text="Teacher" />
+                                        </StackLayout>
+                                    </pk:PancakeView>
+                                </DataTemplate>
+                            </controls:StackLIstLayout.ItemTemplate>
+                        </controls:StackLIstLayout>
                     </StackLayout>
                 </Frame>
             </StackLayout>
@@ -83,7 +105,8 @@
                 WidthRequest="50"
                 CornerRadius="25"
                 Margin="20"
-                ImageSource="{controls:IconFont IconType=Add}"
+                ImageSource="{controls:IconFont IconType=Edit}"
+                Command="{Binding EditCourseCommand}"
                 BackgroundColor="DarkBlue" />
     </Grid>
 </controls:CustomPage>

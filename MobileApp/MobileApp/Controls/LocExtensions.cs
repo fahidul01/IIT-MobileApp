@@ -9,7 +9,7 @@ namespace MobileApp.Controls
     public class IconFont : IMarkupExtension
     {
         public IconType IconType { get; set; }
-        public double FontSize { get; set; } = 14;
+        public double FontSize { get; set; } = 24;
         public Color Color { get; set; } = Color.White;
 
         public object ProvideValue(IServiceProvider serviceProvider)
@@ -17,7 +17,7 @@ namespace MobileApp.Controls
             return GetSource(IconType, Color, FontSize);
         }
 
-        internal static FontImageSource GetSource(IconType iconType, Color color, double size = 14)
+        internal static FontImageSource GetSource(IconType iconType, Color color, double size = 24)
         {
             return new FontImageSource()
             {

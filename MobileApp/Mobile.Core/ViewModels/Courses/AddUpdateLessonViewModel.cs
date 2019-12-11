@@ -1,6 +1,10 @@
 ﻿using CoreEngine.APIHandlers;
+using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
 using GalaSoft.MvvmLight.Command;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Input;
 
 namespace Mobile.Core.ViewModels
@@ -11,6 +15,7 @@ namespace Mobile.Core.ViewModels
 
         public Course CurrentCourse { get; private set; }
         public Lesson Lesson { get; private set; }
+        public List<DayOfWeek> DayOfWeeks { get; set; } = Enum.GetValues(typeof(DayOfWeek)).Cast<DayOfWeek>().ToList();
 
         public AddUpdateLessonViewModel(ILessonHandler lessonHandler)
         {
@@ -20,7 +25,7 @@ namespace Mobile.Core.ViewModels
         public override void OnAppear(params object[] args)
         {
             base.OnAppear(args);
-            if (args != null && args.Length == 2 && args[0] is Course course && args[1] is Lesson lesson)
+            if (args.Length == 2 && args[0] is Course course && args[1] is Lesson lesson)
             {
                 CurrentCourse = course;
                 Lesson = lesson;
@@ -35,9 +40,23 @@ namespace Mobile.Core.ViewModels
 
         private async void SaveActionAsync()
         {
-            if (Lesson.Id == 0)
+            if (Lesson.TimeOfDay == TimeSpan.Zero) _dialog.ShowMessage("Error", "Invalid Time");
+            else
             {
-                var res = await _lessonHandler.AddLesson(CurrentCourse.Id, Lesson);
+                ActionResponse res;
+                if (Lesson.Id == 0)
+                {
+                    res = await _lessonHandler.AddLesson(CurrentCourse.Id, Lesson);
+                }
+                else
+                {
+                    res = await _lessonHandler.AddLesson(CurrentCourse.Id, Lesson);
+                }
+                if (res != null && res.Actionstatus)
+                {
+                    _dialog.ShowToastMessage("Updated Lesson Successfully");
+                    _nav.GoBack();
+                }
             }
         }
     }
