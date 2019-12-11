@@ -268,8 +268,8 @@ namespace Web.Infrastructure.Services
 #endif
 
                 var token = await _usermanager.GeneratePasswordResetTokenAsync(dBUser);
-                var res = await _usermanager.ResetPasswordAsync(dBUser, token, password);
-                return res.Succeeded;
+                var resetRes = await _usermanager.ResetPasswordAsync(dBUser, token, password);
+                return resetRes.Succeeded;
             }
             catch (Exception ex)
             {
