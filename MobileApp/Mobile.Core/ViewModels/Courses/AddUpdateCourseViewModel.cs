@@ -2,7 +2,6 @@
 using CoreEngine.Model.DBModel;
 using GalaSoft.MvvmLight.Command;
 using Mobile.Core.Engines.Services;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -31,10 +30,13 @@ namespace Mobile.Core.ViewModels
         public override void OnAppear(params object[] args)
         {
             base.OnAppear(args);
-            if (args.Length == 0) _nav.GoBack();
+            if (args.Length == 0)
+            {
+                _nav.GoBack();
+            }
             else
             {
-                if(args.Length >= 1 && args[0] is Semester semester)
+                if (args.Length >= 1 && args[0] is Semester semester)
                 {
                     CurrentSemester = semester;
                 }
@@ -42,7 +44,10 @@ namespace Mobile.Core.ViewModels
                 {
                     CurrentCourse = editCourse;
                 }
-                else CurrentCourse = new Course();
+                else
+                {
+                    CurrentCourse = new Course();
+                }
             }
         }
 
@@ -75,7 +80,7 @@ namespace Mobile.Core.ViewModels
 
         private void MaterialAction(DBFile obj)
         {
-           
+
         }
 
         private async void DeleteLessonAction(Lesson obj)
@@ -177,7 +182,7 @@ namespace Mobile.Core.ViewModels
                 else
                 {
                     var res = await _courseHandler.UpdateCourse(CurrentCourse);
-                    if  (res!= null && res.Actionstatus)
+                    if (res != null && res.Actionstatus)
                     {
                         _nav.GoBack();
                         _dialog.ShowToastMessage("Updated Course Successfully");

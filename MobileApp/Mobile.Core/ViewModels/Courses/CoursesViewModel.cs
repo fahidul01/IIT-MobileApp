@@ -1,7 +1,6 @@
 ﻿using CoreEngine.APIHandlers;
 using CoreEngine.Model.DBModel;
 using GalaSoft.MvvmLight.Command;
-using System;
 using System.Collections.Generic;
 using System.Windows.Input;
 
@@ -32,7 +31,7 @@ namespace Mobile.Core.ViewModels
         }
 
         public ICommand SemesterCommand => new RelayCommand<Semester>(SemesterAction);
-        
+
 
         private void SemesterAction(Semester obj)
         {

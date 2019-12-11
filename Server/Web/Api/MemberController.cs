@@ -88,8 +88,14 @@ namespace Web.Api
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var batch = await _userService.GetBatch(userId);
-            if (batch == null) return null;
-            else return await _batchService.GetBatchStudents(batch.Id);
+            if (batch == null)
+            {
+                return null;
+            }
+            else
+            {
+                return await _batchService.GetBatchStudents(batch.Id);
+            }
         }
 
         [HttpPost]

@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using Android.App;
+﻿using Android.App;
 using Android.Content;
 using Android.Util;
 using Firebase.Messaging;
 using Mobile.Core.Models.Core;
+using System.Collections.Generic;
 using Xamarin.Forms;
 
 namespace MobileApp.Droid.Services
@@ -24,7 +24,7 @@ namespace MobileApp.Droid.Services
         public override void OnNewToken(string p0)
         {
             base.OnNewToken(p0);
-            Log.Debug(TAG,p0);
+            Log.Debug(TAG, p0);
         }
 
         void SendNotification(RemoteMessage.Notification message, IDictionary<string, string> data)

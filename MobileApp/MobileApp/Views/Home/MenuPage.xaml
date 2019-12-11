@@ -5,11 +5,18 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              Title="IIT"
-             xmlns:vm="clr-namespace:Mobile.Core.ViewModels;assembly=Mobile.Core" 
+             xmlns:controls="clr-namespace:MobileApp.Controls"
+             xmlns:vm="clr-namespace:Mobile.Core.ViewModels;assembly=Mobile.Core"
              xmlns:helpers="clr-namespace:MobileApp.Helpers"
+             xmlns:converters="clr-namespace:MobileApp.Converters"
              x:Class="MobileApp.Views.Home.MenuPage">
+    <ContentPage.Resources>
+        <converters:IconTypeConverter x:Key="IconConverter" />
+    </ContentPage.Resources>
     <ListView helpers:CommandListView.ItemTappedCommand="{Binding FlyoutCommand}"
               SeparatorVisibility="None"
+              HasUnevenRows="True"
+              d:BindingContext="{x:Static vm:MainViewModel}"
               ItemsSource="{Binding MenuItems}">
         <d:ListView.ItemsSource>
             <x:Array Type="{x:Type x:String}">
@@ -21,19 +28,19 @@
             </x:Array>
         </d:ListView.ItemsSource>
         <ListView.Header>
-            <Grid BackgroundColor="LightBlue" HeightRequest="180">
+            <Grid BackgroundColor="White"
+                  HeightRequest="180">
                 <StackLayout Orientation="Horizontal"
                              VerticalOptions="Center">
                     <Frame HeightRequest="80"
                            WidthRequest="80"
                            Margin="10"
-                           Padding="0"
+                           Padding="10"
                            HorizontalOptions="Start"
-                           VerticalOptions="Start"
-                           CornerRadius="40">
+                           VerticalOptions="Center"
+                           CornerRadius="35">
                         <Image Source="iitlogo.png"
                                Aspect="AspectFit"
-                               Margin="10"
                                HorizontalOptions="Center" />
                     </Frame>
                     <Label Text="Institute of Information and Technology"
@@ -48,7 +55,10 @@
             <DataTemplate x:DataType="vm:MenuItem">
                 <ViewCell>
                     <StackLayout Padding="15,10"
+                                 Margin="5"
+                                 Orientation="Horizontal"
                                  HorizontalOptions="FillAndExpand">
+                        <Image Source="{Binding Icon, Converter={StaticResource IconConverter}}" />
                         <Label VerticalOptions="FillAndExpand"
                                VerticalTextAlignment="Center"
                                Text="{Binding Title}"

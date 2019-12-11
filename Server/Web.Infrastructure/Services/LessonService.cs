@@ -1,10 +1,8 @@
 ﻿using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Web.Infrastructure.DBModel;
 
@@ -23,7 +21,10 @@ namespace Web.Infrastructure.Services
             var course = await _db.Courses
                                  .FirstOrDefaultAsync(x => x.Id == courseId &&
                                  x.Semester.Batch.Id == batchId);
-            if (course == null) return null;
+            if (course == null)
+            {
+                return null;
+            }
             else
             {
                 course.Lessons.Add(lesson);
@@ -47,7 +48,10 @@ namespace Web.Infrastructure.Services
             var course = _db.Lessons
                             .FirstOrDefaultAsync(x => x.Id == lesson.Id &&
                                                  x.Course.Semester.Batch.Id == batchId);
-            if (course == null) return null;
+            if (course == null)
+            {
+                return null;
+            }
             else
             {
                 _db.Entry(lesson).State = EntityState.Modified;

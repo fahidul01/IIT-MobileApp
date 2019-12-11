@@ -22,16 +22,16 @@ namespace Mobile.Core.ViewModels
             RefreshAction();
         }
 
-        protected async override void RefreshAction()
+        protected override async void RefreshAction()
         {
             base.RefreshAction();
             SemesterDatas.Clear();
             IsBusy = true;
             var allcourseData = await _courseHandler.GetResult();
-            if(allcourseData!= null)
+            if (allcourseData != null)
             {
                 var grouped = allcourseData.GroupBy(x => x.Course.Semester).ToList();
-                foreach(var semester in grouped.OrderBy(x => x.Key.StartsOn))
+                foreach (var semester in grouped.OrderBy(x => x.Key.StartsOn))
                 {
                     var data = new SemesterData(semester.Key, semester.ToList());
                     SemesterDatas.Add(data);
@@ -48,7 +48,7 @@ namespace Mobile.Core.ViewModels
             SemesterName = semester.Name;
 
             decimal totalCredit = 0;
-            foreach(var gradeData in studentCourses)
+            foreach (var gradeData in studentCourses)
             {
                 var cData = new CourseData(gradeData, gradeData.Course);
                 totalCredit += gradeData.GradePoint * gradeData.Course.CourseCredit;
@@ -64,10 +64,10 @@ namespace Mobile.Core.ViewModels
 
     public class CourseData
     {
-        public string Name { get;private set; }
-        public string CourseId { get;private set; }
-        public string Grade { get;private set; }
-        public decimal GradePoint { get;private set; }
+        public string Name { get; private set; }
+        public string CourseId { get; private set; }
+        public string Grade { get; private set; }
+        public decimal GradePoint { get; private set; }
         public bool Failed => Grade == "F" || Grade == "f";
 
         public CourseData(StudentCourse studentCourse, Course course)
@@ -79,7 +79,10 @@ namespace Mobile.Core.ViewModels
             {
                 Grade = "Not Published";
             }
-            else Grade = studentCourse.Grade;
+            else
+            {
+                Grade = studentCourse.Grade;
+            }
         }
     }
 }

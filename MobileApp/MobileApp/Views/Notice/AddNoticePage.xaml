@@ -4,6 +4,7 @@
                      xmlns:d="http://xamarin.com/schemas/2014/forms/design"
                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                      mc:Ignorable="d"
+                     Title="Create Event"
                      xmlns:pk="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
                      xmlns:controls="clr-namespace:MobileApp.Controls"
                      x:DataType="vm:AddUpdateNoticeViewModel"
@@ -15,7 +16,8 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <pk:PancakeView BackgroundColor="Blue"
+        <pk:PancakeView BackgroundGradientStartColor="DarkBlue"
+                        BackgroundGradientEndColor="LightBlue"
                         VerticalOptions="Start"
                         HeightRequest="200"/>
         <ScrollView>
@@ -31,6 +33,8 @@
                             <TapGestureRecognizer Command="{Binding EditorCommand}" />
                         </Editor.GestureRecognizers>
                     </Editor>
+                    <Picker ItemsSource="{Binding PostTypes}"
+                            SelectedItem="{Binding CurrentPost}"/>
                     <StackLayout Orientation="Vertical"
                                  Spacing="0">
                         <Label Text="EventDate"
@@ -51,7 +55,6 @@
                                 BackgroundColor="Transparent"
                                 ImageSource="{controls:IconFont IconType=Add, Color=DarkBlue}" />
                     </Grid>
-                   
                 </StackLayout>
             </Frame>
         </ScrollView>

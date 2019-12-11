@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Web.Infrastructure.Services;
 
@@ -23,16 +24,9 @@ namespace Web.Api
 
         public async Task<ActionResponse> AddPost(Notice post)
         {
-            var user = HttpContext.User.Identity.Name;
-            if (string.IsNullOrWhiteSpace(user))
-            {
-                return new ActionResponse(false, "Invalid User");
-            }
-            else
-            {
-                var res = await _noticeService.AddUpdateNotice(post, user);
-                return new ActionResponse(res, res ? "Success" : "Failure");
-            }
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var res = await _noticeService.AddUpdateNotice(post, userId);
+            return res;
         }
 
         public async Task<ActionResponse> DeletePost(Notice post)
@@ -52,16 +46,9 @@ namespace Web.Api
 
         public async Task<ActionResponse> UpdatePost(Notice post)
         {
-            var user = HttpContext.User.Identity.Name;
-            if (string.IsNullOrWhiteSpace(user))
-            {
-                return new ActionResponse(false, "Invalid User");
-            }
-            else
-            {
-                var res = await _noticeService.AddUpdateNotice(post, user);
-                return new ActionResponse(res, res ? "Success" : "Failure");
-            }
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var res = await _noticeService.AddUpdateNotice(post, userId);
+            return res;
         }
     }
 }

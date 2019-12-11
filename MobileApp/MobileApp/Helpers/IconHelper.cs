@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Mobile.Core.Models.Core;
+using System.Collections.Generic;
 using Xamarin.Forms;
-using Mobile.Core.Models.Core;
 
 namespace MobileApp.Helpers
 {

@@ -1,7 +1,6 @@
 ﻿using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -85,7 +84,7 @@ namespace Web.Infrastructure.Services
         public async Task<Course> GetCourseAsync(int id)
         {
             return await _db.Courses
-                            .Include(x=>x.StudentCourses)
+                            .Include(x => x.StudentCourses)
                             .Include(x => x.Semester)
                             .Include(x => x.Lessons)
                             .Include(x => x.CourseMaterials)
@@ -131,7 +130,11 @@ namespace Web.Infrastructure.Services
         {
             var course = await _db.Courses.Include(x => x.StudentCourses)
                                           .FirstOrDefaultAsync(x => x.Id == courseId);
-            if (course == null) return false;
+            if (course == null)
+            {
+                return false;
+            }
+
             using var stream = File.OpenRead(filePath);
             using var reader = new StreamReader(stream);
             while (!reader.EndOfStream)
@@ -187,10 +190,10 @@ namespace Web.Infrastructure.Services
         {
             var user = await _db.Users.Include(x => x.Batch)
                                        .FirstOrDefaultAsync(x => x.UserName == userId);
-            if(user!= null && user.Batch!= null && user.ClassRepresentative)
+            if (user != null && user.Batch != null && user.ClassRepresentative)
             {
                 var lesson = await _db.Lessons.FirstOrDefaultAsync(x => x.Id == lessonId);
-                if(lesson!= null && lesson.Course.StudentCourses.Any(x=>x.Student.Id == userId))
+                if (lesson != null && lesson.Course.StudentCourses.Any(x => x.Student.Id == userId))
                 {
                     _db.Lessons.Remove(lesson);
                     await _db.SaveChangesAsync();
@@ -202,7 +205,7 @@ namespace Web.Infrastructure.Services
         public async Task<List<StudentCourse>> GetResult(string userId)
         {
             var res = await _db.StudentCourses.Include(x => x.Course)
-                                              .ThenInclude(x=>x.Semester)
+                                              .ThenInclude(x => x.Semester)
                                               .Where(x => x.Student.Id == userId)
                                               .ToListAsync();
             return res;
@@ -214,9 +217,12 @@ namespace Web.Infrastructure.Services
         #region Material
         public async Task<bool> AddMaterial(int courseId, List<DBFile> dbFiles)
         {
-            var course = await _db.Courses.Include(x=>x.CourseMaterials)
+            var course = await _db.Courses.Include(x => x.CourseMaterials)
                                     .FirstOrDefaultAsync(x => x.Id == courseId);
-            if (course == null) return false;
+            if (course == null)
+            {
+                return false;
+            }
             else
             {
                 dbFiles.ForEach(x => course.CourseMaterials.Add(x));
@@ -234,7 +240,7 @@ namespace Web.Infrastructure.Services
             return res;
         }
 
-        public async Task<Lesson> AddUpdateLesson(int courseId,Lesson lesson)
+        public async Task<Lesson> AddUpdateLesson(int courseId, Lesson lesson)
         {
             var course = await _db.Courses.FirstOrDefaultAsync(x => x.Id == courseId);
             if (course == null)
@@ -243,7 +249,7 @@ namespace Web.Infrastructure.Services
             }
             else
             {
-                if(lesson.Id == 0)
+                if (lesson.Id == 0)
                 {
                     lesson.Course = course;
                     _db.Entry(lesson).State = EntityState.Added;

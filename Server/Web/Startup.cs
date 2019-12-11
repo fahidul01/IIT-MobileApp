@@ -1,7 +1,6 @@
 using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
 using Jdenticon.AspNetCore;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -14,10 +13,8 @@ using Newtonsoft.Json;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
-using System.Threading.Tasks;
 using Web.Infrastructure.AppServices;
 using Web.Infrastructure.DBModel;
-using Web.Infrastructure.Services;
 using Web.Models.Web;
 using Web.WebServices;
 
@@ -82,6 +79,7 @@ namespace Web
                 options.LoginPath = "/Login";
             });
             services.AddTransient<IEmailSender, EmailSender>();
+            services.AddTransient<INotificationService, NotificationService>();
             services.AddTransient<TokenService>();
             services.Configure<AuthMessageSenderOptions>(Configuration);
             services.AddHostedService<AppStartService>();
@@ -131,7 +129,7 @@ namespace Web
                     pattern: "{controller=Home}/{action=Index}/{id?}");
 
             });
-          
+
         }
     }
 }

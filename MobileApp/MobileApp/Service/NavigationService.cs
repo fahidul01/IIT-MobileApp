@@ -5,7 +5,6 @@ using Mobile.Core.Models.Core;
 using Mobile.Core.ViewModels;
 using Mobile.Core.ViewModels.Core;
 using MobileApp.Controls;
-using MobileApp.Helpers;
 using MobileApp.Views.Home;
 using System;
 using System.Collections.Generic;

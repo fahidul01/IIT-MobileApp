@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Web.Infrastructure.AppServices;
 using Web.Infrastructure.DBModel;
 
 namespace Web.Infrastructure.Services
@@ -11,10 +12,12 @@ namespace Web.Infrastructure.Services
     public class NoticeService : BaseService
     {
         private readonly StudentDBContext _db;
+        private readonly INotificationService _notificationService;
 
-        public NoticeService(StudentDBContext studentDBContext)
+        public NoticeService(StudentDBContext studentDBContext, INotificationService notificationService)
         {
             _db = studentDBContext;
+            _notificationService = notificationService;
         }
 
         public async Task<int> GetTotalNoticeAsync()
@@ -29,6 +32,7 @@ namespace Web.Infrastructure.Services
                 if (batchId != 0)
                 {
                     notice.Batch = await _db.Batches.FindAsync(batchId);
+                    _notificationService.SendNotification(notice.Batch.Name, notice.Title, notice.Message);
                 }
                 notice.Owner = dBUser;
                 _db.Notices.Add(notice);
@@ -41,15 +45,15 @@ namespace Web.Infrastructure.Services
             }
         }
 
-        public async Task<bool> AddUpdateNotice(Notice post, string user)
+        public async Task<ActionResponse> AddUpdateNotice(Notice post, string userId)
         {
             var dbUser = await _db.Users
                                   .Include(m => m.Batch)
                                   .FirstOrDefaultAsync(x => x.UserRole == AppConstants.Student &&
-                                                            x.UserName == user);
+                                                            x.Id == userId);
             if (dbUser == null)
             {
-                return false;
+                return new ActionResponse(false,"Invalid User");
             }
             else
             {
@@ -64,7 +68,7 @@ namespace Web.Infrastructure.Services
                     _db.Entry(post).State = EntityState.Modified;
                 }
                 await _db.SaveChangesAsync();
-                return true;
+                return new ActionResponse(true,"Successfully created the notice");
             }
         }
 

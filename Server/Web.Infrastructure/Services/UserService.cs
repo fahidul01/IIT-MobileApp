@@ -3,7 +3,6 @@ using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -21,7 +20,7 @@ namespace Web.Infrastructure.Services
         private readonly IEmailSender _emailSender;
 
         public UserService(UserManager<DBUser> userManager,
-            StudentDBContext studentDB, 
+            StudentDBContext studentDB,
             IEmailSender emailSender)
         {
             _usermanager = userManager;
@@ -100,9 +99,16 @@ namespace Web.Infrastructure.Services
         public async Task<ActionResponse> AddStudent(int batchId, string roll, string name, string email, string phone)
         {
             var batch = await _db.Batches.FirstOrDefaultAsync(x => x.Id == batchId);
-            if (batch == null) return new ActionResponse(false, "Invalid Batch");
+            if (batch == null)
+            {
+                return new ActionResponse(false, "Invalid Batch");
+            }
+
             var user = await _db.Users.FirstOrDefaultAsync(x => x.UserName == roll);
-            if (user != null) return new ActionResponse(false, "Roll already exists");
+            if (user != null)
+            {
+                return new ActionResponse(false, "Roll already exists");
+            }
             else
             {
                 var password = CryptoService.GenerateRandomPassword();
@@ -122,7 +128,11 @@ namespace Web.Infrastructure.Services
                 if (res.Succeeded)
                 {
                     var mRes = await _usermanager.AddToRoleAsync(student, AppConstants.Student);
-                    if (mRes.Succeeded) return new ActionResponse(true);
+                    if (mRes.Succeeded)
+                    {
+                        return new ActionResponse(true);
+                    }
+
                     var msg = EmailMessageCreator.CreateInvitation(password);
                     await _emailSender.SendEmailAsync(student.Email, "Password Recover", msg);
                 }

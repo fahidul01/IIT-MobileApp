@@ -40,7 +40,10 @@ namespace Mobile.Core.ViewModels
 
         private async void SaveActionAsync()
         {
-            if (Lesson.TimeOfDay == TimeSpan.Zero) _dialog.ShowMessage("Error", "Invalid Time");
+            if (Lesson.TimeOfDay == TimeSpan.Zero)
+            {
+                _dialog.ShowMessage("Error", "Invalid Time");
+            }
             else
             {
                 ActionResponse res;

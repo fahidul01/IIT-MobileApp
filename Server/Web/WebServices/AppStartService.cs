@@ -51,7 +51,7 @@ namespace Web.WebServices
                 await _userManager.CreateAsync(user, "pass_WORD_1234");
                 await _userManager.AddToRoleAsync(user, "Admin");
             }
-           
+
         }
 
         public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;

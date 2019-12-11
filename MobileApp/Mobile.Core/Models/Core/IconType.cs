@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Mobile.Core.Models.Core
+﻿namespace Mobile.Core.Models.Core
 {
     public enum IconType
     {

@@ -103,10 +103,22 @@ namespace Web.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateStudent(int batchId, string roll, string name, string email, string phone)
         {
-            if (batchId == 0) Failed("Invalid Batch");
-            else if (string.IsNullOrWhiteSpace(roll)) Failed("Invalid Roll");
-            else if (string.IsNullOrWhiteSpace(name)) Failed("Invalid Name");
-            else if (string.IsNullOrWhiteSpace(email)) Failed("Invalid Email Address");
+            if (batchId == 0)
+            {
+                Failed("Invalid Batch");
+            }
+            else if (string.IsNullOrWhiteSpace(roll))
+            {
+                Failed("Invalid Roll");
+            }
+            else if (string.IsNullOrWhiteSpace(name))
+            {
+                Failed("Invalid Name");
+            }
+            else if (string.IsNullOrWhiteSpace(email))
+            {
+                Failed("Invalid Email Address");
+            }
             else
             {
                 var res = await _userService.AddStudent(batchId, roll, name, email, phone);

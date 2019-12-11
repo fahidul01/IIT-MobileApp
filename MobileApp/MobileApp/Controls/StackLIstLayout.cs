@@ -66,7 +66,7 @@ namespace MobileApp.Controls
                 Children.Add(v);
                 counter++;
             }
-            if(Children.Count == 0)
+            if (Children.Count == 0)
             {
                 Children.Add(new Label()
                 {
@@ -76,7 +76,7 @@ namespace MobileApp.Controls
                 });
             }
 
-            if(ItemsSource is INotifyCollectionChanged notifyCollection)
+            if (ItemsSource is INotifyCollectionChanged notifyCollection)
             {
                 notifyCollection.CollectionChanged += NotifyCollection_CollectionChanged;
             }
@@ -84,7 +84,11 @@ namespace MobileApp.Controls
 
         private async void NotifyCollection_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if (_locked) return;
+            if (_locked)
+            {
+                return;
+            }
+
             _locked = true;
             await Task.Delay(250);  //Disable Consecutive Update
             SetItems();

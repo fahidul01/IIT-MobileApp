@@ -15,7 +15,7 @@ namespace MobileApp.Droid.Services
         {
             foreach (var item in topics)
             {
-                FirebaseMessaging.Instance.SubscribeToTopic(item.ToLower().Replace(" ",""));
+                FirebaseMessaging.Instance.SubscribeToTopic(item.ToLower().Replace(" ", ""));
             }
         }
 

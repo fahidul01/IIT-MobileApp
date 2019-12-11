@@ -15,7 +15,7 @@ using Web.Infrastructure.Services;
 
 namespace Web.Api
 {
-    [Authorize(Roles = AppConstants.Student, 
+    [Authorize(Roles = AppConstants.Student,
         AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class CoursesController : ControllerBase, ICourseHandler
     {
@@ -45,15 +45,18 @@ namespace Web.Api
             else
             {
                 var res = await _courseService.AddCourse(course, semesterId, batch.Id);
-                if(res!= null && formFiles!= null && formFiles.Count > 0)
+                if (res != null && formFiles != null && formFiles.Count > 0)
                 {
                     return await AddMaterial(res.Id, null, formFiles);
                 }
-                else return new ActionResponse(res != null);
+                else
+                {
+                    return new ActionResponse(res != null);
+                }
             }
         }
 
-        
+
 
         public async Task<ActionResponse> UploadCourseResult(int courseId, DBFile dBFile, IFormFile formFile)
         {
@@ -83,7 +86,10 @@ namespace Web.Api
                     return new ActionResponse(false, ex.Message);
                 }
             }
-            else return new ActionResponse(false, "Invalid Course or file");
+            else
+            {
+                return new ActionResponse(false, "Invalid Course or file");
+            }
         }
 
 
@@ -150,7 +156,7 @@ namespace Web.Api
                     var res = await _courseService.AddMaterial(courseId, dbFiles);
                     return new ActionResponse(res);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     return new ActionResponse(false, ex.Message);
                 }
@@ -189,15 +195,21 @@ namespace Web.Api
 
         public async Task<ActionResponse> Update(Lesson lesson)
         {
-            var res =  await _courseService.AddUpdateLesson(0, lesson);
+            var res = await _courseService.AddUpdateLesson(0, lesson);
             return new ActionResponse(res != null);
         }
 
         public async Task<List<StudentCourse>> GetResult()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (userId == null) return null;
-            else return await _courseService.GetResult(userId);
+            if (userId == null)
+            {
+                return null;
+            }
+            else
+            {
+                return await _courseService.GetResult(userId);
+            }
         }
     }
 }
