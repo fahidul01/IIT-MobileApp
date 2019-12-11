@@ -7,18 +7,18 @@ using Xamarin.Forms;
 
 namespace MobileApp.Controls
 {
-    public class StackLIstLayout : StackLayout
+    public class StackListLayout : StackLayout
     {
         private bool _locked;
         public string EmptyText { get; set; } = "No Items";
         public static readonly BindableProperty ItemsSourceProperty =
             BindableProperty.Create(nameof(ItemsSource),
                 typeof(IEnumerable),
-                typeof(StackLIstLayout),
+                typeof(StackListLayout),
                 default(IEnumerable<object>),
                 BindingMode.TwoWay, propertyChanged: ItemsSourceChanged);
         public static readonly BindableProperty SelectedCommandProperty =
-            BindableProperty.Create(nameof(SelectedCommand), typeof(ICommand), typeof(StackLIstLayout), null);
+            BindableProperty.Create(nameof(SelectedCommand), typeof(ICommand), typeof(StackListLayout), null);
 
         public static readonly BindableProperty ItemTemplateProperty =
             BindableProperty.Create(nameof(ItemTemplate), typeof(DataTemplate), typeof(StackLayout), default(DataTemplate));
@@ -42,11 +42,11 @@ namespace MobileApp.Controls
 
         private static void ItemsSourceChanged(BindableObject bindable, object oldValue, object newValue)
         {
-            var itemsLayout = (StackLIstLayout)bindable;
+            var itemsLayout = (StackListLayout)bindable;
             itemsLayout.SetItems();
         }
 
-        public StackLIstLayout()
+        public StackListLayout()
         {
 
         }

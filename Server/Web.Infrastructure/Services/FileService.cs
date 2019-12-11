@@ -104,9 +104,21 @@ namespace Web.Infrastructure.Services
             return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
         }
 
-        public Task<bool> Delete(DBFile obj)
+        public async Task<ActionResponse> Delete(DBFile obj)
         {
-            throw new NotImplementedException();
+            var target = GetTargetFolder();
+
+            var _dbFile = await _db.DBFiles.FindAsync(obj.Id);
+            var targetFile = Path.Combine(target, _dbFile.FilePath);
+            if (_dbFile != null && File.Exists(targetFile))
+            {
+                File.Delete(targetFile);
+                return new ActionResponse(true, "File Delete Successfull");
+            }
+            else
+            {
+                return new ActionResponse(false, "Failed to Locate the target file");
+            }
         }
     }
 }

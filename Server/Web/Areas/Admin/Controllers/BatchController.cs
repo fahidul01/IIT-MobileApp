@@ -83,14 +83,14 @@ namespace Web.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 var res = await _batchService.UpdateBatch(batch);
-                if (res)
+                if (res.Actionstatus)
                 {
                     Success();
                     return RedirectToAction(nameof(Index));
                 }
                 else
                 {
-                    Failed("Failed to update");
+                    Failed(res.Message);
                     return View(batch);
                 }
             }

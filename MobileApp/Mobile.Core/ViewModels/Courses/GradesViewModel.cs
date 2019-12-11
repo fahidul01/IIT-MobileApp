@@ -33,6 +33,7 @@ namespace Mobile.Core.ViewModels
                 var grouped = allcourseData.GroupBy(x => x.Course.Semester).ToList();
                 foreach (var semester in grouped.OrderBy(x => x.Key.StartsOn))
                 {
+                    if (semester.Key.StartsOn > DateTime.Now) continue;
                     var data = new SemesterData(semester.Key, semester.ToList());
                     SemesterDatas.Add(data);
                 }
@@ -46,7 +47,7 @@ namespace Mobile.Core.ViewModels
         public SemesterData(Semester semester, List<StudentCourse> studentCourses)
         {
             SemesterName = semester.Name;
-
+            SemesterNo = SemesterName.ToLower().Replace("semester", "").Trim();
             decimal totalCredit = 0;
             foreach (var gradeData in studentCourses)
             {
@@ -56,9 +57,10 @@ namespace Mobile.Core.ViewModels
             SemesterGPA = Math.Round(totalCredit / studentCourses.Sum(x => x.Course.CourseCredit));
         }
 
+        public string SemesterNo { get; private set; }
         public string SemesterName { get; private set; }
         public decimal SemesterGPA { get; private set; }
-        public List<CourseData> CourseDatas { get; private set; }
+        public List<CourseData> CourseDatas { get; set; }
 
     }
 

@@ -38,44 +38,44 @@
         <h3>Lessons</h3>
     </div>
     <div class="card-body">
-       <table class="table table-striped">
-           <thead>
-               <tr>
-                   <th scope="col">Name</th>
-                   <th scope="col">Teacher</th>
-                   <th scope="col">WeekDays</th>
-                   <th scope="col"></th>
-               </tr>
-           </thead>
-           <tbody>
-               @foreach (var lesson in Model.Lessons)
-               {
-               <tr>
-                   <td>
-                       @lesson.TeacherName
-                   </td>
-                   <td>
-                       @lesson.TimeOfDay
-                   </td>
-                   <td>
-                       @lesson.DayOfWeek
-                   </td>
-                   <td>
-                       <span>
-                           <a asp-action="EditLesson"
-                              asp-route-id="@lesson.Id">
-                               <i class="fa fa-edit"></i>
-                           </a>
-                           <a asp-action="DeleteLesson"
-                              asp-route-id="@lesson.Id">
-                               <i class="fa fa-recycle"></i>
-                           </a>
-                       </span>
-                   </td>
-               </tr>
-               }
-           </tbody>
-       </table>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Teacher</th>
+                    <th scope="col">WeekDays</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var lesson in Model.Lessons)
+                {
+                    <tr>
+                        <td>
+                            @lesson.TeacherName
+                        </td>
+                        <td>
+                            @lesson.TimeOfDay
+                        </td>
+                        <td>
+                            @lesson.DayOfWeek
+                        </td>
+                        <td>
+                            <span>
+                                <a asp-action="EditLesson"
+                                   asp-route-id="@lesson.Id">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                <a asp-action="DeleteLesson"
+                                   asp-route-id="@lesson.Id">
+                                    <i class="fa fa-recycle"></i>
+                                </a>
+                            </span>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
 </div>
 
@@ -87,4 +87,48 @@
            asp-route-id="@file.Id">@file.FileName</a>
         <br />
     }
+}
+
+<div class="card mt-3">
+    <div class="card-header">
+        <h2 class="d-inline">Students</h2>
+        <form asp-controller="Course"
+              class="d-inline"
+              data-ajax="true"
+              data-ajax-method="POST"
+              data-ajax-update="#student_table"
+              data-ajax-loading="#spinner"
+              asp-action="UploadResult"
+              enctype="multipart/form-data">
+            <div>
+                <input type="hidden" name="courseId" value="@Model.Id" />
+                <label class="btn">
+                    Add Batch Students
+                    <input type="file" name="file" hidden
+                           onchange="javascript: document.getElementById('submit_button').click();">
+                </label>
+                <button id="submit_button"
+                        hidden
+                        class="btn btn-info btn-block my-4" type="submit">
+                </button>
+            </div>
+        </form>
+    </div>
+
+</div>
+<div class="card-body">
+    <div class="text-center">
+        <div id="spinner" style="display:none" class="spinner-border"></div>
+    </div>
+
+
+    <div id="student_table" style="min-height:50%">
+        @await Html.PartialAsync("_Result", Model.StudentCourses);
+    </div>
+</div>
+
+
+@section Scripts
+{
+    <script src="~/lib/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.min.js" asp-append-version="true"></script>
 }

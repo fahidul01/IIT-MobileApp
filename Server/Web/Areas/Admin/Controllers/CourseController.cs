@@ -1,5 +1,9 @@
 ﻿using CoreEngine.Model.DBModel;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using Web.Areas.Admin.ViewModels;
 using Web.Controllers;
@@ -45,6 +49,50 @@ namespace Web.Areas.Admin.Controllers
                 }
             }
             return BadRequest();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UploadResult(int courseId, IFormFile file)
+        {
+            if (courseId > 0 && file != null && file.Length > 0)
+            {
+                var filePath = Path.GetTempFileName();
+
+                try
+                {
+                    using (var stream = System.IO.File.Create(filePath))
+                    {
+                        await file.CopyToAsync(stream);
+                    }
+
+                    if (file.FileName.EndsWith("csv"))
+                    {
+                        var res = await _courseService.UploadResult(courseId, filePath);
+                        if (res.Actionstatus)
+                            return PartialView("_Result", await _courseService.GetResult(courseId));
+                        else
+                        {
+                            Failed(res.Message);
+                            return PartialView("_Result", null);
+                        }
+                    }
+                    else
+                    {
+                        Failed("Invalid File format");
+                        return PartialView("_Result", null);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Failed(ex.Message);
+                    return PartialView("_Result", null);
+                }
+            }
+            else
+            {
+                Failed("Invalid File format");
+                return PartialView("_Students", new List<User>());
+            }
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Web.Infrastructure.AppServices;
 using Web.Infrastructure.DBModel;
 
 namespace Web.Infrastructure.Services
@@ -12,10 +13,12 @@ namespace Web.Infrastructure.Services
     public class CourseService : BaseService
     {
         private readonly StudentDBContext _db;
+        private readonly INotificationService _notificationService;
 
-        public CourseService(StudentDBContext dBContext)
+        public CourseService(StudentDBContext dBContext, INotificationService notificationService)
         {
             _db = dBContext;
+            _notificationService = notificationService;
         }
 
         #region Course
@@ -52,6 +55,8 @@ namespace Web.Infrastructure.Services
                     course.Semester = semester;
                     _db.Entry(course).State = EntityState.Added;
                     await _db.SaveChangesAsync();
+                    var message = string.Format("You have been enrolled in Course {0}", course.CourseName);
+                    _notificationService.SendNotification(batch.Name, course.CourseName, message);
                     return course;
                 }
             }
@@ -84,10 +89,11 @@ namespace Web.Infrastructure.Services
         public async Task<Course> GetCourseAsync(int id)
         {
             return await _db.Courses
-                            .Include(x => x.StudentCourses)
                             .Include(x => x.Semester)
                             .Include(x => x.Lessons)
                             .Include(x => x.CourseMaterials)
+                            .Include(x => x.StudentCourses)
+                            .ThenInclude(n => n.Student)
                             .FirstOrDefaultAsync(x => x.Id == id);
         }
 
@@ -125,16 +131,39 @@ namespace Web.Infrastructure.Services
         #endregion
 
         #region Lesson
+        public async Task<ActionResponse> UploadResult(int courseId, string filePath)
+        {
+            var course = await _db.Courses.Include(x => x.Semester.Batch).FirstOrDefaultAsync(x => x.Id == courseId);
+            return await AddResult(course, course.Semester.Batch, filePath);
+        }
 
-        public async Task<bool> UploadResult(int courseId, string filePath)
+        public async Task<List<StudentCourse>> GetResult(int courseId)
+        {
+            var res = await _db.StudentCourses.Where(x => x.Course.Id == courseId)
+                               .Include(m => m.Student)
+                               .ToListAsync();
+            return res;
+        }
+
+        public async Task<ActionResponse> UploadResult(int courseId, int batchId, string filePath)
         {
             var course = await _db.Courses.Include(x => x.StudentCourses)
                                           .FirstOrDefaultAsync(x => x.Id == courseId);
             if (course == null)
             {
-                return false;
+                return new ActionResponse(false, "Invalid Course Information");
             }
 
+            var batch = await _db.Batches.FindAsync(batchId);
+            if (course.Semester.Batch.Id != batch.Id)
+            {
+                return new ActionResponse(false, "Invalid Batch Information");
+            }
+            else return await AddResult(course, batch, filePath);
+        }
+
+        private async Task<ActionResponse> AddResult(Course course, Batch batch, string filePath)
+        {
             using var stream = File.OpenRead(filePath);
             using var reader = new StreamReader(stream);
             while (!reader.EndOfStream)
@@ -170,7 +199,8 @@ namespace Web.Infrastructure.Services
                 }
             }
             await _db.SaveChangesAsync();
-            return true;
+            _notificationService.SendNotification(batch.Name, course.CourseId, "Result Has been published");
+            return new ActionResponse(true, "Result Uploaded Successfully");
         }
 
         public async Task<List<Lesson>> UpcomingLessons()
@@ -213,21 +243,20 @@ namespace Web.Infrastructure.Services
 
         #endregion
 
-
         #region Material
-        public async Task<bool> AddMaterial(int courseId, List<DBFile> dbFiles)
+        public async Task<ActionResponse> AddMaterial(int courseId, List<DBFile> dbFiles)
         {
             var course = await _db.Courses.Include(x => x.CourseMaterials)
-                                    .FirstOrDefaultAsync(x => x.Id == courseId);
+                                          .FirstOrDefaultAsync(x => x.Id == courseId);
             if (course == null)
             {
-                return false;
+                return new ActionResponse(false, "Invalid Course Information");
             }
             else
             {
                 dbFiles.ForEach(x => course.CourseMaterials.Add(x));
                 await _db.SaveChangesAsync();
-                return true;
+                return new ActionResponse(true, "Course Material Uploaded Successfully");
             }
         }
 

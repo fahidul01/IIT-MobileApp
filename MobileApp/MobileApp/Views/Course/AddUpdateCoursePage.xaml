@@ -56,8 +56,8 @@
                                     ImageSource="{controls:IconFont IconType=Add, Color=DarkBlue}"
                                     Style="{StaticResource FloatingButton}" />
                         </Grid>
-                        <controls:StackLIstLayout ItemsSource="{Binding Lessons}">
-                            <controls:StackLIstLayout.ItemTemplate>
+                        <controls:StackListLayout ItemsSource="{Binding Lessons}">
+                            <controls:StackListLayout.ItemTemplate>
                                 <DataTemplate x:DataType="model:Lesson">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
@@ -90,8 +90,8 @@
                                                 CommandParameter="{Binding}" />
                                     </Grid>
                                 </DataTemplate>
-                            </controls:StackLIstLayout.ItemTemplate>
-                        </controls:StackLIstLayout>
+                            </controls:StackListLayout.ItemTemplate>
+                        </controls:StackListLayout>
                     </StackLayout>
                 </Frame>
                 <Frame Margin="5"
@@ -112,8 +112,8 @@
                                     ImageSource="{controls:IconFont IconType=Add, Color=DarkBlue}"
                                     Style="{StaticResource FloatingButton}" />
                         </Grid>
-                        <controls:StackLIstLayout ItemsSource="{Binding DBFiles}">
-                            <controls:StackLIstLayout.ItemTemplate>
+                        <controls:StackListLayout ItemsSource="{Binding DBFiles}">
+                            <controls:StackListLayout.ItemTemplate>
                                 <DataTemplate x:DataType="model:DBFile">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
@@ -143,8 +143,8 @@
                                                 CommandParameter="{Binding}"/>
                                     </Grid>
                                 </DataTemplate>
-                            </controls:StackLIstLayout.ItemTemplate>
-                        </controls:StackLIstLayout>
+                            </controls:StackListLayout.ItemTemplate>
+                        </controls:StackListLayout>
                     </StackLayout>
                 </Frame>
             </StackLayout>

@@ -69,33 +69,40 @@ namespace Web.Infrastructure.Services
             return res;
         }
 
-        public async Task<bool> UpdateBatch(Batch batch)
+        public async Task<ActionResponse> UpdateBatch(Batch batch)
         {
-            var oldBatch = await _db.Batches.FindAsync(batch);
+            var oldBatch = await _db.Batches.FindAsync(batch.Id);
             if (oldBatch == null)
             {
-                return false;
+                return new ActionResponse(false,"The batch information was not found");
             }
             else
             {
                 _db.Entry(batch).State = EntityState.Modified;
                 await _db.SaveChangesAsync();
-                return true;
+                return new ActionResponse(true,"Batch Information Updated Successfully");
             }
         }
 
-        public async Task<bool> DeleteBatch(Batch batch)
+        public async Task<ActionResponse> DeleteBatch(Batch batch)
         {
-            var oldBatch = await _db.Batches.FindAsync(batch);
+            var oldBatch = await _db.Batches.Include(x=>x.Students)
+                                            .Include(x=>x.Semesters)
+                                            .FirstOrDefaultAsync(x=>x.Id == batch.Id);
             if (oldBatch == null)
             {
-                return false;
+                return new ActionResponse(false, "The batch information was not found");
             }
             else
             {
+                foreach (var student in oldBatch.Students)
+                    _db.Entry(student).State = EntityState.Deleted;
+                foreach (var semester in oldBatch.Students)
+                    _db.Entry(semester).State = EntityState.Deleted;
+
                 _db.Entry(oldBatch).State = EntityState.Deleted;
                 await _db.SaveChangesAsync();
-                return true;
+                return new ActionResponse(true, "Batch Information Deleted Successfully");
             }
         }
 

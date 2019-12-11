@@ -66,6 +66,8 @@ namespace Web.Api
 
                 try
                 {
+                    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                    var batch = await _userservice.GetBatch(userId);
                     using (var stream = System.IO.File.Create(filePath))
                     {
                         await formFile.CopyToAsync(stream);
@@ -73,8 +75,8 @@ namespace Web.Api
 
                     if (formFile.FileName.EndsWith("csv"))
                     {
-                        var uploadRes = await _courseService.UploadResult(courseId, filePath);
-                        return new ActionResponse(uploadRes);
+                        var uploadRes = await _courseService.UploadResult(courseId,batch.Id, filePath);
+                        return uploadRes;
                     }
                     else
                     {
@@ -154,7 +156,7 @@ namespace Web.Api
                 {
                     dbFiles = await _fileService.UploadFiles(formFiles);
                     var res = await _courseService.AddMaterial(courseId, dbFiles);
-                    return new ActionResponse(res);
+                    return res;
                 }
                 catch (Exception ex)
                 {
@@ -166,8 +168,8 @@ namespace Web.Api
 
         public async Task<ActionResponse> DeleteCouseMaterial(DBFile obj)
         {
-            bool res = await _fileService.Delete(obj);
-            return new ActionResponse(res);
+            var res = await _fileService.Delete(obj);
+            return res;
 
         }
 

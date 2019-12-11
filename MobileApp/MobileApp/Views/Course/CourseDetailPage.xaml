@@ -40,9 +40,9 @@
                         <Label Text="Lessons" 
                                FontSize="Medium"
                                TextColor="{StaticResource colorPrimaryDark}"/>
-                        <controls:StackLIstLayout ItemsSource="{Binding CurrentCourse.Lessons}"
+                        <controls:StackListLayout ItemsSource="{Binding CurrentCourse.Lessons}"
                                                   EmptyText="No Item Has been Added Yet">
-                            <controls:StackLIstLayout.ItemTemplate>
+                            <controls:StackListLayout.ItemTemplate>
                                 <DataTemplate x:DataType="model:Lesson">
                                     <pk:PancakeView Padding="5"
                                                     Margin="5"
@@ -62,8 +62,8 @@
                                         </StackLayout>
                                     </pk:PancakeView>
                                 </DataTemplate>
-                            </controls:StackLIstLayout.ItemTemplate>
-                        </controls:StackLIstLayout>
+                            </controls:StackListLayout.ItemTemplate>
+                        </controls:StackListLayout>
                     </StackLayout>
                 </Frame>
                 <Frame Padding="10,10">
@@ -71,9 +71,9 @@
                         <Label Text="Course Material"
                                FontSize="Medium"
                                TextColor="{StaticResource colorPrimaryDark}" />
-                        <controls:StackLIstLayout ItemsSource="{Binding CurrentCourse.Lessons}"
+                        <controls:StackListLayout ItemsSource="{Binding CurrentCourse.Lessons}"
                                                   EmptyText="No Item Has been Added Yet">
-                            <controls:StackLIstLayout.ItemTemplate>
+                            <controls:StackListLayout.ItemTemplate>
                                 <DataTemplate x:DataType="model:Lesson">
                                     <pk:PancakeView Padding="5"
                                                     Margin="5"
@@ -93,8 +93,8 @@
                                         </StackLayout>
                                     </pk:PancakeView>
                                 </DataTemplate>
-                            </controls:StackLIstLayout.ItemTemplate>
-                        </controls:StackLIstLayout>
+                            </controls:StackListLayout.ItemTemplate>
+                        </controls:StackListLayout>
                     </StackLayout>
                 </Frame>
             </StackLayout>

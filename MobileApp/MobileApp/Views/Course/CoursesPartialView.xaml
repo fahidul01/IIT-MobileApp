@@ -34,10 +34,10 @@
             </Grid>
             <BoxView BackgroundColor="DarkGray"
                      HeightRequest="1" />
-            <controls:StackLIstLayout ItemsSource="{Binding Courses}"
+            <controls:StackListLayout ItemsSource="{Binding Courses}"
                                       Margin="0,10"
                                       EmptyText="Not Course Has been Added Yet">
-                <controls:StackLIstLayout.ItemTemplate>
+                <controls:StackListLayout.ItemTemplate>
                     <DataTemplate x:DataType="model:Course">
                         <Grid>
                             <Grid.Resources>
@@ -64,8 +64,8 @@
                                    FontAttributes="Bold" />
                         </Grid>
                     </DataTemplate>
-                </controls:StackLIstLayout.ItemTemplate>
-            </controls:StackLIstLayout>
+                </controls:StackListLayout.ItemTemplate>
+            </controls:StackListLayout>
         </StackLayout>
     </Frame>
 </ContentView>
