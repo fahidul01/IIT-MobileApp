@@ -22,7 +22,8 @@
                 <tbody>
                     @foreach (var lesson in Model.Lessons)
                     {
-                        <tr onclick="location.href = '@(Url.Action("Details", "Course", new { id = lesson.Id }))'">
+                        <tr style="cursor:pointer"
+                            onclick="location.href = '@(Url.Action("Details", "Course", new { id = lesson.Id }))'">
                             <td>
                                 @lesson.Course.CourseName (@lesson.Course.CourseId)
                             </td>

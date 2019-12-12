@@ -198,7 +198,7 @@ namespace Web.Api
         public async Task<ActionResponse> Update(Lesson lesson)
         {
             var res = await _courseService.AddUpdateLesson(0, lesson);
-            return new ActionResponse(res != null);
+            return res;
         }
 
         public async Task<List<StudentCourse>> GetResult()

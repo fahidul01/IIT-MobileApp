@@ -7,11 +7,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using Web.Infrastructure.AppServices;
 using Web.Infrastructure.DBModel;
+using System;
 
 namespace Web.Infrastructure.Services
 {
     public class CourseService : BaseService
     {
+        private const string RollColumn = "roll";
+        private const string PointColumn = "point";
+        private const string GradeColumn = "grade";
         private readonly StudentDBContext _db;
         private readonly INotificationService _notificationService;
 
@@ -50,15 +54,35 @@ namespace Web.Infrastructure.Services
                             Course = course,
                             Student = student,
                         };
-                        course.StudentCourses.Add(courseStudent);
+                        _db.StudentCourses.Add(courseStudent);
                     }
                     course.Semester = semester;
-                    _db.Entry(course).State = EntityState.Added;
+                    _db.Courses.Add(course);
                     await _db.SaveChangesAsync();
                     var message = string.Format("You have been enrolled in Course {0}", course.CourseName);
                     _notificationService.SendNotification(batch.Name, course.CourseName, message);
                     return course;
                 }
+            }
+        }
+
+        public async Task<ActionResponse> DeleteStudentCourse(int studentCourseId)
+        {
+            var res = await _db.StudentCourses.Include(x=>x.Course)
+                                              .FirstOrDefaultAsync(x=>x.Id == studentCourseId);
+            if(res == null)
+            {
+                return new ActionResponse(false, "Failed to Locate Student");
+            }
+            else
+            {
+                var course = res.Course;
+                _db.Entry(res).State = EntityState.Deleted;
+                await _db.SaveChangesAsync();
+                return new ActionResponse(true)
+                {
+                    Data = course
+                };
             }
         }
 
@@ -166,16 +190,45 @@ namespace Web.Infrastructure.Services
         {
             using var stream = File.OpenRead(filePath);
             using var reader = new StreamReader(stream);
+
+            int rollCol = 0, gradePointCol = 1, gradeCol = 2;
+            var lineNo = 0;
+
             while (!reader.EndOfStream)
             {
                 var line = await reader.ReadLineAsync();
+                lineNo++;
                 var splitter = line.Split(',');
-                var roll = splitter[0];
-                var name = splitter[1];
-                decimal.TryParse(splitter[2], out decimal gradePoint);
-                var gradeName = splitter[3];
+                if (lineNo == 1)
+                {
+                    var rollData = splitter.FirstOrDefault(x => x.ToLower() == RollColumn);
+                    if (!string.IsNullOrEmpty(rollData))
+                    {
+                        rollCol = splitter.ToList().IndexOf(rollData);
+                    }
 
-                var courseStudent = course.StudentCourses.FirstOrDefault(x => x.Student.UserName == roll);
+                    var pointData = splitter.FirstOrDefault(x => x.ToLower() == PointColumn);
+                    if (!string.IsNullOrEmpty(pointData))
+                    {
+                        gradePointCol = splitter.ToList().IndexOf(pointData);
+                    }
+
+                    var gradeData = splitter.FirstOrDefault(x => x.ToLower() == GradeColumn);
+                    if (!string.IsNullOrEmpty(gradeData))
+                    {
+                        gradeCol = splitter.ToList().IndexOf(gradeData);
+                    }
+                    continue;
+                }
+
+                
+                var roll = splitter[rollCol];
+                decimal.TryParse(splitter[gradePointCol], out decimal gradePoint);
+                var gradeName = splitter[gradeCol];
+
+                var courseStudent = await _db.StudentCourses
+                                             .FirstOrDefaultAsync(x => x.Student.UserName == roll &&
+                                                                       x.Course.Id == course.Id);
                 if (courseStudent == null)
                 {
                     var student = await _db.Users.FirstOrDefaultAsync(x => x.UserName == roll);
@@ -269,27 +322,24 @@ namespace Web.Infrastructure.Services
             return res;
         }
 
-        public async Task<Lesson> AddUpdateLesson(int courseId, Lesson lesson)
+        public async Task<ActionResponse> AddUpdateLesson(int courseId, Lesson lesson)
         {
-            var course = await _db.Courses.FirstOrDefaultAsync(x => x.Id == courseId);
-            if (course == null)
+            if (lesson.Id == 0)
             {
-                return null;
+                var course = await _db.Courses.FirstOrDefaultAsync(x => x.Id == courseId);
+                if (course == null)
+                {
+                    return new ActionResponse(false, "Invalid Course Information");
+                }
+                lesson.Course = course;
+                _db.Entry(lesson).State = EntityState.Added;
             }
             else
             {
-                if (lesson.Id == 0)
-                {
-                    lesson.Course = course;
-                    _db.Entry(lesson).State = EntityState.Added;
-                }
-                else
-                {
-                    _db.Entry(lesson).State = EntityState.Modified;
-                }
-                await _db.SaveChangesAsync();
-                return lesson;
+                _db.Entry(lesson).State = EntityState.Modified;
             }
+            await _db.SaveChangesAsync();
+            return new ActionResponse(true);
         }
 
         #endregion

@@ -1,15 +1,20 @@
 ﻿using CoreEngine.APIHandlers;
 using CoreEngine.Model.DBModel;
+using GalaSoft.MvvmLight.Command;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 namespace Mobile.Core.ViewModels
 {
     public class NoticesViewModel : BaseViewModel
     {
         private readonly INoticeHandler _noticeHandler;
-        public List<Notice> UpcomingNotices { get; private set; }
-        public ObservableCollection<Notice> Notices { get; private set; }
+        public List<Notice> UpcomingNotices { get; set; }
+        public ObservableCollection<Notice> Notices { get; set; }
+        private int page = 0;
+        private bool canLoadMore;
 
         public NoticesViewModel(INoticeHandler noticeHandler)
         {
@@ -20,9 +25,49 @@ namespace Mobile.Core.ViewModels
         public override void OnAppear(params object[] args)
         {
             base.OnAppear(args);
-            Notices.Clear();
+            RefreshAction();
         }
 
+        protected override void RefreshAction()
+        {
+            base.RefreshAction();
+            canLoadMore = true;
+            page = 1;
+            LoadUpcomingNotice();
+            LoadNotice(0);
+        }
 
+        private async void LoadUpcomingNotice()
+        {
+            UpcomingNotices = await _noticeHandler.GetUpcomingEvents(1, PostType.All);
+        }
+
+        private async void LoadNotice(int page)
+        {
+            IsBusy = true;
+            var res = await _noticeHandler.GetPosts(page, PostType.All);
+            if (res == null)
+            {
+                canLoadMore = false;
+            }
+            else
+            {
+                canLoadMore = res.Count > 5;
+                foreach (var item in res)
+                {
+                    Notices.Add(item);
+                }
+            }
+            IsBusy = false;
+        }
+
+        public ICommand NoticeCommand => new RelayCommand<Notice>(x => _nav.NavigateTo<NoticeDetailViewModel>(x));
+        public ICommand AddCommand => new RelayCommand(() => _nav.NavigateTo<AddUpdateNoticeViewModel>());
+        public ICommand LoadMoreCommand => new RelayCommand(LoadMoreAction);
+
+        private void LoadMoreAction()
+        {
+            if (canLoadMore && !IsBusy) LoadNotice(page++);
+        }
     }
 }

@@ -1,0 +1,68 @@
+﻿@model LessonViewModel
+
+<div class="modal fade" id="create_lesson_model" tabindex="-1" role="dialog" aria-labelledby="modal-default" aria-hidden="true">
+    <div class="modal-dialog modal- modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modal-title-default">Add New Student</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="AddLesson"
+                      asp-controller="Course"
+                      data-ajax="true"
+                      data-ajax-method="POST"
+                      data-ajax-update="#lesson_body">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="CourseId" />
+                    <input type="hidden" asp-for="LessonId" />
+                    <div class="row">
+                        <div class="form-group col-lg-6 col-md-12 col-sm-12">
+                            <label asp-for="TeacherName" class="control-label"></label>
+                            <input asp-for="TeacherName" class="form-control" />
+                            <span asp-validation-for="TeacherName" class="text-danger"></span>
+                        </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-lg-6 col-md-12 col-sm-12">
+                                <label asp-for="DayOfWeek" class="control-label"></label>
+                                <input asp-for="DayOfWeek" class="form-control" />
+                                <span asp-validation-for="DayOfWeek" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-lg-6 col-md-12 col-sm-12">
+                                <label asp-for="TimeSpan" class="control-label"></label>
+                                <input asp-for="TimeSpan" class="form-control" />
+                                <span asp-validation-for="TimeSpan" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-lg-6 col-md-6 col-sm-12">
+                                <label asp-for="RoomNo" class="control-label"></label>
+                                <input asp-for="RoomNo" class="form-control" />
+                                <span asp-validation-for="RoomNo" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-12">
+                                <label asp-for="Description" class="control-label"></label>
+                                <input asp-for="Description" class="form-control" />
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group justify-content-center">
+                            <input value="Update"
+                                   onclick="javascript: document.getElementById('submit_@Model.LessonId').click();"
+                                   data-dismiss="modal"
+                                   class="btn btn-outline-primary" />
+                            <button id="submit_@Model.LessonId"
+                                    hidden
+                                    class="btn btn-info btn-block my-4" type="submit">
+                            </button>
+                        </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

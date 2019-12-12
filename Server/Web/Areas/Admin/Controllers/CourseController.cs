@@ -51,6 +51,22 @@ namespace Web.Areas.Admin.Controllers
             return BadRequest();
         }
 
+        [HttpGet]
+        public async Task<IActionResult> DeleteCourseStudent(int studentCourseId)
+        {
+            var res = await _courseService.DeleteStudentCourse(studentCourseId);
+            if (res.Actionstatus == false)
+            {
+                Failed("Failed to Delete the Student");
+                return PartialView("_Result", null);
+            }
+            else
+            {
+                var course = res.Data as Course;
+                return PartialView("_Result", await _courseService.GetResult(course.Id));
+            }
+        }
+
         [HttpPost]
         public async Task<IActionResult> UploadResult(int courseId, IFormFile file)
         {
@@ -93,6 +109,35 @@ namespace Web.Areas.Admin.Controllers
                 Failed("Invalid File format");
                 return PartialView("_Students", new List<User>());
             }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddLesson(LessonViewModel lesson)
+        {
+            if (ModelState.IsValid)
+            {
+                var cLesson = new Lesson()
+                {
+                    DayOfWeek = lesson.DayOfWeek,
+                    Description = lesson.Description,
+                    RoomNo = lesson.RoomNo,
+                    TeacherName = lesson.TeacherName,
+                    TimeOfDay = lesson.TimeSpan
+                };
+                var action = await _courseService.AddUpdateLesson(lesson.CourseId, cLesson);
+                if (action.Actionstatus)
+                {
+                    var res = await _courseService.GetCourseAsync(lesson.CourseId);
+                    return PartialView("_Lesson", res.Lessons);
+                }
+                else
+                {
+                    Failed(action.Message);
+                    return PartialView("_Lesson", null);
+                }
+            }
+            else
+                return PartialView("_Lesson", null);
         }
     }
 }

@@ -45,7 +45,7 @@
                                     <Label Text="{Binding SemesterNo, StringFormat='S{0}'}"
                                            HorizontalOptions="Center"
                                            VerticalOptions="End"
-                                           FontSize="Micro"
+                                           FontSize="Default"
                                            LineBreakMode="HeadTruncation"
                                            TextColor="White"
                                            d:Text="SemesterName" />
@@ -59,7 +59,7 @@
         <Label Text="* This result is not official. Based on the mark uploaded by Class representative" 
                Grid.Row="1"
                FontSize="Small" 
-               Margin="5,2.5"/>
+               Margin="15,2.5"/>
         <CollectionView ItemsSource="{Binding SemesterDatas}"
                         Grid.Row="2">
             <d:CollectionView.ItemsSource>
@@ -73,73 +73,76 @@
             </d:CollectionView.ItemsSource>
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="vm:SemesterData">
-                    <Frame Margin="10,5"
-                           Padding="5">
-                        <StackLayout>
-                            <Label Text="{Binding SemesterName, StringFormat='{}[{0}]'}"
-                                   FontSize="Medium"
-                                   FontAttributes="Bold"
-                                   TextColor="{StaticResource colorPrimary}"
-                                   d:Text="[Semester]" />
-                            <Grid>
-                                <Label Text="Course"
-                                       FontSize="Small"
-                                       FontAttributes="Bold" />
-                                <Label Text="Course Name"
-                                       FontSize="Small"
+                    <Grid>
+                        <Frame Padding="10"
+                               Margin="10,5">
+                            <StackLayout>
+                                <Label Text="{Binding SemesterName, StringFormat='{}[{0}]'}"
+                                       FontSize="Medium"
                                        FontAttributes="Bold"
-                                       Grid.Column="1"
-                                       Grid.ColumnSpan="2" />
-                                <Label Text="Credit"
-                                       FontSize="Small"
-                                       Grid.Column="3"
-                                       HorizontalTextAlignment="Center"
-                                       FontAttributes="Bold" />
-                                <Label Text="Grade"
-                                       FontSize="Small"
-                                       Grid.Column="4"
-                                       HorizontalTextAlignment="Center"
-                                       FontAttributes="Bold" />
-                            </Grid>
-                            <BoxView BackgroundColor="DarkGray"
-                                     HeightRequest="1" />
-                            <controls:StackListLayout ItemsSource="{Binding Courses}"
-                                                      Margin="0,10"
-                                                      EmptyText="Not Course Has been Added Yet">
-                                <controls:StackListLayout.ItemTemplate>
-                                    <DataTemplate x:DataType="vm:CourseData">
-                                        <Grid>
-                                            <Grid.Resources>
-                                                <Style TargetType="Label">
-                                                    <Setter Property="FontSize"
-                                                            Value="Small" />
-                                                    <Setter Property="TextColor"
-                                                            Value="Black" />
-                                                </Style>
-                                            </Grid.Resources>
-                                            <Label Text="{Binding CourseId}"
-                                                   d:Text="{Binding}" />
-                                            <Label Text="{Binding CourseName}"
-                                                   Grid.Column="1"
-                                                   MaxLines="2"
-                                                   LineBreakMode="TailTruncation"
-                                                   d:Text="Lengthy Course Name can be in multiple line"
-                                                   Grid.ColumnSpan="2" />
-                                            <Label Text="{Binding CourseCredit}"
-                                                   d:Text="3.00"
-                                                   HorizontalOptions="Center"
-                                                   FontSize="Small"
-                                                   Grid.Column="3"
-                                                   FontAttributes="Bold" />
-                                        </Grid>
-                                    </DataTemplate>
-                                </controls:StackListLayout.ItemTemplate>
-                            </controls:StackListLayout>
-                            <Label Text="{Binding SemesterGPA, StringFormat='{}Total {0}'}" 
-                                   HorizontalOptions="Center"
-                                   d:Text="Total 3.23"/>
-                        </StackLayout>
-                    </Frame>
+                                       TextColor="{StaticResource colorPrimary}"
+                                       d:Text="[Semester]" />
+                                <Grid>
+                                    <Label Text="Course"
+                                           FontSize="Small"
+                                           FontAttributes="Bold" />
+                                    <Label Text="Course Name"
+                                           FontSize="Small"
+                                           FontAttributes="Bold"
+                                           Grid.Column="1"
+                                           Grid.ColumnSpan="2" />
+                                    <Label Text="Credit"
+                                           FontSize="Small"
+                                           Grid.Column="3"
+                                           HorizontalTextAlignment="Center"
+                                           FontAttributes="Bold" />
+                                    <Label Text="Grade"
+                                           FontSize="Small"
+                                           Grid.Column="4"
+                                           HorizontalTextAlignment="Center"
+                                           FontAttributes="Bold" />
+                                </Grid>
+                                <BoxView BackgroundColor="DarkGray"
+                                         HeightRequest="1" />
+                                <controls:StackListLayout ItemsSource="{Binding CourseDatas}"
+                                                          Margin="0,10"
+                                                          EmptyText="Not Course Has been Added Yet">
+                                    <controls:StackListLayout.ItemTemplate>
+                                        <DataTemplate x:DataType="vm:CourseData">
+                                            <Grid>
+                                                <Grid.Resources>
+                                                    <Style TargetType="Label">
+                                                        <Setter Property="FontSize"
+                                                                Value="Small" />
+                                                        <Setter Property="TextColor"
+                                                                Value="Black" />
+                                                    </Style>
+                                                </Grid.Resources>
+                                                <Label Text="{Binding CourseId}"
+                                                       d:Text="{Binding}" />
+                                                <Label Text="{Binding Name}"
+                                                       Grid.Column="1"
+                                                       MaxLines="2"
+                                                       LineBreakMode="TailTruncation"
+                                                       d:Text="Lengthy Course Name can be in multiple line"
+                                                       Grid.ColumnSpan="2" />
+                                                <Label Text="{Binding GradePoint}"
+                                                       d:Text="3.00"
+                                                       HorizontalOptions="Center"
+                                                       FontSize="Small"
+                                                       Grid.Column="3"
+                                                       FontAttributes="Bold" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </controls:StackListLayout.ItemTemplate>
+                                </controls:StackListLayout>
+                                <Label Text="{Binding SemesterGPA, StringFormat='{}Total {0}'}"
+                                       HorizontalOptions="Center"
+                                       d:Text="Total 3.23" />
+                            </StackLayout>
+                        </Frame>
+                    </Grid>
+                    
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>

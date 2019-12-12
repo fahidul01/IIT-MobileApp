@@ -15,14 +15,15 @@ else
                 <th scope="col">Credit</th>
                 <th scope="col">GPA</th>
                 <th scope="col">Grade</th>
+                <th scope="col"></th>
             </tr>
         </thead>
         <tbody>
             @foreach (var result in Model.OrderBy(x => x.Student.Roll))
             {
-                <tr style="cursor:pointer"
-                    onclick="location.href = '@(Url.Action("Details", "Student", new { id = result.Student.Id }))'">
-                    <th scope="row">
+                <tr style="cursor:pointer">
+                    <th scope="row"
+                         onclick="location.href = '@(Url.Action("Details", "Student", new { id = result.Student.Id }))'">
                         <div class="media align-items-center">
                             <a href="#" class="avatar rounded-circle mr-3">
                                 @Html.Identicon(result.Student.UserName, 60)
@@ -32,7 +33,7 @@ else
                             </div>
                         </div>
                     </th>
-                    <td>
+                    <td  onclick="location.href = '@(Url.Action("Details", "Student", new { id = result.Student.Id }))'"> 
                         @result.Student.UserName
                     </td>
                     <td>
@@ -45,6 +46,16 @@ else
                     </td>
                     <td>
                         @result.GradePoint
+                    </td>
+                    <td>
+                        <a class="btn bg-transparent"
+                           data-ajax="true" 
+                           asp-controller="Course"
+                           asp-action="DeleteCourseStudent"
+                           asp-route-studentCourseId="@result.Id"
+                           data-ajax-update="#student_table">
+                            <i class="fa fa-minus-circle"></i>
+                        </a>
                     </td>
                 </tr>
             }

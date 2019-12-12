@@ -24,7 +24,9 @@ a {
   border-color: #1861ac;
 }
 
-
+tr{
+    cursor:pointer;
+}
 
 /* Sticky footer styles
 -------------------------------------------------- */

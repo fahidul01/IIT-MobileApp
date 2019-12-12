@@ -34,51 +34,25 @@
 </div>
 
 <div class="card mt-3">
-    <div class="card-body">
-        <h3>Lessons</h3>
+    <div class="card-header">
+        <h2 class="d-inline">Lessons</h2>
+        <div class="d-inline-flex float-right">
+            <a class="btn"
+               style="color:black"
+               data-toggle="modal"
+               data-target="#create_lesson_model">
+                <i class="fa fa-plus mr-1"></i>
+                Add Lesson
+            </a>
+        </div>
     </div>
     <div class="card-body">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th scope="col">Name</th>
-                    <th scope="col">Teacher</th>
-                    <th scope="col">WeekDays</th>
-                    <th scope="col"></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var lesson in Model.Lessons)
-                {
-                    <tr>
-                        <td>
-                            @lesson.TeacherName
-                        </td>
-                        <td>
-                            @lesson.TimeOfDay
-                        </td>
-                        <td>
-                            @lesson.DayOfWeek
-                        </td>
-                        <td>
-                            <span>
-                                <a asp-action="EditLesson"
-                                   asp-route-id="@lesson.Id">
-                                    <i class="fa fa-edit"></i>
-                                </a>
-                                <a asp-action="DeleteLesson"
-                                   asp-route-id="@lesson.Id">
-                                    <i class="fa fa-recycle"></i>
-                                </a>
-                            </span>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+        <div id="lesson_body">
+            @await Html.PartialAsync("_Lesson", Model.Lessons)
+        </div>
     </div>
 </div>
-
+@await Html.PartialAsync("_CreateLesson", new LessonViewModel(Model.Id))
 @if (Model.CourseMaterials != null)
 {
     foreach (var file in Model.CourseMaterials)
@@ -93,7 +67,7 @@
     <div class="card-header">
         <h2 class="d-inline">Students</h2>
         <form asp-controller="Course"
-              class="d-inline"
+              class="d-inline float-right"
               data-ajax="true"
               data-ajax-method="POST"
               data-ajax-update="#student_table"
@@ -103,7 +77,7 @@
             <div>
                 <input type="hidden" name="courseId" value="@Model.Id" />
                 <label class="btn">
-                    Add Batch Students
+                    Upload Result
                     <input type="file" name="file" hidden
                            onchange="javascript: document.getElementById('submit_button').click();">
                 </label>
@@ -114,17 +88,15 @@
             </div>
         </form>
     </div>
-
-</div>
-<div class="card-body">
-    <div class="text-center">
-        <div id="spinner" style="display:none" class="spinner-border"></div>
+    <div class="card-body">
+        <div class="text-center">
+            <div id="spinner" style="display:none" class="spinner-border"></div>
+        </div>
+        <div id="student_table" style="min-height:50%">
+            @await Html.PartialAsync("_Result", Model.StudentCourses)
+        </div>
     </div>
 
-
-    <div id="student_table" style="min-height:50%">
-        @await Html.PartialAsync("_Result", Model.StudentCourses);
-    </div>
 </div>
 
 

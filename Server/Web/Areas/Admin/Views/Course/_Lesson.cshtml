@@ -1,0 +1,47 @@
+﻿@model IEnumerable<Lesson>
+@if (Model == null || Model.Count() == 0)
+{
+    <h3>No Result Found</h3>
+    <partial name="_Message" />
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Teacher</th>
+                <th scope="col">WeekDays</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var lesson in Model)
+            {
+                <tr>
+                    <td>
+                        @lesson.TeacherName
+                    </td>
+                    <td>
+                        @lesson.TimeOfDay
+                    </td>
+                    <td>
+                        @lesson.DayOfWeek
+                    </td>
+                    <td>
+                        <span>
+                            <a asp-action="EditLesson"
+                               asp-route-id="@lesson.Id">
+                                <i class="fa fa-edit"></i>
+                            </a>
+                            <a asp-action="DeleteLesson"
+                               asp-route-id="@lesson.Id">
+                                <i class="fa fa-recycle"></i>
+                            </a>
+                        </span>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

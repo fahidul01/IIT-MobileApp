@@ -26,7 +26,8 @@
             <tbody>
                 @foreach (var item in Model)
                 {
-                    <tr onclick="location.href = '@(Url.Action("Details", "Batch", new { id = item.Id }))'">
+                    <tr style="cursor:pointer"
+                        onclick="location.href = '@(Url.Action("Details", "Batch", new { id = item.Id }))'">
                         <td> @item.Name</td>
                         <td>@item.StartsOn.ToString("dd MMMM, yyyy")</td>
                         <td>@item.EndsOn.ToString("dd MMMM, yyyy")</td>

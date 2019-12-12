@@ -16,7 +16,6 @@ namespace Web.Controllers
             _usermanager = userManager;
         }
 
-        [Authorize]
         public async Task<IActionResult> Index()
         {
             var user = await _usermanager.GetUserAsync(HttpContext.User);
