@@ -71,26 +71,24 @@
                         <Label Text="Course Material"
                                FontSize="Medium"
                                TextColor="{StaticResource colorPrimaryDark}" />
-                        <controls:StackListLayout ItemsSource="{Binding CurrentCourse.Lessons}"
+                        <controls:StackListLayout ItemsSource="{Binding CurrentCourse.CourseMaterials}"
                                                   EmptyText="No Item Has been Added Yet">
                             <controls:StackListLayout.ItemTemplate>
-                                <DataTemplate x:DataType="model:Lesson">
+                                <DataTemplate x:DataType="model:DBFile">
                                     <pk:PancakeView Padding="5"
                                                     Margin="5"
                                                     BorderDrawingStyle="Outside"
                                                     BorderThickness="1">
-                                        <StackLayout>
-                                            <StackLayout Orientation="Horizontal">
-                                                <Label Text="{Binding DayOfWeek}"
-                                                       FontSize="Small"
-                                                       d:Text="Wednesday" />
-                                                <Label Text="{Binding TimeOfDay}"
-                                                       FontSize="Small"
-                                                       d:Text="7.00 PM" />
-                                            </StackLayout>
-                                            <Label Text="{Binding TeacherName}"
-                                                   d:Text="Teacher" />
-                                        </StackLayout>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <Label Text="{Binding FileName}"
+                                                   FontSize="Small"
+                                                   d:Text="Wednesday" />
+                                            <Image Source="{controls:IconFont IconType=FileDownload}" />
+                                        </Grid>
                                     </pk:PancakeView>
                                 </DataTemplate>
                             </controls:StackListLayout.ItemTemplate>

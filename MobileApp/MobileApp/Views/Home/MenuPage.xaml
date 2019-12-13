@@ -16,6 +16,7 @@
     <ListView helpers:CommandListView.ItemTappedCommand="{Binding FlyoutCommand}"
               SeparatorVisibility="None"
               HasUnevenRows="True"
+              BackgroundColor="White"
               d:BindingContext="{x:Static vm:MainViewModel}"
               ItemsSource="{Binding MenuItems}">
         <d:ListView.ItemsSource>
@@ -36,6 +37,7 @@
                            WidthRequest="80"
                            Margin="10"
                            Padding="10"
+                           HasShadow="False"
                            HorizontalOptions="Start"
                            VerticalOptions="Center"
                            CornerRadius="35">
@@ -44,7 +46,7 @@
                                HorizontalOptions="Center" />
                     </Frame>
                     <Label Text="Institute of Information and Technology"
-                           FontSize="Large"
+                           FontSize="Medium"
                            HorizontalTextAlignment="Center"
                            FontAttributes="Bold"
                            VerticalOptions="Center" />
