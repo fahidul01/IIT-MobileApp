@@ -27,6 +27,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{159574DB-3
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MobileTest", "Test\MobileTest\MobileTest.csproj", "{AEBFA8FB-53DF-4500-A8CB-94D1F76C71F6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IIT.Web", "Server\IIT.Web\IIT.Web.csproj", "{D2EE406D-BB7F-43B9-8B23-0FB148434A4D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -137,6 +139,18 @@ Global
 		{AEBFA8FB-53DF-4500-A8CB-94D1F76C71F6}.Release|iPhone.Build.0 = Release|Any CPU
 		{AEBFA8FB-53DF-4500-A8CB-94D1F76C71F6}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{AEBFA8FB-53DF-4500-A8CB-94D1F76C71F6}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{D2EE406D-BB7F-43B9-8B23-0FB148434A4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2EE406D-BB7F-43B9-8B23-0FB148434A4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2EE406D-BB7F-43B9-8B23-0FB148434A4D}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{D2EE406D-BB7F-43B9-8B23-0FB148434A4D}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{D2EE406D-BB7F-43B9-8B23-0FB148434A4D}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{D2EE406D-BB7F-43B9-8B23-0FB148434A4D}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{D2EE406D-BB7F-43B9-8B23-0FB148434A4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2EE406D-BB7F-43B9-8B23-0FB148434A4D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2EE406D-BB7F-43B9-8B23-0FB148434A4D}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{D2EE406D-BB7F-43B9-8B23-0FB148434A4D}.Release|iPhone.Build.0 = Release|Any CPU
+		{D2EE406D-BB7F-43B9-8B23-0FB148434A4D}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{D2EE406D-BB7F-43B9-8B23-0FB148434A4D}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -150,6 +164,7 @@ Global
 		{D9D66CE1-9198-4B5A-86CE-B037A306E6FB} = {992D5D03-60DF-49D9-AA35-436381820B5B}
 		{2B2B13E5-1138-4537-80B1-A7428BA9E7F4} = {992D5D03-60DF-49D9-AA35-436381820B5B}
 		{AEBFA8FB-53DF-4500-A8CB-94D1F76C71F6} = {159574DB-3F4A-4D4C-B6CA-DC1146DC1625}
+		{D2EE406D-BB7F-43B9-8B23-0FB148434A4D} = {6D2B5268-2DA4-41EB-8793-90A23E4AC364}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F388FE05-FBD6-4827-B2EA-8E816AF65974}
