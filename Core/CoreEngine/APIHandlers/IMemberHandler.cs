@@ -17,5 +17,6 @@ namespace CoreEngine.APIHandlers
         Task<List<User>> GetCurrentBatchUsers();
         Task<ActionResponse> UpdateUser(User user);
         Task<ActionResponse> DeleteUser(User user);
+        Task<List<User>> SearchStudentsAsync(string key);
     }
 }

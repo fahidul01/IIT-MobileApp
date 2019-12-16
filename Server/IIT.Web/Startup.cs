@@ -1,14 +1,25 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using IIT.Web.Data;
+using Web.Infrastructure.DBModel;
+using Microsoft.EntityFrameworkCore;
+using CoreEngine.Model.DBModel;
+using Microsoft.AspNetCore.Identity;
+using CoreEngine.APIHandlers;
+using IIT.Web.Controllers;
+using Web.Api;
+using IIT.Web.Helpers;
+using CoreEngine.Model.Common;
+using Web.Infrastructure.AppServices;
+using IIT.Web.WebServices;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using System;
+using MatBlazor;
+using Microsoft.AspNetCore.Authorization;
 
 namespace IIT.Web
 {
@@ -19,15 +30,80 @@ namespace IIT.Web
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        public static IConfiguration Configuration;
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<StudentDBContext>(opt =>
+                 opt.UseSqlite("Filename=mydata.db"));
+            //services.AddDbContext<StudentDBContext>(opt =>
+            //   opt.UseSqlServer(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=D:\Temp\MITServer.mdf;Integrated Security=True;Connect Timeout=300"));
+
+            services.RegisterAllTypes<BaseService>(typeof(StudentDBContext).Assembly);
+
+            services.AddIdentity<DBUser, IdentityRole>(options =>
+            {
+                options.Password.RequiredLength = 8;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireDigit = false;
+            })
+                    .AddEntityFrameworkStores<StudentDBContext>();
+
+            services.AddAuthentication(options =>
+                 {
+                     options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                 })
+                 .AddJwtBearer(x =>
+                 {
+                     x.RequireHttpsMetadata = false;
+                     x.SaveToken = true;
+                     x.TokenValidationParameters = new TokenValidationParameters
+                     {
+                         ValidateIssuerSigningKey = true,
+                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JwtKey"])),
+                         ValidateIssuer = false,
+                         ValidateAudience = false
+                     };
+                 });
+
+            services.AddTransient<ICourseHandler, CoursesController>();
+            services.AddTransient<IMemberHandler, MemberController>();
+            services.AddTransient<IBatchHandler, BatchesController>();
+            services.AddTransient<ILessonHandler, LessonController>();
+            services.AddTransient<INoticeHandler, NoticesController>();
+            services.AddTransient<IEmailSender, EmailSender>();
+            services.AddTransient<INotificationService, NotificationService>();
+            services.AddTransient<TokenService>();
+            services.Configure<AuthMessageSenderOptions>(Configuration);
+            services.AddHostedService<AppStartService>();
+            services.AddTransient<FilesController>();
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                // Cookie settings
+                options.ExpireTimeSpan = TimeSpan.FromDays(1);
+                options.SlidingExpiration = true;
+                options.LoginPath = "/login";
+            });
+
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSingleton<WeatherForecastService>();
+            services.AddControllers();
+            services.AddMatToaster(config =>
+            {
+                config.Position = MatToastPosition.BottomRight;
+                config.PreventDuplicates = true;
+                config.NewestOnTop = true;
+                config.ShowCloseButton = true;
+                config.MaximumOpacity = 95;
+                config.VisibleStateDuration = 3000;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,11 +121,16 @@ namespace IIT.Web
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapBlazorHub();
                 endpoints.MapFallbackToPage("/_Host");
+                endpoints.MapControllerRoute(
+                   name: "ActionApi",
+                   pattern: "api/{controller}/{action}/{id?}");
+
             });
         }
     }

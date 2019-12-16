@@ -181,3 +181,117 @@ app {
         display: block;
     }
 }
+
+:root {
+    --mdc-theme-primary: #5D2E8F;
+    --mdc-theme-secondary: #fbaf41;
+    /*--mdc-theme-on-primary: #495f90;
+    --mdc-theme-on-secondary: #ffe172;*/
+    --mdc-theme-text-primary: #ffffff;
+    --mdc-theme-text-secondary: #333;
+    --mdc-theme-text-on-primary: #001037;
+    --mdc-theme-text-on-secondary: #c48003;
+    /*--mdc-theme-surface: #263238; */
+}
+
+.mdc-icon-button .fa {
+    font-size: 30px;
+}
+
+/* Loading page */
+.triangle-container {
+    left: calc(-50vw + 50%);
+    position: fixed;
+    right: calc(-50vw + 50%);
+    top: 0;
+    bottom: 0;
+    z-index: -1;
+    background-color: #5D2E8F;
+}
+
+.triangles {
+    background-image: url("../images/triangles.svg");
+    background-size: cover;
+    height: 100%;
+    bottom: 0;
+    left: 0;
+    mix-blend-mode: hard-light;
+    position: fixed;
+    right: 0;
+    top: 0;
+    background-position: center center;
+}
+
+.loading-container {
+    position: relative;
+    text-align: center;
+    background-color: #fff;
+    margin: 10% auto 0 auto;
+    padding: 20px;
+}
+
+/* Login page */
+.login-body {
+    position: relative;
+}
+
+.logo {
+    text-align: center;
+}
+
+    .logo h4 {
+        margin: 20px auto;
+    }
+
+.login-container, .loading-container, .mdc-card {
+    border-radius: 0 !important;
+    box-shadow: 0 8px 17px 0 rgba(0,0,0,.2), 0 6px 20px 0 rgba(0,0,0,.19) !important;
+}
+
+    .login-container .mdc-card {
+        padding: 40px 30px;
+        width: 400px;
+    }
+
+    .login-container .mat-accordion {
+        width: 500px;
+    }
+
+.container-fluid .login-container {
+    display: block;
+    max-width: 500px;
+}
+
+.additional-info {
+    color: #636c72;
+    background-color: rgba(0,0,0,.04);
+    padding: 10px 6px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: .875rem;
+}
+
+.login-container {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    align-content: center;
+    margin: 5% auto 0;
+}
+
+.login-body {
+    flex-direction: column;
+    margin: 0 auto;
+}
+
+    .login-body .mat-accordion .mat-expansion-panel__header {
+        flex-basis: 80%;
+    }
+
+    .login-body .mat-expansion-panel {
+        background-color: #f4f4f4 !important;
+    }

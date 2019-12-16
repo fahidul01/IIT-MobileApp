@@ -74,7 +74,7 @@ namespace Web
             {
                 // Cookie settings
                 options.Cookie.HttpOnly = true;
-                options.ExpireTimeSpan = TimeSpan.FromDays(1);
+                options.ExpireTimeSpan = TimeSpan.FromDays(30);
                 options.SlidingExpiration = true;
                 options.LoginPath = "/Login";
             });
