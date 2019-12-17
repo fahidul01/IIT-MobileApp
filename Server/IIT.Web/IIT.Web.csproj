@@ -19,7 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Core\CoreEngine\CoreEngine.csproj" />
-    <ProjectReference Include="..\Web.Infrastructure\Web.Infrastructure.csproj" />
+    <ProjectReference Include="..\Web.Infrastructure\Student.Infrasructure.csproj" />
   </ItemGroup>
 
 </Project>

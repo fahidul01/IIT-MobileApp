@@ -1,6 +1,6 @@
 ﻿using CoreEngine.Model.Common;
 
-namespace Web.Infrastructure.AppServices
+namespace Student.Infrastructure.AppServices
 {
     class EmailMessageCreator
     {

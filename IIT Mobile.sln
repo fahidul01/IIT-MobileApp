@@ -11,7 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{6D2B52
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web", "Server\Web\Web.csproj", "{E7A38689-92C0-43B4-BCE1-5231E30D76DF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.Infrastructure", "Server\Web.Infrastructure\Web.Infrastructure.csproj", "{FA682E4E-0169-4084-B306-E4029EA1E87A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Student.Infrasructure", "Server\Web.Infrastructure\Student.Infrasructure.csproj", "{FA682E4E-0169-4084-B306-E4029EA1E87A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mobile", "Mobile", "{992D5D03-60DF-49D9-AA35-436381820B5B}"
 EndProject
@@ -27,7 +27,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{159574DB-3
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MobileTest", "Test\MobileTest\MobileTest.csproj", "{AEBFA8FB-53DF-4500-A8CB-94D1F76C71F6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IIT.Web", "Server\IIT.Web\IIT.Web.csproj", "{D2EE406D-BB7F-43B9-8B23-0FB148434A4D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IIT.Web", "Server\IIT.Web\IIT.Web.csproj", "{D2EE406D-BB7F-43B9-8B23-0FB148434A4D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

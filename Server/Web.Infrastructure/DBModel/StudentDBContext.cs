@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Web.Infrastructure.DBModel
+namespace Student.Infrastructure.DBModel
 {
     public class StudentDBContext : IdentityDbContext<DBUser, IdentityRole, string>
     {

@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Web.Infrastructure.Services
+namespace Student.Infrastructure.Services
 {
     public class FeedDataService : BaseService
     {
@@ -60,7 +60,7 @@ namespace Web.Infrastructure.Services
 
             var msg = string.Empty;
             var assembly = typeof(FeedDataService).Assembly;
-            var name = "Web.Infrastructure.Resources.sampleText.txt";
+            var name = "Student.Infrastructure.Resources.sampleText.txt";
             using var resource = assembly.GetManifestResourceStream(name);
             using (var fileStream = new StreamReader(resource))
             {
@@ -131,7 +131,7 @@ namespace Web.Infrastructure.Services
             int batchNo = 19;
             int lastBacth = 16;
             var assembly = typeof(FeedDataService).Assembly;
-            var name = "Web.Infrastructure.Resources.template.csv";
+            var name = "Student.Infrastructure.Resources.template.csv";
 
             using var resource = assembly.GetManifestResourceStream(name);
             using (var fileStream = new StreamReader(resource))

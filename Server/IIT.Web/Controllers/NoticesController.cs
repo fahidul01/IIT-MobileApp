@@ -7,12 +7,12 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Web.Infrastructure.Services;
+using Student.Infrastructure.Services;
 
 namespace Web.Api
 {
-    [Authorize(Roles = AppConstants.Student,
-    AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+
     public class NoticesController : Controller, INoticeHandler
     {
         private readonly NoticeService _noticeService;

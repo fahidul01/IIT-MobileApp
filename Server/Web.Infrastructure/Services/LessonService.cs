@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Web.Infrastructure.DBModel;
+using Student.Infrastructure.DBModel;
 
-namespace Web.Infrastructure.Services
+namespace Student.Infrastructure.Services
 {
     public class LessonService : BaseService
     {

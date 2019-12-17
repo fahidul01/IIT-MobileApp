@@ -1,10 +1,8 @@
 ﻿using CoreEngine.APIHandlers;
 using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
-using IIT.Web.ViewModels;
 using IIT.Web.WebServices;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -12,11 +10,11 @@ using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Web.Infrastructure.Services;
+using Student.Infrastructure.Services;
 
 namespace IIT.Web.Controllers
 {
-    [Authorize(Roles = AppConstants.Student)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class MemberController : Controller, IMemberHandler
     {
         private readonly UserService _userService;

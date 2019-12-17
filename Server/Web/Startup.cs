@@ -13,8 +13,8 @@ using Newtonsoft.Json;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
-using Web.Infrastructure.AppServices;
-using Web.Infrastructure.DBModel;
+using Student.Infrastructure.AppServices;
+using Student.Infrastructure.DBModel;
 using Web.Models.Web;
 using Web.WebServices;
 

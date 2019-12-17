@@ -8,10 +8,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Web.Infrastructure.AppServices;
-using Web.Infrastructure.DBModel;
+using Student.Infrastructure.AppServices;
+using Student.Infrastructure.DBModel;
 
-namespace Web.Infrastructure.Services
+namespace Student.Infrastructure.Services
 {
     public class UserService : BaseService
     {

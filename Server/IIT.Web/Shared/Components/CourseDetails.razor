@@ -1,5 +1,4 @@
 ﻿
-@inject ICourseHandler _courseHandler
 
 
 <div class="card">
@@ -42,7 +41,7 @@
     private Course course;
     protected override async Task OnInitializedAsync()
     {
-        course = await _courseHandler.GetCourse(1);
+        
     }
 
 

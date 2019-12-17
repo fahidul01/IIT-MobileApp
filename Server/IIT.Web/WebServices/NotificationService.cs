@@ -2,7 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Net.Http;
-using Web.Infrastructure.AppServices;
+using Student.Infrastructure.AppServices;
 
 namespace IIT.Web.WebServices
 {

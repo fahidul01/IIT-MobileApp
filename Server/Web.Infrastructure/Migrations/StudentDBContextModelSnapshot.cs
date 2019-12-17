@@ -3,9 +3,9 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Web.Infrastructure.DBModel;
+using Student.Infrastructure.DBModel;
 
-namespace Web.Infrastructure.Migrations
+namespace Student.Infrastructure.Migrations
 {
     [DbContext(typeof(StudentDBContext))]
     partial class StudentDBContextModelSnapshot : ModelSnapshot

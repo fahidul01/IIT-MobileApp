@@ -8,9 +8,9 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
-using Web.Infrastructure.DBModel;
+using Student.Infrastructure.DBModel;
 
-namespace Web.Infrastructure.Services
+namespace Student.Infrastructure.Services
 {
     public class FileService : BaseService
     {

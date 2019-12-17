@@ -7,7 +7,7 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Web.Infrastructure.DBModel;
+using Student.Infrastructure.DBModel;
 
 namespace Web.WebServices
 {

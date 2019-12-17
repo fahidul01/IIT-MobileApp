@@ -2,7 +2,7 @@
 using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
-using Web.Infrastructure.AppServices;
+using Student.Infrastructure.AppServices;
 
 namespace IIT.Web.WebServices
 {

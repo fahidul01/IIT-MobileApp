@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Web.Infrastructure.Migrations
+namespace Student.Infrastructure.Migrations
 {
     public partial class LessonDescription : Migration
     {

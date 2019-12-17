@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Web.Infrastructure.DBModel;
+using Student.Infrastructure.DBModel;
 using Microsoft.EntityFrameworkCore;
 using CoreEngine.Model.DBModel;
 using Microsoft.AspNetCore.Identity;
@@ -12,12 +12,15 @@ using IIT.Web.Controllers;
 using Web.Api;
 using IIT.Web.Helpers;
 using CoreEngine.Model.Common;
-using Web.Infrastructure.AppServices;
+using Student.Infrastructure.AppServices;
 using IIT.Web.WebServices;
 using MatBlazor;
 using Microsoft.AspNetCore.Http;
 using System.Net.Http;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace IIT.Web
 {
@@ -40,9 +43,9 @@ namespace IIT.Web
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-            services.AddAuthentication(
-                CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie();
+            //services.AddAuthentication(
+            //    CookieAuthenticationDefaults.AuthenticationScheme)
+            //    .AddCookie();
 
             services.AddDbContext<StudentDBContext>(opt =>
                  opt.UseSqlite("Filename=mydata.db"));
@@ -62,30 +65,30 @@ namespace IIT.Web
                     .AddEntityFrameworkStores<StudentDBContext>();
 
 
-            //services.AddAuthentication(options =>
-            //     {
-            //         options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            //         options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            //         options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            //     })
-            //     .AddJwtBearer(x =>
-            //     {
-            //         x.RequireHttpsMetadata = false;
-            //         x.SaveToken = true;
-            //         x.TokenValidationParameters = new TokenValidationParameters
-            //         {
-            //             ValidateIssuerSigningKey = true,
-            //             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JwtKey"])),
-            //             ValidateIssuer = false,
-            //             ValidateAudience = false
-            //         };
-            //     });
+            services.AddAuthentication(options =>
+                 {
+                     //options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                     //options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                     //options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                 })
+                 .AddJwtBearer(x =>
+                 {
+                     x.RequireHttpsMetadata = false;
+                     x.SaveToken = true;
+                     x.TokenValidationParameters = new TokenValidationParameters
+                     {
+                         ValidateIssuerSigningKey = true,
+                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JwtKey"])),
+                         ValidateIssuer = false,
+                         ValidateAudience = false
+                     };
+                 });
 
-            services.AddTransient<ICourseHandler, CoursesController>();
-            services.AddTransient<IMemberHandler, MemberController>();
-            services.AddTransient<IBatchHandler, BatchesController>();
-            services.AddTransient<ILessonHandler, LessonController>();
-            services.AddTransient<INoticeHandler, NoticesController>();
+            //services.AddTransient<ICourseHandler, CoursesController>();
+            //services.AddTransient<IMemberHandler, MemberController>();
+            //services.AddTransient<IBatchHandler, BatchesController>();
+            //services.AddTransient<ILessonHandler, LessonController>();
+            //services.AddTransient<INoticeHandler, NoticesController>();
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<INotificationService, NotificationService>();
             services.AddTransient<TokenService>();

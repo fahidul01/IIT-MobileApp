@@ -7,7 +7,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Web.Areas.Admin.ViewModels;
 using Web.Controllers;
-using Web.Infrastructure.Services;
+using Student.Infrastructure.Services;
 
 namespace Web.Areas.Admin.Controllers
 {

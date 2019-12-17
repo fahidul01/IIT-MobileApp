@@ -1,16 +1,17 @@
 ﻿using CoreEngine.APIHandlers;
 using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Web.Infrastructure.Services;
+using Student.Infrastructure.Services;
 
 namespace Web.Api
 {
-    [Authorize(Roles = AppConstants.Student)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class LessonController : ControllerBase, ILessonHandler
     {
         private readonly LessonService _lessonService;

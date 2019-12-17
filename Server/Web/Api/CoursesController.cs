@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Web.Infrastructure.Services;
+using Student.Infrastructure.Services;
 
 namespace Web.Api
 {
