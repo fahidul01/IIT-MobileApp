@@ -1,7 +1,10 @@
 ﻿using CoreEngine.APIHandlers;
 using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
+using IIT.Web.ViewModels;
 using IIT.Web.WebServices;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -121,6 +124,29 @@ namespace IIT.Web.Controllers
                     Message = ex.Message
                 };
              }
+        }
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> WebLogin(string username, string password)
+        {
+            var res = await _signInmanager.PasswordSignInAsync(username, password, true, false);
+            if (res.Succeeded)
+            {
+                var dbUser = await _userManager.FindByNameAsync(username);
+                return Redirect("/admin");
+            }
+            else
+            {
+                return RedirectToAction("/login");
+            }
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> WebLogout()
+        {
+            await _signInmanager.SignOutAsync();
+            return Redirect("/loginpage");
         }
 
         public void Logout()

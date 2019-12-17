@@ -14,12 +14,10 @@ using IIT.Web.Helpers;
 using CoreEngine.Model.Common;
 using Web.Infrastructure.AppServices;
 using IIT.Web.WebServices;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using System;
 using MatBlazor;
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using System.Net.Http;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace IIT.Web
 {
@@ -36,6 +34,16 @@ namespace IIT.Web
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+            services.AddAuthentication(
+                CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie();
+
             services.AddDbContext<StudentDBContext>(opt =>
                  opt.UseSqlite("Filename=mydata.db"));
             //services.AddDbContext<StudentDBContext>(opt =>
@@ -53,24 +61,25 @@ namespace IIT.Web
             })
                     .AddEntityFrameworkStores<StudentDBContext>();
 
-            services.AddAuthentication(options =>
-                 {
-                     options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-                     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                 })
-                 .AddJwtBearer(x =>
-                 {
-                     x.RequireHttpsMetadata = false;
-                     x.SaveToken = true;
-                     x.TokenValidationParameters = new TokenValidationParameters
-                     {
-                         ValidateIssuerSigningKey = true,
-                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JwtKey"])),
-                         ValidateIssuer = false,
-                         ValidateAudience = false
-                     };
-                 });
+
+            //services.AddAuthentication(options =>
+            //     {
+            //         options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            //         options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            //         options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            //     })
+            //     .AddJwtBearer(x =>
+            //     {
+            //         x.RequireHttpsMetadata = false;
+            //         x.SaveToken = true;
+            //         x.TokenValidationParameters = new TokenValidationParameters
+            //         {
+            //             ValidateIssuerSigningKey = true,
+            //             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JwtKey"])),
+            //             ValidateIssuer = false,
+            //             ValidateAudience = false
+            //         };
+            //     });
 
             services.AddTransient<ICourseHandler, CoursesController>();
             services.AddTransient<IMemberHandler, MemberController>();
@@ -84,17 +93,10 @@ namespace IIT.Web
             services.AddHostedService<AppStartService>();
             services.AddTransient<FilesController>();
 
-            services.ConfigureApplicationCookie(options =>
-            {
-                // Cookie settings
-                options.ExpireTimeSpan = TimeSpan.FromDays(1);
-                options.SlidingExpiration = true;
-                options.LoginPath = "/login";
-            });
-
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddControllers();
+
             services.AddMatToaster(config =>
             {
                 config.Position = MatToastPosition.BottomRight;
@@ -104,6 +106,11 @@ namespace IIT.Web
                 config.MaximumOpacity = 95;
                 config.VisibleStateDuration = 3000;
             });
+
+            services.AddHttpContextAccessor();
+            services.AddScoped<HttpContextAccessor>();
+            services.AddHttpClient();
+            services.AddScoped<HttpClient>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -118,11 +125,14 @@ namespace IIT.Web
                 app.UseExceptionHandler("/Error");
             }
 
-            app.UseStaticFiles();
-
             app.UseRouting();
-            app.UseAuthentication();
+
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
+            app.UseCookiePolicy();
             app.UseAuthorization();
+            app.UseAuthentication();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapBlazorHub();

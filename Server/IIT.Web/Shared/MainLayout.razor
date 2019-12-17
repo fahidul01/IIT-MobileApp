@@ -1,5 +1,5 @@
 ﻿@inherits LayoutComponentBase
-
+@inject NavigationManager _navigationManager
 <div class="sidebar">
     <div class="top-row pl-4 navbar navbar-dark">
         <a class="navbar-brand" href="">IIT.Web</a>
@@ -37,7 +37,17 @@
 
 <div class="main">
     <div class="top-row px-4">
-        <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+        <AuthorizeView>
+            <Authorized>
+                <b>Hello, @context.User.Identity.Name!</b>
+                <a class="ml-md-auto btn btn-primary"
+                   href="/api/member/WebLogout"
+                   target="_top">Logout</a>
+            </Authorized>
+            <NotAuthorized>
+                <span>You are not logged in. Error</span>
+            </NotAuthorized>
+        </AuthorizeView>
     </div>
 
     <div class="content px-4">
@@ -52,5 +62,19 @@
     private void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
+    }
+
+    [CascadingParameter] Task<AuthenticationState> AuthenticationState { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        var res = await AuthenticationState;
+        if (res.User.Identity.IsAuthenticated)
+        {
+            //_navigationManager.NavigateTo("/admin/");
+        }
+        else
+        {
+            _navigationManager.NavigateTo("/login/");
+        }
     }
 }
