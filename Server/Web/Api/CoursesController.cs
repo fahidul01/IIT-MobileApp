@@ -15,8 +15,8 @@ using Student.Infrastructure.Services;
 
 namespace Web.Api
 {
-    [Authorize(Roles = AppConstants.Student,
-        AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    //[Authorize(Roles = AppConstants.Student,
+    //    AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class CoursesController : ControllerBase, ICourseHandler
     {
         private readonly CourseService _courseService;
@@ -177,7 +177,7 @@ namespace Web.Api
 
 
 
-        public async Task<List<Course>> GetCourses(int batchId)
+        public async Task<List<Course>> GetBatchCourses(int batchId)
         {
             return await _courseService.GetCoursesAsync(batchId);
         }

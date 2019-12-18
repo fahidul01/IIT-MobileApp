@@ -18,9 +18,14 @@ namespace IIT.Server.Controllers
             _batchService = batchService;
         }
 
-        public async Task<List<Batch>> GetBatchesAsync(int page = 1)
+        public async Task<List<Batch>> GetBatches(int page = 1)
         {
             return await _batchService.GetBatchesAsync(page);
+        }
+
+        public string Test()
+        {
+            return "Batch Working";
         }
     }
 }

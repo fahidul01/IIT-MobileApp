@@ -1,3 +1,6 @@
+using CoreEngine.APIEngines;
+using CoreEngine.APIHandlers;
+using CoreEngine.Engine;
 using CoreEngine.Model.Common;
 using IIT.Client.Services;
 using MatBlazor;
@@ -23,8 +26,11 @@ namespace IIT.Client
             });
             services.AddLoadingBar();
             services.AddScoped<AuthenticationStateProvider, ApiAuthenticationProvider>();
-            //services.Add(new ServiceDescriptor(typeof(IUserProfileApi), typeof(UserProfileApi), ServiceLifetime.Scoped));
-            //services.AddScoped<AppState>();
+
+            services.AddScoped<IHttpWorker, HttpService>();
+            services.AddScoped<IBatchHandler, BatchEngine>();
+
+
             services.AddMatToaster(config =>
             {
                 config.Position = MatToastPosition.BottomRight;

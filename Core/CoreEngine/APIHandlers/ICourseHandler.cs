@@ -10,7 +10,7 @@ namespace CoreEngine.APIHandlers
     {
         Task<ActionResponse> CreateCourse(int semesterId, Course course, List<DBFile> dBFiles, List<IFormFile> formFiles = null);
         Task<List<Course>> GetCourses();
-        Task<List<Course>> GetCourses(int batchId);
+        Task<List<Course>> GetBatchCourses(int batchId);
         Task<ActionResponse> UpdateCourse(Course course);
         Task<ActionResponse> DeleteCourse(Course course);
         Task<ActionResponse> Update(Lesson lesson);

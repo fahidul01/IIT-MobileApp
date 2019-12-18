@@ -176,7 +176,7 @@ namespace IIT.Web.Controllers
 
 
 
-        public async Task<List<Course>> GetCourses(int batchId)
+        public async Task<List<Course>> GetBatchCourses(int batchId)
         {
             return await _courseService.GetCoursesAsync(batchId);
         }

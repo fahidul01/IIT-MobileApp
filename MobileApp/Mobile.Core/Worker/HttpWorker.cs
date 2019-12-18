@@ -18,8 +18,7 @@ namespace Mobile.Core.Worker
             {
                 BaseAddress = new Uri(baseurl)
             };
-            _httpClient.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/json"));
+            _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
         public void LoggedIn(string sessionKey)

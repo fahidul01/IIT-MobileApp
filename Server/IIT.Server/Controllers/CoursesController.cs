@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace IIT.Server.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class CoursesController : ControllerBase, ICourseHandler
     {
         private readonly CourseService _courseService;
@@ -175,7 +175,7 @@ namespace IIT.Server.Controllers
 
 
 
-        public async Task<List<Course>> GetCourses(int batchId)
+        public async Task<List<Course>> GetBatchCourses(int batchId)
         {
             return await _courseService.GetCoursesAsync(batchId);
         }

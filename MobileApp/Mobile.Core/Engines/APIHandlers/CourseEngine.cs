@@ -48,7 +48,7 @@ namespace Mobile.Core.Engines.APIHandlers
             return SendRequest<List<Course>>(HttpMethod.Get, null);
         }
 
-        public Task<List<Course>> GetCourses(int batchId)
+        public Task<List<Course>> GetBatchCourses(int batchId)
         {
             return SendRequest<List<Course>>(HttpMethod.Post, new { batchId });
         }

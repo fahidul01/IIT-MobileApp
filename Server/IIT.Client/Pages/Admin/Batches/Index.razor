@@ -1,6 +1,8 @@
 ﻿@page "/admin/batches/"
+@using CoreEngine.APIEngines
 @inject IMatToaster _matToaster
 @inject NavigationManager _nabigationManager
+@inject IBatchHandler _batchService
 <MatTable Class="mat-elevation-z5" Items="@Batches"
           AllowSelection="true">
     <MatTableHeader>
@@ -76,11 +78,11 @@
         try
         {
             //TotalBatch = await _batchService.GetCount();
-            //Batches = await _batchService.GetBatchesAsync(1);
-            //if (Batches == null || Batches.Count == 0)
-            //{
-            //    _matToaster.Add("No Batches found. Create New", MatBlazor.MatToastType.Info);
-            //}
+            Batches = await _batchService.GetBatches(1);
+            if (Batches == null || Batches.Count == 0)
+            {
+                _matToaster.Add("No Batches found. Create New", MatBlazor.MatToastType.Info);
+            }
         }
         catch (Exception ex)
         {

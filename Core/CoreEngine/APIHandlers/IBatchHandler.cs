@@ -6,6 +6,6 @@ namespace CoreEngine.APIHandlers
 {
     public interface IBatchHandler
     {
-        Task<List<Batch>> GetBatchesAsync(int page = 1);
+        Task<List<Batch>> GetBatches(int page = 1);
     }
 }

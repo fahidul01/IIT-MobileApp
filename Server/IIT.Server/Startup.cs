@@ -14,6 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 using Student.Infrastructure.AppServices;
 using Student.Infrastructure.DBModel;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace IIT.Server
 {
@@ -70,7 +71,12 @@ namespace IIT.Server
             services.AddTransient<TokenService>();
             services.Configure<AuthMessageSenderOptions>(Configuration);
             services.AddHostedService<AppStartService>();
-            services.AddControllers();
+            services.AddControllers()
+                    .AddNewtonsoftJson(x =>
+                     {
+                         x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                         x.SerializerSettings.MaxDepth = 3;
+                     });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
