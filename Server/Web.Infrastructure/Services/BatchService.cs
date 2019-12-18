@@ -1,10 +1,10 @@
 ﻿using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
 using Microsoft.EntityFrameworkCore;
+using Student.Infrastructure.DBModel;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Student.Infrastructure.DBModel;
 
 namespace Student.Infrastructure.Services
 {
@@ -74,21 +74,21 @@ namespace Student.Infrastructure.Services
             var oldBatch = await _db.Batches.FindAsync(batch.Id);
             if (oldBatch == null)
             {
-                return new ActionResponse(false,"The batch information was not found");
+                return new ActionResponse(false, "The batch information was not found");
             }
             else
             {
                 _db.Entry(batch).State = EntityState.Modified;
                 await _db.SaveChangesAsync();
-                return new ActionResponse(true,"Batch Information Updated Successfully");
+                return new ActionResponse(true, "Batch Information Updated Successfully");
             }
         }
 
         public async Task<ActionResponse> DeleteBatch(Batch batch)
         {
-            var oldBatch = await _db.Batches.Include(x=>x.Students)
-                                            .Include(x=>x.Semesters)
-                                            .FirstOrDefaultAsync(x=>x.Id == batch.Id);
+            var oldBatch = await _db.Batches.Include(x => x.Students)
+                                            .Include(x => x.Semesters)
+                                            .FirstOrDefaultAsync(x => x.Id == batch.Id);
             if (oldBatch == null)
             {
                 return new ActionResponse(false, "The batch information was not found");
@@ -96,9 +96,14 @@ namespace Student.Infrastructure.Services
             else
             {
                 foreach (var student in oldBatch.Students)
+                {
                     _db.Entry(student).State = EntityState.Deleted;
+                }
+
                 foreach (var semester in oldBatch.Students)
+                {
                     _db.Entry(semester).State = EntityState.Deleted;
+                }
 
                 _db.Entry(oldBatch).State = EntityState.Deleted;
                 await _db.SaveChangesAsync();

@@ -1,7 +1,6 @@
 ﻿
 using Mobile.Core.ViewModels;
 using MobileApp.Controls;
-using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace MobileApp.Views.Course

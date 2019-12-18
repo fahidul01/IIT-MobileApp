@@ -1,7 +1,6 @@
 ﻿using CoreEngine.APIHandlers;
 using CoreEngine.Model.DBModel;
 using GalaSoft.MvvmLight.Command;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
@@ -67,7 +66,10 @@ namespace Mobile.Core.ViewModels
 
         private void LoadMoreAction()
         {
-            if (canLoadMore && !IsBusy) LoadNotice(page++);
+            if (canLoadMore && !IsBusy)
+            {
+                LoadNotice(page++);
+            }
         }
     }
 }

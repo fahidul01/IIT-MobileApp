@@ -56,7 +56,7 @@ namespace Mobile.Core.ViewModels
                 totalCredit += gradeData.GradePoint * gradeData.Course.CourseCredit;
                 CourseDatas.Add(new CourseData(gradeData, gradeData.Course));
             }
-            SemesterGPA = Math.Round(totalCredit / studentCourses.Sum(x => x.Course.CourseCredit),2);
+            SemesterGPA = Math.Round(totalCredit / studentCourses.Sum(x => x.Course.CourseCredit), 2);
         }
 
         public string SemesterNo { get; private set; }

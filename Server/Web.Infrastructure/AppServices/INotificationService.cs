@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace Student.Infrastructure.AppServices
+﻿namespace Student.Infrastructure.AppServices
 {
     public interface INotificationService
     {

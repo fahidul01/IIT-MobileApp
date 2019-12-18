@@ -3,13 +3,13 @@ using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Student.Infrastructure.AppServices;
+using Student.Infrastructure.DBModel;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Student.Infrastructure.AppServices;
-using Student.Infrastructure.DBModel;
 
 namespace Student.Infrastructure.Services
 {

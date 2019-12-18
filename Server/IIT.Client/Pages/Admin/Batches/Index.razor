@@ -1,0 +1,131 @@
+﻿@page "/admin/batches/"
+@inject IMatToaster _matToaster
+@inject NavigationManager _nabigationManager
+<MatTable Class="mat-elevation-z5" Items="@Batches"
+          AllowSelection="true">
+    <MatTableHeader>
+        <th>Name</th>
+        <th style="width:20%">Starts On</th>
+        <th style="width:20%">Ends On</th>
+        <th style="width:25%">Number of semesters</th>
+        <th style="width:25%">Semester Duration (months)</th>
+        <th>
+            <div class="float-right" style="width:105px;">
+                <MatFAB Icon="@MatIconNames.Add"
+                        Mini="true"
+                        OnClick="@((e) => AddBatchDialog())"
+                        Raised="true"></MatFAB>
+            </div>
+        </th>
+    </MatTableHeader>
+    <MatTableRow Context="Batch">
+        <td> @Batch.Name</td>
+        <td>@Batch.StartsOn.ToString("dd MMMM, yyyy")</td>
+        <td>@Batch.EndsOn.ToString("dd MMMM, yyyy")</td>
+        <td>@Batch.NumberOfSemester</td>
+        <td>@Batch.SemesterDuration</td>
+        <td>
+            <MatButton Icon="@MatIconNames.Open_in_new"
+                       OnClick="@(() => ViewBatch(Batch))"/>
+        </td>
+    </MatTableRow>
+</MatTable>
+<MatDialog @bind-IsOpen="@addDialogOpen">
+    <MatDialogTitle>Create Batch</MatDialogTitle>
+    <MatDialogContent>
+        <EditForm Model="@CurrentBatch" OnValidSubmit="@CreateBatch">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <fieldset>
+                <div class="form-group">
+                    <MatTextField @bind-Value="@CurrentBatch.Name"
+                                  Label="Batch Name"
+                                  Icon="@MatIconNames.People"
+                                  IconTrailing="true"
+                                  FullWidth="true"
+                                  Required="true" />
+                </div>
+                <div class="form-group">
+                    <MatNumericUpDownField @bind-Value="@CurrentBatch.NumberOfSemester"
+                                           Label="Number of Semester"
+                                           Minimum="1" />
+                    <MatNumericUpDownField @bind-Value="@CurrentBatch.SemesterDuration"
+                                           Label="Semester Duration (Months)"
+                                           Minimum="1" />
+                </div>
+                <div class="form-group">
+                    <MatBlazor.MatDatePicker @bind-Value="@CurrentBatch.StartsOn"
+                                             Label="Starts On" />
+                </div>
+            </fieldset>
+        </EditForm>
+    </MatDialogContent>
+    <MatDialogActions>
+        <MatButton OnClick="@(e => { addDialogOpen = false; })">Cancel</MatButton>
+        <MatButton OnClick="@CreateBatch">Create Batch</MatButton>
+    </MatDialogActions>
+</MatDialog>
+@code
+{
+    private List<Batch> Batches;
+    private int TotalBatch;
+    private bool addDialogOpen;
+    public Batch CurrentBatch { get; set; } = new Batch();
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            //TotalBatch = await _batchService.GetCount();
+            //Batches = await _batchService.GetBatchesAsync(1);
+            //if (Batches == null || Batches.Count == 0)
+            //{
+            //    _matToaster.Add("No Batches found. Create New", MatBlazor.MatToastType.Info);
+            //}
+        }
+        catch (Exception ex)
+        {
+            _matToaster.Add(ex.Message, MatBlazor.MatToastType.Danger, "Error");
+        }
+    }
+
+    private void AddBatchDialog()
+    {
+        CurrentBatch = new Batch();
+        addDialogOpen = true;
+    }
+
+    private async void CreateBatch()
+    {
+        addDialogOpen = false;
+        if (CurrentBatch.Id == 0)
+        {
+            //var res = await _batchService.AddBatch(CurrentBatch);
+            //if (res != null)
+            //{
+            //    Batches.Insert(0, res);
+            //    _matToaster.Add("Successfully Created New Batch", MatToastType.Success);
+            //}
+            //else
+            //{
+            //    _matToaster.Add("Failed to create New Batch", MatToastType.Danger);
+            //}
+        }
+        else
+        {
+            //var response = await _batchService.UpdateBatch(CurrentBatch);
+            //var toastType = response.Actionstatus ? MatToastType.Success : MatToastType.Danger;
+            //_matToaster.Add(response.Message, toastType);
+        }
+    }
+
+    private void EditBatchDialog(Batch batch)
+    {
+        CurrentBatch = batch;
+        addDialogOpen = true;
+    }
+
+    private void ViewBatch(Batch batch)
+    {
+        _nabigationManager.NavigateTo("/admin/batches/details/" + batch.Id.ToString());
+    }
+}

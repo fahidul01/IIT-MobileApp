@@ -2,13 +2,13 @@
 using CoreEngine.Model.DBModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Student.Infrastructure.DBModel;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
-using Student.Infrastructure.DBModel;
 
 namespace Student.Infrastructure.Services
 {

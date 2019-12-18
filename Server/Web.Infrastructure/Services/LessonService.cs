@@ -1,10 +1,10 @@
 ﻿using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
 using Microsoft.EntityFrameworkCore;
+using Student.Infrastructure.DBModel;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Student.Infrastructure.DBModel;
 
 namespace Student.Infrastructure.Services
 {

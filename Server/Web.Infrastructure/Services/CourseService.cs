@@ -1,13 +1,12 @@
 ﻿using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
 using Microsoft.EntityFrameworkCore;
+using Student.Infrastructure.AppServices;
+using Student.Infrastructure.DBModel;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Student.Infrastructure.AppServices;
-using Student.Infrastructure.DBModel;
-using System;
 
 namespace Student.Infrastructure.Services
 {
@@ -68,9 +67,9 @@ namespace Student.Infrastructure.Services
 
         public async Task<ActionResponse> DeleteStudentCourse(int studentCourseId)
         {
-            var res = await _db.StudentCourses.Include(x=>x.Course)
-                                              .FirstOrDefaultAsync(x=>x.Id == studentCourseId);
-            if(res == null)
+            var res = await _db.StudentCourses.Include(x => x.Course)
+                                              .FirstOrDefaultAsync(x => x.Id == studentCourseId);
+            if (res == null)
             {
                 return new ActionResponse(false, "Failed to Locate Student");
             }
@@ -183,7 +182,10 @@ namespace Student.Infrastructure.Services
             {
                 return new ActionResponse(false, "Invalid Batch Information");
             }
-            else return await AddResult(course, batch, filePath);
+            else
+            {
+                return await AddResult(course, batch, filePath);
+            }
         }
 
         private async Task<ActionResponse> AddResult(Course course, Batch batch, string filePath)
@@ -221,7 +223,7 @@ namespace Student.Infrastructure.Services
                     continue;
                 }
 
-                
+
                 var roll = splitter[rollCol];
                 decimal.TryParse(splitter[gradePointCol], out decimal gradePoint);
                 var gradeName = splitter[gradeCol];

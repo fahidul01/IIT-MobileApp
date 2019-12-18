@@ -31,6 +31,7 @@ namespace CoreEngine.Model.DBModel
         public string Name { get; set; }
         public string PhoneNumber { get; set; }
         public bool IsCR { get; set; }
+        public string Role { get; set; }
         public string ClassRepresentative => IsCR ? "CR" : "";
         public int Roll { get; set; }
         public Batch Batch { get; set; }
@@ -49,7 +50,8 @@ namespace CoreEngine.Model.DBModel
                 PhoneNumber = dBUser.PhoneNumber,
                 Roll = dBUser.Roll,
                 IsCR = dBUser.ClassRepresentative,
-                RequirePasswordChange = dBUser.RequirePasswordChange
+                RequirePasswordChange = dBUser.RequirePasswordChange,
+                Role = dBUser.UserRole
             };
         }
     }

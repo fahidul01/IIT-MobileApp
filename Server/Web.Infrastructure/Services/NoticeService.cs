@@ -1,11 +1,11 @@
 ﻿using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
 using Microsoft.EntityFrameworkCore;
+using Student.Infrastructure.AppServices;
+using Student.Infrastructure.DBModel;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Student.Infrastructure.AppServices;
-using Student.Infrastructure.DBModel;
 
 namespace Student.Infrastructure.Services
 {
@@ -53,7 +53,7 @@ namespace Student.Infrastructure.Services
                                                             x.Id == userId);
             if (dbUser == null)
             {
-                return new ActionResponse(false,"Invalid User");
+                return new ActionResponse(false, "Invalid User");
             }
             else
             {
@@ -68,7 +68,7 @@ namespace Student.Infrastructure.Services
                     _db.Entry(post).State = EntityState.Modified;
                 }
                 await _db.SaveChangesAsync();
-                return new ActionResponse(true,"Successfully created the notice");
+                return new ActionResponse(true, "Successfully created the notice");
             }
         }
 
