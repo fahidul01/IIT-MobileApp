@@ -1,5 +1,4 @@
 ﻿@page "/admin/batches/"
-@using CoreEngine.APIEngines
 @inject IMatToaster _matToaster
 @inject NavigationManager _nabigationManager
 @inject IBatchHandler _batchService
@@ -101,22 +100,22 @@
         addDialogOpen = false;
         if (CurrentBatch.Id == 0)
         {
-            //var res = await _batchService.AddBatch(CurrentBatch);
-            //if (res != null)
-            //{
-            //    Batches.Insert(0, res);
-            //    _matToaster.Add("Successfully Created New Batch", MatToastType.Success);
-            //}
-            //else
-            //{
-            //    _matToaster.Add("Failed to create New Batch", MatToastType.Danger);
-            //}
+            var res = await _batchService.CreateBatch(CurrentBatch);
+            if (res != null)
+            {
+                Batches.Insert(0, res);
+                _matToaster.Add("Successfully Created New Batch", MatToastType.Success);
+            }
+            else
+            {
+                _matToaster.Add("Failed to create New Batch", MatToastType.Danger);
+            }
         }
         else
         {
-            //var response = await _batchService.UpdateBatch(CurrentBatch);
-            //var toastType = response.Actionstatus ? MatToastType.Success : MatToastType.Danger;
-            //_matToaster.Add(response.Message, toastType);
+            var response = await _batchService.UpdateBatch(CurrentBatch);
+            var toastType = response.Actionstatus ? MatToastType.Success : MatToastType.Danger;
+            _matToaster.Add(response.Message, toastType);
         }
     }
 

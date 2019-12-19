@@ -1,4 +1,5 @@
 ﻿using CoreEngine.APIHandlers;
+using CoreEngine.Helpers;
 using CoreEngine.Model.Common;
 using Microsoft.Extensions.DependencyInjection;
 using Mobile.Core.Engines.APIHandlers;
@@ -6,6 +7,7 @@ using Mobile.Core.ViewModels;
 using Mobile.Core.Worker;
 using System;
 using System.Linq;
+using System.Net.Http;
 using System.Reflection;
 
 namespace Mobile.Core.Engines.Dependency
@@ -28,17 +30,17 @@ namespace Mobile.Core.Engines.Dependency
             provider = serviceProvider;
         }
 
-
-
         public static void Build(IServiceCollection services)
         {
             RegisterAllTypes<BaseViewModel>(services, typeof(BaseViewModel).Assembly);
-            services.AddSingleton<ILessonHandler, LessonEngine>();
-            services.AddSingleton<ICourseHandler, CourseEngine>();
-            services.AddSingleton<IMemberHandler, MemberEngine>();
-            services.AddSingleton<INoticeHandler, NoticeEngine>();
+            var http = new HttpClient
+            {
+                BaseAddress = new Uri(AppConstants.BaseUrl)
+            };
+
+            services.AddSingleton(http);
             services.AddSingleton<SettingService>();
-            services.AddSingleton(new HttpWorker(AppConstants.BaseUrl));
+            ServiceHelper.Register(services);
         }
 
         public static void RegisterAllTypes<T>(IServiceCollection services, Assembly assembly)

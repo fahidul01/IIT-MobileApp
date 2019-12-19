@@ -1,4 +1,5 @@
 ﻿using CoreEngine.APIHandlers;
+using CoreEngine.Helpers;
 using GalaSoft.MvvmLight.Command;
 using Mobile.Core.Engines.Services;
 using Mobile.Core.Models.Core;

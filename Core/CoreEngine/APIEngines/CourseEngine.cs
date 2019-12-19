@@ -1,15 +1,15 @@
 ﻿using CoreEngine.APIHandlers;
+using CoreEngine.Engine;
 using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
 using Microsoft.AspNetCore.Http;
-using Mobile.Core.Worker;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Mobile.Core.Engines.APIHandlers
+namespace CoreEngine.APIEngines
 {
-    public class CourseEngine : BaseEngine, ICourseHandler
+    class CourseEngine : BaseApiEngine, ICourseHandler
     {
         private const string controllerName = "Courses";
         List<Semester> Semesters;

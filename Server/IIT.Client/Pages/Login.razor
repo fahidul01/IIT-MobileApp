@@ -1,0 +1,73 @@
+﻿@page "/login"
+@using CoreEngine.Helpers
+@layout LoginLayout
+@inject IMemberHandler _memberHandler
+@inject IMatToaster _matToaster
+@inject SettingService _settingService
+@inject NavigationManager _navigationManager
+<MatCard>
+    <div class="logo">
+        <a href="/" title="Blazor Boilerplate Home"><img src="images/iitlogo-blue.png" style="width:100px;" title="Blazor Boilerplate Home" alt="Blazor Boilerplate" /><br />Blazor Boilerplate</a>
+        <br />
+        <h4>Log In</h4>
+        User -> Username: <b>user</b> Password: <b>user123</b><br />
+        Admin -> Username: <b>admin</b> Password: <b>admin123</b><br />
+    </div>
+    <EditForm Model="@CurrentUser" OnValidSubmit="@SubmitLogin">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <fieldset>
+            <div class="form-group">
+                <MatTextField @bind-Value="@CurrentUser.UserName" 
+                              Label="User Name" 
+                              Icon="person" 
+                              IconTrailing="true"
+                              FullWidth="true" 
+                              Required="true"></MatTextField>
+            </div>
+            <div class="form-group">
+                <MatTextField @bind-Value="@CurrentUser.Password" 
+                              Label="Password"
+                              Icon="lock_outline"
+                              IconTrailing="true" 
+                              FullWidth="true" 
+                              Required="true" 
+                              Type="password"></MatTextField>
+            </div>
+            <div class="form-group">
+                <MatCheckbox @bind-Value="@RememberMe" class="filled-in chk-col-blue">Remember Me</MatCheckbox>
+                <MatButton class="float-right" Raised="true">Login</MatButton>
+            </div>
+            <hr />
+        </fieldset>
+    </EditForm>
+</MatCard>
+
+@code{
+    User CurrentUser { get; set; } = new User()
+    {
+        UserName = "admin",
+        Password = "pass_WORD_1234"
+    };
+    bool RememberMe;
+
+    private async void SubmitLogin()
+    {
+        var res = await _memberHandler.Login(CurrentUser.UserName, CurrentUser.Password);
+        if(res != null && res.Success)
+        {
+            if(RememberMe)
+            {
+                _settingService.Token = res.Token;
+            }
+            var currentUser = await _memberHandler.TouchLogin();
+            if (currentUser.Role == "Admin")
+                _navigationManager.NavigateTo("/admin/");
+        }
+        else
+        {
+            _matToaster.Add("Failed to Login. Please try again", MatToastType.Danger);
+        }
+    }
+}
+

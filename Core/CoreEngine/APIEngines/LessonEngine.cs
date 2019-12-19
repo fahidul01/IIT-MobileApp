@@ -1,15 +1,15 @@
 ﻿using CoreEngine.APIHandlers;
+using CoreEngine.Engine;
 using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
-using Mobile.Core.Worker;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Mobile.Core.Engines.APIHandlers
+namespace CoreEngine.APIEngines
 {
-    internal class LessonEngine : BaseEngine, ILessonHandler
+    internal class LessonEngine : BaseApiEngine, ILessonHandler
     {
         private const string Controller = "Lessons";
         public LessonEngine(HttpWorker httpWorker) : base(httpWorker, Controller)

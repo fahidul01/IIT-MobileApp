@@ -1,14 +1,14 @@
 ﻿using CoreEngine.APIHandlers;
+using CoreEngine.Engine;
 using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
-using Mobile.Core.Worker;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Mobile.Core.Engines.APIHandlers
+namespace CoreEngine.APIEngines
 {
-    internal class NoticeEngine : BaseEngine, INoticeHandler
+    class NoticeEngine : BaseApiEngine, INoticeHandler
     {
         private const string Controller = "Notices";
         public NoticeEngine(HttpWorker httpWorker) : base(httpWorker, Controller)

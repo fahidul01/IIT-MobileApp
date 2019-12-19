@@ -7,7 +7,7 @@
         public const string Admin = "Admin";
 #if DEBUG
         // public static string BaseUrl = "http://172.17.100.2:5001/api/";
-        public static string BaseUrl = "https://mit.techapp.ml/api/";
+        public static string BaseUrl = "https://mit.techapp.ml/";
 #else
         public static string BaseUrl = "https://mit.techapp.ml/api/";
 #endif

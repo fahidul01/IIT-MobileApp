@@ -1,14 +1,15 @@
 ﻿using CoreEngine.APIHandlers;
+using CoreEngine.Engine;
 using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
-using Mobile.Core.Worker;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Mobile.Core.Engines.APIHandlers
+namespace CoreEngine.APIEngines
 {
-    public class MemberEngine : BaseEngine, IMemberHandler
+    class MemberEngine : BaseApiEngine, IMemberHandler
     {
         public MemberEngine(HttpWorker httpWorker) : base(httpWorker, "member")
         {
@@ -36,15 +37,17 @@ namespace Mobile.Core.Engines.APIHandlers
             var res = await SendRequest<SignInResponse>(HttpMethod.Post, new { username, password });
             if (res != null && res.Success)
             {
-                _httpWorker.LoggedIn(res.Token);
+                LoginToken(res.Token);
             }
             return res;
         }
 
+       
+
         public async void Logout()
         {
             await SendRequest<ActionResponse>(HttpMethod.Get, null);
-            _httpWorker.Logout();
+            LogoutToken();
         }
 
         public Task<ActionResponse> Register(User user)

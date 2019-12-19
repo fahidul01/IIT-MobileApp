@@ -1,7 +1,7 @@
-﻿using Mobile.Core.Engines.Services;
+﻿using CoreEngine.Engine;
 using System.Runtime.CompilerServices;
 
-namespace Mobile.Core.Worker
+namespace CoreEngine.Helpers
 {
     public class SettingService
     {

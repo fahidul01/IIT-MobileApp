@@ -1,27 +1,34 @@
 ﻿using CoreEngine.APIHandlers;
 using CoreEngine.Engine;
+using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace CoreEngine.APIEngines
 {
-    public class BatchEngine : IBatchHandler
+    class BatchEngine : BaseApiEngine, IBatchHandler
     {
-        private readonly IHttpWorker _httpWorker;
-        private const string controllerName = "/api/batches/";
-
-        public BatchEngine(IHttpWorker httpWorker)
+        private const string Controller = "batches";
+        public BatchEngine(HttpWorker httpWorker) : base(httpWorker, Controller)
         {
-            _httpWorker = httpWorker;
         }
 
         public Task<List<Batch>> GetBatches(int page = 1)
         {
-            var path = controllerName + "GetBatches" + "?page=" + page;
-            Console.WriteLine(path);
-            return _httpWorker.GetJsonAsync<List<Batch>>(path);
+            return SendRequest<List<Batch>>(HttpMethod.Get, new { page });
+        }
+
+        public Task<Batch> CreateBatch(Batch batch)
+        {
+            return SendRequest<Batch>(HttpMethod.Post, batch);
+        }
+
+        public Task<ActionResponse> UpdateBatch(Batch batch)
+        {
+            return SendRequest<ActionResponse>(HttpMethod.Post, batch);
         }
     }
 }

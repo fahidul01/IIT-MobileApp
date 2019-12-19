@@ -1,6 +1,6 @@
-using CoreEngine.APIEngines;
-using CoreEngine.APIHandlers;
+using Blazor.Extensions.Storage;
 using CoreEngine.Engine;
+using CoreEngine.Helpers;
 using CoreEngine.Model.Common;
 using IIT.Client.Services;
 using MatBlazor;
@@ -25,10 +25,11 @@ namespace IIT.Client
                 // config.AddPolicy(Policies.IsMyDomain, Policies.IsMyDomainPolicy());  Only works on the server end
             });
             services.AddLoadingBar();
+            services.AddStorage();
             services.AddScoped<AuthenticationStateProvider, ApiAuthenticationProvider>();
+            services.AddScoped<IPreferenceEngine, PreferenceEngineProvider>();
 
-            services.AddScoped<IHttpWorker, HttpService>();
-            services.AddScoped<IBatchHandler, BatchEngine>();
+            ServiceHelper.Register(services);
 
 
             services.AddMatToaster(config =>

@@ -1,4 +1,5 @@
 ﻿using CoreEngine.APIHandlers;
+using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace IIT.Server.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class BatchesController : ControllerBase, IBatchHandler
     {
         private readonly BatchService _batchService;
@@ -23,9 +24,19 @@ namespace IIT.Server.Controllers
             return await _batchService.GetBatchesAsync(page);
         }
 
+        public async Task<Batch> CreateBatch(Batch batch)
+        {
+            return await _batchService.AddBatch(batch);
+        }
+
         public string Test()
         {
             return "Batch Working";
+        }
+
+        public Task<ActionResponse> UpdateBatch(Batch batch)
+        {
+            return _batchService.UpdateBatch(batch);
         }
     }
 }

@@ -2,7 +2,6 @@
 using CoreEngine.Engine;
 using CoreEngine.Model.DBModel;
 using Mobile.Core.Engines.APIHandlers;
-using Mobile.Core.Worker;
 using MobileTest.Core;
 using NUnit.Framework;
 using System;
@@ -22,7 +21,7 @@ namespace MobileTest.Api
         public async Task SetUp()
         {
             LogEngine.IsDetailed = true;
-            var http = new HttpWorker(TestConstants.WebAddress);
+            var http = new Mobile.Core.Worker.HttpWorker(TestConstants.WebAddress);
             member = new MemberEngine(http);
             courseHandler = new CourseEngine(http);
             await member.Login("181909", "qbQ890ZC");
