@@ -1,13 +1,20 @@
-﻿using System;
+﻿using CoreEngine.Helpers;
+using System;
 using System.Runtime.CompilerServices;
 
 namespace CoreEngine.Engine
 {
     public class LogEngine
     {
-        public static event EventHandler<string> ErrorOccured;
 
         public static bool IsDetailed = false;
+        private static IToastService _toastService;
+
+        public static void Initialize(IToastService toastService)
+        {
+            _toastService = toastService;
+        }
+
         public static void Error(Exception ex, [CallerMemberName]string name = "")
         {
             string msg;
@@ -19,7 +26,7 @@ namespace CoreEngine.Engine
             {
                 msg = ex.Message;
             }
-            ErrorOccured?.Invoke(null, msg);
+            _toastService?.ShowToastMessage(ex.Message);
             Console.WriteLine(msg);
         }
     }

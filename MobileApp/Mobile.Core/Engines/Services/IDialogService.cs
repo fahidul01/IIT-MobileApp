@@ -1,15 +1,15 @@
-﻿using System;
+﻿using CoreEngine.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Mobile.Core.Engines.Services
 {
-    public interface IDialogService
+    public interface IDialogService : IToastService
     {
         void ShowMessage(string title, string message);
         Task<bool> ShowConfirmation(string title, string meaage);
         Task<string> ShowAction(string title, string cancel, params string[] actions);
         void ShowAction(string title, string cancel, Dictionary<string, Action> actions);
-        void ShowToastMessage(string message);
     }
 }

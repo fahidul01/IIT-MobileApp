@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace IIT.Server.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class CoursesController : ControllerBase, ICourseHandler
     {
         private readonly CourseService _courseService;
@@ -43,6 +43,28 @@ namespace IIT.Server.Controllers
             else
             {
                 var res = await _courseService.AddCourse(course, semesterId, batch.Id);
+                if (res != null && formFiles != null && formFiles.Count > 0)
+                {
+                    return await AddMaterial(res.Id, null, formFiles);
+                }
+                else
+                {
+                    return new ActionResponse(res != null);
+                }
+            }
+        }
+
+        [Authorize(Roles =AppConstants.Admin)]
+        public async Task<ActionResponse> CreateAdminCourse(int semesterId, Course course, List<DBFile> dBFiles, List<IFormFile> formFiles = null)
+        {
+            var semester = await _courseService.GetSemesterAsync(semesterId);
+            if (semester == null)
+            {
+                return new ActionResponse(false, "Invalid User");
+            }
+            else
+            {
+                var res = await _courseService.AddCourse(course, semesterId, semester.Batch.Id);
                 if (res != null && formFiles != null && formFiles.Count > 0)
                 {
                     return await AddMaterial(res.Id, null, formFiles);

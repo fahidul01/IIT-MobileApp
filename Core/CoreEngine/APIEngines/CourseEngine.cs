@@ -79,6 +79,11 @@ namespace CoreEngine.APIEngines
             return SendRequest<ActionResponse>(HttpMethod.Post, new { course, semesterId });
         }
 
+        public Task<ActionResponse> CreateAdminCourse(int semesterId, Course course, List<DBFile> dBFiles, List<IFormFile> formFiles = null)
+        {
+            return SendRequest<ActionResponse>(HttpMethod.Post, new { course, semesterId });
+        }
+
         public Task<ActionResponse> UploadCourseResult(int courseId, DBFile dBFile, IFormFile formFile)
         {
             return SendMultiPartRequest<ActionResponse>(new { courseId }, dBFile);
@@ -88,5 +93,7 @@ namespace CoreEngine.APIEngines
         {
             return SendRequest<List<StudentCourse>>(HttpMethod.Get, null);
         }
+
+       
     }
 }

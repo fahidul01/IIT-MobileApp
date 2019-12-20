@@ -1,7 +1,22 @@
-﻿@page "/admin/courses/details"
+﻿@page "/admin/courses/details/{CourseId:int}"
+@inject ICourseHandler _courseHandler
+<div class="card">
+    <div class="card-header">
+        <h3>
+            @CurrentCourse.CourseId
+        </h3>
+        <b>@CurrentCourse.CourseName</b>
+    </div>
+</div>
+@code{
+    [Parameter]
+    public int CourseId { get; set; }
+    Course CurrentCourse = new Course();
+    protected override async void OnInitialized()
+    {
+        CurrentCourse = await _courseHandler.GetCourse(CourseId);
+        this.StateHasChanged();
+        base.OnInitialized();
+    }
+}
 
-<MatBlazor.BaseMatCard>
-    <header>
-
-    </header>
-</MatBlazor.BaseMatCard>
