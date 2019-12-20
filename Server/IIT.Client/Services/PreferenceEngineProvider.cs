@@ -1,15 +1,15 @@
-﻿using Blazor.Extensions.Storage.Interfaces;
+﻿using Blazored.LocalStorage;
 using CoreEngine.Engine;
-using Microsoft.AspNetCore.Components;
 using System;
+using System.Threading.Tasks;
 
 namespace IIT.Client.Services
 {
     public class PreferenceEngineProvider : IPreferenceEngine
     {
-        private readonly ILocalStorage _localStorage;
+        private readonly ILocalStorageService _localStorage;
 
-        public PreferenceEngineProvider(ILocalStorage localStorage)
+        public PreferenceEngineProvider(ILocalStorageService localStorage)
         {
             _localStorage = localStorage;
         }
@@ -18,7 +18,7 @@ namespace IIT.Client.Services
         {
             try
             {
-                var res = _localStorage.GetItem<string>(key).Result;
+                var res = Task.Run(()=>GetResult(key,value)).Result;
                 if (string.IsNullOrWhiteSpace(res)) return value;
                 else return res;
             }
@@ -31,7 +31,14 @@ namespace IIT.Client.Services
 
         public async void SetSetting(string key, string value)
         {
-            await _localStorage.SetItem<string>(key, value);
+            await _localStorage.SetItemAsync(key, value);
+        }
+
+        private async Task<string> GetResult(string key, string def)
+        {
+            if (await _localStorage.ContainKeyAsync(key))
+                return await _localStorage.GetItemAsync<string>(key);
+            else return def;
         }
     }
 }

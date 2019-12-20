@@ -1,0 +1,26 @@
+﻿@inject IMemberHandler _memberService
+<MatTable Class="mat-elevation-z5" Items="@Students"
+          ShowPaging="false"
+          PageSize="100"
+          AllowSelection="true">
+    <MatTableHeader>
+        <th style="width:30%">Name</th>
+        <th style="width:20%">Roll</th>
+        <th style="width:20%">Email</th>
+        <th style="width:15%">Phone</th>
+        <th style="width:15%">Role</th>
+    </MatTableHeader>
+    <MatTableRow Context="Student">
+        <td> @Student.Name</td>
+        <td>@Student.Roll</td>
+        <td>@Student.Email</td>
+        <td>@Student.PhoneNumber</td>
+        <td>@Student.ClassRepresentative</td>
+    </MatTableRow>
+</MatTable>
+
+@code {
+    [Parameter]
+    public List<User> Students { get; set; }
+
+}

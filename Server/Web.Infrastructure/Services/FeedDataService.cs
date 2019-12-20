@@ -70,7 +70,7 @@ namespace Student.Infrastructure.Services
             while (intDate <= CurrentTime)
             {
                 var user = crUsers[rnd.Next(0, crUsers.Count - 1)];
-                var dbUser = await _userService.GetStudent(user.Id);
+                var dbUser = await _userService.GetUser(user.Id);
                 var notice = new Notice()
                 {
                     EventDate = intDate.AddDays(rnd.Next(0, 20)),

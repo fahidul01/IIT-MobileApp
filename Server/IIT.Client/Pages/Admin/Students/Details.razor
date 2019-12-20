@@ -1,0 +1,14 @@
+﻿@page "/admin/students/details/{StudentId:int}"
+@inject NavigationManager _navigationManager
+@inject IMemberHandler _memberService
+@inject ICourseHandler _courseService
+
+@code {
+    [Parameter]
+    public int StudentId { get; set; }
+    User Student = new User();
+    protected override async Task OnInitializedAsync()
+    {
+
+    }
+}

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace CoreEngine.Model.DBModel
 {
@@ -40,7 +41,7 @@ namespace CoreEngine.Model.DBModel
         public void LoadUsers()
         {
             ExternalUsers = new List<User>();
-            foreach (var user in Students)
+            foreach (var user in Students.OrderBy(x=>x.Roll))
             {
                 ExternalUsers.Add(User.FromDBUser(user, ""));
             }

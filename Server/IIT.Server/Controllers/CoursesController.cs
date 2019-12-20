@@ -211,5 +211,11 @@ namespace IIT.Server.Controllers
                 return await _courseService.GetResult(userId);
             }
         }
+
+        [Authorize(Roles =AppConstants.Admin)]
+        public async Task<List<StudentCourse>> GetStudentResult(string userId)
+        {
+            return await _courseService.GetResult(userId);
+        }
     }
 }

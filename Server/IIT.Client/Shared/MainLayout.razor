@@ -1,5 +1,7 @@
 ﻿@inherits LayoutComponentBase
+@using IIT.Client.Services
 @inject NavigationManager _navigationManager
+@inject ApiAuthenticationProvider _apiAuth
 <div class="sidebar">
     <div class="top-row pl-4 navbar navbar-dark">
         <a class="navbar-brand" href="">IIT.Web</a>
@@ -40,9 +42,8 @@
         <AuthorizeView>
             <Authorized>
                 <b>Hello, @context.User.Identity.Name!</b>
-                <a class="ml-md-auto btn btn-primary"
-                   href="/api/member/WebLogout"
-                   target="_top">Logout</a>
+                <MatButton @onclick="LogoutClick"
+                           Label="Logout"/>
             </Authorized>
             <NotAuthorized>
                 <span>You are not logged in. Error</span>
@@ -58,19 +59,27 @@
     private bool collapseNavMenu = true;
 
     private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+    [CascadingParameter] Task<AuthenticationState> AuthenticationState { get; set; }
 
     private void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
     }
 
-    [CascadingParameter] Task<AuthenticationState> AuthenticationState { get; set; }
+    private async void LogoutClick()
+    {
+        await _apiAuth.Logout();
+        _navigationManager.NavigateTo("/login/");
+    }
+
+    
     protected override async Task OnInitializedAsync()
     {
-        var res = await AuthenticationState;
-        if (res.User.Identity.IsAuthenticated)
+        var user = (await AuthenticationState).User;
+        if (user.Identity.IsAuthenticated)
         {
-            //_navigationManager.NavigateTo("/admin/");
+            if (user.IsInRole(CoreEngine.Model.Common.AppConstants.Admin))
+                _navigationManager.NavigateTo("/admin/");
         }
         else
         {

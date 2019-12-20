@@ -1,0 +1,81 @@
+﻿@inject ICourseHandler _courseService
+@inject NavigationManager _navigationManger
+
+<div class="mat-layout-grid">
+    <div class="mat-layout-grid-inner">
+        @foreach (var item in Semesters.OrderBy(x => x.StartsOn))
+        {
+            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-3">
+                <MatButton Label="@item.Name" />
+            </div>
+        }
+    </div>
+</div>
+<MatDialog @bind-IsOpen="@addCourseDialogOpen">
+    <MatDialogTitle>Create Course</MatDialogTitle>
+    <MatDialogContent>
+        <EditForm OnValidSubmit="@AddStudentsClick" Model="@StudentModel">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <fieldset>
+                <div class="form-group">
+                    <MatTextField @bind-Value="@StudentModel.Name"
+                                  Label="Student Name"
+                                  Icon="@MatIconNames.People"
+                                  IconTrailing="true"
+                                  FullWidth="true"
+                                  Required="true" />
+                </div>
+                <div class="form-group">
+                    <MatTextField @bind-Value="@StudentModel.Roll"
+                                  Label="Roll Number"
+                                  Required="true" />
+                    <MatTextField @bind-Value="@StudentModel.Phone"
+                                  Label="Phone Number"
+                                  Required="false" />
+                </div>
+                <div class="form-group">
+                    <MatTextField @bind-Value="@StudentModel.Email"
+                                  Label="Email"
+                                  Icon="@MatIconNames.Email"
+                                  IconTrailing="true"
+                                  FullWidth="true"
+                                  Required="true" />
+                </div>
+            </fieldset>
+        </EditForm>
+    </MatDialogContent>
+    <MatDialogActions>
+        <MatButton OnClick="@(e => { addStudentDialog = false; })">Cancel</MatButton>
+        <MatButton OnClick="AddStudentsClick">Create Student</MatButton>
+    </MatDialogActions>
+</MatDialog>
+
+
+
+@code {
+    private List<Semester> _datas = new List<Semester>();
+    [Parameter]
+    public List<Semester> Semesters
+    {
+        get => _datas;
+        set
+        {
+
+            _datas = value;
+            CurrentSemester = _datas.FirstOrDefault();
+        }
+    }
+    Semester CurrentSemester;
+    bool addCourseDialogOpen;
+    bool addCourseSpinner;
+    Course NewCourse = new Course();
+
+    private async void CreateCourse()
+    {
+        if (!string.IsNullOrWhiteSpace(NewCourse.CourseName))
+        {
+            var res = await _courseService.CreateCourse(CurrentSemester.Id, NewCourse, null);
+        }
+    }
+}

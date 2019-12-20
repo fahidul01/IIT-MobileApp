@@ -1,59 +1,63 @@
-﻿using CoreEngine.APIHandlers;
+﻿using Blazored.LocalStorage;
+using CoreEngine.APIHandlers;
+using CoreEngine.Engine;
 using CoreEngine.Helpers;
 using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
 using Microsoft.AspNetCore.Components.Authorization;
 using System;
-using System.Net.Http;
 using System.Security.Claims;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace IIT.Client.Services
 {
     public class ApiAuthenticationProvider : AuthenticationStateProvider
     {
-        private IMemberHandler _memberHandler;
-        private SettingService _settingService;
+        private readonly IMemberHandler _memberHandler;
+        private readonly AppState _appState;
 
-        public ApiAuthenticationProvider(IMemberHandler memberHandler, SettingService settingService)
+
+        public ApiAuthenticationProvider(IMemberHandler memberHandler,AppState appState)
         {
             _memberHandler = memberHandler;
-            _settingService = settingService;
+            _appState = appState;
         }
 
         public async Task<SignInResponse> Login(string username, string password, bool remember)
         {
             var res = await _memberHandler.Login(username, password);
-            if(res != null && res.Success)
+            if (res != null && res.Success)
             {
-                if (remember) _settingService.Token = res.Token;
+                _appState.Login(res,remember);
                 NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
             }
+
             return res;
+        }
+
+        public async Task Logout()
+        {
+            await _appState.Logout();
+            NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
         }
 
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            var identity = new ClaimsIdentity();
-            try
+            var currentUser = await _appState.GetUser();
+            if (currentUser == null)
+                return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
+            else
             {
-                var userInfo = await _memberHandler.TouchLogin();
-                if (userInfo != null)
-                {
-                    var claims = new[]
-                    {
-                        new Claim(ClaimTypes.Name, userInfo.Name),
-                        new Claim(ClaimTypes.Role, userInfo.Role),
-                    };
-                    identity = new ClaimsIdentity(claims, "Server authentication");
-                }
-            }
-            catch (HttpRequestException ex)
-            {
-                Console.WriteLine("Request failed:" + ex.ToString());
-            }
+                var identity = new ClaimsIdentity(new[]
+                 {
+                    new Claim(ClaimTypes.Name, currentUser.UserName),
+                    new Claim(ClaimTypes.Role, currentUser.Role)
+                }, "jwt");
 
-            return new AuthenticationState(new ClaimsPrincipal(identity));
+                var user = new ClaimsPrincipal(identity);
+                return new AuthenticationState(user);
+            }
         }
     }
 }

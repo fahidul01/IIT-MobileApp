@@ -42,9 +42,8 @@ namespace CoreEngine.Engine
 
             foreach (var dbFile in dBFiles)
             {
-                var streamContent = new StreamContent(File.OpenRead(dbFile.FilePath));
-                var fName = Path.GetFileName(dbFile.FilePath);
-                requestContent.Add(streamContent, "formfiles", fName);
+                var streamContent = new StreamContent(dbFile.FileStream);
+                requestContent.Add(streamContent, "formfiles", dbFile.FileName);
             }
             return await _httpWorker.SendRequest<T>(HttpMethod.Post, path, requestContent);
         }
@@ -59,9 +58,8 @@ namespace CoreEngine.Engine
                 requestContent.Add(new StringContent(item.Value), item.Key);
             }
 
-            var streamContent = new StreamContent(File.OpenRead(dBFile.FilePath));
-            var fName = Path.GetFileName(dBFile.FilePath);
-            requestContent.Add(streamContent, "formfile", fName);
+            var streamContent = new StreamContent(dBFile.FileStream);
+            requestContent.Add(streamContent, "formfile", dBFile.FileName);
             return await _httpWorker.SendRequest<T>(HttpMethod.Post, path, requestContent);
         }
 

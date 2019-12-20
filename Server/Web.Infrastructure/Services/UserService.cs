@@ -68,7 +68,7 @@ namespace Student.Infrastructure.Services
                 dbUser.UpdateUser(user);
                 _db.Entry(dbUser).State = EntityState.Modified;
                 await _db.SaveChangesAsync();
-                return await GetStudent(dbUser.Id);
+                return await GetUser(dbUser.Id);
             }
             else
             {
@@ -76,24 +76,11 @@ namespace Student.Infrastructure.Services
             }
         }
 
-        public async Task<User> GetStudent(string id)
+        public async Task<User> GetUser(string userId)
         {
-            var user = await _db.Users.Include(x => x.Batch)
-                                      .FirstOrDefaultAsync(x => x.Id == id);
-            if (user != null)
-            {
-                var terminalUser = User.FromDBUser(user, "");
-                terminalUser.Batch = user.Batch;
-                var courses = await _db.StudentCourses.Where(x => x.Student.Id == user.Id)
-                                                      .Include(x => x.Course)
-                                                      .ToListAsync();
-                terminalUser.Courses = courses;
-                return terminalUser;
-            }
-            else
-            {
-                return null;
-            }
+            var user = await _db.Users.FirstOrDefaultAsync(x => x.Id == userId);
+            if (user != null) return User.FromDBUser(user, "");
+            else return null;
         }
 
         public async Task<ActionResponse> AddStudent(int batchId, string roll, string name, string email, string phone)
@@ -152,7 +139,7 @@ namespace Student.Infrastructure.Services
                 user.ClassRepresentative = true;
                 _db.Entry(user).State = EntityState.Modified;
                 await _db.SaveChangesAsync();
-                return await GetStudent(id);
+                return await GetUser(id);
             }
         }
 
@@ -168,7 +155,7 @@ namespace Student.Infrastructure.Services
                 user.ClassRepresentative = false;
                 _db.Entry(user).State = EntityState.Modified;
                 await _db.SaveChangesAsync();
-                return await GetStudent(id);
+                return await GetUser(id);
             }
         }
 

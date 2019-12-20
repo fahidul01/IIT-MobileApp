@@ -30,5 +30,10 @@ namespace CoreEngine.APIEngines
         {
             return SendRequest<ActionResponse>(HttpMethod.Post, batch);
         }
+
+        public Task<Batch> GetBatch(int batchId)
+        {
+            return SendRequest<Batch>(HttpMethod.Get, new { batchId });
+        }
     }
 }

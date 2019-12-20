@@ -2,7 +2,7 @@
 using CoreEngine.Engine;
 using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
-using System;
+using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -42,7 +42,7 @@ namespace CoreEngine.APIEngines
             return res;
         }
 
-       
+
 
         public async void Logout()
         {
@@ -68,6 +68,16 @@ namespace CoreEngine.APIEngines
         public Task<ActionResponse> ForgetPassword(string username)
         {
             return SendRequest<ActionResponse>(HttpMethod.Post, new { username });
+        }
+
+        public Task<ActionResponse> CreateStudent(int batchId, string roll, string name, string email, string phone)
+        {
+            return SendRequest<ActionResponse>(HttpMethod.Post, new { batchId, roll, name, email, phone });
+        }
+
+        public Task<ActionResponse> CreateBatchStudents(int batchId, DBFile dBFile, IFormFile formFile = null)
+        {
+            return SendMultiPartRequest<ActionResponse>(new { batchId }, dBFile);
         }
     }
 }

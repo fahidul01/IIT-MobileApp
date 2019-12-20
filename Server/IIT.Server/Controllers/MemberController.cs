@@ -3,11 +3,13 @@ using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
 using IIT.Server.WebServices;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Student.Infrastructure.Services;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -148,7 +150,7 @@ namespace IIT.Server.Controllers
         public async Task<User> TouchLogin()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var res = await _userService.GetStudent(userId);
+            var res = await _userService.GetUser(userId);
             return res;
         }
 
@@ -169,6 +171,52 @@ namespace IIT.Server.Controllers
         public async Task<List<User>> SearchStudentsAsync(string key)
         {
             return await _userService.SearchStudent(key);
+        }
+
+        [Authorize(Roles = AppConstants.Admin)]
+        [HttpPost]
+        public async Task<ActionResponse> CreateStudent(int batchId, string roll, string name, string email, string phone)
+        {
+            return await _userService.AddStudent(batchId, roll, name, email, phone);
+        }
+
+        [Authorize(Roles = AppConstants.Admin)]
+        [HttpPost]
+        public async Task<ActionResponse> CreateBatchStudents(int batchId, DBFile dBFile, IFormFile formFile = null)
+        {
+            if (formFile == null || formFile.Length == 0)
+            {
+                return new ActionResponse(false, "Invalid File Respoonse");
+            }
+            else
+            {
+                var filePath = Path.GetTempFileName();
+
+                try
+                {
+                    using (var stream = System.IO.File.Create(filePath))
+                    {
+                        await formFile.CopyToAsync(stream);
+                    }
+
+                    if (formFile.FileName.EndsWith("csv"))
+                    {
+                        var res = await _userService.UploadCSVStudents(filePath, batchId);
+                        return new ActionResponse(true)
+                        {
+                            Data = res
+                        };
+                    }
+                    else
+                    {
+                        return new ActionResponse(false);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return new ActionResponse(false, ex.Message);
+                }
+            }
         }
     }
 }

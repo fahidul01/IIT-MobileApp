@@ -1,4 +1,5 @@
-using Blazor.Extensions.Storage;
+using Blazored.LocalStorage;
+using Blazored.SessionStorage;
 using CoreEngine.Engine;
 using CoreEngine.Helpers;
 using CoreEngine.Model.Common;
@@ -25,8 +26,11 @@ namespace IIT.Client
                 // config.AddPolicy(Policies.IsMyDomain, Policies.IsMyDomainPolicy());  Only works on the server end
             });
             services.AddLoadingBar();
-            services.AddStorage();
-            services.AddScoped<AuthenticationStateProvider, ApiAuthenticationProvider>();
+            services.AddBlazoredSessionStorage();
+            services.AddBlazoredLocalStorage();
+            services.AddScoped<AppState>();
+            services.AddScoped<ApiAuthenticationProvider>();
+            services.AddScoped<AuthenticationStateProvider>(s => s.GetRequiredService<ApiAuthenticationProvider>());
             services.AddScoped<IPreferenceEngine, PreferenceEngineProvider>();
 
             ServiceHelper.Register(services);

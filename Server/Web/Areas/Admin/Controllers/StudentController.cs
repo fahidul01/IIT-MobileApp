@@ -28,7 +28,7 @@ namespace Web.Areas.Admin.Controllers
         // GET: Student/Details/5
         public async Task<IActionResult> Details(string id)
         {
-            var student = await _userService.GetStudent(id);
+            var student = await _userService.GetUser(id);
             if (student == null)
             {
                 return NotFound();

@@ -10,6 +10,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Student.Infrastructure.Services;
 using Web.WebServices;
+using Microsoft.AspNetCore.Http;
 
 namespace Web.Api
 {
@@ -63,6 +64,16 @@ namespace Web.Api
                     return new ActionResponse(false, "Failed to match Password");
                 }
             }
+        }
+
+        public Task<ActionResponse> CreateBatchStudents(int batchId, DBFile dBFile, IFormFile formFile = null)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task<ActionResponse> CreateStudent(int batchId, string roll, string name, string email, string phone)
+        {
+            throw new System.NotImplementedException();
         }
 
         public Task<ActionResponse> DeleteUser(User user)
@@ -138,7 +149,7 @@ namespace Web.Api
         public async Task<User> TouchLogin()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var res = await _userService.GetStudent(userId);
+            var res = await _userService.GetUser(userId);
             return res;
         }
 

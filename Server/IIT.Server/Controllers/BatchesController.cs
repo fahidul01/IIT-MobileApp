@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace IIT.Server.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class BatchesController : ControllerBase, IBatchHandler
     {
         private readonly BatchService _batchService;
@@ -37,6 +37,11 @@ namespace IIT.Server.Controllers
         public Task<ActionResponse> UpdateBatch(Batch batch)
         {
             return _batchService.UpdateBatch(batch);
+        }
+
+        public Task<Batch> GetBatch(int batchId)
+        {
+            return _batchService.GetBatchAsync(batchId);
         }
     }
 }

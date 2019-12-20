@@ -15,6 +15,7 @@ using Student.Infrastructure.AppServices;
 using Student.Infrastructure.DBModel;
 using System.Text;
 using Newtonsoft.Json;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace IIT.Server
 {
@@ -47,7 +48,7 @@ namespace IIT.Server
             })
                     .AddEntityFrameworkStores<StudentDBContext>();
 
-
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear(); // => remove default claims
             services.AddAuthentication(options =>
             {
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;

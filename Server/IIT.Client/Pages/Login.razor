@@ -1,10 +1,9 @@
 ﻿@page "/login"
-@using CoreEngine.Helpers
+@using IIT.Client.Services
 @layout LoginLayout
-@inject IMemberHandler _memberHandler
 @inject IMatToaster _matToaster
-@inject SettingService _settingService
 @inject NavigationManager _navigationManager
+@inject ApiAuthenticationProvider _apiServiceProvider
 <MatCard>
     <div class="logo">
         <a href="/" title="Blazor Boilerplate Home"><img src="images/iitlogo-blue.png" style="width:100px;" title="Blazor Boilerplate Home" alt="Blazor Boilerplate" /><br />Blazor Boilerplate</a>
@@ -18,20 +17,20 @@
         <ValidationSummary />
         <fieldset>
             <div class="form-group">
-                <MatTextField @bind-Value="@CurrentUser.UserName" 
-                              Label="User Name" 
-                              Icon="person" 
+                <MatTextField @bind-Value="@CurrentUser.UserName"
+                              Label="User Name"
+                              Icon="person"
                               IconTrailing="true"
-                              FullWidth="true" 
+                              FullWidth="true"
                               Required="true"></MatTextField>
             </div>
             <div class="form-group">
-                <MatTextField @bind-Value="@CurrentUser.Password" 
+                <MatTextField @bind-Value="@CurrentUser.Password"
                               Label="Password"
                               Icon="lock_outline"
-                              IconTrailing="true" 
-                              FullWidth="true" 
-                              Required="true" 
+                              IconTrailing="true"
+                              FullWidth="true"
+                              Required="true"
                               Type="password"></MatTextField>
             </div>
             <div class="form-group">
@@ -50,19 +49,24 @@
         Password = "pass_WORD_1234"
     };
     bool RememberMe;
+    [CascadingParameter] Task<AuthenticationState> AuthenticationState { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        var user = (await AuthenticationState).User;
+        if (user.Identity.IsAuthenticated)
+        {
+            if (user.IsInRole(CoreEngine.Model.Common.AppConstants.Admin))
+                _navigationManager.NavigateTo("/admin/");
+        }
+    }
 
     private async void SubmitLogin()
     {
-        var res = await _memberHandler.Login(CurrentUser.UserName, CurrentUser.Password);
+        var res = await _apiServiceProvider.Login(CurrentUser.UserName, CurrentUser.Password,RememberMe);
         if(res != null && res.Success)
         {
-            if(RememberMe)
-            {
-                _settingService.Token = res.Token;
-            }
-            var currentUser = await _memberHandler.TouchLogin();
-            if (currentUser.Role == "Admin")
-                _navigationManager.NavigateTo("/admin/");
+            Console.WriteLine("Login Success");
+            _navigationManager.NavigateTo("/admin/");
         }
         else
         {

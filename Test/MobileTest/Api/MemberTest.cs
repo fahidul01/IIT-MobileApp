@@ -16,7 +16,7 @@ namespace MobileTest.Api
         public void SetUp()
         {
             var http = new HttpWorker(TestConstants.WebAddress);
-            member = new MemberEngine(http);
+            //member = new MemberEngine(http);
         }
 
         [Test]
