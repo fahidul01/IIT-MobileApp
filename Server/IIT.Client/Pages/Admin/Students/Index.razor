@@ -1,5 +1,49 @@
 ﻿@page "/admin/students"
-@inject IBatchHandler _batchHandler
+@using IIT.Client.Shared.Components
+@inject IMemberHandler _memberService
 
-<h2>This Is A students Page</h2>
+<div class="card">
+    <div class="card-header">
+        <h5>
+            Students
+        </h5>
+    </div>
+    <div class="card-body">
+        <MatTextField Label="Search"
+                      Icon="@MatIconNames.Search"
+                      @bind-Value="SearchText"/>
+        <StudentsView Students="Students"/>
+    </div>
+</div>
 
+@code{
+        List<User> Students { get; set; } = new List<User>();
+        bool IsBusy { get; set; }
+        string _search = string.Empty;
+        string SearchText
+    {
+            get => _search;
+            set => SearchAction(value);
+        }
+
+        protected override async Task OnInitializedAsync()
+    {
+        IsBusy = true;
+        Students = await _memberService.SearchStudents("");
+        IsBusy = false;
+        this.StateHasChanged();
+    }
+
+    private async void SearchAction(string data)
+    {
+        _search = data;
+        if (!string.IsNullOrWhiteSpace(data) && data.Length > 0)
+        {
+            while (IsBusy) await Task.Delay(1000);
+            IsBusy = true;
+            Students = await _memberService.SearchStudents(data);
+            IsBusy = false;
+            this.StateHasChanged();
+        }
+    }
+}

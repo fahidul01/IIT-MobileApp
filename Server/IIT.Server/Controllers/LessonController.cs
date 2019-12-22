@@ -36,6 +36,11 @@ namespace IIT.Server.Controllers
             return await _lessonService.GetLesson(userId);
         }
 
+        public async Task<List<Lesson>> GetCourseLessons(int courseId)
+        {
+            return await _lessonService.GetCourseLesson(courseId);
+        }
+
         public async Task<ActionResponse> UpdateLesson(Lesson lesson)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);

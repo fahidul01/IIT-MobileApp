@@ -27,11 +27,7 @@ namespace MobileApp.Service
             }
             else
             {
-                return new DBFile()
-                {
-                    FileName = fileData.FileName,
-                    FilePath = fileData.FilePath,
-                };
+                return new DBFile(fileData.GetStream(), fileData.FileName);
             }
         }
     }

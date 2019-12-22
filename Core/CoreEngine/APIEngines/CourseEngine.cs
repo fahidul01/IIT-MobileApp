@@ -94,6 +94,9 @@ namespace CoreEngine.APIEngines
             return SendRequest<List<StudentCourse>>(HttpMethod.Get, null);
         }
 
-       
+        public Task<List<Course>> SearchCourse(string search)
+        {
+            return SendRequest<List<Course>>(HttpMethod.Get, new { search });
+        }
     }
 }

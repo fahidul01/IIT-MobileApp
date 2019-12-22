@@ -3,6 +3,7 @@ using CoreEngine.Model.DBModel;
 using Microsoft.EntityFrameworkCore;
 using Student.Infrastructure.AppServices;
 using Student.Infrastructure.DBModel;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -256,6 +257,17 @@ namespace Student.Infrastructure.Services
             await _db.SaveChangesAsync();
             _notificationService.SendNotification(batch.Name, course.CourseId, "Result Has been published");
             return new ActionResponse(true, "Result Uploaded Successfully");
+        }
+
+        public async Task<List<Course>> SearchCourse(string search)
+        {
+            var courseList = await _db.Courses
+                                      .Include(x => x.Semester)
+                                      .ThenInclude(m => m.Batch)
+                                      .Where(n => EF.Functions.Like(n.CourseId, $"%{search}%") ||
+                                                EF.Functions.Like(n.CourseName, $"%{search}%"))
+                                      .ToListAsync();
+            return courseList;
         }
 
         public async Task<List<Lesson>> UpcomingLessons()

@@ -21,6 +21,11 @@ namespace CoreEngine.APIEngines
             return SendRequest<ActionResponse>(HttpMethod.Post, new { courseId, lesson });
         }
 
+        public Task<List<Lesson>> GetCourseLessons(int courseId)
+        {
+            return SendRequest<List<Lesson>>(HttpMethod.Get, new { courseId });
+        }
+
         public Task<List<Lesson>> GetLessons()
         {
             return SendRequest<List<Lesson>>(HttpMethod.Get, null);

@@ -1,0 +1,37 @@
+﻿@inject NavigationManager _navigationManager;
+
+@if (Notices != null && Notices.Count > 0)
+{
+    <MatList>
+        @foreach (var notice in Notices)
+        {
+            <MatListItem class="card-body pt-1 pb-1">
+                <a class="btn col-12 text-left"
+                   @onclick="(()=>ViewNotice(notice))">
+                    <small class="text-muted font-weight-bold">@notice.EventDate</small>
+                    <h5 class=" mt-0 mb-0">@notice.Title</h5>
+                    <p class="mt-1 mb-0 text-wrap">@notice.Message</p>
+                    <div class="mt-2">
+                        @if (notice.PostType == PostType.All)
+                        {
+                            <span class="badge badge-success">@notice.PostType</span>
+                        }
+                        else
+                        {
+                            <span class="badge badge-info">@notice.PostType</span>
+                        }
+                    </div>
+                </a>
+            </MatListItem>
+        }
+    </MatList>
+}
+@code {
+    [Parameter]
+    public List<Notice> Notices { get; set; }
+
+    private void ViewNotice(Notice notice)
+    {
+        _navigationManager.NavigateTo("/common/notice_details/" + notice.Id);
+    }
+}

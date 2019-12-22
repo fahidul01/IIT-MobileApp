@@ -1,5 +1,15 @@
 ﻿@page "/admin/courses/details/{CourseId:int}"
+@using BlazorInputFile
 @inject ICourseHandler _courseHandler
+@inject ILessonHandler _lessonHandler
+@inject IMatToaster _matToaster
+@inject NavigationManager _navigation
+@if (CurrentCourse.Id == 0)
+{
+    <MatProgressBar Indeterminate="true"/>
+}
+else
+{
 <div class="card">
     <div class="card-header">
         <h3>
@@ -7,16 +17,86 @@
         </h3>
         <b>@CurrentCourse.CourseName</b>
     </div>
+    <div class="card-body">
+        @CurrentCourse.Description
+    </div>
 </div>
+<br/>
+<br/>
+<MatDivider/>
+<br/>
+<br/>
+<LessonsView CurrenntCourse="CurrentCourse"
+             Lessons="Lessons"/>
+<br/>
+<br />
+<MatDivider/>
+<br/>
+<br />
+<div class="card">
+    <div class="card-header">
+        <h4 class="d-inline float-left">
+            Students
+        </h4>
+    </div>
+    <div class="card-body">
+        <MatTable Class="mat-elevation-z5" Items="@CurrentCourse.StudentCourses"
+                  ShowPaging="false"
+                  PageSize="100"
+                  AllowSelection="true">
+            <MatTableHeader>
+                <th style="width:40%">Name</th>
+                <th style="width:15%">Roll</th>
+                <th style="width:20%">Credit</th>
+                <th style="width:15%">GPA</th>
+                <th style="width:10%">Grade</th>
+            </MatTableHeader>
+            <MatTableRow Context="StudentCourse">
+                <td @onclick="(() => ViewStudent(StudentCourse.Student))">@StudentCourse.Student.Name</td>
+                <td @onclick="(() => ViewStudent(StudentCourse.Student))">@StudentCourse.Student.Roll</td>
+                <td @onclick="(() => ViewStudent(StudentCourse.Student))">@CurrentCourse.CourseCredit</td>
+                <td @onclick="(() => ViewStudent(StudentCourse.Student))">@StudentCourse.GradePoint</td>
+                <td @onclick="(() => ViewStudent(StudentCourse.Student))">@StudentCourse.Grade</td>
+            </MatTableRow>
+        </MatTable>
+    </div>
+</div>
+}
 @code{
     [Parameter]
     public int CourseId { get; set; }
     Course CurrentCourse = new Course();
-    protected override async void OnInitialized()
+    List<Lesson> Lessons = new List<Lesson>();
+
+    protected override async Task OnInitializedAsync()
     {
         CurrentCourse = await _courseHandler.GetCourse(CourseId);
-        this.StateHasChanged();
-        base.OnInitialized();
+        Lessons = CurrentCourse.Lessons.ToList();
+    }
+
+    private void ViewStudent(DBUser user)
+    {
+        _navigation.NavigateTo("/admin/students/details/" + user.Id);
+    }
+
+    private async void UploadStudentResultClick(IFileListEntry[] files)
+    {
+        var file = files.FirstOrDefault();
+        if (file != null)
+        {
+            var dbFile = new DBFile(file.Data, file.Name);
+            var resp = await _courseHandler.UploadCourseResult(CourseId, dbFile, null);
+            if (resp != null && resp.Actionstatus)
+            {
+                _matToaster.Add("Uploaded Result Successfully", MatToastType.Success);
+                CurrentCourse = await _courseHandler.GetCourse(CourseId);
+                this.StateHasChanged();
+            }
+            else
+            {
+                _matToaster.Add("Faied to upload result", MatToastType.Danger);
+            }
+        }
     }
 }
 

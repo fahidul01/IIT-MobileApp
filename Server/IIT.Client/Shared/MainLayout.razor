@@ -2,61 +2,63 @@
 @using IIT.Client.Services
 @inject NavigationManager _navigationManager
 @inject ApiAuthenticationProvider _apiAuth
-<div class="sidebar">
-    <div class="top-row pl-4 navbar navbar-dark">
-        <a class="navbar-brand" href="">IIT.Web</a>
-        <button class="navbar-toggler" @onclick="ToggleNavMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-    </div>
 
-    <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-        <ul class="nav flex-column">
-            <li class="nav-item px-3">
-                <NavLink class="nav-link" href="/admin/" Match="NavLinkMatch.All">
-                    <span class="oi oi-home" aria-hidden="true"></span> Home
-                </NavLink>
-            </li>
-            <li class="nav-item px-3">
-                <NavLink class="nav-link" href="/admin/batches/">
-                    <span class="oi oi-list-rich" aria-hidden="true"></span> Batches
-                </NavLink>
-            </li>
-            <li class="nav-item px-3">
-                <NavLink class="nav-link" href="/admin/courses/index">
-                    <span class="oi oi-plus" aria-hidden="true"></span> Counter
-                </NavLink>
-            </li>
-            <li class="nav-item px-3">
-                <NavLink class="nav-link" href="/admin/students/index">
-                    <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
-                </NavLink>
-            </li>
+@if (IsBusy)
+{
+    <MatProgressBar Indeterminate="true"/>
+}
+else
+{
+    <MatDrawerContainer Style="width: 100vw; height: 100vh;" Class="@bbDrawerClass">
+        <MatDrawer @bind-Opened="@collapseNavMenu">
+            <header class="drawer-header">
+                <div class="text-center">
+                     <b>Institute of Information and Technology</b>
+                </div>
+            </header>
+            <br/>
+            <MatDivider Padded="true"/>
+            <br/>
+            <AdminNav />
+        </MatDrawer>
+        <MatDrawerContent>
+            <MatAppBarContainer>
+                <MatAppBar Fixed="true">
+                    <MatAppBarRow>
+                        <MatAppBarSection>
+                            <MatAppBarTitle>
 
-        </ul>
-    </div>
-</div>
+                            </MatAppBarTitle>
+                            <div class="hidden-mdc-down">
+                                <MatTooltip Tooltip="Toggle Navigation">
+                                    <MatIconButton Class="navToggle" 
+                                                   Icon="@MatIconNames.Menu"
+                                                   OnClick="@((e) => ToggleNavMenu())"/>
+                                </MatTooltip>
+                            </div>
+                        </MatAppBarSection>
+                        <MatAppBarSection Align="@MatAppBarSectionAlign.End">
+                            <MatTooltip Tooltip="Logout">
+                                <MatIconButton OnClick="LogoutClick"
+                                               Icon="@MatIconNames.Exit_to_app"/>
+                            </MatTooltip>
+                        </MatAppBarSection>
+                    </MatAppBarRow>
+                </MatAppBar>
+                <MatAppBarContent>
+                    <section class="container-fluid">
+                        @Body
+                    </section>
+                </MatAppBarContent>
+            </MatAppBarContainer>
+        </MatDrawerContent>
+    </MatDrawerContainer>
 
-<div class="main">
-    <div class="top-row px-4">
-        <AuthorizeView>
-            <Authorized>
-                <b>Hello, @context.User.Identity.Name!</b>
-                <MatButton @onclick="LogoutClick"
-                           Label="Logout"/>
-            </Authorized>
-            <NotAuthorized>
-                <span>You are not logged in. Error</span>
-            </NotAuthorized>
-        </AuthorizeView>
-    </div>
-
-    <div class="content px-4">
-        @Body
-    </div>
-</div>
+}
 @code {
     private bool collapseNavMenu = true;
+    private string bbDrawerClass = "full";
+    private bool IsBusy;
 
     private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
     [CascadingParameter] Task<AuthenticationState> AuthenticationState { get; set; }
@@ -64,6 +66,16 @@
     private void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
+        if (collapseNavMenu)
+        {
+            bbDrawerClass = "full";
+        }
+        else
+        {
+            bbDrawerClass = "closed";
+        }
+
+        this.StateHasChanged();
     }
 
     private async void LogoutClick()
@@ -72,9 +84,10 @@
         _navigationManager.NavigateTo("/login/");
     }
 
-    
+
     protected override async Task OnInitializedAsync()
     {
+        IsBusy = true;
         var user = (await AuthenticationState).User;
         if (user.Identity.IsAuthenticated)
         {
@@ -85,5 +98,6 @@
         {
             _navigationManager.NavigateTo("/login/");
         }
+        IsBusy = false;
     }
 }

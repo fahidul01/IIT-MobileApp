@@ -1,5 +1,6 @@
 ﻿@page "/admin/batches/details/{BatchId:int}"
 @using BlazorInputFile
+@using IIT.Client.Shared.Components
 @inject IMatToaster _matToaster
 @inject IBatchHandler _batchService
 @inject IMemberHandler _memberHandler
@@ -12,19 +13,21 @@
 else
 {
     <CourseView Semesters="currentBatch.Semesters.ToList()"/>
+    <br/>
+    <MatDivider />
+    <br/>
     <div class="card">
-        <div class="card-header d-inline">
-            <h3>Students</h3>
-            <div class="float-right">
-                <MatButton OnClick="(() => addStudentDialog = true)"
-                           Label="Add Student"
-                           Icon="@MatIconNames.Add" />
-                <a class="btn">
-                    <InputFile OnChange="AddStudentsBatchClick"/>
-                </a>
-                @*<MatButton OnClick="AddStudentsBatchClick"
-                           Label="Add Student from file"
-                           Icon="@MatIconNames.Add_to_queue" />*@
+        <div class="card-header">
+            <h3 class="d-inline">Students</h3>
+            <div class="d-inline-flex float-right">
+                <label @onclick="(() => addStudentDialog = true)"
+                        class="btn btn-outline-primary custom-file-upload">
+                    Add Student
+                </label>
+                <label class="btn btn-outline-primary custom-file-upload">
+                    <InputFile OnChange="AddStudentsBatchClick" />
+                    Add Student Ffile
+                </label>
             </div>
         </div>
         <div class="card-body">
@@ -73,9 +76,9 @@ else
 </MatDialog>
 
 @code{
-    Batch currentBatch = new Batch();
-    List<User> Students = new List<User>();
-    AddStudentViewModel StudentModel = new AddStudentViewModel();
+        Batch currentBatch = new Batch();
+        List<User> Students = new List<User>();
+        AddStudentViewModel StudentModel = new AddStudentViewModel();
     [Parameter]
     public int BatchId { get; set; }
     bool addStudentDialog;
@@ -120,14 +123,20 @@ else
     private async void AddStudentsBatchClick(IFileListEntry[] files)
     {
         var currentFile = files.FirstOrDefault();
-        if(currentFile != null)
+        if (currentFile != null)
         {
             addStudentSpinner = true;
             var dbFile = new DBFile(currentFile.Data, currentFile.Name);
             var res = await _memberHandler.CreateBatchStudents(currentBatch.Id, dbFile);
-            if(res != null && res.Actionstatus)
+            if (res != null && res.Actionstatus)
             {
                 _matToaster.Add("Student Batch Update successfull", MatToastType.Success);
+                var batch = await _batchService.GetBatch(currentBatch.Id);
+                if (batch != null)
+                {
+                    Students = batch.ExternalUsers;
+                    this.StateHasChanged();
+                }
             }
             else
             {

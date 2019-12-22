@@ -22,5 +22,6 @@ namespace CoreEngine.APIHandlers
         Task<List<Semester>> GetCurrentSemester();
         Task<ActionResponse> UploadCourseResult(int courseId, DBFile dBFile, IFormFile formFile);
         Task<List<StudentCourse>> GetResult();
+        Task<List<Course>> SearchCourse(string search);
     }
 }

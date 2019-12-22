@@ -22,9 +22,9 @@ namespace MobileApp
         {
             InitializeComponent();
             var nav = new NavigationService(platformService);
-            LogEngine.ErrorOccured += (s, e) => nav.ShowMessage("Error", e);
             RegisterPages(nav);
             AppService.Init(nav, nav);
+            LogEngine.Initialize(nav);
             nav.Init<SplashViewModel>();
         }
 

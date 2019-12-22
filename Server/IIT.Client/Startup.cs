@@ -1,6 +1,5 @@
 using Blazored.LocalStorage;
 using Blazored.SessionStorage;
-using CoreEngine.Engine;
 using CoreEngine.Helpers;
 using CoreEngine.Model.Common;
 using IIT.Client.Services;
@@ -31,7 +30,6 @@ namespace IIT.Client
             services.AddScoped<AppState>();
             services.AddScoped<ApiAuthenticationProvider>();
             services.AddScoped<AuthenticationStateProvider>(s => s.GetRequiredService<ApiAuthenticationProvider>());
-            services.AddScoped<IPreferenceEngine, PreferenceEngineProvider>();
 
             ServiceHelper.Register(services);
 

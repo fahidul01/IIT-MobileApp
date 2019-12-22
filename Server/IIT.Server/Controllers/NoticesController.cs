@@ -33,6 +33,11 @@ namespace IIT.Server.Controllers
             return new ActionResponse(await _noticeService.Delete(post.Id));
         }
 
+        public async Task<Notice> GetNotice(int noticeId)
+        {
+            return await _noticeService.GetNotice(noticeId);
+        }
+
         public async Task<List<Notice>> GetPosts(int page, PostType postType = PostType.All)
         {
             return await _noticeService.GetRecentNotice(page);

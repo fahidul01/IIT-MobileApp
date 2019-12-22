@@ -20,13 +20,13 @@ else
     </div>
 </div>
 <div class="card">
-    <div class="card-header d-inline">
-        <div>
+    <div class="card-header">
+        <div class="float-left">
             <h3>@CurrentSemester.Name</h3>
             <p>From @CurrentSemester.StartsOn.ToShortDateString() - @CurrentSemester.EndsOn.ToShortDateString()</p>
         </div>
         <MatButton Label="Add Course"
-                   Class="float-right"
+                   Class="d-inline-flex float-right"
                    OnClick="(() => addCourseDialogOpen = true)" />
 
     </div>
@@ -72,15 +72,11 @@ else
                 <div class="form-group">
                     <MatTextField @bind-Value="@NewCourse.CourseId"
                                   Label="Course ID"
-                                  FullWidth="true"
                                   Required="true" />
-                </div>
-                <div class="form-group">
                     <MatNumericUpDownField @bind-Value="@NewCourse.CourseCredit"
                                            Label="Course Credit"
                                            DecimalPlaces="2"
                                            Required="true" />
-
                 </div>
                 <div class="form-group">
                     <MatTextField @bind-Value="@NewCourse.Description"

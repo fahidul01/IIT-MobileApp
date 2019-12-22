@@ -2,6 +2,7 @@
 using CoreEngine.Model.DBModel;
 using Microsoft.EntityFrameworkCore;
 using Student.Infrastructure.DBModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -41,6 +42,12 @@ namespace Student.Infrastructure.Services
                                          .SelectMany(x => x.Lessons).Distinct()
                                          .ToListAsync();
             return lessons;
+        }
+
+        public async Task<List<Lesson>> GetCourseLesson(int courseId)
+        {
+            return await _db.Lessons.Where(x => x.Course.Id == courseId)
+                                    .ToListAsync();
         }
 
         public async Task<Lesson> UpdateLesson(int batchId, Lesson lesson)

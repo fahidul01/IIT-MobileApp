@@ -13,17 +13,17 @@ namespace MobileApp.Service
             return false;
         }
 
-        public async Task<ActionResponse> Login()
+        public Task<ActionResponse> Login()
         {
             return null;
         }
 
-        public async Task<ActionResponse> Logout()
+        public Task<ActionResponse> Logout()
         {
             return null;
         }
 
-        public async Task<ActionResponse> Post(string title, string data)
+        public Task<ActionResponse> Post(string title, string data)
         {
             return null;
         }

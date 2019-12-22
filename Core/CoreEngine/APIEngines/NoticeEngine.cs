@@ -25,6 +25,11 @@ namespace CoreEngine.APIEngines
             return SendRequest<ActionResponse>(HttpMethod.Post, notice);
         }
 
+        public Task<Notice> GetNotice(int noticeId)
+        {
+            return SendRequest<Notice>(HttpMethod.Get, new { noticeId });
+        }
+
         public Task<List<Notice>> GetPosts(int page, PostType postType = PostType.All)
         {
             return SendRequest<List<Notice>>(HttpMethod.Post, new { page, postType });

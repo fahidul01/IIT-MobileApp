@@ -15,7 +15,6 @@ namespace CoreEngine.Helpers
             services.AddScoped<IMemberHandler, MemberEngine>();
             services.AddScoped<INoticeHandler, NoticeEngine>();
             services.AddScoped<ILessonHandler, LessonEngine>();
-            services.AddSingleton<SettingService>();
         }
     }
 }

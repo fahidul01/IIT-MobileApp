@@ -1,11 +1,11 @@
-﻿@page "/admin/students/details/{StudentId:int}"
+﻿@page "/admin/students/details/{StudentId}"
 @inject NavigationManager _navigationManager
 @inject IMemberHandler _memberService
 @inject ICourseHandler _courseService
 
 @code {
     [Parameter]
-    public int StudentId { get; set; }
+    public string StudentId { get; set; }
     User Student = new User();
     protected override async Task OnInitializedAsync()
     {

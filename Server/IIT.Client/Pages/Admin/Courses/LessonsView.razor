@@ -1,0 +1,111 @@
+﻿@using System.Linq
+@inject ILessonHandler _lessonService
+@inject IMatToaster _matToaster
+<div class="card">
+    <div class="card-header">
+        <h4 class="d-inline float-left">Lessons</h4>
+        <MatFAB Mini="true"
+                Class="d-inline-flex float-right"
+                OnClick="(() => addLessonDialog = true)"
+                Icon="@MatIconNames.Add" />
+    </div>
+    <div class="card-body">
+        <MatTable Items="Lessons"
+                  PageSize="100"
+                  ShowPaging="false"
+                  AllowSelection="false">
+            <MatTableHeader>
+                <th style="width:20%">Day</th>
+                <th style="width:20%">Time</th>
+                <th style="width:20%">Room</th>
+                <th style="width:30%">Teacher</th>
+                <th style="width:10%"></th>
+            </MatTableHeader>
+            <MatTableRow Context="Lesson">
+                <td>@Lesson.DayOfWeek</td>
+                <td>@Lesson.TimeOfDay</td>
+                <td>@Lesson.RoomNo</td>
+                <td>@Lesson.TeacherName</td>
+                <td>
+                    <MatButton Icon="@MatIconNames.Edit" />
+                    <MatButton Icon="@MatIconNames.Delete" />
+                </td>
+            </MatTableRow>
+        </MatTable>
+    </div>
+</div>
+<MatDialog @bind-IsOpen="@addLessonDialog">
+    <MatDialogTitle>Create Batch</MatDialogTitle>
+    <MatDialogContent>
+        <EditForm OnValidSubmit="@AddLesson" Model="@newLesson">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <fieldset>
+                <div class="form-group">
+                    <MatTextField Label="Time"
+                                  Icon="@MatIconNames.Timer"
+                                  Value="TimeProxy" />
+                    <MatSelect Label="Day Of Week"
+                               @bind-Value="@newLesson.DayOfWeek">
+                        @foreach (var rep in Enum.GetValues(typeof(DayOfWeek)))
+                        {
+                            <MatOption Value="@rep">@rep.ToString()</MatOption>
+                        }
+                    </MatSelect>
+                </div>
+                <div class="form-group">
+                    <MatTextField @bind-Value="@newLesson.TeacherName"
+                                  Label="Teacher Name"
+                                  Required="true" />
+                    <MatTextField @bind-Value="@newLesson.RoomNo"
+                                  Label="Room No Number" />
+                </div>
+                <div class="form-group">
+                    <MatTextField @bind-Value="@newLesson.Description"
+                                  Label="Description"
+                                  Icon="@MatIconNames.Email"
+                                  IconTrailing="true"
+                                  FullWidth="true" />
+                </div>
+            </fieldset>
+        </EditForm>
+    </MatDialogContent>
+    <MatDialogActions>
+        <MatButton OnClick="@(e => { addLessonDialog = false; })">Cancel</MatButton>
+        <MatButton OnClick="AddLesson">Add Lesson</MatButton>
+    </MatDialogActions>
+</MatDialog>
+@code
+{
+    [Parameter]
+    public List<Lesson> Lessons { get; set; }
+    [Parameter]
+    public Course CurrenntCourse { get; set; }
+
+    Lesson newLesson = new Lesson();
+    bool addLessonDialog;
+    string TimeProxy
+    {
+        get => newLesson.TimeOfDay.ToString();
+        set
+        {
+            TimeSpan.TryParse(value, out TimeSpan time);
+            newLesson.TimeOfDay = time;
+        }
+    }
+
+    private async void AddLesson()
+    {
+        addLessonDialog = false;
+        var resp = await _lessonService.AddLesson(CurrenntCourse.Id, newLesson);
+        if (resp != null && resp.Actionstatus)
+        {
+            _matToaster.Add("Added Lesson Successfully", MatToastType.Success);
+            var allLesson = await _lessonService.GetCourseLessons(CurrenntCourse.Id);
+        }
+        else
+        {
+            _matToaster.Add("Failed to create Lesson", MatToastType.Danger);
+        }
+    }
+}

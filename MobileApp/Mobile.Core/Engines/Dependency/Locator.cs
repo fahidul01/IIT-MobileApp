@@ -1,8 +1,6 @@
-﻿using CoreEngine.APIHandlers;
-using CoreEngine.Helpers;
+﻿using CoreEngine.Helpers;
 using CoreEngine.Model.Common;
 using Microsoft.Extensions.DependencyInjection;
-using Mobile.Core.Engines.APIHandlers;
 using Mobile.Core.ViewModels;
 using Mobile.Core.Worker;
 using System;

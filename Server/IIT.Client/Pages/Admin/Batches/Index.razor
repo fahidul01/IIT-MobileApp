@@ -105,6 +105,7 @@
             {
                 Batches.Insert(0, res);
                 _matToaster.Add("Successfully Created New Batch", MatToastType.Success);
+                this.StateHasChanged();
             }
             else
             {

@@ -168,7 +168,7 @@ namespace IIT.Server.Controllers
             return new ActionResponse(false, "Failed to update User");
         }
 
-        public async Task<List<User>> SearchStudentsAsync(string key)
+        public async Task<List<User>> SearchStudents(string key)
         {
             return await _userService.SearchStudent(key);
         }

@@ -20,5 +20,6 @@ namespace CoreEngine.APIHandlers
         Task<ActionResponse> CreateStudent(int batchId, string roll, string name, string email, string phone);
         Task<ActionResponse> UpdateUser(User user);
         Task<ActionResponse> DeleteUser(User user);
+        Task<List<User>> SearchStudents(string key);
     }
 }

@@ -239,5 +239,10 @@ namespace IIT.Server.Controllers
         {
             return await _courseService.GetResult(userId);
         }
+
+        public async Task<List<Course>> SearchCourse(string search)
+        {
+            return await _courseService.SearchCourse(search);
+        }
     }
 }

@@ -1,0 +1,21 @@
+﻿@page "/common/notice_details/{NoticeId:int}"
+@inject INoticeHandler _noticeHandler;
+@if(Notice == null)
+{
+    <MatProgressBar Indeterminate="true"/>
+}
+else
+{
+    <div class="card">
+
+    </div>
+}
+@code {
+    [Parameter]
+    public int NoticeId { get; set; }
+    Notice Notice;
+    protected override async Task OnInitializedAsync()
+    {
+        Notice = await _noticeHandler.GetNotice(NoticeId);
+    }
+}

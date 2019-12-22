@@ -79,5 +79,10 @@ namespace CoreEngine.APIEngines
         {
             return SendMultiPartRequest<ActionResponse>(new { batchId }, dBFile);
         }
+
+        public Task<List<User>> SearchStudents(string key)
+        {
+            return SendRequest<List<User>>(HttpMethod.Get, new { key });
+        }
     }
 }
