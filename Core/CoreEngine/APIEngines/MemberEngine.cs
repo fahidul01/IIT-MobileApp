@@ -84,5 +84,15 @@ namespace CoreEngine.APIEngines
         {
             return SendRequest<List<User>>(HttpMethod.Get, new { key });
         }
+
+        public Task<List<User>> GetCurrentCr()
+        {
+            return SendRequest<List<User>>(HttpMethod.Get, null);
+        }
+
+        public Task<User> GetUser(string userId)
+        {
+            return SendRequest<User>(HttpMethod.Get, new { userId });
+        }
     }
 }

@@ -36,6 +36,11 @@ namespace CoreEngine.APIEngines
             return SendRequest<List<Lesson>>(HttpMethod.Post, dateTime);
         }
 
+        public Task<List<Lesson>> GetUpcomingLessons()
+        {
+            return SendRequest<List<Lesson>>(HttpMethod.Get, null);
+        }
+
         public Task<ActionResponse> UpdateLesson(Lesson lesson)
         {
             return SendRequest<ActionResponse>(HttpMethod.Post, lesson);

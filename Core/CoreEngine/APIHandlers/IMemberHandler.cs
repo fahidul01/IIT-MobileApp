@@ -21,5 +21,7 @@ namespace CoreEngine.APIHandlers
         Task<ActionResponse> UpdateUser(User user);
         Task<ActionResponse> DeleteUser(User user);
         Task<List<User>> SearchStudents(string key);
+        Task<List<User>> GetCurrentCr();
+        Task<User> GetUser(string userId);
     }
 }

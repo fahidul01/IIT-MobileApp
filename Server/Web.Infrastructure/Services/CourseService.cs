@@ -270,18 +270,7 @@ namespace Student.Infrastructure.Services
             return courseList;
         }
 
-        public async Task<List<Lesson>> UpcomingLessons()
-        {
-            var today = CurrentTime.DayOfWeek;
-            var dayLessons = await _db.Lessons
-                                      .Where(x => x.Course.Semester.EndsOn >= CurrentTime &&
-                                                  x.DayOfWeek == today)
-                                      .Include(x => x.Course)
-                                      .ThenInclude(x => x.Semester)
-                                      .ThenInclude(x => x.Batch)
-                                      .ToListAsync();
-            return dayLessons;
-        }
+       
 
         public async Task<ActionResponse> DeleteLesson(string userId, int lessonId)
         {
@@ -299,13 +288,22 @@ namespace Student.Infrastructure.Services
             return new ActionResponse(false, "Invalid Request");
         }
 
-        public async Task<List<StudentCourse>> GetResult(string userId)
+        public async Task<List<SemesterData>> GetResult(string userId)
         {
+            var allSemesters = new List<SemesterData>();
             var res = await _db.StudentCourses.Include(x => x.Course)
                                               .ThenInclude(x => x.Semester)
                                               .Where(x => x.Student.Id == userId)
                                               .ToListAsync();
-            return res;
+            var grouped = res.GroupBy(x => x.Course.Semester.Id).ToList();
+            foreach (var courseData in grouped)
+            {
+                var semesterData = courseData.FirstOrDefault().Course.Semester;
+                var data = new SemesterData(semesterData, courseData.ToList());
+                if (data.SemesterGPA > 0)
+                    allSemesters.Add(data);
+            }
+            return allSemesters.OrderBy(x=>x.StartsOn).ToList();
         }
 
         #endregion

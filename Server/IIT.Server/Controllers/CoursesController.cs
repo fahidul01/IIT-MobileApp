@@ -221,7 +221,7 @@ namespace IIT.Server.Controllers
             return res;
         }
 
-        public async Task<List<StudentCourse>> GetResult()
+        public async Task<List<SemesterData>> GetResult()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (userId == null)
@@ -235,7 +235,7 @@ namespace IIT.Server.Controllers
         }
 
         [Authorize(Roles =AppConstants.Admin)]
-        public async Task<List<StudentCourse>> GetStudentResult(string userId)
+        public async Task<List<SemesterData>> GetStudentResult(string userId)
         {
             return await _courseService.GetResult(userId);
         }

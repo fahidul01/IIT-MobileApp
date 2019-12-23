@@ -154,6 +154,13 @@ namespace IIT.Server.Controllers
             return res;
         }
 
+        [Authorize(Roles = AppConstants.Admin)]
+        public async Task<User> GetUser(string userId)
+        {
+            var res = await _userService.GetUser(userId);
+            return res;
+        }
+
         public async Task<ActionResponse> UpdateUser(User user)
         {
             var currentUser = await _userManager.GetUserAsync(HttpContext.User);
@@ -217,6 +224,11 @@ namespace IIT.Server.Controllers
                     return new ActionResponse(false, ex.Message);
                 }
             }
+        }
+
+        public Task<List<User>> GetCurrentCr()
+        {
+            return _userService.GetCurrentCr();
         }
     }
 }

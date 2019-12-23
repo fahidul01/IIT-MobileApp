@@ -49,5 +49,10 @@ namespace IIT.Server.Controllers
             var res = await _lessonService.UpdateLesson(batch.Id, lesson);
             return new ActionResponse(res != null);
         }
+
+        public Task<List<Lesson>> GetUpcomingLessons()
+        {
+            return _lessonService.UpcomingLessons();
+        }
     }
 }

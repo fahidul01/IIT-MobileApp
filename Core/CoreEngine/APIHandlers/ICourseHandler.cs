@@ -21,7 +21,8 @@ namespace CoreEngine.APIHandlers
         Task<ActionResponse> DeleteLesson(int lessonId);
         Task<List<Semester>> GetCurrentSemester();
         Task<ActionResponse> UploadCourseResult(int courseId, DBFile dBFile, IFormFile formFile);
-        Task<List<StudentCourse>> GetResult();
+        Task<List<SemesterData>> GetResult();
+        Task<List<SemesterData>> GetStudentResult(string userId);
         Task<List<Course>> SearchCourse(string search);
     }
 }

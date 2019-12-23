@@ -2,13 +2,40 @@
 @inject NavigationManager _navigationManager
 @inject IMemberHandler _memberService
 @inject ICourseHandler _courseService
-
+<div class="card">
+   <div class="card-header">
+       <h4>@Student.Name</h4>
+       <p>@Student.Roll</p>
+   </div>
+    <div class="card-body">
+        @if (SemesterDatas != null && SemesterDatas.Count > 0)
+        {
+            foreach (var semester in SemesterDatas)
+            {
+                <h5>@semester.SemesterName</h5>
+                <p>Starts @semester.StartsOn.ToShortDateString()</p>
+                <MatTable Items="semester.CourseDatas">
+                    <MatTableHeader>
+                        <th style="width:40%">Course Name</th>
+                        <th style="width:20%">Course ID</th>
+                        <th style="width:20%">Grade</th>
+                        <th style="width:20%">GPA</th>
+                    </MatTableHeader>
+                </MatTable>
+                <MatDivider/>
+                <h6 class="text-center">Total : @semester.SemesterGPA</h6>
+            }
+        }
+    </div>
+</div>
 @code {
     [Parameter]
     public string StudentId { get; set; }
     User Student = new User();
+    List<SemesterData> SemesterDatas;
     protected override async Task OnInitializedAsync()
     {
-
+        Student = await _memberService.GetUser(StudentId);
+        SemesterDatas = await _courseService.GetStudentResult(StudentId);
     }
 }

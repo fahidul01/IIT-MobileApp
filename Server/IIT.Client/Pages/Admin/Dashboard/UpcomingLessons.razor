@@ -1,0 +1,33 @@
+﻿@inject NavigationManager _navigation
+@inject IMatToaster _matToaster
+<MatTable Items="Lessons"
+          PageSize="100"
+          ShowPaging="false"
+          AllowSelection="false">
+    <MatTableHeader>
+        <th style="width:20%">Day</th>
+        <th style="width:20%">Time</th>
+        <th style="width:20%">Room</th>
+        <th style="width:30%">Teacher</th>
+        <th style="width:10%"></th>
+    </MatTableHeader>
+    <MatTableRow Context="Lesson">
+        <td>@Lesson.DayOfWeek</td>
+        <td>@Lesson.TimeOfDay</td>
+        <td>@Lesson.RoomNo</td>
+        <td>@Lesson.TeacherName</td>
+        <td>
+            <MatButton Label="Cancel"
+                       OnClick="(() => CancelClass(Lesson))" />
+        </td>
+    </MatTableRow>
+</MatTable>
+@code {
+    [Parameter]
+    public List<Lesson> Lessons { get; set; }
+
+    private void CancelClass(Lesson lesson)
+    {
+        _matToaster.Add("Feature incomplete", MatToastType.Danger);
+    }
+}

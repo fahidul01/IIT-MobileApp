@@ -89,14 +89,19 @@ namespace CoreEngine.APIEngines
             return SendMultiPartRequest<ActionResponse>(new { courseId }, dBFile);
         }
 
-        public Task<List<StudentCourse>> GetResult()
+        public Task<List<SemesterData>> GetResult()
         {
-            return SendRequest<List<StudentCourse>>(HttpMethod.Get, null);
+            return SendRequest<List<SemesterData>>(HttpMethod.Get, null);
         }
 
         public Task<List<Course>> SearchCourse(string search)
         {
             return SendRequest<List<Course>>(HttpMethod.Get, new { search });
+        }
+
+        public Task<List<SemesterData>> GetStudentResult(string userId)
+        {
+            return SendRequest<List<SemesterData>>(HttpMethod.Get, new { userId });
         }
     }
 }

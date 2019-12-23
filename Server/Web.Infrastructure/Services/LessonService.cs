@@ -66,5 +66,17 @@ namespace Student.Infrastructure.Services
                 return lesson;
             }
         }
+        public async Task<List<Lesson>> UpcomingLessons()
+        {
+            var today = CurrentTime.DayOfWeek;
+            var dayLessons = await _db.Lessons
+                                      .Where(x => x.Course.Semester.EndsOn >= CurrentTime &&
+                                                  x.DayOfWeek == today)
+                                      .Include(x => x.Course)
+                                      .ThenInclude(x => x.Semester)
+                                      .ThenInclude(x => x.Batch)
+                                      .ToListAsync();
+            return dayLessons;
+        }
     }
 }
