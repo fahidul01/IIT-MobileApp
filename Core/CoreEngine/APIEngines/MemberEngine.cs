@@ -50,11 +50,6 @@ namespace CoreEngine.APIEngines
             LogoutToken();
         }
 
-        public Task<ActionResponse> Register(User user)
-        {
-            return SendRequest<ActionResponse>(HttpMethod.Post, user);
-        }
-
         public Task<ActionResponse> UpdateUser(User user)
         {
             return SendRequest<ActionResponse>(HttpMethod.Post, user);
@@ -63,11 +58,6 @@ namespace CoreEngine.APIEngines
         public Task<User> TouchLogin()
         {
             return SendRequest<User>(HttpMethod.Get, null);
-        }
-
-        public Task<ActionResponse> ForgetPassword(string username)
-        {
-            return SendRequest<ActionResponse>(HttpMethod.Post, new { username });
         }
 
         public Task<ActionResponse> CreateStudent(int batchId, string roll, string name, string email, string phone)
@@ -93,6 +83,21 @@ namespace CoreEngine.APIEngines
         public Task<User> GetUser(string userId)
         {
             return SendRequest<User>(HttpMethod.Get, new { userId });
+        }
+
+        public Task<ActionResponse> ForgetPassword(string rollNo, string phoneNo, string password)
+        {
+            return SendRequest<ActionResponse>(HttpMethod.Post, new { rollNo, phoneNo, password });
+        }
+
+        public Task<ActionResponse> VerifyPhoneNo(string rollNo, string phoneNo)
+        {
+            return SendRequest<ActionResponse>(HttpMethod.Post, new { rollNo, phoneNo });
+        }
+
+        public Task<ActionResponse> Register(string rollNo, string phoneNo, string password)
+        {
+            return SendRequest<ActionResponse>(HttpMethod.Post, new { rollNo, phoneNo, password });
         }
     }
 }

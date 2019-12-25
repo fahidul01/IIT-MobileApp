@@ -12,7 +12,8 @@
 }
 else
 {
-    <CourseView Semesters="currentBatch.Semesters.ToList()"/>
+    <CourseView Semesters="currentBatch.Semesters.ToList()"
+                BatchId ="currentBatch.Id"/>
     <br/>
     <MatDivider />
     <br/>

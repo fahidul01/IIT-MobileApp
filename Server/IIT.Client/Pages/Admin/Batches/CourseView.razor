@@ -4,138 +4,122 @@
 
 @if (Semesters == null || Semesters.Count == 0)
 {
-    <MatProgressBar Indeterminate="true"/>
+    <MatProgressBar Indeterminate="true" />
 }
 else
 {
-<div class="mat-layout-grid">
-    <div class="mat-layout-grid-inner">
+<div class="mt-3 mat-elevation-z5">
+    <MatTabGroup>
         @foreach (var item in Semesters)
         {
-            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-3">
-                <MatButton Label="@item.Name"
-                           OnClick="(()=>CurrentSemester = item)"/>
-            </div>
-        }
-    </div>
-</div>
-<div class="card">
-    <div class="card-header">
-        <div class="float-left">
-            <h3>@CurrentSemester.Name</h3>
-            <p>From @CurrentSemester.StartsOn.ToShortDateString() - @CurrentSemester.EndsOn.ToShortDateString()</p>
-        </div>
-        <MatButton Label="Add Course"
-                   Class="d-inline-flex float-right"
-                   OnClick="(() => addCourseDialogOpen = true)" />
+        <MatTab Label="@item.Name">
+            <div class="card m-3">
+                <div class="card-header">
+                    <div class="float-left">
+                        <h3>@item.Name</h3>
+                        <p>From @item.StartsOn.ToShortDateString() - @item.EndsOn.ToShortDateString()</p>
+                    </div>
+                    <MatButton Label="Add Course"
+                               Class="d-inline-flex float-right"
+                               OnClick="(() => addCourseDialogOpen = true)" />
 
-    </div>
-    @if (@addCourseSpinner)
-    {
-        <div class="text-center">
-            <div id="spinner" class="spinner-border"></div>
-        </div>
-    }
-    <div class="card-body">
-        <MatTable Class="mat-elevation-z5" Items="@Courses"
-                  ShowPaging="false"
-                  PageSize="100"
-                  AllowSelection="true">
-            <MatTableHeader>
-                <th style="width:30%">Course Id</th>
-                <th style="width:60%">Course Name</th>
-                <th style="width:10%">Credit</th>
-            </MatTableHeader>
-            <MatTableRow Context="Course">
-                <td @onclick="@(e => CourseClick(@Course))" class="nav-link">
-                    @Course.CourseId
-                </td>
-                <td>@Course.CourseName</td>
-                <td>@Course.CourseCredit</td>
-            </MatTableRow>
-        </MatTable>
-    </div>
-</div>
-<MatDialog @bind-IsOpen="@addCourseDialogOpen">
-    <MatDialogTitle>Create Course</MatDialogTitle>
-    <MatDialogContent>
-        <EditForm OnValidSubmit="@CreateCourseClick" Model="@NewCourse">
-            <DataAnnotationsValidator />
-            <ValidationSummary />
-            <fieldset>
-                <div class="form-group">
-                    <MatTextField @bind-Value="@NewCourse.CourseName"
-                                  Label="Course Name"
-                                  FullWidth="true"
-                                  Required="true" />
                 </div>
-                <div class="form-group">
-                    <MatTextField @bind-Value="@NewCourse.CourseId"
-                                  Label="Course ID"
-                                  Required="true" />
-                    <MatNumericUpDownField @bind-Value="@NewCourse.CourseCredit"
-                                           Label="Course Credit"
-                                           DecimalPlaces="2"
-                                           Required="true" />
+                @if (@addCourseSpinner)
+                {
+                    <div class="text-center">
+                        <div id="spinner" class="spinner-border"></div>
+                    </div>
+                }
+                <div class="card-body">
+                    <MatTable Class="mat-elevation-z5" Items="@item.Courses"
+                              ShowPaging="false"
+                              PageSize="100"
+                              AllowSelection="true">
+                        <MatTableHeader>
+                            <th style="width:30%">Course Id</th>
+                            <th style="width:60%">Course Name</th>
+                            <th style="width:10%">Credit</th>
+                        </MatTableHeader>
+                        <MatTableRow Context="Course">
+                            <td @onclick="@(e => CourseClick(@Course))" class="nav-link">
+                                @Course.CourseId
+                            </td>
+                            <td>@Course.CourseName</td>
+                            <td>@Course.CourseCredit</td>
+                        </MatTableRow>
+                    </MatTable>
                 </div>
-                <div class="form-group">
-                    <MatTextField @bind-Value="@NewCourse.Description"
-                                  Label="Course Description"
-                                  TextArea="true"
-                                  FullWidth="true"
-                                  Required="true" />
-                </div>
-            </fieldset>
-        </EditForm>
-    </MatDialogContent>
-    <MatDialogActions>
-        <MatButton OnClick="@(e => { addCourseDialogOpen = false; })">Cancel</MatButton>
-        <MatButton OnClick="CreateCourseClick">Create Student</MatButton>
-    </MatDialogActions>
-</MatDialog>
+            </div>
+            <MatDialog @bind-IsOpen="@addCourseDialogOpen">
+                <MatDialogTitle>Create Course</MatDialogTitle>
+                <MatDialogContent>
+                    <EditForm OnValidSubmit="@(()=>CreateCourseClick(item))" Model="@NewCourse">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+                        <fieldset>
+                            <div class="form-group">
+                                <MatTextField @bind-Value="@NewCourse.CourseName"
+                                              Label="Course Name"
+                                              FullWidth="true"
+                                              Required="true" />
+                            </div>
+                            <div class="form-group">
+                                <MatTextField @bind-Value="@NewCourse.CourseId"
+                                              Label="Course ID"
+                                              Required="true" />
+                                <MatNumericUpDownField @bind-Value="@NewCourse.CourseCredit"
+                                                       Label="Course Credit"
+                                                       DecimalPlaces="2"
+                                                       Required="true" />
+                            </div>
+                            <div class="form-group">
+                                <MatTextField @bind-Value="@NewCourse.Description"
+                                              Label="Course Description"
+                                              TextArea="true"
+                                              FullWidth="true"
+                                              Required="true" />
+                            </div>
+                        </fieldset>
+                    </EditForm>
+                </MatDialogContent>
+                <MatDialogActions>
+                    <MatButton OnClick="@(e => { addCourseDialogOpen = false; })">Cancel</MatButton>
+                    <MatButton OnClick="(()=>CreateCourseClick(item))">Create Student</MatButton>
+                </MatDialogActions>
+            </MatDialog>
+        </MatTab>
+        }
+    </MatTabGroup>
+</div>   
 }
 
 
 @code {
-    private List<Semester> _datas;
     [Parameter]
-    public List<Semester> Semesters
-    {
-        get => _datas;
-        set
-        {
-            _datas = value;
-            CurrentSemester = _datas.FirstOrDefault();
-        }
-    }
-    Semester _currentSemester;
-    Semester CurrentSemester
-    {
-        get => _currentSemester;
-        set
-        {
-            _currentSemester = value;
-            if (_currentSemester != null)
-                Courses = _currentSemester.Courses.ToList();
-        }
-    }
-    List<Course> Courses;
+    public List<Semester> Semesters { get; set; }
+    [Parameter]
+    public int BatchId { get; set; }
+
     bool addCourseDialogOpen;
     bool addCourseSpinner;
     Course NewCourse = new Course();
 
-    private async void CreateCourseClick()
+    private async void CreateCourseClick(Semester CurrentSemester)
     {
         addCourseDialogOpen = false;
         addCourseSpinner = true;
+        this.StateHasChanged();
         if (!string.IsNullOrWhiteSpace(NewCourse.CourseName))
         {
-            var res = await _courseService.CreateAdminCourse(CurrentSemester.Id, NewCourse, null);
+            var res = await _courseService.CreateCourse(CurrentSemester.Id, NewCourse, null);
             if (res != null && res.Actionstatus)
             {
-                _matToaster.Add("Added COursse Successfully", MatToastType.Success);
-                Courses.Add(NewCourse);
-                this.StateHasChanged();
+                _matToaster.Add("Added Course Successfully", MatToastType.Success);
+                var data = await _courseService.GetSemesterCourses(CurrentSemester.Id);
+                if(data!= null)
+                {
+                    CurrentSemester.Courses = data;
+                }
             }
             else
             {
@@ -144,6 +128,7 @@ else
             NewCourse = new Course();
         }
         addCourseSpinner = false;
+        this.StateHasChanged();
     }
 
     private void CourseClick(Course course)

@@ -5,20 +5,20 @@
 
 @if (IsBusy)
 {
-    <MatProgressBar Indeterminate="true"/>
+    <MatProgressBar Indeterminate="true" />
 }
 else
 {
     <MatDrawerContainer Style="width: 100vw; height: 100vh;" Class="@bbDrawerClass">
         <MatDrawer @bind-Opened="@collapseNavMenu">
             <header class="drawer-header">
-                <div class="text-center">
-                     <b>Institute of Information and Technology</b>
+                <div class="text-center mt-3">
+                    <b>Institute of Information and Technology</b>
                 </div>
             </header>
-            <br/>
-            <MatDivider Padded="true"/>
-            <br/>
+            <br />
+            <MatDivider Padded="true" />
+            <br />
             <AdminNav />
         </MatDrawer>
         <MatDrawerContent>
@@ -26,29 +26,18 @@ else
                 <MatAppBar Fixed="true">
                     <MatAppBarRow>
                         <MatAppBarSection>
-                            <MatAppBarTitle>
-
-                            </MatAppBarTitle>
-                            <div class="hidden-mdc-down">
-                                <MatTooltip Tooltip="Toggle Navigation">
-                                    <MatIconButton Class="navToggle" 
-                                                   Icon="@MatIconNames.Menu"
-                                                   OnClick="@((e) => ToggleNavMenu())"/>
-                                </MatTooltip>
-                            </div>
+                            <MatIconButton Icon="menu"
+                                           OnClick="ToggleNavMenu" />
+                            <MatAppBarTitle>IIT Web App</MatAppBarTitle>
                         </MatAppBarSection>
                         <MatAppBarSection Align="@MatAppBarSectionAlign.End">
-                            <MatTooltip Tooltip="Logout">
-                                <MatIconButton OnClick="LogoutClick"
-                                               Icon="@MatIconNames.Exit_to_app"/>
-                            </MatTooltip>
+                            <MatIconButton Icon="@MatIconNames.Verified_user" />
                         </MatAppBarSection>
                     </MatAppBarRow>
                 </MatAppBar>
+
                 <MatAppBarContent>
-                    <section class="container-fluid">
-                        @Body
-                    </section>
+                    @Body
                 </MatAppBarContent>
             </MatAppBarContainer>
         </MatDrawerContent>

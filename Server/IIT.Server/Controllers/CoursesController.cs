@@ -35,49 +35,34 @@ namespace IIT.Server.Controllers
         public async Task<ActionResponse> CreateCourse(int semesterId, Course course, List<DBFile> dBFiles, List<IFormFile> formFiles = null)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var batch = await _userservice.GetBatch(userId);
-            if (batch == null)
+            var access = await _userservice.AuthorizeSemester(userId, semesterId);
+            if (access)
             {
-                return new ActionResponse(false, "Invalid User");
-            }
-            else
-            {
-                var res = await _courseService.AddCourse(course, semesterId, batch.Id);
-                if (res != null && formFiles != null && formFiles.Count > 0)
+                var semester = await _courseService.GetSemesterAsync(semesterId);
+                if (semester == null)
                 {
-                    return await AddMaterial(res.Id, null, formFiles);
+                    return new ActionResponse(false, "Invalid User");
                 }
                 else
                 {
-                    return new ActionResponse(res != null);
+                    var res = await _courseService.AddCourse(course, semesterId, semester.Batch.Id);
+                    if (res != null && formFiles != null && formFiles.Count > 0)
+                    {
+                        return await AddMaterial(res.Id, null, formFiles);
+                    }
+                    else
+                    {
+                        return new ActionResponse(res != null);
+                    }
                 }
-            }
-        }
-
-        [Authorize(Roles =AppConstants.Admin)]
-        public async Task<ActionResponse> CreateAdminCourse(int semesterId, Course course, List<DBFile> dBFiles, List<IFormFile> formFiles = null)
-        {
-            var semester = await _courseService.GetSemesterAsync(semesterId);
-            if (semester == null)
-            {
-                return new ActionResponse(false, "Invalid User");
             }
             else
             {
-                var res = await _courseService.AddCourse(course, semesterId, semester.Batch.Id);
-                if (res != null && formFiles != null && formFiles.Count > 0)
-                {
-                    return await AddMaterial(res.Id, null, formFiles);
-                }
-                else
-                {
-                    return new ActionResponse(res != null);
-                }
+                return new ActionResponse(false, "You may not have access to use this API");
             }
         }
 
-
-
+       
         public async Task<ActionResponse> UploadCourseResult(int courseId, DBFile dBFile, IFormFile formFile)
         {
             if (courseId != 0 && formFile != null)
@@ -147,7 +132,8 @@ namespace IIT.Server.Controllers
 
         public async Task<Course> GetCourse(int courseId)
         {
-            return await _courseService.GetCourseAsync(courseId);
+            var res = await _courseService.GetCourseAsync(courseId);
+            return res;
         }
 
         public async Task<List<Course>> GetCourses()
@@ -243,6 +229,11 @@ namespace IIT.Server.Controllers
         public async Task<List<Course>> SearchCourse(string search)
         {
             return await _courseService.SearchCourse(search);
+        }
+
+        public Task<List<Course>> GetSemesterCourses(int semesterId)
+        {
+            return _courseService.GetSemesterCoursesAsync(semesterId);
         }
     }
 }

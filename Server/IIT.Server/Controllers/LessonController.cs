@@ -24,9 +24,9 @@ namespace IIT.Server.Controllers
         public async Task<ActionResponse> AddLesson(int courseId, Lesson lesson)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var batch = await _userService.GetBatch(userId);
+            var access = await _userService.AuthorizeCourse(userId, courseId);
 
-            var res = await _lessonService.AddLesson(courseId, batch.Id, lesson);
+            var res = await _lessonService.AddLesson(courseId, lesson);
             return new ActionResponse(res != null);
         }
 

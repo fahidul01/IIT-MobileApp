@@ -23,6 +23,19 @@ else
             <br/>
             <br/>
             <p>@Notice.Message</p>
+            <br/>
+            <br/>
+            <MatDivider/>
+            <br/>
+            <br/>
+            @if (Notice.DBFiles != null)
+            {
+                foreach (var file in Notice.DBFiles)
+                {
+                    <a href="/api/files+@file.Id">@file.FileName</a>
+                    <br/>
+                }
+            }
         </div>
     </div>
 }

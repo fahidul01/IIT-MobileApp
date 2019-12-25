@@ -72,17 +72,10 @@ namespace IIT.Server.Controllers
             return Task.FromResult(new ActionResponse(false, "Not Allowed"));
         }
 
-        public async Task<ActionResponse> ForgetPassword(string username)
+        public async Task<ActionResponse> ForgetPassword(string rollNo,string mobileNo, string password)
         {
-            var res = await _userService.RecoverPassword(username);
-            if (res)
-            {
-                return new ActionResponse(true, "A Password reset has been accepted. Please check your mail");
-            }
-            else
-            {
-                return new ActionResponse(false, "Failed to reset password. Try again");
-            }
+            var res = await _userService.RecoverPasswordPhoneNo(rollNo,mobileNo, password);
+            return res;
         }
 
         public async Task<List<User>> GetCurrentBatchUsers()
@@ -133,11 +126,6 @@ namespace IIT.Server.Controllers
             {
                 _signInmanager.SignOutAsync();
             }
-        }
-
-        public Task<ActionResponse> Register(User user)
-        {
-            return Task.FromResult(new ActionResponse(false, "Not Authorize"));
         }
 
         [HttpGet]
@@ -229,6 +217,16 @@ namespace IIT.Server.Controllers
         public Task<List<User>> GetCurrentCr()
         {
             return _userService.GetCurrentCr();
+        }
+
+        public Task<ActionResponse> VerifyPhoneNo(string rollNo, string mobileNo)
+        {
+            return _userService.VerifyPhoneNo(rollNo, mobileNo);
+        }
+
+        public Task<ActionResponse> Register(string rollNo, string mobileNo, string password)
+        {
+            return _userService.ConfirmRegistration(rollNo, mobileNo, password);
         }
     }
 }

@@ -6,61 +6,83 @@
 @inject NavigationManager _navigation
 @if (CurrentCourse.Id == 0)
 {
-    <MatProgressBar Indeterminate="true"/>
+    <MatProgressBar Indeterminate="true" />
 }
 else
 {
-<div class="card">
-    <div class="card-header">
-        <h3>
-            @CurrentCourse.CourseId
-        </h3>
-        <b>@CurrentCourse.CourseName</b>
+    <div class="card">
+        <div class="card-header">
+            <h3>
+                @CurrentCourse.CourseId
+            </h3>
+            <b>@CurrentCourse.CourseName</b>
+        </div>
+        <div class="card-body">
+            @CurrentCourse.Description
+        </div>
     </div>
-    <div class="card-body">
-        @CurrentCourse.Description
+    <MatDivider />
+    <LessonsView CurrenntCourse="CurrentCourse"
+                 Lessons="Lessons" />
+    <MatDivider />
+    <div class="card m-3">
+        <div class="card-header">
+            <h5 class="float-left">Course Materials</h5>
+            <MatFAB Mini="true"
+                    Class="input-file-custom float-right">
+                <span class="material-icons">add</span>
+                <InputFile OnChange="AddMaterialClick" />
+
+            </MatFAB>
+            @*<div class="mat-fab mdc-fab-mini input-file-custom float-right">
+                <span class="mdc-fab__icon material-icons">add</span>
+                <InputFile OnChange="AddMaterialClick"/>
+            </div>*@
+        </div>
+
+        @if (CurrentCourse.CourseMaterials != null &&
+            CurrentCourse.CourseMaterials.Count>0)
+        {
+            foreach (var dbFile in CurrentCourse.CourseMaterials)
+            {
+                <a href="/api/files+@dbFile.Id">@dbFile.FileName</a>
+                <br />
+            }
+        }
+        else
+        {
+            <h6 class="text-center">No Course material has been added yet</h6>
+        }
     </div>
-</div>
-<br/>
-<br/>
-<MatDivider/>
-<br/>
-<br/>
-<LessonsView CurrenntCourse="CurrentCourse"
-             Lessons="Lessons"/>
-<br/>
-<br />
-<MatDivider/>
-<br/>
-<br />
-<div class="card">
-    <div class="card-header">
-        <h4 class="d-inline float-left">
-            Students
-        </h4>
+    <MatDivider />
+    <div class="card m-3">
+        <div class="card-header">
+            <h4 class="d-inline float-left">
+                Students
+            </h4>
+        </div>
+        <div class="card-body">
+            <MatTable Class="mat-elevation-z5" Items="@CurrentCourse.StudentCourses"
+                      ShowPaging="false"
+                      PageSize="100"
+                      AllowSelection="true">
+                <MatTableHeader>
+                    <th style="width:40%">Name</th>
+                    <th style="width:15%">Roll</th>
+                    <th style="width:20%">Credit</th>
+                    <th style="width:15%">GPA</th>
+                    <th style="width:10%">Grade</th>
+                </MatTableHeader>
+                <MatTableRow Context="StudentCourse">
+                    <td @onclick="(() => ViewStudent(StudentCourse.Student))">@StudentCourse.Student.Name</td>
+                    <td @onclick="(() => ViewStudent(StudentCourse.Student))">@StudentCourse.Student.Roll</td>
+                    <td @onclick="(() => ViewStudent(StudentCourse.Student))">@CurrentCourse.CourseCredit</td>
+                    <td @onclick="(() => ViewStudent(StudentCourse.Student))">@StudentCourse.GradePoint</td>
+                    <td @onclick="(() => ViewStudent(StudentCourse.Student))">@StudentCourse.Grade</td>
+                </MatTableRow>
+            </MatTable>
+        </div>
     </div>
-    <div class="card-body">
-        <MatTable Class="mat-elevation-z5" Items="@CurrentCourse.StudentCourses"
-                  ShowPaging="false"
-                  PageSize="100"
-                  AllowSelection="true">
-            <MatTableHeader>
-                <th style="width:40%">Name</th>
-                <th style="width:15%">Roll</th>
-                <th style="width:20%">Credit</th>
-                <th style="width:15%">GPA</th>
-                <th style="width:10%">Grade</th>
-            </MatTableHeader>
-            <MatTableRow Context="StudentCourse">
-                <td @onclick="(() => ViewStudent(StudentCourse.Student))">@StudentCourse.Student.Name</td>
-                <td @onclick="(() => ViewStudent(StudentCourse.Student))">@StudentCourse.Student.Roll</td>
-                <td @onclick="(() => ViewStudent(StudentCourse.Student))">@CurrentCourse.CourseCredit</td>
-                <td @onclick="(() => ViewStudent(StudentCourse.Student))">@StudentCourse.GradePoint</td>
-                <td @onclick="(() => ViewStudent(StudentCourse.Student))">@StudentCourse.Grade</td>
-            </MatTableRow>
-        </MatTable>
-    </div>
-</div>
 }
 @code{
     [Parameter]
@@ -95,6 +117,28 @@ else
             else
             {
                 _matToaster.Add("Faied to upload result", MatToastType.Danger);
+            }
+        }
+    }
+
+    private async void AddMaterialClick(IFileListEntry[] files)
+    {
+        if (files != null && files.Length > 0)
+        {
+            var dbFiles = new List<DBFile>();
+            foreach (var item in files)
+            {
+                dbFiles.Add(new DBFile(item.Data, item.Name));
+            }
+            var resp = await _courseHandler.AddMaterial(CurrentCourse.Id, dbFiles);
+            if (resp == null)
+            {
+                _matToaster.Add("Failed to upload Material", MatToastType.Danger);
+            }
+            else
+            {
+                var toast = resp.Actionstatus ? MatToastType.Success : MatToastType.Danger;
+                _matToaster.Add(resp.Message, toast);
             }
         }
     }

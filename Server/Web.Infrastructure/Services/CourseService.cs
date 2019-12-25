@@ -259,6 +259,12 @@ namespace Student.Infrastructure.Services
             return new ActionResponse(true, "Result Uploaded Successfully");
         }
 
+        public async Task<List<Course>> GetSemesterCoursesAsync(int semesterId)
+        {
+            return await _db.Courses.Where(x => x.Semester.Id == semesterId)
+                            .ToListAsync();
+        }
+
         public async Task<List<Course>> SearchCourse(string search)
         {
             var courseList = await _db.Courses

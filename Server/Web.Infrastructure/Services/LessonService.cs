@@ -17,11 +17,10 @@ namespace Student.Infrastructure.Services
             _db = studentDBContext;
         }
 
-        public async Task<Lesson> AddLesson(int courseId, int batchId, Lesson lesson)
+        public async Task<Lesson> AddLesson(int courseId, Lesson lesson)
         {
             var course = await _db.Courses
-                                 .FirstOrDefaultAsync(x => x.Id == courseId &&
-                                 x.Semester.Batch.Id == batchId);
+                                  .FirstOrDefaultAsync(x => x.Id == courseId);
             if (course == null)
             {
                 return null;
@@ -34,6 +33,8 @@ namespace Student.Infrastructure.Services
             }
         }
 
+
+
         public async Task<List<Lesson>> GetLesson(string userId)
         {
             var allCourse = _db.StudentCourses.Where(x => x.Student.Id == userId)
@@ -44,6 +45,7 @@ namespace Student.Infrastructure.Services
             return lessons;
         }
 
+        
         public async Task<List<Lesson>> GetCourseLesson(int courseId)
         {
             return await _db.Lessons.Where(x => x.Course.Id == courseId)

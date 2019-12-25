@@ -39,9 +39,9 @@ namespace Student.Infrastructure.Services
                 {
                     continue;
                 }
-
                 var password = CryptoService.GenerateRandomPassword();
                 student.Batch = batch;
+                student.PhoneNumberConfirmed = false;
                 student.UserRole = AppConstants.Student;
                 var res = await _usermanager.CreateAsync(student);
                 if (res.Succeeded)
@@ -51,6 +51,33 @@ namespace Student.Infrastructure.Services
                 }
             }
             return users;
+        }
+
+        public async Task<bool> AuthorizeSemester(string userId, int semesterId)
+        {
+            var user = await _db.Users.Include(x => x.Batch)
+                                      .FirstOrDefaultAsync(x => x.Id == userId);
+            if (user.UserRole == AppConstants.Admin) return true;
+            else
+            {
+                var semester = await _db.Semesters.Include(m => m.Batch)
+                                      .FirstOrDefaultAsync(x => x.Id == semesterId);
+                return semester.Batch.Id == user.Batch?.Id;
+            }
+        }
+
+        public async Task<bool> AuthorizeCourse(string userId, int courseId)
+        {
+            var user = await _db.Users.Include(x=>x.Batch)
+                                      .FirstOrDefaultAsync(x => x.Id == userId);
+            if (user.UserRole == AppConstants.Admin) return true;
+            else
+            {
+                var course = await _db.Courses.Include(m => m.Semester)
+                                      .ThenInclude(m => m.Batch)
+                                      .FirstOrDefaultAsync(x => x.Id == courseId);
+                return course.Semester.Batch.Id == user.Batch?.Id;
+            }
         }
 
         public async Task<Batch> GetBatch(string userId)
@@ -109,7 +136,8 @@ namespace Student.Infrastructure.Services
                     UserName = roll,
                     Roll = studentRoll,
                     UserRole = AppConstants.Student,
-                    PhoneNumber = phone
+                    PhoneNumber = phone,
+                    PhoneNumberConfirmed = false
                 };
                 var res = await _usermanager.CreateAsync(student);
                 if (res.Succeeded)
@@ -120,7 +148,7 @@ namespace Student.Infrastructure.Services
                         return new ActionResponse(true);
                     }
 
-                    var msg = EmailMessageCreator.CreateInvitation(password);
+                    var msg = EmailMessageCreator.CreateInvitation(phone);
                     await _emailSender.SendEmailAsync(student.Email, "Password Recover", msg);
                 }
                 return new ActionResponse(false, "Failed to create User");
@@ -208,6 +236,33 @@ namespace Student.Infrastructure.Services
             }
         }
 
+        public async Task<ActionResponse> VerifyPhoneNo(string rollNo, string mobileNo)
+        {
+            var res = await _db.Users.FirstOrDefaultAsync(x => x.UserName == rollNo);
+            if (res == null)
+                return new ActionResponse(false, "Invalid Roll number/Username");
+            else if (res.PhoneNumber != mobileNo)
+                return new ActionResponse(false, "Invalid Mobile No");
+            else if (res.PhoneNumberConfirmed)
+                return new ActionResponse(false, "Phone number already confirmed");
+            else return new ActionResponse(true, "Phone Number verified");
+        }
+
+        public async Task<ActionResponse> ConfirmRegistration(string rollNo, string mobileNo, string password)
+        {
+            var dbUser = await _db.Users.FirstOrDefaultAsync(x => x.UserName == rollNo);
+            if (dbUser == null)
+                return new ActionResponse(false, "Invalid Roll number/Username");
+            else if (dbUser.PhoneNumber != mobileNo)
+                return new ActionResponse(false, "Invalid Mobile Number");
+            else
+            {
+                var token = await _usermanager.GeneratePasswordResetTokenAsync(dbUser);
+                var resetRes = await _usermanager.ResetPasswordAsync(dbUser, token, password);
+                return new ActionResponse(true);
+            }
+        }
+
         public async Task<List<User>> UploadCSVStudents(string filePath, int batchId)
         {
             var students = new List<DBUser>();
@@ -234,45 +289,31 @@ namespace Student.Infrastructure.Services
             return await AddStudents(students, batchId);
         }
 
-        public async Task<bool> RecoverPassword(string id)  // Supports username too
+        public async Task<ActionResponse> CheckPhoneNumber(string phoneNo)
         {
-            var user = await _usermanager.FindByIdAsync(id);
-            if (user == null)
-            {
-                user = await _usermanager.FindByNameAsync(id);
-            }
-            if (user == null)
-            {
-                return false;
-            }
-            else
-            {
-                return await ResetPassword(user);
-            }
+            var user = await _db.Users.FirstOrDefaultAsync(x => x.PhoneNumber == phoneNo);
+            return new ActionResponse(user != null);
         }
 
-        private async Task<bool> ResetPassword(DBUser dBUser)
+        public async Task<ActionResponse> RecoverPasswordPhoneNo(string rollNo,string phoneNo, string password)
         {
-            try
+            var dbUser = await _db.Users.FirstOrDefaultAsync(x => x.PhoneNumber == phoneNo);
+            if (dbUser == null)
             {
-                var password = CryptoService.GenerateRandomPassword();
+                return new ActionResponse(false, "Invalid Mobile No. Contact Admin");
+            }
+
+            var token = await _usermanager.GeneratePasswordResetTokenAsync(dbUser);
+            var resetRes = await _usermanager.ResetPasswordAsync(dbUser, token, password);
+
 
 #if DEBUG
-                password = "12345678";
-#else
-                var msg =  EmailMessageCreator.CreatePasswordRecovery(password);
-                var res = await _emailSender.SendEmailAsync(dBUser.Email, "Password Recover", msg);
-#endif
 
-                var token = await _usermanager.GeneratePasswordResetTokenAsync(dBUser);
-                var resetRes = await _usermanager.ResetPasswordAsync(dBUser, token, password);
-                return resetRes.Succeeded;
-            }
-            catch (Exception ex)
-            {
-                LogEngine.Error(ex);
-                return false;
-            }
+#else
+            var msg = EmailMessageCreator.CreatePasswordRecovery();
+            var res = await _emailSender.SendEmailAsync(dbUser.Email, "Password Recover", msg);
+#endif
+            return new ActionResponse(true);
         }
     }
 }

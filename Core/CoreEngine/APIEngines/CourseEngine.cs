@@ -33,11 +33,6 @@ namespace CoreEngine.APIEngines
             return SendRequest<ActionResponse>(HttpMethod.Post, dBFile);
         }
 
-        public Task<ActionResponse> DeleteLesson(int lessonId)
-        {
-            return SendRequest<ActionResponse>(HttpMethod.Post, new { lessonId });
-        }
-
         public Task<Course> GetCourse(int courseId)
         {
             return SendRequest<Course>(HttpMethod.Post, new { courseId });
@@ -51,11 +46,6 @@ namespace CoreEngine.APIEngines
         public Task<List<Course>> GetBatchCourses(int batchId)
         {
             return SendRequest<List<Course>>(HttpMethod.Post, new { batchId });
-        }
-
-        public Task<ActionResponse> Update(Lesson lesson)
-        {
-            return SendRequest<ActionResponse>(HttpMethod.Post, lesson);
         }
 
         public Task<ActionResponse> UpdateCourse(Course course)
@@ -79,11 +69,6 @@ namespace CoreEngine.APIEngines
             return SendRequest<ActionResponse>(HttpMethod.Post, new { course, semesterId });
         }
 
-        public Task<ActionResponse> CreateAdminCourse(int semesterId, Course course, List<DBFile> dBFiles, List<IFormFile> formFiles = null)
-        {
-            return SendRequest<ActionResponse>(HttpMethod.Post, new { course, semesterId });
-        }
-
         public Task<ActionResponse> UploadCourseResult(int courseId, DBFile dBFile, IFormFile formFile)
         {
             return SendMultiPartRequest<ActionResponse>(new { courseId }, dBFile);
@@ -102,6 +87,11 @@ namespace CoreEngine.APIEngines
         public Task<List<SemesterData>> GetStudentResult(string userId)
         {
             return SendRequest<List<SemesterData>>(HttpMethod.Get, new { userId });
+        }
+
+        public Task<List<Course>> GetSemesterCourses(int semesterId)
+        {
+            return SendRequest<List<Course>>(HttpMethod.Get, new { semesterId });
         }
     }
 }

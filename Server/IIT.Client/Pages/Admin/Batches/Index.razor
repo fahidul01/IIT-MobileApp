@@ -20,11 +20,11 @@
         </th>
     </MatTableHeader>
     <MatTableRow Context="Batch">
-        <td> @Batch.Name</td>
-        <td>@Batch.StartsOn.ToString("dd MMMM, yyyy")</td>
-        <td>@Batch.EndsOn.ToString("dd MMMM, yyyy")</td>
-        <td>@Batch.NumberOfSemester</td>
-        <td>@Batch.SemesterDuration</td>
+        <td @onclick="(() => ViewBatch(Batch))"> @Batch.Name</td>
+        <td @onclick="(() => ViewBatch(Batch))">@Batch.StartsOn.ToString("dd MMMM, yyyy")</td>
+        <td @onclick="(() => ViewBatch(Batch))">@Batch.EndsOn.ToString("dd MMMM, yyyy")</td>
+        <td @onclick="(() => ViewBatch(Batch))">@Batch.NumberOfSemester</td>
+        <td @onclick="(() => ViewBatch(Batch))">@Batch.SemesterDuration</td>
         <td>
             <MatButton Icon="@MatIconNames.Open_in_new"
                        OnClick="@(() => ViewBatch(Batch))"/>

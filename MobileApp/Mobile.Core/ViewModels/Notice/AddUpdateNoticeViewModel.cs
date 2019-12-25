@@ -3,6 +3,7 @@ using CoreEngine.Model.DBModel;
 using GalaSoft.MvvmLight.Command;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 
@@ -14,10 +15,12 @@ namespace Mobile.Core.ViewModels
         public Notice CurrentNotice { get; private set; }
         public IEnumerable<PostType> PostTypes { get; set; }
         public PostType CurrentPost { get; set; }
+        public ObservableCollection<DBFile> DBFiles { get; set; }
         public AddUpdateNoticeViewModel(INoticeHandler noticeHandler)
         {
             _noticeHandler = noticeHandler;
             PostTypes = Enum.GetValues(typeof(PostType)).Cast<PostType>();
+            DBFiles = new ObservableCollection<DBFile>();
         }
 
 
@@ -68,7 +71,7 @@ namespace Mobile.Core.ViewModels
                 CurrentNotice.PostType = CurrentPost;
                 if (CurrentNotice.Id == 0)
                 {
-                    var res = await _noticeHandler.AddPost(CurrentNotice);
+                    var res = await _noticeHandler.AddPost(CurrentNotice, DBFiles.ToList());
                     ShowResponse(res);
                 }
                 else
