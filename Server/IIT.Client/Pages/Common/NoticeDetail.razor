@@ -7,7 +7,23 @@
 else
 {
     <div class="card">
-
+        <div class="card-header">
+            <h5>@Notice.Title</h5>
+        </div>
+        <div class="card-body">
+            @if (Notice.Batch == null)
+            {
+              <span>All Batch</span>
+            }
+            else
+            {
+                <span>@Notice.Batch.Name</span>
+            }
+            <span>@Notice.EventDate</span>
+            <br/>
+            <br/>
+            <p>@Notice.Message</p>
+        </div>
     </div>
 }
 @code {

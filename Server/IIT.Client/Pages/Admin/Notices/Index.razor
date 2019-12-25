@@ -1,6 +1,39 @@
 ﻿@page "/admin/notices"
 @page "/admin/notices/index"
+@inject INoticeHandler _noticeHandler
+@inject NavigationManager _navigationManager
+
+@if (IsBusy)
+{
+    <MatProgressBar Indeterminate="true" />
+}
+else
+{
+    <div class="card">
+        <div class="card-header">
+            <h5 class="d-inline float-left">All Notices</h5>
+            <MatFAB Mini="true"
+                    Icon="@MatIconNames.Add"
+                    OnClick="AddNoticeClick" />
+        </div>
+        <div class="card-body">
+            <IIT.Client.Shared.Components.NoticesView Notices="Notices" />
+        </div>
+    </div>
+}
 
 @code{
+    List<Notice> Notices;
+    bool IsBusy;
+    protected override async Task OnInitializedAsync()
+    {
+        IsBusy = true;
+        Notices = await _noticeHandler.GetPosts(0, PostType.All);
+        IsBusy = false;
+    }
 
+    private void AddNoticeClick()
+    {
+        _navigationManager.NavigateTo("/admin/notices/addnotice");
+    }
 }

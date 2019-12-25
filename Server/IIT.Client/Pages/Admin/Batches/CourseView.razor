@@ -127,6 +127,7 @@ else
     private async void CreateCourseClick()
     {
         addCourseDialogOpen = false;
+        addCourseSpinner = true;
         if (!string.IsNullOrWhiteSpace(NewCourse.CourseName))
         {
             var res = await _courseService.CreateAdminCourse(CurrentSemester.Id, NewCourse, null);
@@ -142,6 +143,7 @@ else
             }
             NewCourse = new Course();
         }
+        addCourseSpinner = false;
     }
 
     private void CourseClick(Course course)

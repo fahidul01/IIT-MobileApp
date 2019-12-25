@@ -2,6 +2,7 @@
 using CoreEngine.Engine;
 using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
+using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -15,9 +16,9 @@ namespace CoreEngine.APIEngines
         {
         }
 
-        public Task<ActionResponse> AddPost(Notice notice)
+        public Task<ActionResponse> AddPost(Notice notice, List<DBFile> dBFiles, List<IFormFile> formFiles)
         {
-            return SendRequest<ActionResponse>(HttpMethod.Post, notice);
+            return SendMultiPartRequest<ActionResponse>(notice, dBFiles);
         }
 
         public Task<ActionResponse> DeletePost(Notice notice)

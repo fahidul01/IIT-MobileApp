@@ -2,6 +2,7 @@
 using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Student.Infrastructure.Services;
 using System.Collections.Generic;
@@ -15,15 +16,21 @@ namespace IIT.Server.Controllers
     public class NoticesController : Controller, INoticeHandler
     {
         private readonly NoticeService _noticeService;
+        private readonly FileService _fileService;
 
-        public NoticesController(NoticeService noticeService)
+        public NoticesController(NoticeService noticeService, FileService fileService)
         {
             _noticeService = noticeService;
+            _fileService = fileService;
         }
 
-        public async Task<ActionResponse> AddPost(Notice post)
+        public async Task<ActionResponse> AddPost(Notice post, List<DBFile> dBFiles, List<IFormFile> formFiles = null)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (formFiles != null)
+            {
+                post.DBFiles = await _fileService.UploadFiles(formFiles);
+            }
             var res = await _noticeService.AddUpdateNotice(post, userId);
             return res;
         }

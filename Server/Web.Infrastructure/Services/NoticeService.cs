@@ -58,7 +58,10 @@ namespace Student.Infrastructure.Services
             else
             {
                 post.Owner = dbUser;
-                post.Batch = dbUser.Batch;
+                if (dbUser.UserRole == AppConstants.Student)
+                {
+                    post.Batch = dbUser.Batch;
+                }
                 if (post.Id == 0)
                 {
                     _db.Entry(post).State = EntityState.Added;

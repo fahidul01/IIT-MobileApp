@@ -1,0 +1,64 @@
+﻿@page "/admin/notices/addnotice"
+@page "/admin/notices/addnotice/{NoticeId:int}"
+@inject IBatchHandler _batchService
+@inject INoticeHandler _noticeHandler
+@inject IMatToaster _matToaster
+@inject NavigationManager _navigationManager
+
+<EditForm OnValidSubmit="SubmitNotice" Model="NewNotice">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <fieldset>
+            <div class="form-group">
+                <MatDatePicker @bind-Value="@NewNotice.EventDate"
+                               Label="Event Date"
+                               Required="true" />
+                <MatSelect Label="Day Of Week"
+                           @bind-Value="@BatchId">
+                    <MatOption Value="0">All Batch</MatOption>
+                    @foreach (var batch in currentbatches)
+                    {
+                        <MatOption Value="@batch.Id">@batch.Name</MatOption>
+                    }
+                </MatSelect>
+            </div>
+            <div class="form-group">
+                <MatTextField Label="Title"
+                              @bind-Value="NewNotice"/>
+            </div>
+        </fieldset>
+    </EditForm>
+
+@code {
+
+    private List<Batch> currentbatches = new List<Batch>();
+    Notice NewNotice = new Notice();
+    public int NoticeId { get; set; }
+    private int BatchId;
+    private const string AllBatch = "AllBatch";
+    List<DBFile> DBFiles { get; set; } = new List<DBFile>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        currentbatches = await _batchService.GetBatches();
+        if(NoticeId > 0)
+        {
+            NewNotice = await _noticeHandler.GetNotice(NoticeId);
+        }
+    }
+    private async void SubmitNotice()
+    {
+        NewNotice.Batch = currentbatches.FirstOrDefault(x => x.Id == BatchId);
+        var resp = await _noticeHandler.AddPost(NewNotice, DBFiles);
+        if (resp != null && resp.Actionstatus)
+        {
+            _matToaster.Add("Successfully created new event", MatToastType.Success);
+            _navigationManager.NavigateTo("/admin/notices");
+            DBFiles.Clear();
+        }
+        else
+        {
+            _matToaster.Add("Failed to create new Notice", MatToastType.Danger);
+        }
+    }
+}
