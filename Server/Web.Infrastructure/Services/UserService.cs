@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Student.Infrastructure.AppServices;
 using Student.Infrastructure.DBModel;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -57,7 +56,10 @@ namespace Student.Infrastructure.Services
         {
             var user = await _db.Users.Include(x => x.Batch)
                                       .FirstOrDefaultAsync(x => x.Id == userId);
-            if (user.UserRole == AppConstants.Admin) return true;
+            if (user.UserRole == AppConstants.Admin)
+            {
+                return true;
+            }
             else
             {
                 var semester = await _db.Semesters.Include(m => m.Batch)
@@ -68,9 +70,12 @@ namespace Student.Infrastructure.Services
 
         public async Task<bool> AuthorizeCourse(string userId, int courseId)
         {
-            var user = await _db.Users.Include(x=>x.Batch)
+            var user = await _db.Users.Include(x => x.Batch)
                                       .FirstOrDefaultAsync(x => x.Id == userId);
-            if (user.UserRole == AppConstants.Admin) return true;
+            if (user.UserRole == AppConstants.Admin)
+            {
+                return true;
+            }
             else
             {
                 var course = await _db.Courses.Include(m => m.Semester)
@@ -106,8 +111,14 @@ namespace Student.Infrastructure.Services
         public async Task<User> GetUser(string userId)
         {
             var user = await _db.Users.FirstOrDefaultAsync(x => x.Id == userId);
-            if (user != null) return User.FromDBUser(user, "");
-            else return null;
+            if (user != null)
+            {
+                return User.FromDBUser(user, "");
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public async Task<ActionResponse> AddStudent(int batchId, string roll, string name, string email, string phone)
@@ -236,25 +247,39 @@ namespace Student.Infrastructure.Services
             }
         }
 
-        public async Task<ActionResponse> VerifyPhoneNo(string rollNo, string mobileNo)
+        public async Task<ActionResponse> VerifyPhoneNo(string rollNo, string phoneNo)
         {
+            phoneNo = phoneNo.Replace("+88", "").Trim();
             var res = await _db.Users.FirstOrDefaultAsync(x => x.UserName == rollNo);
             if (res == null)
+            {
                 return new ActionResponse(false, "Invalid Roll number/Username");
-            else if (res.PhoneNumber != mobileNo)
+            }
+            else if (res.PhoneNumber != phoneNo)
+            {
                 return new ActionResponse(false, "Invalid Mobile No");
+            }
             else if (res.PhoneNumberConfirmed)
-                return new ActionResponse(false, "Phone number already confirmed");
-            else return new ActionResponse(true, "Phone Number verified");
+            {
+                return new ActionResponse(true, "Phone number already confirmed");
+            }
+            else
+            {
+                return new ActionResponse(true, "Phone Number verified");
+            }
         }
 
-        public async Task<ActionResponse> ConfirmRegistration(string rollNo, string mobileNo, string password)
+        public async Task<ActionResponse> ConfirmRegistration(string rollNo, string phoneNo, string password)
         {
             var dbUser = await _db.Users.FirstOrDefaultAsync(x => x.UserName == rollNo);
             if (dbUser == null)
+            {
                 return new ActionResponse(false, "Invalid Roll number/Username");
-            else if (dbUser.PhoneNumber != mobileNo)
+            }
+            else if (dbUser.PhoneNumber != phoneNo)
+            {
                 return new ActionResponse(false, "Invalid Mobile Number");
+            }
             else
             {
                 var token = await _usermanager.GeneratePasswordResetTokenAsync(dbUser);
@@ -295,7 +320,7 @@ namespace Student.Infrastructure.Services
             return new ActionResponse(user != null);
         }
 
-        public async Task<ActionResponse> RecoverPasswordPhoneNo(string rollNo,string phoneNo, string password)
+        public async Task<ActionResponse> RecoverPasswordPhoneNo(string rollNo, string phoneNo, string password)
         {
             var dbUser = await _db.Users.FirstOrDefaultAsync(x => x.PhoneNumber == phoneNo);
             if (dbUser == null)

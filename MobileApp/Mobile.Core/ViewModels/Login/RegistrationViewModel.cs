@@ -1,6 +1,8 @@
 ﻿using CoreEngine.APIHandlers;
+using CoreEngine.Engine;
 using GalaSoft.MvvmLight.Command;
 using Mobile.Core.Engines.Services;
+using System;
 using System.Windows.Input;
 
 namespace Mobile.Core.ViewModels
@@ -18,7 +20,7 @@ namespace Mobile.Core.ViewModels
 
         public RegistrationState RegistrationState { get; private set; }
         public string OTPToken { get; set; }
-        public string MobileNo { get; set; }
+        public string PhoneNo { get; set; }
         public string RollNo { get; set; }
         public string Password { get; set; }
         public string ConfirmPassword { get; set; }
@@ -29,17 +31,21 @@ namespace Mobile.Core.ViewModels
         {
             _memberHandler = memberHandler;
             _platformService = platformService;
+            RollNo = " ";
+            PhoneNo = "+88";
         }
 
         public ICommand PhoneSubmitCommand => new RelayCommand(PhoneSubmitAction);
         ICommand CodeSentCommand => new RelayCommand<string>(CodeSentAction);
         ICommand VerifyCompleteCommand => new RelayCommand<string>(VerifyComplete);
-        ICommand VerifyFailedCommand => new RelayCommand(VerifyFailed);
+        ICommand VerifyFailedCommand => new RelayCommand<string>(VerifyFailed);
         public ICommand VerifyCommand => new RelayCommand(VerifyAction);
         public ICommand RegisterCommand => new RelayCommand(RegisterAction);
 
         private async void RegisterAction()
         {
+            RollNo = RollNo.Trim();
+            PhoneNo = PhoneNo.Trim();
             if (string.IsNullOrWhiteSpace(Password))
             {
                 _dialog.ShowMessage("Error", "Invalid Password");
@@ -54,7 +60,7 @@ namespace Mobile.Core.ViewModels
             }
             else
             {
-                var res = await _memberHandler.Register(RollNo, MobileNo, Password);
+                var res = await _memberHandler.Register(RollNo, PhoneNo, Password);
                 if (res != null)
                 {
                     _dialog.ShowToastMessage(res.Message);
@@ -80,16 +86,23 @@ namespace Mobile.Core.ViewModels
             {
                 _dialog.ShowToastMessage("Invalid Roll Number");
             }
-            else if (string.IsNullOrWhiteSpace(MobileNo))
+            else if (string.IsNullOrWhiteSpace(PhoneNo))
             {
                 _dialog.ShowToastMessage("Invalid Mobile Number");
             }
-            var response = await _memberHandler.VerifyPhoneNo(RollNo, MobileNo);
+            var response = await _memberHandler.VerifyPhoneNo(RollNo, "+88" + PhoneNo);
             if (response != null && response.Actionstatus)
             {
                 RegistrationState = RegistrationState.Mobile;
-                _platformService.VerifyPhoneNumber(MobileNo,
-                    VerifyCompleteCommand, VerifyFailedCommand, CodeSentCommand);
+                try
+                {
+                    _platformService.VerifyPhoneNumber(PhoneNo,
+                        VerifyCompleteCommand, VerifyFailedCommand, CodeSentCommand);
+                }
+                catch (Exception ex)
+                {
+                    LogEngine.Error(ex);
+                }
             }
             else
             {
@@ -102,9 +115,11 @@ namespace Mobile.Core.ViewModels
             OTPToken = smsCode;
         }
 
-        private void VerifyFailed()
+        private void VerifyFailed(string message)
         {
             IsBusy = false;
+            _dialog.ShowMessage("Error", message);
+            RegistrationState = RegistrationState.Roll;
         }
 
         private void CodeSentAction(string verifyId)

@@ -11,11 +11,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using Student.Infrastructure.AppServices;
 using Student.Infrastructure.DBModel;
-using System.Text;
-using Newtonsoft.Json;
 using System.IdentityModel.Tokens.Jwt;
+using System.Text;
 
 namespace IIT.Server
 {
@@ -83,6 +83,7 @@ namespace IIT.Server
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            AppConstants.DataPath = env.WebRootPath;
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

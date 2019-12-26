@@ -9,7 +9,7 @@ namespace CoreEngine.APIHandlers
     public interface INoticeHandler
     {
         Task<List<Notice>> GetPosts(int page, PostType postType = PostType.All);
-        Task<ActionResponse> AddPost(Notice notice,List<DBFile> dBFiles, List<IFormFile> formFiles = null);
+        Task<ActionResponse> AddPost(Notice notice, List<DBFile> dBFiles, List<IFormFile> formFiles = null);
         Task<ActionResponse> UpdatePost(Notice notice);
         Task<ActionResponse> DeletePost(Notice notice);
         Task<List<Notice>> GetUpcomingEvents(int page, PostType all);

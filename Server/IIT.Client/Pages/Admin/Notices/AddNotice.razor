@@ -133,15 +133,19 @@
     {
         NewNotice.Batch = currentbatches.FirstOrDefault(x => x.Id == BatchId);
         var resp = await _noticeHandler.AddPost(NewNotice, DBFiles);
-        if (resp != null && resp.Actionstatus)
+        if (resp == null)
         {
-            _matToaster.Add("Successfully created new event", MatToastType.Success);
-            _navigationManager.NavigateTo("/admin/notices");
-            DBFiles.Clear();
+            _matToaster.Add("Failed to create new Notice", MatToastType.Danger);
         }
         else
         {
-            _matToaster.Add("Failed to create new Notice", MatToastType.Danger);
+            var toast = resp.Actionstatus ? MatToastType.Success : MatToastType.Danger;
+            _matToaster.Add(resp.Message, MatToastType.Success);
+            if (resp.Actionstatus)
+            {
+                _navigationManager.NavigateTo("/admin/notices");
+                DBFiles.Clear();
+            }
         }
     }
 }

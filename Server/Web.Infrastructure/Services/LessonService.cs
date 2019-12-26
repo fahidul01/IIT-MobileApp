@@ -2,7 +2,6 @@
 using CoreEngine.Model.DBModel;
 using Microsoft.EntityFrameworkCore;
 using Student.Infrastructure.DBModel;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -45,7 +44,7 @@ namespace Student.Infrastructure.Services
             return lessons;
         }
 
-        
+
         public async Task<List<Lesson>> GetCourseLesson(int courseId)
         {
             return await _db.Lessons.Where(x => x.Course.Id == courseId)
@@ -79,6 +78,22 @@ namespace Student.Infrastructure.Services
                                       .ThenInclude(x => x.Batch)
                                       .ToListAsync();
             return dayLessons;
+        }
+
+        public async Task<ActionResponse> DeleteLesson(int lessonId, int courseId)
+        {
+            var lesson = await _db.Lessons.Include(x => x.Course)
+                                  .FirstOrDefaultAsync(x => x.Id == lessonId);
+            if (lesson == null || lesson.Course.Id != courseId)
+            {
+                return new ActionResponse(false, "Invalid Lesson Information");
+            }
+            else
+            {
+                _db.Entry(lesson).State = EntityState.Deleted;
+                await _db.SaveChangesAsync();
+                return new ActionResponse(true);
+            }
         }
     }
 }

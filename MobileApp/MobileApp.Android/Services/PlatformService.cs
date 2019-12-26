@@ -13,6 +13,13 @@ namespace MobileApp.Droid.Services
 {
     internal class PlatformService : IPlatformService
     {
+        private readonly MainActivity mainActivity;
+
+        public PlatformService(MainActivity mainActivity)
+        {
+            this.mainActivity = mainActivity;
+        }
+
         public void OpenToast(string text)
         {
             Toast.MakeText(Application.Context, text, ToastLength.Short).Show();
@@ -33,15 +40,15 @@ namespace MobileApp.Droid.Services
             }
         }
 
-        public void VerifyPhoneNumber(string mobile, ICommand onComplete, 
+        public void VerifyPhoneNumber(string mobile, ICommand onComplete,
             ICommand onFailed, ICommand codeSent)
         {
-            var activity = (MainActivity)Application.Context;
-            var phoneAuthCallbacks = new PhoneAuthCallbacks(onComplete, onFailed,codeSent);
-            PhoneAuthProvider.Instance
-                .VerifyPhoneNumber(mobile, 60, TimeUnit.Seconds,
-                activity,
-                phoneAuthCallbacks);
+            var phoneAuthCallbacks = new PhoneAuthCallbacks(onComplete, onFailed, codeSent);
+                PhoneAuthProvider.Instance
+                    .VerifyPhoneNumber(mobile, 60, TimeUnit.Seconds,
+                    mainActivity,
+                    phoneAuthCallbacks);
+           
         }
 
         public async Task<bool> VerifyOTP(string verificationId, string otp)
@@ -72,7 +79,7 @@ namespace MobileApp.Droid.Services
 
         public override void OnVerificationCompleted(PhoneAuthCredential credential)
         {
-            this.onComplete?.Execute(credential.SmsCode);
+            onComplete?.Execute(credential.SmsCode);
         }
 
         public override void OnCodeSent(string verificationId, PhoneAuthProvider.ForceResendingToken forceResendingToken)
@@ -86,7 +93,7 @@ namespace MobileApp.Droid.Services
 
         public override void OnVerificationFailed(FirebaseException p0)
         {
-            this.onFailed?.Execute(null);
+            onFailed?.Execute(p0.Message);
         }
     }
 }

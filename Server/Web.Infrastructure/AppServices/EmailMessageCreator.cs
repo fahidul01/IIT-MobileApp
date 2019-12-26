@@ -1,5 +1,4 @@
 ﻿using CoreEngine.Model.Common;
-using CoreEngine.Model.DBModel;
 
 namespace Student.Infrastructure.AppServices
 {

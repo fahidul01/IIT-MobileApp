@@ -10,7 +10,7 @@
                      x:DataType="vm:LoginViewModel"
                      x:TypeArguments="vm:LoginViewModel"
                      x:Class="MobileApp.Views.Login.LoginPage">
-    <Grid>
+    <Grid d:BindingContext="{x:Static vm:LoginViewModel}">
         <Grid.RowDefinitions>
             <RowDefinition Height="2*" />
             <RowDefinition Height="3*" />
@@ -18,8 +18,8 @@
         </Grid.RowDefinitions>
         <Image Aspect="AspectFill"
                Source="front_bg.ong" />
-        <BoxView BackgroundColor="DarkBlue"
-                 Opacity="0.5" />
+        <BoxView BackgroundColor="Black"
+                 Opacity="0.6" />
         <Frame CornerRadius="60"
                HeightRequest="120"
                Padding="0"
@@ -54,7 +54,9 @@
                 Visual="Default"
                 VerticalOptions="End"
                 Margin="30,0"
-                Text="ForgetPassword"
+                HorizontalOptions="End"
+                Text="Register"
+                Command="{Binding RegisterCommand}"
                 TextColor="Maroon" />
         <ActivityIndicator Grid.Row="1"
                            IsRunning="{Binding IsBusy}" />

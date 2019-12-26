@@ -49,8 +49,7 @@ namespace Student.Infrastructure.Services
         {
             var dbUser = await _db.Users
                                   .Include(m => m.Batch)
-                                  .FirstOrDefaultAsync(x => x.UserRole == AppConstants.Student &&
-                                                            x.Id == userId);
+                                  .FirstOrDefaultAsync(x => x.Id == userId);
             if (dbUser == null)
             {
                 return new ActionResponse(false, "Invalid User");

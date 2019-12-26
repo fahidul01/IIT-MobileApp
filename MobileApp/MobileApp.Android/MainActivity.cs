@@ -1,5 +1,4 @@
-﻿
-using Android.App;
+﻿using Android.App;
 using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
@@ -14,6 +13,9 @@ using Xamarin.Forms;
 namespace MobileApp.Droid
 {
     //yoKOOpnaexb8JyrClG6ts00MiYU=
+    //sakib.buet51@gmail.com, 25 Apr, 2019, PrivateKeyEntry,
+    //Certificate fingerprint(SHA1): CA:82:8E:3A:99:DA:7B:16:FC:27:2A:C2:94:6E:AD:B3:4D:0C:89:85
+    
     [Activity(Label = "MobileApp", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
@@ -45,7 +47,8 @@ namespace MobileApp.Droid
                     MessageDigest md = MessageDigest.GetInstance("SHA");
                     md.Update(signature.ToByteArray());
 
-                    System.Diagnostics.Debug.WriteLine(Convert.ToBase64String(md.Digest()));
+                    var finalId = Convert.ToBase64String(md.Digest());
+                    System.Diagnostics.Debug.WriteLine(finalId);
                 }
             }
             catch (NoSuchAlgorithmException e)
@@ -88,7 +91,8 @@ namespace MobileApp.Droid
 
         private void ConfigureServices(HostBuilderContext ctx, IServiceCollection services)
         {
-            services.AddSingleton<IPlatformService, PlatformService>();
+            var platform = new PlatformService(this);
+            services.AddSingleton<IPlatformService>(platform);
         }
     }
 }

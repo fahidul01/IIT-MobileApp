@@ -12,8 +12,8 @@ namespace IIT.Client.Services
     public class AppState
     {
         private string _currentToken;
-        private IMemberHandler _memberHandler;
-        private HttpWorker _httpWorker;
+        private readonly IMemberHandler _memberHandler;
+        private readonly HttpWorker _httpWorker;
         private readonly ILocalStorageService _localData;
         private readonly ISessionStorageService _sessionData;
         private User CurrentUser;
@@ -38,14 +38,20 @@ namespace IIT.Client.Services
                 if (string.IsNullOrWhiteSpace(_currentToken))
                 {
                     if (await _localData.ContainKeyAsync(tokenKey))
+                    {
                         _currentToken = await _localData.GetItemAsync<string>(tokenKey);
+                    }
                 }
             }
             catch { }
             if (!string.IsNullOrWhiteSpace(_currentToken))
             {
                 _httpWorker.LoggedIn(_currentToken);
-                if (CurrentUser != null) return CurrentUser;
+                if (CurrentUser != null)
+                {
+                    return CurrentUser;
+                }
+
                 try
                 {
                     var user = await _sessionData.GetItemAsync<User>(tokenUser);
@@ -72,11 +78,11 @@ namespace IIT.Client.Services
             }
 
 
-            
-           
+
+
             Console.WriteLine("Asking For Info: " + _currentToken);
 
-            
+
             return null;
         }
 

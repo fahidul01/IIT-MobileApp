@@ -6,8 +6,8 @@
         public const string Student = "Student";
         public const string Admin = "Admin";
 #if DEBUG
-        // public static string BaseUrl = "http://172.17.100.2:5001/api/";
-        public static string BaseUrl = "https://mit.techapp.ml/";
+        public static string BaseUrl = "http://192.168.1.102:7001/";
+       // public static string BaseUrl = "https://mit.techapp.ml/";
 #else
         public static string BaseUrl = "https://mit.techapp.ml/api/";
 #endif

@@ -3,7 +3,6 @@ using CoreEngine.Model.DBModel;
 using Microsoft.EntityFrameworkCore;
 using Student.Infrastructure.AppServices;
 using Student.Infrastructure.DBModel;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -276,7 +275,7 @@ namespace Student.Infrastructure.Services
             return courseList;
         }
 
-       
+
 
         public async Task<ActionResponse> DeleteLesson(string userId, int lessonId)
         {
@@ -307,9 +306,11 @@ namespace Student.Infrastructure.Services
                 var semesterData = courseData.FirstOrDefault().Course.Semester;
                 var data = new SemesterData(semesterData, courseData.ToList());
                 if (data.SemesterGPA > 0)
+                {
                     allSemesters.Add(data);
+                }
             }
-            return allSemesters.OrderBy(x=>x.StartsOn).ToList();
+            return allSemesters.OrderBy(x => x.StartsOn).ToList();
         }
 
         #endregion

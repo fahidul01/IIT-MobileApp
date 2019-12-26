@@ -5,7 +5,6 @@ using Mobile.Core.Engines.Services;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Mobile.Core.ViewModels
@@ -13,6 +12,7 @@ namespace Mobile.Core.ViewModels
     public class AddUpdateCourseViewModel : BaseViewModel
     {
         private readonly ICourseHandler _courseHandler;
+        private readonly ILessonHandler _lessonHandler;
         private readonly IPreferenceEngine _filePicker;
 
         public Course CurrentCourse { get; private set; }
@@ -20,9 +20,12 @@ namespace Mobile.Core.ViewModels
         public ObservableCollection<DBFile> DBFiles { get; set; }
         public Semester CurrentSemester { get; set; }
 
-        public AddUpdateCourseViewModel(ICourseHandler courseHandler, IPreferenceEngine preferenceEngine)
+        public AddUpdateCourseViewModel(ICourseHandler courseHandler,
+            IPreferenceEngine preferenceEngine,
+            ILessonHandler lessonHandler)
         {
             _courseHandler = courseHandler;
+            _lessonHandler = lessonHandler;
             _filePicker = preferenceEngine;
             Lessons = new ObservableCollection<Lesson>();
             DBFiles = new ObservableCollection<DBFile>();
@@ -43,6 +46,7 @@ namespace Mobile.Core.ViewModels
                 if (args.Length == 2 && args[1] is Course editCourse)
                 {
                     CurrentCourse = editCourse;
+                    LoadCourseDataAsync(editCourse);
                 }
                 else
                 {
@@ -51,7 +55,7 @@ namespace Mobile.Core.ViewModels
             }
         }
 
-        private async Task LoadCourseDataAsync(Course course)
+        private async void LoadCourseDataAsync(Course course)
         {
             var fullCourse = await _courseHandler.GetCourse(course.Id);
             if (fullCourse != null)
@@ -88,7 +92,7 @@ namespace Mobile.Core.ViewModels
             var confirm = await _dialog.ShowConfirmation("Confirm", "Are you sure to delete this lesson?");
             if (confirm)
             {
-                var response = await _courseHandler.DeleteLesson(obj.Id);
+                var response = await _lessonHandler.DeleteLesson(obj.Id, CurrentCourse.Id);
                 ShowResponse(response);
             }
         }

@@ -1,13 +1,7 @@
-﻿using Blazored.LocalStorage;
-using CoreEngine.APIHandlers;
-using CoreEngine.Engine;
-using CoreEngine.Helpers;
+﻿using CoreEngine.APIHandlers;
 using CoreEngine.Model.Common;
-using CoreEngine.Model.DBModel;
 using Microsoft.AspNetCore.Components.Authorization;
-using System;
 using System.Security.Claims;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace IIT.Client.Services
@@ -18,7 +12,7 @@ namespace IIT.Client.Services
         private readonly AppState _appState;
 
 
-        public ApiAuthenticationProvider(IMemberHandler memberHandler,AppState appState)
+        public ApiAuthenticationProvider(IMemberHandler memberHandler, AppState appState)
         {
             _memberHandler = memberHandler;
             _appState = appState;
@@ -29,7 +23,7 @@ namespace IIT.Client.Services
             var res = await _memberHandler.Login(username, password);
             if (res != null && res.Success)
             {
-                _appState.Login(res,remember);
+                _appState.Login(res, remember);
                 NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
             }
 
@@ -46,7 +40,9 @@ namespace IIT.Client.Services
         {
             var currentUser = await _appState.GetUser();
             if (currentUser == null)
+            {
                 return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
+            }
             else
             {
                 var identity = new ClaimsIdentity(new[]

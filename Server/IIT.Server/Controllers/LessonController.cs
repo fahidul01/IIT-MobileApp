@@ -25,9 +25,15 @@ namespace IIT.Server.Controllers
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var access = await _userService.AuthorizeCourse(userId, courseId);
-
-            var res = await _lessonService.AddLesson(courseId, lesson);
-            return new ActionResponse(res != null);
+            if (access)
+            {
+                var res = await _lessonService.AddLesson(courseId, lesson);
+                return new ActionResponse(res != null);
+            }
+            else
+            {
+                return new ActionResponse(false, "You do not have right to add lesson here");
+            }
         }
 
         public async Task<List<Lesson>> GetLessons()
@@ -53,6 +59,20 @@ namespace IIT.Server.Controllers
         public Task<List<Lesson>> GetUpcomingLessons()
         {
             return _lessonService.UpcomingLessons();
+        }
+
+        public async Task<ActionResponse> DeleteLesson(int lessonId, int courseId)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var access = await _userService.AuthorizeCourse(userId, courseId);
+            if (access)
+            {
+                return await _lessonService.DeleteLesson(lessonId, courseId);
+            }
+            else
+            {
+                return new ActionResponse(false, "Invalid Lesson Information");
+            }
         }
     }
 }

@@ -10,7 +10,7 @@ namespace CoreEngine.APIHandlers
     {
         Task<SignInResponse> Login(string username, string password);
         Task<ActionResponse> ChangePassword(string currentPassword, string newPassword);
-        Task<ActionResponse> ForgetPassword(string rollNo,string mobileNo, string password);
+        Task<ActionResponse> ForgetPassword(string rollNo, string phoneNo, string password);
         Task<User> TouchLogin();
         void Logout();
 
@@ -22,7 +22,7 @@ namespace CoreEngine.APIHandlers
         Task<List<User>> SearchStudents(string key);
         Task<List<User>> GetCurrentCr();
         Task<User> GetUser(string userId);
-        Task<ActionResponse> VerifyPhoneNo(string rollNo, string mobileNo);
-        Task<ActionResponse> Register(string rollNo, string mobileNo, string password);
+        Task<ActionResponse> VerifyPhoneNo(string rollNo, string phoneNo);
+        Task<ActionResponse> Register(string rollNo, string phoneNo, string password);
     }
 }

@@ -72,9 +72,9 @@ namespace IIT.Server.Controllers
             return Task.FromResult(new ActionResponse(false, "Not Allowed"));
         }
 
-        public async Task<ActionResponse> ForgetPassword(string rollNo,string mobileNo, string password)
+        public async Task<ActionResponse> ForgetPassword(string rollNo, string phoneNo, string password)
         {
-            var res = await _userService.RecoverPasswordPhoneNo(rollNo,mobileNo, password);
+            var res = await _userService.RecoverPasswordPhoneNo(rollNo, phoneNo, password);
             return res;
         }
 
@@ -219,14 +219,16 @@ namespace IIT.Server.Controllers
             return _userService.GetCurrentCr();
         }
 
-        public Task<ActionResponse> VerifyPhoneNo(string rollNo, string mobileNo)
+        [AllowAnonymous]
+        public Task<ActionResponse> VerifyPhoneNo(string rollNo, string phoneNo)
         {
-            return _userService.VerifyPhoneNo(rollNo, mobileNo);
+            return _userService.VerifyPhoneNo(rollNo, phoneNo);
         }
 
-        public Task<ActionResponse> Register(string rollNo, string mobileNo, string password)
+        [AllowAnonymous]
+        public Task<ActionResponse> Register(string rollNo, string phoneNo, string password)
         {
-            return _userService.ConfirmRegistration(rollNo, mobileNo, password);
+            return _userService.ConfirmRegistration(rollNo, phoneNo, password);
         }
     }
 }

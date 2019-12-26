@@ -1,5 +1,4 @@
 ﻿using CoreEngine.APIHandlers;
-using CoreEngine.Helpers;
 using GalaSoft.MvvmLight.Command;
 using Mobile.Core.Engines.Services;
 using Mobile.Core.Models.Core;
@@ -35,6 +34,12 @@ namespace Mobile.Core.ViewModels
         }
 
         public ICommand LoginCommand => new RelayCommand(LoginAction);
+        public ICommand RegisterCommand => new RelayCommand(RegisterAction);
+
+        private void RegisterAction()
+        {
+            _nav.NavigateTo<RegistrationViewModel>();
+        }
 
         private async void LoginAction()
         {

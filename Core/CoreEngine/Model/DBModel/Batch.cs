@@ -41,7 +41,7 @@ namespace CoreEngine.Model.DBModel
         public void LoadUsers()
         {
             ExternalUsers = new List<User>();
-            foreach (var user in Students.OrderBy(x=>x.Roll))
+            foreach (var user in Students.OrderBy(x => x.Roll))
             {
                 ExternalUsers.Add(User.FromDBUser(user, ""));
             }

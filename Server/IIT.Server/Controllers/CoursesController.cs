@@ -62,7 +62,7 @@ namespace IIT.Server.Controllers
             }
         }
 
-       
+
         public async Task<ActionResponse> UploadCourseResult(int courseId, DBFile dBFile, IFormFile formFile)
         {
             if (courseId != 0 && formFile != null)
@@ -220,7 +220,7 @@ namespace IIT.Server.Controllers
             }
         }
 
-        [Authorize(Roles =AppConstants.Admin)]
+        [Authorize(Roles = AppConstants.Admin)]
         public async Task<List<SemesterData>> GetStudentResult(string userId)
         {
             return await _courseService.GetResult(userId);

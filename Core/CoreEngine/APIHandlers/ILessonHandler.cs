@@ -12,5 +12,6 @@ namespace CoreEngine.APIHandlers
         Task<ActionResponse> UpdateLesson(Lesson lesson);
         Task<List<Lesson>> GetCourseLessons(int courseId);
         Task<List<Lesson>> GetUpcomingLessons();
+        Task<ActionResponse> DeleteLesson(int lessonId, int courseId);
     }
 }
