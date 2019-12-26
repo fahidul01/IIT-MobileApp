@@ -25,7 +25,7 @@ namespace Student.Infrastructure.Services
         public async Task<List<DBFile>> UploadFiles(IEnumerable<IFormFile> formFiles)
         {
             var files = new List<DBFile>();
-            foreach (var file in formFiles.Where(x => x.Length > 0))
+            foreach (var file in formFiles)
             {
                 files.Add(await UploadFile(file));
             }
