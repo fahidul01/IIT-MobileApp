@@ -72,11 +72,19 @@ namespace Mobile.Core.ViewModels
         private async void VerifyAction()
         {
             IsBusy = true;
-            var res = await _platformService.VerifyOTP(VerificationId, OTPToken);
-            IsBusy = false;
-            if (res)
+            if (string.IsNullOrWhiteSpace(VerificationId)
+                || string.IsNullOrWhiteSpace(OTPToken))
             {
-                RegistrationState = RegistrationState.Password;
+                _dialog.ShowMessage("Error", "Invalid Token");
+            }
+            else
+            {
+                var res = await _platformService.VerifyOTP(VerificationId, OTPToken);
+                IsBusy = false;
+                if (res)
+                {
+                    RegistrationState = RegistrationState.Password;
+                }
             }
         }
 
@@ -119,7 +127,8 @@ namespace Mobile.Core.ViewModels
         {
             IsBusy = false;
             _dialog.ShowMessage("Error", message);
-            RegistrationState = RegistrationState.Roll;
+            if (string.IsNullOrWhiteSpace(OTPToken))
+                RegistrationState = RegistrationState.Roll;
         }
 
         private void CodeSentAction(string verifyId)

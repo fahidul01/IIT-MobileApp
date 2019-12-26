@@ -95,5 +95,11 @@ namespace MobileApp.Droid.Services
         {
             onFailed?.Execute(p0.Message);
         }
+
+        public override void OnCodeAutoRetrievalTimeOut(string p0)
+        {
+            base.OnCodeAutoRetrievalTimeOut(p0);
+            onFailed?.Execute(p0);
+        }
     }
 }

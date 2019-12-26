@@ -31,23 +31,61 @@
                    Margin="20"
                    Aspect="AspectFit" />
         </Frame>
-        <StackLayout Margin="15,0"
-                     Spacing="0"
-                     Grid.Row="1"
-                     IsVisible="{Binding ShowRoll}"
-                     VerticalOptions="Center">
-            <Entry Text="{Binding RollNo}"
-                   Placeholder="Roll Number" />
-            <Label Text="* If you dont have the roll number, check your mail or contact with admin."
-                   FontSize="Micro"
-                   Margin="10,0" />
-            <Entry Text="{Binding PhoneNo}"
-                   Margin="0,20,0,0"
-                   Placeholder="Phone Number" />
-            <Label Text="* Please use the mobile number used for registration.(+88xxxxxxxxxxx)"
-                   FontSize="Micro"
-                   Margin="10,0" />
-        </StackLayout>
+        <Frame Grid.Row="1"
+               Margin="15">
+            <Grid>
+                <StackLayout Spacing="0"
+                             IsVisible="{Binding ShowRoll}"
+                             VerticalOptions="Center">
+                    <Entry Text="{Binding RollNo}"
+                           Placeholder="Roll Number" />
+                    <Label Text="* If you dont have the roll number, check your mail or contact with admin."
+                           FontSize="Micro"
+                           Margin="10,0" />
+                    <Entry Text="{Binding PhoneNo}"
+                           Margin="0,20,0,0"
+                           Placeholder="Phone Number" />
+                    <Label Text="* Please use the mobile number used for registration.(+88xxxxxxxxxxx)"
+                           FontSize="Micro"
+                           Margin="10,0" />
+                </StackLayout>
+                <StackLayout VerticalOptions="Center"
+                             IsVisible="{Binding ShowMobile}">
+                    <Entry Text="{Binding OTPToken}"
+                           HorizontalOptions="Center"
+                           Keyboard="Numeric"
+                           WidthRequest="100"
+                           HorizontalTextAlignment="Center" />
+                    <Label HorizontalOptions="Center"
+                           Text="OTP Token"
+                           FontSize="Small" />
+                </StackLayout>
+                <StackLayout IsVisible="{Binding ShowPassword}"
+                             VerticalOptions="Center">
+                    <Grid Margin="10,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="3*" />
+                        </Grid.ColumnDefinitions>
+                        <Label Text="Roll No" />
+                        <Label Text="{Binding RollNo}"
+                               d:Text="181909"
+                               Grid.Column="1" />
+                        <Label Text="Phone No"
+                               Grid.Row="1" />
+                        <Label Text="{Binding RollNo}"
+                               d:Text="017000000"
+                               Grid.Row="1"
+                               Grid.Column="1" />
+                    </Grid>
+                    <Entry Text="{Binding Password}"
+                           Placeholder="Password"
+                           Margin="0,20,0,0" />
+                    <Entry Text="{Binding ConfirmPassword}"
+                           Placeholder="Confirm Password" />
+                </StackLayout>
+            </Grid>
+        </Frame>
         <Button Text="Next"
                 Command="{Binding PhoneSubmitCommand}"
                 Grid.Row="2"
@@ -56,19 +94,8 @@
                 IsVisible="{Binding ShowRoll}"
                 BackgroundColor="WhiteSmoke"
                 TextColor="DarkBlue" />
-        <StackLayout VerticalOptions="Center"
-                     Margin="5,0"
-                     IsVisible="{Binding ShowMobile}"
-                     Grid.Row="1">
-            <Entry Text="{Binding OTPToken}"
-                   HorizontalOptions="Center"
-                   Keyboard="Numeric"
-                   WidthRequest="120"
-                   HorizontalTextAlignment="Center" />
-            <Label HorizontalOptions="Center"
-                   Text="OTP Token"
-                   FontSize="Small" />
-        </StackLayout>
+        
+       
         <Button Text="Next"
                 Command="{Binding VerifyCommand}"
                 Grid.Row="2"
@@ -77,33 +104,11 @@
                 IsVisible="{Binding ShowMobile}"
                 BackgroundColor="WhiteSmoke"
                 TextColor="DarkBlue" />
-        <StackLayout Grid.Row="1"
-                     IsVisible="{Binding ShowPassword}"
-                     Margin="5,0">
-            <Grid Margin="10,0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="3*" />
-                </Grid.ColumnDefinitions>
-                <Label Text="Roll No" />
-                <Label Text="{Binding RollNo}"
-                       d:Text="181909"
-                       Grid.Column="1" />
-                <Label Text="Phone No"
-                       Grid.Row="1" />
-                <Label Text="{Binding RollNo}"
-                       d:Text="017000000"
-                       Grid.Row="1"
-                       Grid.Column="1" />
-            </Grid>
-            <Entry Text="{Binding Password}"
-                   Placeholder="Password"
-                   Margin="0,20,0,0" />
-            <Entry Text="{Binding ConfirmPassword}"
-                   Placeholder="Confirm Password" />
-        </StackLayout>
+        
+       
         <Button Style="{StaticResource SaveButton}"
                 VerticalOptions="End"
+                Command="{Binding RegisterCommand}"
                 Grid.Row="2"
                 Text="Submit"
                 IsVisible="{Binding ShowPassword}"
