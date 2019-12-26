@@ -309,12 +309,12 @@ app {
 .mini .mdc-drawer,
 .mini .app-sidebar {
     width: 54px;
-    transition: width .4s ease-in-out;
+    /*transition: width .4s ease-in-out;*/
 }
 
     .mini .mdc-drawer.mdc-drawer--open:not(.mdc-drawer--closing) + .mdc-drawer-app-content {
         margin-left: 54px;
-        transition: margin-left .4s ease-in-out;
+        /*transition: margin-left .4s ease-in-out;*/
     }
 
 .mini .drawer-profile {
@@ -325,7 +325,7 @@ app {
 .mini .miniHover {
     transform: translateX(200%);
     animation: slide-out 1s forwards;
-    transition: .4s ease-in-out;
+    /*transition: .4s ease-in-out;*/
     visibility: hidden;
     opacity: 0;
     position: fixed;
@@ -335,7 +335,7 @@ app {
 .mini .mdc-drawer:hover .miniHover {
     transform: translateX(0%);
     animation: slide-in 1s forwards;
-    transition: width .4s ease-in-out;
+    /*transition: width .4s ease-in-out;*/
     visibility: visible;
     opacity: 1;
     position: relative;
@@ -354,24 +354,24 @@ app {
 .full .mdc-drawer,
 .full .app-sidebar {
     width: 256px;
-    transition: width .4s ease-in-out;
+    /*transition: width .4s ease-in-out;*/
 }
 
 .closed .mdc-drawer,
 .closed .app-sidebar {
     width: 0;
-    transition: width .4s ease-in-out;
+    /*transition: width .4s ease-in-out;*/
 }
 
 .mini .mdc-drawer:hover.mdc-drawer--open:not(.mdc-drawer--closing) + .mdc-drawer-app-content,
 .full .mdc-drawer.mdc-drawer--open:not(.mdc-drawer--closing) + .mdc-drawer-app-content {
     margin-left: 256px;
-    transition: margin-left .4s ease-in-out;
+    /*transition: margin-left .4s ease-in-out;*/
 }
 
 .closed .mdc-drawer.mdc-drawer--open:not(.mdc-drawer--closing) + .mdc-drawer-app-content {
     margin-left: 0;
-    transition: margin-left .4s ease-in-out;
+    /*transition: margin-left .4s ease-in-out;*/
 }
 
 .mdc-drawer__content {
