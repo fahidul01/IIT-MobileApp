@@ -37,8 +37,9 @@ namespace Mobile.Core.ViewModels
 
         public ICommand PhoneSubmitCommand => new RelayCommand(PhoneSubmitAction);
         ICommand CodeSentCommand => new RelayCommand<string>(CodeSentAction);
-        ICommand VerifyCompleteCommand => new RelayCommand<string>(VerifyComplete);
+        ICommand VerifyOtpCommand => new RelayCommand<string>(VerifyComplete);
         ICommand VerifyFailedCommand => new RelayCommand<string>(VerifyFailed);
+        ICommand VerifyAuthCommand => new RelayCommand(() => RegistrationState = RegistrationState.Password);
         public ICommand VerifyCommand => new RelayCommand(VerifyAction);
         public ICommand RegisterCommand => new RelayCommand(RegisterAction);
 
@@ -105,7 +106,7 @@ namespace Mobile.Core.ViewModels
                 try
                 {
                     _platformService.VerifyPhoneNumber(PhoneNo,
-                        VerifyCompleteCommand, VerifyFailedCommand, CodeSentCommand);
+                        VerifyOtpCommand, VerifyFailedCommand, CodeSentCommand, VerifyAuthCommand);
                 }
                 catch (Exception ex)
                 {

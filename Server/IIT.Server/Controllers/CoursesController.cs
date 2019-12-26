@@ -46,14 +46,10 @@ namespace IIT.Server.Controllers
                 else
                 {
                     var res = await _courseService.AddCourse(course, semesterId, semester.Batch.Id);
-                    if (res != null && formFiles != null && formFiles.Count > 0)
+                    return new ActionResponse(true, "Course created successfully")
                     {
-                        return await AddMaterial(res.Id, null, formFiles);
-                    }
-                    else
-                    {
-                        return new ActionResponse(res != null);
-                    }
+                        Data = res.Id
+                    };
                 }
             }
             else

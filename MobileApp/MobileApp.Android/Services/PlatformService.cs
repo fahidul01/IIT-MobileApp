@@ -40,10 +40,11 @@ namespace MobileApp.Droid.Services
             }
         }
 
-        public void VerifyPhoneNumber(string mobile, ICommand onComplete,
-            ICommand onFailed, ICommand codeSent)
+        public void VerifyPhoneNumber(string mobile,
+            ICommand onComplete,
+            ICommand onFailed, ICommand codeSent,ICommand onverified)
         {
-            var phoneAuthCallbacks = new PhoneAuthCallbacks(onComplete, onFailed, codeSent);
+            var phoneAuthCallbacks = new PhoneAuthCallbacks(onComplete, onFailed, codeSent, onverified);
                 PhoneAuthProvider.Instance
                     .VerifyPhoneNumber(mobile, 60, TimeUnit.Seconds,
                     mainActivity,
@@ -61,25 +62,40 @@ namespace MobileApp.Droid.Services
 
     public class PhoneAuthCallbacks : PhoneAuthProvider.OnVerificationStateChangedCallbacks
     {
-        private readonly ICommand onComplete;
+        private readonly ICommand onOTPComplete;
         private readonly ICommand onFailed;
         private readonly ICommand onSent;
+        private readonly ICommand onVerifyComplete;
 
+        private bool onSMS;
 
         public PhoneAuthCallbacks()
         {
 
         }
-        public PhoneAuthCallbacks(ICommand onComplete, ICommand onFailed, ICommand onSent)
+        public PhoneAuthCallbacks(ICommand onComplete, ICommand onFailed, ICommand onSent,ICommand onVerifyComplete)
         {
-            this.onComplete = onComplete;
+            this.onOTPComplete = onComplete;
             this.onFailed = onFailed;
             this.onSent = onSent;
+            this.onVerifyComplete = onVerifyComplete;
         }
 
-        public override void OnVerificationCompleted(PhoneAuthCredential credential)
+        public async override void OnVerificationCompleted(PhoneAuthCredential credential)
         {
-            onComplete?.Execute(credential.SmsCode);
+            if(onSMS)
+            {
+                onOTPComplete?.Execute(credential.SmsCode);
+            }
+            else
+            {
+                var res = await FirebaseAuth.Instance.SignInWithCredentialAsync(credential);
+                if(res.User!= null)
+                {
+                    onVerifyComplete?.Execute(null);
+                }
+            }
+           
         }
 
         public override void OnCodeSent(string verificationId, PhoneAuthProvider.ForceResendingToken forceResendingToken)
@@ -87,6 +103,7 @@ namespace MobileApp.Droid.Services
             // The SMS verification code has been sent to the provided phone number, we
             // now need to ask the user to enter the code and then construct a credential
             // by combining the code with a verification ID.
+            onSMS = true;
             onSent?.Execute(verificationId);
             base.OnCodeSent(verificationId, forceResendingToken);
         }

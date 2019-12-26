@@ -136,7 +136,8 @@ namespace Student.Infrastructure.Services
             }
             else
             {
-                _db.Entry(dbCourse).State = EntityState.Modified;
+                _db.Entry(dbCourse).State = EntityState.Detached;
+                _db.Entry(course).State = EntityState.Modified;
                 await _db.SaveChangesAsync();
                 return true;
             }

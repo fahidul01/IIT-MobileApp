@@ -4,6 +4,7 @@
                      xmlns:d="http://xamarin.com/schemas/2014/forms/design"
                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                      mc:Ignorable="d"
+                     Title="Lesson Information"
                      xmlns:controls="clr-namespace:MobileApp.Controls"
                      xmlns:vm="clr-namespace:Mobile.Core.ViewModels;assembly=Mobile.Core"
                      x:DataType="vm:AddUpdateLessonViewModel"
@@ -36,6 +37,6 @@
         <Button Style="{StaticResource SaveButton}"
                 Grid.Row="1"
                 Text="Save"
-                Command="{Binding}" />
+                Command="{Binding SaveCommand}" />
     </Grid>
 </controls:CustomPage>

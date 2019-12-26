@@ -10,9 +10,9 @@
              x:Class="MobileApp.Views.Course.CoursesPartialView">
     <Frame Margin="10,5"
            d:BindingContext="{x:Static model:Semester}"
-           Padding="5">
+           Padding="10">
         <StackLayout>
-            <Label Text="{Binding Name, StringFormat='{}[{0}]'}"
+            <Label Text="{Binding Name}"
                    FontSize="Medium"
                    FontAttributes="Bold"
                    TextColor="{StaticResource colorPrimary}"

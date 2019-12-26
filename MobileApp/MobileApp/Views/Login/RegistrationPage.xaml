@@ -38,12 +38,14 @@
                              IsVisible="{Binding ShowRoll}"
                              VerticalOptions="Center">
                     <Entry Text="{Binding RollNo}"
+                           Keyboard="Numeric"
                            Placeholder="Roll Number" />
                     <Label Text="* If you dont have the roll number, check your mail or contact with admin."
                            FontSize="Micro"
                            Margin="10,0" />
                     <Entry Text="{Binding PhoneNo}"
                            Margin="0,20,0,0"
+                           Keyboard="Numeric"
                            Placeholder="Phone Number" />
                     <Label Text="* Please use the mobile number used for registration.(+88xxxxxxxxxxx)"
                            FontSize="Micro"
@@ -73,7 +75,7 @@
                                Grid.Column="1" />
                         <Label Text="Phone No"
                                Grid.Row="1" />
-                        <Label Text="{Binding RollNo}"
+                        <Label Text="{Binding PhoneNo}"
                                d:Text="017000000"
                                Grid.Row="1"
                                Grid.Column="1" />

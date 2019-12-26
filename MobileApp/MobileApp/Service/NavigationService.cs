@@ -174,8 +174,8 @@ namespace MobileApp.Service
 
         public async Task<bool> ShowConfirmation(string title, string message)
         {
-            var res = await _nav.DisplayPromptAsync(title, message, "Ok");
-            return res == "Ok";
+            var res = await _nav.DisplayAlert(title, message, "Ok", "Cancel");
+            return res;
         }
 
         public async Task<string> ShowAction(string title, string cancel, params string[] actions)

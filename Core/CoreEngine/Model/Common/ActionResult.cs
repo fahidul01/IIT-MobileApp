@@ -1,4 +1,6 @@
-﻿namespace CoreEngine.Model.Common
+﻿using System.Collections.Generic;
+
+namespace CoreEngine.Model.Common
 {
     public class ActionResponse
     {
@@ -21,6 +23,11 @@
         public ActionResponse()
         {
 
+        }
+
+        public ActionResponse(bool res, IEnumerable<string> enumerable) : this(res)
+        {
+            Message = string.Join("\n", enumerable);
         }
     }
 }

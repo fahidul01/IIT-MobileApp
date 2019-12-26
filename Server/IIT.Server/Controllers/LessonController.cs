@@ -11,12 +11,12 @@ using System.Threading.Tasks;
 namespace IIT.Server.Controllers
 {
     [Authorize]
-    public class LessonController : ControllerBase, ILessonHandler
+    public class LessonsController : ControllerBase, ILessonHandler
     {
         private readonly LessonService _lessonService;
         private readonly UserService _userService;
 
-        public LessonController(LessonService lessonService, UserService userService)
+        public LessonsController(LessonService lessonService, UserService userService)
         {
             _lessonService = lessonService;
             _userService = userService;
@@ -50,10 +50,11 @@ namespace IIT.Server.Controllers
         public async Task<ActionResponse> UpdateLesson(Lesson lesson)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var batch = await _userService.GetBatch(userId);
+            var lessonAccess = await _userService.AuthorizeLesson(userId,lesson.Id);
 
-            var res = await _lessonService.UpdateLesson(batch.Id, lesson);
-            return new ActionResponse(res != null);
+            if(lessonAccess)
+             return await _lessonService.UpdateLesson(lesson);
+           else return new ActionResponse(false,"Invalid User access");
         }
 
         public Task<List<Lesson>> GetUpcomingLessons()

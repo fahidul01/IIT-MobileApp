@@ -98,16 +98,34 @@ namespace IIT.Server.Controllers
         {
             try
             {
-                var res = await _signInmanager.PasswordSignInAsync(username, password, true, false);
-                if (res.Succeeded)
+                var user = await _userManager.FindByNameAsync(username);
+                if (user == null)
                 {
-                    var dbUser = await _userManager.FindByNameAsync(username);
-                    var token = _tokenService.GenerateJwtToken(username, dbUser);
-                    return new SignInResponse(true, token);
+                    return new SignInResponse(false)
+                    {
+                        Message = "Invalid Username"
+                    };
+                }
+                else if (user.UserRole == AppConstants.Student && !user.PhoneNumberConfirmed)
+                {
+                    return new SignInResponse(false)
+                    {
+                        Message = "Please complete the registration"
+                    };
                 }
                 else
                 {
-                    return new SignInResponse(false);
+                    var res = await _signInmanager.PasswordSignInAsync(username, password, true, false);
+                    if (res.Succeeded)
+                    {
+                        var dbUser = await _userManager.FindByNameAsync(username);
+                        var token = _tokenService.GenerateJwtToken(username, dbUser);
+                        return new SignInResponse(true, token);
+                    }
+                    else
+                    {
+                        return new SignInResponse(false);
+                    }
                 }
             }
             catch (Exception ex)

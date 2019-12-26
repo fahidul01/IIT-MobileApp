@@ -51,22 +51,19 @@ namespace Student.Infrastructure.Services
                                     .ToListAsync();
         }
 
-        public async Task<Lesson> UpdateLesson(int batchId, Lesson lesson)
+        public async Task<ActionResponse> UpdateLesson(Lesson lesson)
         {
-            var course = _db.Lessons
-                            .FirstOrDefaultAsync(x => x.Id == lesson.Id &&
-                                                 x.Course.Semester.Batch.Id == batchId);
-            if (course == null)
-            {
-                return null;
-            }
+            var dbLesson = await _db.Lessons.FirstOrDefaultAsync(x => x.Id == lesson.Id);
+            if (dbLesson == null) return new ActionResponse(false, "Invalid Lesson");
             else
             {
+                _db.Entry(dbLesson).State = EntityState.Detached;
                 _db.Entry(lesson).State = EntityState.Modified;
                 await _db.SaveChangesAsync();
-                return lesson;
+                return new ActionResponse(true);
             }
         }
+
         public async Task<List<Lesson>> UpcomingLessons()
         {
             var today = CurrentTime.DayOfWeek;

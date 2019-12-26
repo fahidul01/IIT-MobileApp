@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Student.Infrastructure.AppServices;
 using Student.Infrastructure.DBModel;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -52,6 +53,14 @@ namespace Student.Infrastructure.Services
             return users;
         }
 
+        public async Task<bool> AuthorizeLesson(string userId, int lessonId)
+        {
+            var lesson = await _db.Lessons.Include(x => x.Course)
+                                          .FirstOrDefaultAsync(x => x.Id == lessonId);
+            if (lesson == null) return false;
+            else return await AuthorizeCourse(userId, lesson.Course.Id);
+        }
+
         public async Task<bool> AuthorizeSemester(string userId, int semesterId)
         {
             var user = await _db.Users.Include(x => x.Batch)
@@ -64,7 +73,7 @@ namespace Student.Infrastructure.Services
             {
                 var semester = await _db.Semesters.Include(m => m.Batch)
                                       .FirstOrDefaultAsync(x => x.Id == semesterId);
-                return semester.Batch.Id == user.Batch?.Id;
+                return semester?.Batch.Id == user.Batch?.Id;
             }
         }
 
@@ -249,6 +258,7 @@ namespace Student.Infrastructure.Services
 
         public async Task<ActionResponse> VerifyPhoneNo(string rollNo, string phoneNo)
         {
+            rollNo = rollNo.Trim();
             phoneNo = phoneNo.Replace("+88", "").Trim();
             var res = await _db.Users.FirstOrDefaultAsync(x => x.UserName == rollNo);
             if (res == null)
@@ -271,6 +281,8 @@ namespace Student.Infrastructure.Services
 
         public async Task<ActionResponse> ConfirmRegistration(string rollNo, string phoneNo, string password)
         {
+            rollNo = rollNo.Trim();
+            phoneNo = phoneNo.Replace("+88", "").Trim();
             var dbUser = await _db.Users.FirstOrDefaultAsync(x => x.UserName == rollNo);
             if (dbUser == null)
             {
@@ -282,9 +294,16 @@ namespace Student.Infrastructure.Services
             }
             else
             {
-                var token = await _usermanager.GeneratePasswordResetTokenAsync(dbUser);
-                var resetRes = await _usermanager.ResetPasswordAsync(dbUser, token, password);
-                return new ActionResponse(true);
+                await _usermanager.RemovePasswordAsync(dbUser);
+                var resetRes = await _usermanager.AddPasswordAsync(dbUser, password);
+                if (resetRes.Succeeded)
+                {
+                    dbUser.PhoneNumberConfirmed = true;
+                    _db.Entry(dbUser).State = EntityState.Modified;
+                    await _db.SaveChangesAsync();
+                    return new ActionResponse(true);
+                }
+                else return new ActionResponse(false, resetRes.Errors.Select(x=>x.Description));
             }
         }
 

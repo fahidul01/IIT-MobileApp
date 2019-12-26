@@ -19,6 +19,8 @@ namespace Mobile.Core.ViewModels
         public ObservableCollection<Lesson> Lessons { get; set; }
         public ObservableCollection<DBFile> DBFiles { get; set; }
         public Semester CurrentSemester { get; set; }
+        public bool AllowModify { get; private set; }
+        public string SaveText => AllowModify ? "Update" : "Save";
 
         public AddUpdateCourseViewModel(ICourseHandler courseHandler,
             IPreferenceEngine preferenceEngine,
@@ -47,6 +49,7 @@ namespace Mobile.Core.ViewModels
                 {
                     CurrentCourse = editCourse;
                     LoadCourseDataAsync(editCourse);
+                    AllowModify = true;
                 }
                 else
                 {
@@ -76,16 +79,10 @@ namespace Mobile.Core.ViewModels
 
         public ICommand SaveCommand => new RelayCommand(SaveAction);
         public ICommand AddMaterialCommand => new RelayCommand(AddMaterialAction);
-        public ICommand DeleteMaterialComand => new RelayCommand<DBFile>(DeleteMaterialAction);
+        public ICommand DeleteMaterialCommand => new RelayCommand<DBFile>(DeleteMaterialAction);
         public ICommand AddLessonCommand => new RelayCommand(AddLessonAction);
         public ICommand EditLessonCommand => new RelayCommand<Lesson>(EditLessonAction);
         public ICommand DeleteLessonCommand => new RelayCommand<Lesson>(DeleteLessonAction);
-        public ICommand MaterialCommand => new RelayCommand<DBFile>(MaterialAction);
-
-        private void MaterialAction(DBFile obj)
-        {
-
-        }
 
         private async void DeleteLessonAction(Lesson obj)
         {
@@ -134,9 +131,8 @@ namespace Mobile.Core.ViewModels
         {
             IsBusy = true;
             var file = await _filePicker.PickFile();
-            if (file != null)
+            if (file != null && CurrentCourse.Id == 0)
             {
-
                 if (CurrentCourse.Id != 0)
                 {
                     var res = await _courseHandler.AddMaterial(CurrentCourse.Id, new List<DBFile> { file });
@@ -148,10 +144,6 @@ namespace Mobile.Core.ViewModels
                             DBFiles.Add(file);
                         }
                     }
-                }
-                else
-                {
-                    DBFiles.Add(file);
                 }
             }
             IsBusy = false;
@@ -176,12 +168,12 @@ namespace Mobile.Core.ViewModels
                 if (CurrentCourse.Id == 0)
                 {
                     var res = await _courseHandler.CreateCourse(CurrentSemester.Id, CurrentCourse, DBFiles.ToList());
-                    if (res.Actionstatus)
+                    if (res != null && res.Actionstatus && res.Data is int id)
                     {
-                        _nav.GoBack();
+                        CurrentCourse.Id = id;
+                        AllowModify = true;
                     }
-
-                    _dialog.ShowToastMessage("Created Course Successfully");
+                    _dialog.ShowToastMessage(res.Message);
                 }
                 else
                 {
@@ -189,8 +181,8 @@ namespace Mobile.Core.ViewModels
                     if (res != null && res.Actionstatus)
                     {
                         _nav.GoBack();
-                        _dialog.ShowToastMessage("Updated Course Successfully");
                     }
+                    _dialog.ShowToastMessage(res.Message);
                 }
             }
         }

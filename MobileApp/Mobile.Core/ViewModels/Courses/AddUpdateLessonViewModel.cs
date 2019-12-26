@@ -2,6 +2,7 @@
 using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
 using GalaSoft.MvvmLight.Command;
+using Mobile.Core.ViewModels.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ using System.Windows.Input;
 
 namespace Mobile.Core.ViewModels
 {
-    public class AddUpdateLessonViewModel : BaseViewModel
+    public class AddUpdateLessonViewModel : BaseViewModel,IPopupModel
     {
         private readonly ILessonHandler _lessonHandler;
 
@@ -38,6 +39,8 @@ namespace Mobile.Core.ViewModels
 
         public ICommand SaveCommand => new RelayCommand(SaveActionAsync);
 
+        public ICommand DataCommand { get; set; }
+
         private async void SaveActionAsync()
         {
             if (Lesson.TimeOfDay == TimeSpan.Zero)
@@ -53,8 +56,9 @@ namespace Mobile.Core.ViewModels
                 }
                 else
                 {
-                    res = await _lessonHandler.AddLesson(CurrentCourse.Id, Lesson);
+                    res = await _lessonHandler.UpdateLesson(Lesson);
                 }
+
                 if (res != null && res.Actionstatus)
                 {
                     _dialog.ShowToastMessage("Updated Lesson Successfully");

@@ -26,7 +26,7 @@ namespace CoreEngine.Engine
             {
                 msg = ex.Message;
             }
-            _toastService?.ShowToastMessage(ex.Message);
+            _toastService?.ShowMessage("Error", ex.Message);
             Console.WriteLine(msg);
         }
     }
