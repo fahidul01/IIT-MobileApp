@@ -55,18 +55,25 @@ namespace Mobile.Core.ViewModels
             {
                 IsBusy = true;
                 var res = await _memberHandler.Login(UserName, Password);
-                if (res != null && res.Success)
+                if (res != null)
                 {
-                    var user = await _memberHandler.TouchLogin();
-                    if (user != null)
+                    if (res.Success)
                     {
-                        AppService.CurrentUser = user;
-                        _settingService.Token = res.Token;
-                        _nav.Init<HomeViewModel>();
-                        if (AppService.CurrentUser.Batch != null)
+                        var user = await _memberHandler.TouchLogin();
+                        if (user != null)
                         {
-                            _platformService.SubsubcribeTopics(AppService.CurrentUser.Batch.Name);
+                            AppService.CurrentUser = user;
+                            _settingService.Token = res.Token;
+                            _nav.Init<HomeViewModel>();
+                            if (AppService.CurrentUser.Batch != null)
+                            {
+                                _platformService.SubsubcribeTopics(AppService.CurrentUser.Batch.Name);
+                            }
                         }
+                    }
+                    else
+                    {
+                        _dialog.ShowMessage("Error", res.Message);
                     }
                 }
                 IsBusy = false;

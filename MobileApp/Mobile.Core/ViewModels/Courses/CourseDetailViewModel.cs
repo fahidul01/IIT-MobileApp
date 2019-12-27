@@ -5,6 +5,7 @@ using Mobile.Core.Engines.Services;
 using Mobile.Core.Models.Core;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Input;
 
 namespace Mobile.Core.ViewModels
@@ -23,15 +24,19 @@ namespace Mobile.Core.ViewModels
             _courseHandler = courseHandler;
             _preferenceEngine = preferenceEngine;
         }
-        public override void OnAppear(params object[] args)
+        public async override void OnAppear(params object[] args)
         {
             base.OnAppear(args);
             if (args != null && args.Length > 0 && args[0] is Course course)
             {
-                CurrentCourse = course;
+                
                 CurrentSemester = course.Semester;
+                //CurrentCourse = course;
                 CanEdit = AppService.HasCRRole;
-                RefreshAction();
+                IsBusy = true;
+                CurrentCourse = await _courseHandler.GetCourse(course.Id);
+                IsBusy = false;
+                // RefreshAction();
             }
             else
             {
@@ -42,22 +47,24 @@ namespace Mobile.Core.ViewModels
         protected override async void RefreshAction()
         {
             base.RefreshAction();
-            IsBusy = true;
             CurrentCourse = await _courseHandler.GetCourse(CurrentCourse.Id);
-            IsBusy = false;
+            IsRefreshisng = false;
         }
 
         public ICommand EditCourseCommand => new RelayCommand(CourseAction);
 
+       
+
         private void CourseAction()
         {
-            var actionList = new Dictionary<string, Action>();
-
-            actionList.Add("Add Event", () => _nav.NavigateTo<AddUpdateNoticeViewModel>(PostType.ClassCancel, CurrentCourse));
-            actionList.Add("Modify Course", () => _nav.NavigateTo<AddUpdateCourseViewModel>(CurrentSemester, CurrentCourse));
-            actionList.Add("Add Lesson", () => _nav.NavigateTo<AddUpdateLessonViewModel>(CurrentCourse, new Lesson()));
-            actionList.Add("Add Course Material", AddMaterialAction);
-            actionList.Add("Upload Course Grade", CourseGradeAction);
+            var actionList = new Dictionary<string, Action>
+            {
+                { "Add Event", () => _nav.NavigateTo<AddUpdateNoticeViewModel>(CurrentCourse) },
+                { "Modify Course", () => _nav.NavigateTo<AddUpdateCourseViewModel>(CurrentSemester, CurrentCourse) },
+                { "Add Lesson", () => _nav.NavigateTo<AddUpdateLessonViewModel>(CurrentCourse, new Lesson()) },
+                { "Add Course Material", AddMaterialAction },
+                { "Upload Course Grade", CourseGradeAction }
+            };
 
             _dialog.ShowAction(CurrentCourse.CourseName, "Cancel", actionList);
         }

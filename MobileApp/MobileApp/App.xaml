@@ -81,5 +81,22 @@
             <Setter Property="TextColor"
                     Value="Black" />
         </Style>
+        <Style TargetType="Button"
+               x:Key="ActionMenuButton">
+            <Setter Property="Visual"
+                    Value="Default" />
+            <Setter Property="HeightRequest"
+                    Value="40" />
+            <Setter Property="WidthRequest"
+                    Value="40" />
+            <Setter Property="VerticalOptions"
+                    Value="Center" />
+            <Setter Property="HorizontalOptions"
+                    Value="Center" />
+            <Setter Property="BackgroundColor"
+                    Value="White" />
+            <Setter Property="CornerRadius"
+                    Value="20" />
+        </Style>
     </Application.Resources>
 </Application>

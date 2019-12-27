@@ -7,15 +7,26 @@
                      xmlns:controls="clr-namespace:MobileApp.Controls"
                      xmlns:vm="clr-namespace:Mobile.Core.ViewModels;assembly=Mobile.Core"
                      Title="Semester"
+                     xmlns:pk="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
                      xmlns:model="clr-namespace:CoreEngine.Model.DBModel;assembly=CoreEngine"
                      x:DataType="vm:SemesterViewModel"
                      x:TypeArguments="vm:SemesterViewModel"
                      x:Class="MobileApp.Views.Course.SemesterPage">
     <Grid d:BindingContext="{x:Static vm:SemesterViewModel}"
           x:Name="MainContainer">
+        <pk:PancakeView HeightRequest="200"
+                        VerticalOptions="Start"
+                        BackgroundGradientStartColor="DarkBlue"
+                        BackgroundGradientEndColor="LightBlue" />
         <RefreshView Command="{Binding RefreshCommand}"
-                     IsRefreshing="{Binding IsBusy}">
+                     IsRefreshing="{Binding IsRefreshisng}">
             <CollectionView ItemsSource="{Binding Courses}">
+                <CollectionView.EmptyView>
+                    <Frame HeightRequest="250">
+                        <Label Text="No Courses Has benn added yet" 
+                               HorizontalOptions="Center"/>
+                    </Frame>
+                </CollectionView.EmptyView>
                 <d:CollectionView.ItemsSource>
                     <x:Array Type="{x:Type x:String}">
                         <x:String>Semester 1</x:String>

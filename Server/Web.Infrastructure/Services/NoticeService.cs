@@ -57,6 +57,10 @@ namespace Student.Infrastructure.Services
             else
             {
                 post.Owner = dbUser;
+                if (post.CourseId != 0)
+                {
+                    post.Course = await _db.Courses.FirstOrDefaultAsync(x => x.Id == post.CourseId);
+                }
                 if (dbUser.UserRole == AppConstants.Student)
                 {
                     post.Batch = dbUser.Batch;
@@ -131,6 +135,7 @@ namespace Student.Infrastructure.Services
         public async Task<Notice> GetNotice(int id)
         {
             var notice = await _db.Notices
+                                  .Include(x=>x.Course)
                                   .Include(x => x.Batch)
                                   .Include(x => x.DBFiles)
                                   .Include(x => x.Owner)

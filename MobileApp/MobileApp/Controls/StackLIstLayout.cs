@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Threading.Tasks;
@@ -10,7 +11,7 @@ namespace MobileApp.Controls
     public class StackListLayout : StackLayout
     {
         private bool _locked;
-        public string EmptyText { get; set; } = "No Items";
+        public string EmptyText { get; set; }
         public static readonly BindableProperty ItemsSourceProperty =
             BindableProperty.Create(nameof(ItemsSource),
                 typeof(IEnumerable),
@@ -66,20 +67,32 @@ namespace MobileApp.Controls
                 Children.Add(v);
                 counter++;
             }
-            if (Children.Count == 0)
+            if (Children.Count == 0 && !string.IsNullOrWhiteSpace(EmptyText))
             {
-                Children.Add(new Label()
-                {
-                    HorizontalTextAlignment = TextAlignment.Center,
-                    Text = EmptyText,
-                    Margin = new Thickness(10)
-                });
+                AddEmpty();
             }
 
             if (ItemsSource is INotifyCollectionChanged notifyCollection)
             {
                 notifyCollection.CollectionChanged += NotifyCollection_CollectionChanged;
             }
+        }
+
+        private async void AddEmpty()
+        {
+            //if (_locked)
+            //{
+            //    return;
+            //}
+            //_locked = true;
+            //await Task.Delay(100);
+            //Children.Clear();
+            //Children.Add(new Label()
+            //{
+            //    HorizontalTextAlignment = TextAlignment.Center,
+            //    Text = EmptyText,
+            //});
+            //_locked = false;
         }
 
         private async void NotifyCollection_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)

@@ -21,10 +21,8 @@ namespace Mobile.Core.ViewModels
         protected override async void RefreshAction()
         {
             base.RefreshAction();
-            IsBusy = true;
-            var allSemesters = new List<SemesterData>();
             SemesterDatas = await _courseHandler.GetResult();
-            IsBusy = false;
+            IsRefreshisng = false;
         }
     }
 }

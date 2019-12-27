@@ -25,9 +25,8 @@ namespace Mobile.Core.ViewModels
         protected override async void RefreshAction()
         {
             base.RefreshAction();
-            IsBusy = true;
             Semesters = await _courseHandler.GetCurrentSemester();
-            IsBusy = false;
+            IsRefreshisng = false;
         }
 
         public ICommand SemesterCommand => new RelayCommand<Semester>(SemesterAction);

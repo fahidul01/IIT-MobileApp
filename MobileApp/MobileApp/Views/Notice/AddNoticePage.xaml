@@ -9,6 +9,7 @@
                      xmlns:controls="clr-namespace:MobileApp.Controls"
                      x:DataType="vm:AddUpdateNoticeViewModel"
                      x:TypeArguments="vm:AddUpdateNoticeViewModel"
+                     xmlns:models="clr-namespace:CoreEngine.Model.DBModel;assembly=CoreEngine"
                      xmlns:vm="clr-namespace:Mobile.Core.ViewModels;assembly=Mobile.Core"
                      x:Class="MobileApp.Views.Notice.AddNoticePage">
     <Grid d:BindingContext="{x:Static vm:AddUpdateNoticeViewModel}">
@@ -21,42 +22,92 @@
                         VerticalOptions="Start"
                         HeightRequest="200"/>
         <ScrollView>
-            <Frame Margin="20">
-                <StackLayout>
-                    <Entry Text="{Binding CurrentNotice.Title}" 
-                           Placeholder="Title"/>
-                    <Editor Text="{Binding CurrentNotice.Message}"
-                            Placeholder="Message"
-                            HeightRequest="200"
-                            BackgroundColor="Transparent">
-                        <Editor.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding EditorCommand}" />
-                        </Editor.GestureRecognizers>
-                    </Editor>
-                    <Picker ItemsSource="{Binding PostTypes}"
-                            SelectedItem="{Binding CurrentPost}"/>
-                    <StackLayout Orientation="Vertical"
-                                 Spacing="0">
-                        <Label Text="EventDate"
-                               VerticalOptions="Center" />
-                        <DatePicker Date="{Binding CurrentNotice.EventDate}"
-                                    BackgroundColor="Transparent" />
-                    </StackLayout>
-                    <StackLayout Spacing="0" Orientation="Horizontal">
-                        <CheckBox IsChecked="{Binding CurrentNotice.FutureNotification}" />
-                        <Label Text="Remind Before EventDate" 
-                               VerticalOptions="Center"/>
-                    </StackLayout>
-                    <Grid>
-                        <Label Text="Files"
-                               Margin="0,20,0,0" />
-                        <Button HorizontalOptions="End"
+            <StackLayout>
+                <Frame Margin="10,5">
+                    <StackLayout>
+                        <Entry Text="{Binding CurrentNotice.Title}"
+                               Placeholder="Title"
+                               Visual="Default" />
+                        <Editor Text="{Binding CurrentNotice.Message}"
+                                Placeholder="Message"
+                                HeightRequest="200"
                                 Visual="Default"
+                                BackgroundColor="Transparent" />
+                    </StackLayout>
+                </Frame>
+                <Frame Margin="10,5">
+                    <StackLayout>
+                        <Picker ItemsSource="{Binding PostTypes}"
                                 BackgroundColor="Transparent"
-                                ImageSource="{controls:IconFont IconType=Add, Color=DarkBlue}" />
-                    </Grid>
-                </StackLayout>
-            </Frame>
+                                Title="Post Type"
+                                SelectedItem="{Binding CurrentPost}" />
+                        <StackLayout Orientation="Horizontal">
+                            <CheckBox IsChecked="{Binding HasCourse}"
+                                      Color="Blue"
+                                      VerticalOptions="Center" />
+                            <Label Text="Cource Notification"
+                                   VerticalOptions="Center" />
+                        </StackLayout>
+                        <Picker ItemsSource="{Binding Courses}"
+                                Title="Course Name"
+                                BackgroundColor="Transparent"
+                                IsVisible="{Binding HasCourse}"
+                                SelectedItem="{Binding CurrentCourse}"
+                                ItemDisplayBinding="{Binding CourseName}" />
+                    </StackLayout>
+                </Frame>
+                <Frame Margin="10,5">
+                    <StackLayout>
+                        <Grid RowSpacing="0"
+                              ColumnSpacing="20">
+                            <Label Text="Event Date"
+                                   Margin="5,0"
+                                   VerticalOptions="Center" />
+                            <DatePicker Date="{Binding CurrentNotice.EventDate}"
+                                        Grid.Row="1"
+                                        Visual="Default"
+                                        VerticalOptions="Center"
+                                        BackgroundColor="Transparent" />
+                            <Label Text="Event Time"
+                                   Grid.Column="1"
+                                   Margin="5,0"
+                                   VerticalOptions="Center" />
+                            <TimePicker Time="{Binding EventTime}"
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        Visual="Default"
+                                        VerticalOptions="Center"
+                                        BackgroundColor="Transparent" />
+                        </Grid>
+                       
+                        <StackLayout Orientation="Horizontal">
+                            <CheckBox IsChecked="{Binding CurrentNotice.FutureNotification}" />
+                            <Label Text="Remind Before EventDate"
+                                   VerticalOptions="Center" />
+                        </StackLayout>
+                    </StackLayout>
+                </Frame>
+                <Frame Margin="10,5">
+                    <StackLayout>
+                        <Grid>
+                            <Label Text="Files"
+                                   VerticalOptions="Center" />
+                            <Button HorizontalOptions="End"
+                                    Command="{Binding AddMaterialCommand}"
+                                    Style="{StaticResource ActionMenuButton}"
+                                    ImageSource="{controls:IconFont IconType=Add, Color=DarkBlue}" />
+                        </Grid>
+                        <controls:StackListLayout ItemsSource="{Binding DBFiles}">
+                            <controls:StackListLayout.ItemTemplate>
+                                <DataTemplate x:DataType="models:DBFile">
+                                    <Label Text="{Binding FileName}"
+                                           TextDecorations="Underline" />
+                                </DataTemplate>
+                            </controls:StackListLayout.ItemTemplate>
+                        </controls:StackListLayout>
+                    </StackLayout>
+                </Frame>
+            </StackLayout>
         </ScrollView>
         <Button Grid.Row="1"
                 Command="{Binding SaveCommand}" 

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Student.Infrastructure.DBModel;
 
-namespace Student.Infrastructure.Migrations
+namespace Student.Infrasructure.Migrations
 {
     [DbContext(typeof(StudentDBContext))]
     partial class StudentDBContextModelSnapshot : ModelSnapshot
@@ -233,6 +233,9 @@ namespace Student.Infrastructure.Migrations
                     b.Property<int?>("BatchId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("CourseId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("TEXT");
 
@@ -258,6 +261,8 @@ namespace Student.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("BatchId");
+
+                    b.HasIndex("CourseId");
 
                     b.HasIndex("OwnerId");
 
@@ -489,6 +494,12 @@ namespace Student.Infrastructure.Migrations
                     b.HasOne("CoreEngine.Model.DBModel.Batch", "Batch")
                         .WithMany()
                         .HasForeignKey("BatchId");
+
+                    b.HasOne("CoreEngine.Model.DBModel.Course", "Course")
+                        .WithMany()
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("CoreEngine.Model.DBModel.DBUser", "Owner")
                         .WithMany()

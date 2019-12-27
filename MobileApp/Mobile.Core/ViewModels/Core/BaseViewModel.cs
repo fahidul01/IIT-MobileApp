@@ -11,6 +11,7 @@ namespace Mobile.Core.ViewModels
     public abstract class BaseViewModel : ViewModelBase
     {
         public bool IsBusy { get; set; }
+        public bool IsRefreshisng { get; set; }
         protected readonly INavigationService _nav;
         protected readonly IDialogService _dialog;
         public BaseViewModel()

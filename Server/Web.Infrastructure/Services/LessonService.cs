@@ -32,15 +32,13 @@ namespace Student.Infrastructure.Services
             }
         }
 
-
-
         public async Task<List<Lesson>> GetLesson(string userId)
         {
-            var allCourse = _db.StudentCourses.Where(x => x.Student.Id == userId)
-                                              .Select(m => m.Course);
-            var lessons = await allCourse.Where(x => x.Semester.StartsOn < CurrentTime && x.Semester.EndsOn >= CurrentTime)
-                                         .SelectMany(x => x.Lessons).Distinct()
-                                         .ToListAsync();
+
+            var lessons = await _db.Lessons.Include(x => x.Course)
+                                           .Where(m => m.Course.StudentCourses
+                                           .Any(n => n.Student.Id == userId))
+                                           .ToListAsync();
             return lessons;
         }
 

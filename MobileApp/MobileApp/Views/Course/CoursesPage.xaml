@@ -15,7 +15,7 @@
     <Grid d:BindingContext="{x:Static vm:CoursesViewModel}"
           x:Name="MainContainer">
         <RefreshView Command="{Binding RefreshCommand}"
-                     IsRefreshing="{Binding IsBusy}">
+                     IsRefreshing="{Binding IsRefreshisng}">
             <CollectionView ItemsSource="{Binding Semesters}">
                 <d:CollectionView.ItemsSource>
                     <x:Array Type="{x:Type x:String}">

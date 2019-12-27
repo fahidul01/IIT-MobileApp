@@ -1,9 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-using System;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Student.Infrastructure.Migrations
+namespace Student.Infrasructure.Migrations
 {
-    public partial class init : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -206,38 +206,6 @@ namespace Student.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Notices",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Title = table.Column<string>(nullable: true),
-                    Message = table.Column<string>(nullable: true),
-                    PostType = table.Column<int>(nullable: false),
-                    FutureNotification = table.Column<bool>(nullable: false),
-                    CreatedOn = table.Column<DateTime>(nullable: false),
-                    EventDate = table.Column<DateTime>(nullable: false),
-                    BatchId = table.Column<int>(nullable: true),
-                    OwnerId = table.Column<string>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Notices", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Notices_Batches_BatchId",
-                        column: x => x.BatchId,
-                        principalTable: "Batches",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Notices_AspNetUsers_OwnerId",
-                        column: x => x.OwnerId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Courses",
                 columns: table => new
                 {
@@ -256,6 +224,98 @@ namespace Student.Infrastructure.Migrations
                         name: "FK_Courses_Semesters_SemesterId",
                         column: x => x.SemesterId,
                         principalTable: "Semesters",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Lessons",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    DayOfWeek = table.Column<int>(nullable: false),
+                    TimeOfDay = table.Column<TimeSpan>(nullable: false),
+                    CourseId = table.Column<int>(nullable: false),
+                    TeacherId = table.Column<int>(nullable: false),
+                    TeacherName = table.Column<string>(nullable: true),
+                    RoomNo = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Lessons", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Lessons_Courses_CourseId",
+                        column: x => x.CourseId,
+                        principalTable: "Courses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Notices",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Title = table.Column<string>(nullable: true),
+                    Message = table.Column<string>(nullable: true),
+                    PostType = table.Column<int>(nullable: false),
+                    FutureNotification = table.Column<bool>(nullable: false),
+                    CreatedOn = table.Column<DateTime>(nullable: false),
+                    EventDate = table.Column<DateTime>(nullable: false),
+                    BatchId = table.Column<int>(nullable: true),
+                    CourseId = table.Column<int>(nullable: false),
+                    OwnerId = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Notices", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Notices_Batches_BatchId",
+                        column: x => x.BatchId,
+                        principalTable: "Batches",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Notices_Courses_CourseId",
+                        column: x => x.CourseId,
+                        principalTable: "Courses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Notices_AspNetUsers_OwnerId",
+                        column: x => x.OwnerId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "StudentCourses",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    CourseId = table.Column<int>(nullable: false),
+                    StudentId = table.Column<string>(nullable: false),
+                    Grade = table.Column<string>(nullable: true),
+                    GradePoint = table.Column<decimal>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StudentCourses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_StudentCourses_Courses_CourseId",
+                        column: x => x.CourseId,
+                        principalTable: "Courses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_StudentCourses_AspNetUsers_StudentId",
+                        column: x => x.StudentId,
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -287,58 +347,6 @@ namespace Student.Infrastructure.Migrations
                         principalTable: "Notices",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Lessons",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    DayOfWeek = table.Column<int>(nullable: false),
-                    TimeOfDay = table.Column<TimeSpan>(nullable: false),
-                    CourseId = table.Column<int>(nullable: false),
-                    TeacherId = table.Column<int>(nullable: false),
-                    TeacherName = table.Column<string>(nullable: true),
-                    RoomNo = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Lessons", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Lessons_Courses_CourseId",
-                        column: x => x.CourseId,
-                        principalTable: "Courses",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "StudentCourses",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    CourseId = table.Column<int>(nullable: false),
-                    StudentId = table.Column<string>(nullable: false),
-                    Grade = table.Column<string>(nullable: true),
-                    GradePoint = table.Column<decimal>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_StudentCourses", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_StudentCourses_Courses_CourseId",
-                        column: x => x.CourseId,
-                        principalTable: "Courses",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_StudentCourses_AspNetUsers_StudentId",
-                        column: x => x.StudentId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -407,6 +415,11 @@ namespace Student.Infrastructure.Migrations
                 name: "IX_Notices_BatchId",
                 table: "Notices",
                 column: "BatchId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Notices_CourseId",
+                table: "Notices",
+                column: "CourseId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Notices_OwnerId",

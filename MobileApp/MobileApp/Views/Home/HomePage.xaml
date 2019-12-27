@@ -10,80 +10,88 @@
                      xmlns:vm="clr-namespace:Mobile.Core.ViewModels;assembly=Mobile.Core"
                      x:DataType="vm:HomeViewModel"
                      Title="Home"
+                     
                      x:TypeArguments="vm:HomeViewModel"
                      x:Class="MobileApp.Views.Home.HomePage">
-    <ScrollView d:BindingContext="{x:Static vm:HomeViewModel}">
-        <StackLayout>
-            <pk:PancakeView HeightRequest="150"
-                            CornerRadius="0,0,0,30"
-                            BackgroundGradientEndColor="{StaticResource colorPrimary}"
-                            BackgroundGradientStartColor="DarkBlue">
-                <Grid d:BackgroundColor="DarkBlue">
-                    <StackLayout HorizontalOptions="Start"
-                                 Margin="20,0"
-                                 VerticalOptions="Center"
-                                 Spacing="3">
-                        <StackLayout Orientation="Horizontal"
-                                     Spacing="2">
-                            <Label Text="Hi,"
+    <Grid d:BindingContext="{x:Static vm:HomeViewModel}">
+        <ScrollView >
+            <StackLayout>
+                <pk:PancakeView HeightRequest="150"
+                                CornerRadius="0,0,0,30"
+                                BackgroundGradientEndColor="{StaticResource colorPrimary}"
+                                BackgroundGradientStartColor="DarkBlue">
+                    <Grid d:BackgroundColor="DarkBlue">
+                        <StackLayout HorizontalOptions="Start"
+                                     Margin="20,0"
+                                     VerticalOptions="Center"
+                                     Spacing="3">
+                            <StackLayout Orientation="Horizontal"
+                                         Spacing="2">
+                                <Label Text="Hi,"
+                                       TextColor="White"
+                                       VerticalOptions="Center" />
+                                <Image Source="{controls:IconFont IconType=People, FontSize=14}" />
+                            </StackLayout>
+                            <Label Text="{Binding User.Name}"
                                    TextColor="White"
-                                   VerticalOptions="Center" />
-                            <Image Source="{controls:IconFont IconType=People, FontSize=14}" />
+                                   FontSize="Title"
+                                   FontAttributes="Bold"
+                                   d:Text="UserName Last" />
+                            <Button Padding="-10"
+                                    MinimumHeightRequest="1"
+                                    CornerRadius="10"
+                                    BorderColor="WhiteSmoke"
+                                    BorderWidth="1"
+                                    Margin="3,5"
+                                    HorizontalOptions="Start"
+                                    HeightRequest="16"
+                                    WidthRequest="60"
+                                    Text="View Profile"
+                                    FontSize="6"
+                                    TextColor="White"
+                                    BackgroundColor="Transparent" />
                         </StackLayout>
-                        <Label Text="{Binding User.Name}"
-                               TextColor="White"
-                               FontSize="Title"
-                               FontAttributes="Bold"
-                               d:Text="UserName Last" />
-                        <Button Padding="-10"
-                                MinimumHeightRequest="1"
-                                CornerRadius="10"
-                                BorderColor="WhiteSmoke"
-                                BorderWidth="1"
-                                Margin="3,5"
-                                HorizontalOptions="Start"
-                                HeightRequest="16"
-                                WidthRequest="60"
-                                Text="View Profile"
-                                FontSize="6"
-                                TextColor="White"
-                                BackgroundColor="Transparent" />
-                    </StackLayout>
-                    <StackLayout Spacing="0"
-                                 HorizontalOptions="End"
-                                 VerticalOptions="Center"
-                                 Margin="20,0">
-                        <Image Source="{controls:IconFont IconType=WbSunny}"
-                               HorizontalOptions="Center" />
-                        <Label Text="{Binding Today}"
-                               d:Text="Wednesday"
-                               HorizontalOptions="Center"
-                               TextColor="White"
-                               FontSize="Medium" />
-                        <Label Text="{Binding Date}"
-                               d:Text="04 March 2019"
-                               TextColor="White"
-                               HorizontalOptions="Center"
-                               FontSize="9" />
-                    </StackLayout>
+                        <StackLayout Spacing="0"
+                                     HorizontalOptions="End"
+                                     VerticalOptions="Center"
+                                     Margin="20,0">
+                            <Image Source="{controls:IconFont IconType=WbSunny}"
+                                   HorizontalOptions="Center" />
+                            <Label Text="{Binding Today}"
+                                   d:Text="Wednesday"
+                                   HorizontalOptions="Center"
+                                   TextColor="White"
+                                   FontSize="Medium" />
+                            <Label Text="{Binding Date}"
+                                   d:Text="04 March 2019"
+                                   TextColor="White"
+                                   HorizontalOptions="Center"
+                                   FontSize="9" />
+                        </StackLayout>
+                    </Grid>
+                </pk:PancakeView>
+                <local:WeekView />
+                <Grid Margin="10">
+                    <Button ImageSource="{controls:IconFont IconType=PermContactCalendar, Color=Blue}"
+                            BackgroundColor="White"
+                            ContentLayout="Right,15"
+                            TextColor="Black"
+                            FontSize="Small"
+                            Text="Calender" />
+                    <Button ImageSource="{controls:IconFont IconType=Event, Color=Blue}"
+                            BackgroundColor="White"
+                            ContentLayout="Right,15"
+                            TextColor="Black"
+                            Grid.Column="1"
+                            FontSize="Small"
+                            Text="Events" />
                 </Grid>
-            </pk:PancakeView>
-            <local:WeekView />
-            <Grid Margin="10">
-                <Button ImageSource="{controls:IconFont IconType=PermContactCalendar, Color=Blue}"
-                        BackgroundColor="White"
-                        ContentLayout="Right,15"
-                        TextColor="Black"
-                        FontSize="Small"
-                        Text="Calender" />
-                <Button ImageSource="{controls:IconFont IconType=Event, Color=Blue}"
-                        BackgroundColor="White"
-                        ContentLayout="Right,15"
-                        TextColor="Black"
-                        Grid.Column="1"
-                        FontSize="Small"
-                        Text="Events" />
-            </Grid>
-        </StackLayout>
-    </ScrollView>
+            </StackLayout>
+        </ScrollView>
+        <Grid IsVisible="{Binding IsBusy}">
+            <Grid BackgroundColor="Black"
+                  Opacity="0.3" />
+            <ActivityIndicator IsRunning="{Binding IsBusy}" />
+        </Grid>
+    </Grid>
 </controls:CustomPage>

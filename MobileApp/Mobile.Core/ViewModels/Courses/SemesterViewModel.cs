@@ -33,9 +33,8 @@ namespace Mobile.Core.ViewModels
         protected async override void RefreshAction()
         {
             base.RefreshAction();
-            IsBusy = true;
             Courses = await _courseHandler.GetSemesterCourses(CurrentSemester.Id);
-            IsBusy = false;
+            IsRefreshisng = false;
             LoaaLessonsAsync();
         }
 

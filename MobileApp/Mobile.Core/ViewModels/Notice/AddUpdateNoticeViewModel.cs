@@ -1,6 +1,7 @@
 ﻿using CoreEngine.APIHandlers;
 using CoreEngine.Model.DBModel;
 using GalaSoft.MvvmLight.Command;
+using Mobile.Core.Engines.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,32 +13,50 @@ namespace Mobile.Core.ViewModels
     public class AddUpdateNoticeViewModel : BaseViewModel
     {
         private readonly INoticeHandler _noticeHandler;
+        private readonly ICourseHandler _courseHandler;
+
         public Notice CurrentNotice { get; private set; }
         public IEnumerable<PostType> PostTypes { get; set; }
         public PostType CurrentPost { get; set; }
         public ObservableCollection<DBFile> DBFiles { get; set; }
-        public AddUpdateNoticeViewModel(INoticeHandler noticeHandler)
+
+        private IPreferenceEngine _preferneceEngine;
+
+        public List<Course> Courses { get; set; }
+        public Course CurrentCourse { get; set; }
+        public TimeSpan EventTime { get; set; } = TimeSpan.FromHours(9);
+        public bool HasCourse { get; set; }
+
+        public AddUpdateNoticeViewModel(INoticeHandler noticeHandler, 
+            ICourseHandler courseHandler,IPreferenceEngine preferenceEngine)
         {
             _noticeHandler = noticeHandler;
+            _courseHandler = courseHandler;
             PostTypes = Enum.GetValues(typeof(PostType)).Cast<PostType>();
             DBFiles = new ObservableCollection<DBFile>();
+            _preferneceEngine = preferenceEngine;
         }
 
-
-
-        public override void OnAppear(params object[] args)
+        public async override void OnAppear(params object[] args)
         {
             base.OnAppear(args);
+            Courses = await _courseHandler.GetCourses();
             if (args.Length > 0 && args[0] is Notice notice)
             {
                 CurrentNotice = notice;
             }
-            else if (args.Length > 0 && args[0] is PostType postType)
+            else if (args.Length == 1 && args[0] is PostType postType)
             {
                 CurrentNotice = new Notice
                 {
                     PostType = postType
                 };
+            }
+            else if (args.Length == 1 && args[0] is Course course)
+            {
+                CurrentCourse = Courses.FirstOrDefault(x=>x.Id == course.Id);
+                CurrentNotice = new Notice();
+                HasCourse = true;
             }
             else
             {
@@ -48,12 +67,15 @@ namespace Mobile.Core.ViewModels
 
 
         public ICommand SaveCommand => new RelayCommand(SaveAction);
-        public ICommand EditorCommand => new RelayCommand(EditorAction);
+        public ICommand AddMaterialCommand => new RelayCommand(AddMaterialAction);
 
-        private void EditorAction()
+        private async void AddMaterialAction()
         {
-            var dt = new RelayCommand<string>(x => CurrentNotice.Message = x);
-            _nav.NavigateToModal<EditorViewModel>(dt);
+            var pickFile = await _preferneceEngine.PickFile();
+            if (pickFile != null)
+            {
+                DBFiles.Add(pickFile);
+            }
         }
 
         private async void SaveAction()
@@ -69,6 +91,10 @@ namespace Mobile.Core.ViewModels
             else
             {
                 CurrentNotice.PostType = CurrentPost;
+                if (CurrentCourse != null && HasCourse)
+                {
+                    CurrentNotice.CourseId = CurrentCourse.Id;
+                }
                 if (CurrentNotice.Id == 0)
                 {
                     var res = await _noticeHandler.AddPost(CurrentNotice, DBFiles.ToList());

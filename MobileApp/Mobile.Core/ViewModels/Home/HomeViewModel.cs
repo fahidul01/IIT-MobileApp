@@ -35,7 +35,7 @@ namespace Mobile.Core.ViewModels
         public override void OnAppear(params object[] args)
         {
             User = AppService.CurrentUser;
-            //LoadEvents();
+            LoadEvents();
         }
 
         private async void LoadEvents()
@@ -43,8 +43,10 @@ namespace Mobile.Core.ViewModels
             IsBusy = true;
             UpcomingClasses = await _classHandler.GetLessons();
             UpcomingEvents = await _noticeHandler.GetUpcomingEvents(1, PostType.All);
-            RecentNotices = await _noticeHandler.GetPosts(1, PostType.All);
-            CurrentCourses = await _courseHandler.GetCourses();
+            //RecentNotices = await _noticeHandler.GetPosts(1, PostType.All);
+            // CurrentCourses = await _courseHandler.GetCourses();
+            RoutineViewModel.Update(UpcomingClasses, UpcomingEvents);
+            IsBusy = false;
         }
 
         public ICommand SelectLessonCommand => new RelayCommand<Lesson>(SelectLessonAction);

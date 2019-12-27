@@ -1,7 +1,9 @@
 ﻿using CoreEngine.Model.Common;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CoreEngine.Model.DBModel
 {
@@ -15,7 +17,12 @@ namespace CoreEngine.Model.DBModel
         public DateTime CreatedOn { get; set; }
         public DateTime EventDate { get; set; }
         public ICollection<DBFile> DBFiles { get; set; }
+
+        //These parameters are optional and can be used as accessory
         public virtual Batch Batch { get; set; }
+        public int CourseId { get; set; }
+        public virtual Course Course { get; set; }
+
         [Required]
         public virtual DBUser Owner { get; set; }
         public Notice()
@@ -23,6 +30,14 @@ namespace CoreEngine.Model.DBModel
             DBFiles = new HashSet<DBFile>();
             CreatedOn = CurrentTime;
             EventDate = CurrentTime;
+        }
+        [NotMapped]
+        [JsonIgnore]
+        public string TimeOfEvent => GetNoticeEvent();
+
+        private string GetNoticeEvent()
+        {
+            return EventDate.ToString("hh:mm tt");
         }
     }
 

@@ -4,6 +4,7 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
+             xmlns:local="clr-namespace:MobileApp.Views.Home"
              xmlns:converters="clr-namespace:MobileApp.Converters"
              xmlns:partials="clr-namespace:Mobile.Core.Models.Partials;assembly=Mobile.Core"
              d:BackgroundColor="LightGray"
@@ -95,7 +96,16 @@
             </CollectionView>
             <CollectionView Grid.Row="2"
                             ItemsSource="{Binding RoutineViewModel.Activities}">
-                
+                <CollectionView.EmptyView>
+                    <Label HorizontalTextAlignment="Center"
+                           Margin="20"
+                           Text="Hurray! No Activities Today" />
+                </CollectionView.EmptyView>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <local:TimeLineView />
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
             </CollectionView>
         </Grid>
     </Frame>
