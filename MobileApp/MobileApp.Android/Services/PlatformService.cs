@@ -5,7 +5,6 @@ using Firebase.Auth;
 using Firebase.Messaging;
 using Java.Util.Concurrent;
 using Mobile.Core.Engines.Services;
-using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -42,14 +41,14 @@ namespace MobileApp.Droid.Services
 
         public void VerifyPhoneNumber(string mobile,
             ICommand onComplete,
-            ICommand onFailed, ICommand codeSent,ICommand onverified)
+            ICommand onFailed, ICommand codeSent, ICommand onverified)
         {
             var phoneAuthCallbacks = new PhoneAuthCallbacks(onComplete, onFailed, codeSent, onverified);
-                PhoneAuthProvider.Instance
-                    .VerifyPhoneNumber(mobile, 60, TimeUnit.Seconds,
-                    mainActivity,
-                    phoneAuthCallbacks);
-           
+            PhoneAuthProvider.Instance
+                .VerifyPhoneNumber(mobile, 60, TimeUnit.Seconds,
+                mainActivity,
+                phoneAuthCallbacks);
+
         }
 
         public async Task<bool> VerifyOTP(string verificationId, string otp)
@@ -73,29 +72,29 @@ namespace MobileApp.Droid.Services
         {
 
         }
-        public PhoneAuthCallbacks(ICommand onComplete, ICommand onFailed, ICommand onSent,ICommand onVerifyComplete)
+        public PhoneAuthCallbacks(ICommand onComplete, ICommand onFailed, ICommand onSent, ICommand onVerifyComplete)
         {
-            this.onOTPComplete = onComplete;
+            onOTPComplete = onComplete;
             this.onFailed = onFailed;
             this.onSent = onSent;
             this.onVerifyComplete = onVerifyComplete;
         }
 
-        public async override void OnVerificationCompleted(PhoneAuthCredential credential)
+        public override async void OnVerificationCompleted(PhoneAuthCredential credential)
         {
-            if(onSMS)
+            if (onSMS)
             {
                 onOTPComplete?.Execute(credential.SmsCode);
             }
             else
             {
                 var res = await FirebaseAuth.Instance.SignInWithCredentialAsync(credential);
-                if(res.User!= null)
+                if (res.User != null)
                 {
                     onVerifyComplete?.Execute(null);
                 }
             }
-           
+
         }
 
         public override void OnCodeSent(string verificationId, PhoneAuthProvider.ForceResendingToken forceResendingToken)

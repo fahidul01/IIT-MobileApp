@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Mobile.Core.Models.Partials
 {
-    public class RoutineViewModel:NotifyModel
+    public class RoutineViewModel : NotifyModel
     {
         public List<Activity> Activities { get; private set; }
         public List<Routine> Routines { get; private set; }
@@ -40,9 +40,9 @@ namespace Mobile.Core.Models.Partials
         public void Update(List<Lesson> lessons, List<Notice> notices)
         {
             var allActivity = new List<Activity>();
-            lessons.ForEach(x => 
-            allActivity.Add(new Activity(x.Course?.CourseName,"Lesson", x.DayOfWeek, x.TimeOfLesson)));
-            notices.ForEach(x => 
+            lessons.ForEach(x =>
+            allActivity.Add(new Activity(x.Course?.CourseName, "Lesson", x.DayOfWeek, x.TimeOfLesson)));
+            notices.ForEach(x =>
             allActivity.Add(new Activity(x.Title, x.PostType.ToString(), x.EventDate.DayOfWeek, x.TimeOfEvent)));
 
             foreach (var item in Routines)
@@ -77,7 +77,7 @@ namespace Mobile.Core.Models.Partials
 
     public class Activity
     {
-        public Activity(string name, 
+        public Activity(string name,
             string description, DayOfWeek dayOfWeek,
             string timeOfDay)
         {

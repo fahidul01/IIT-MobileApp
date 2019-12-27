@@ -135,7 +135,7 @@ namespace Student.Infrastructure.Services
         public async Task<Notice> GetNotice(int id)
         {
             var notice = await _db.Notices
-                                  .Include(x=>x.Course)
+                                  .Include(x => x.Course)
                                   .Include(x => x.Batch)
                                   .Include(x => x.DBFiles)
                                   .Include(x => x.Owner)

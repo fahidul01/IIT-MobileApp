@@ -31,6 +31,8 @@ namespace Mobile.Core.ViewModels
             UserName = "181909";
             Password = "12345678";
 #endif
+            AppService.CurrentUser = null;
+            _settingService.Token = string.Empty;
         }
 
         public ICommand LoginCommand => new RelayCommand(LoginAction);

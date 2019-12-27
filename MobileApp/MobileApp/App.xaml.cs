@@ -1,4 +1,6 @@
 using CoreEngine.Engine;
+using CoreEngine.Helpers;
+using CoreEngine.Model.Common;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -6,10 +8,12 @@ using Mobile.Core.Engines.Dependency;
 using Mobile.Core.Engines.Services;
 using Mobile.Core.Models.Core;
 using Mobile.Core.ViewModels;
+using Mobile.Core.Worker;
 using MobileApp.Controls;
 using MobileApp.Service;
 using System;
 using System.Linq;
+using System.Net.Http;
 using System.Reflection;
 using Xamarin.Forms;
 
@@ -49,17 +53,35 @@ namespace MobileApp
         {
             services.AddSingleton<App>();
             services.AddSingleton<IPreferenceEngine, PreferenceEngine>();
-            Locator.Build(services);
+            RegisterAllTypes<BaseViewModel>(services, typeof(BaseViewModel).Assembly);
+            var http = new HttpClient
+            {
+                BaseAddress = new Uri(AppConstants.BaseUrl)
+            };
+
+            services.AddSingleton(http);
+            services.AddSingleton<SettingService>();
+            ServiceHelper.Register(services);
         }
+
+        public static void RegisterAllTypes<T>(IServiceCollection services, Assembly assembly)
+        {
+
+            var types = assembly.GetTypes()
+                                .Where(myType => myType.IsClass &&
+                                      !myType.IsAbstract &&
+                                      myType.IsSubclassOf(typeof(T)));
+
+            foreach (var type in types)
+            {
+                services.AddTransient(type);
+            }
+        }
+
 
         private static void RegisterPages(INavigationService _nav)
         {
             var assembly = typeof(App).Assembly;
-            //var types = assembly.GetTypes()
-            //                   .Where(myType => myType.IsClass &&
-            //                         !myType.IsAbstract &&
-            //                         myType.IsSubclassOf(typeof(CustomPage<SplashScreenModel>)));
-
             var types = from x in Assembly.GetAssembly(typeof(App)).GetTypes()
                         let y = x.BaseType
                         where !x.IsAbstract && !x.IsInterface &&

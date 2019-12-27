@@ -2,12 +2,12 @@
 using MobileApp.Controls;
 using Xamarin.Forms.Xaml;
 
-namespace MobileApp.Views.Notice
+namespace MobileApp.Views.Profile
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class NoticesPage : CustomTabPage<NoticesViewModel>
+    public partial class ProfilleDetailPage : CustomPage<ProfileDetailViewModel>
     {
-        public NoticesPage()
+        public ProfilleDetailPage()
         {
             InitializeComponent();
         }

@@ -20,15 +20,15 @@ namespace Mobile.Core.ViewModels
         public PostType CurrentPost { get; set; }
         public ObservableCollection<DBFile> DBFiles { get; set; }
 
-        private IPreferenceEngine _preferneceEngine;
+        private readonly IPreferenceEngine _preferneceEngine;
 
         public List<Course> Courses { get; set; }
         public Course CurrentCourse { get; set; }
         public TimeSpan EventTime { get; set; } = TimeSpan.FromHours(9);
         public bool HasCourse { get; set; }
 
-        public AddUpdateNoticeViewModel(INoticeHandler noticeHandler, 
-            ICourseHandler courseHandler,IPreferenceEngine preferenceEngine)
+        public AddUpdateNoticeViewModel(INoticeHandler noticeHandler,
+            ICourseHandler courseHandler, IPreferenceEngine preferenceEngine)
         {
             _noticeHandler = noticeHandler;
             _courseHandler = courseHandler;
@@ -37,7 +37,7 @@ namespace Mobile.Core.ViewModels
             _preferneceEngine = preferenceEngine;
         }
 
-        public async override void OnAppear(params object[] args)
+        public override async void OnAppear(params object[] args)
         {
             base.OnAppear(args);
             Courses = await _courseHandler.GetCourses();
@@ -54,7 +54,7 @@ namespace Mobile.Core.ViewModels
             }
             else if (args.Length == 1 && args[0] is Course course)
             {
-                CurrentCourse = Courses.FirstOrDefault(x=>x.Id == course.Id);
+                CurrentCourse = Courses.FirstOrDefault(x => x.Id == course.Id);
                 CurrentNotice = new Notice();
                 HasCourse = true;
             }

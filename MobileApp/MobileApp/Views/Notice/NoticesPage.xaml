@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<controls:CustomPage xmlns="http://xamarin.com/schemas/2014/forms"
+<controls:CustomTabPage xmlns="http://xamarin.com/schemas/2014/forms"
                      xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                      xmlns:d="http://xamarin.com/schemas/2014/forms/design"
                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -10,52 +10,78 @@
                      xmlns:vm="clr-namespace:Mobile.Core.ViewModels;assembly=Mobile.Core"
                      x:DataType="vm:NoticesViewModel"
                      x:TypeArguments="vm:NoticesViewModel"
+                     xmlns:helpers="clr-namespace:MobileApp.Helpers"
                      x:Class="MobileApp.Views.Notice.NoticesPage">
-    <Grid d:BindingContext="{x:Static vm:NoticesViewModel}">
-        <RefreshView>
-            <CollectionView ItemsSource="{Binding Notices}">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="model:Notice">
-                        <Grid Padding="5">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="50" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <Frame BackgroundColor="DarkOrange"
-                                   CornerRadius="25"
-                                   Padding="0">
-                                <Label Text="N"
-                                       VerticalOptions="Center"
-                                       HorizontalOptions="Center"
-                                       FontSize="Medium"
-                                       TextColor="White"
-                                       FontAttributes="Bold" />
-                            </Frame>
-                            <StackLayout Grid.Column="1">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
-                                    <Label Text="{Binding Title}"
-                                           FontSize="Medium" />
-                                    <Label Text="{Binding EventDate, StringFormat='{0:dd.MM.yyyy}'}"
-                                           Grid.Column="1"
-                                           VerticalOptions="Center" />
-                                </Grid>
-                               
-                                <Label Text="{Binding Message}" />
-                            </StackLayout>
-                        </Grid>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-        </RefreshView>
-        <Button Style="{StaticResource FloatingButton}"
-                Command="{Binding AddCommand}"
-                VerticalOptions="End"
-                HorizontalOptions="End"
-                Margin="20"
-                ImageSource="{controls:IconFont IconType=Add}" />
-    </Grid>
-</controls:CustomPage>
+    <controls:CustomTabPage.Resources>
+        <DataTemplate x:DataType="model:Notice"
+                      x:Key="NoticeTemplate">
+            <Grid Padding="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Frame BackgroundColor="DarkOrange"
+                       CornerRadius="25"
+                       Padding="0">
+                    <Label Text="N"
+                           VerticalOptions="Center"
+                           HorizontalOptions="Center"
+                           FontSize="Medium"
+                           TextColor="White"
+                           FontAttributes="Bold" />
+                </Frame>
+                <StackLayout Grid.Column="1">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Label Text="{Binding Title}"
+                               FontSize="Medium" />
+                        <Label Text="{Binding EventDate, StringFormat='{0:dd.MM.yyyy}'}"
+                               Grid.Column="1"
+                               VerticalOptions="Center" />
+                    </Grid>
+                    <Label Text="{Binding Message}" />
+                </StackLayout>
+            </Grid>
+        </DataTemplate>
+    </controls:CustomTabPage.Resources>
+    <ContentPage  x:DataType="vm:NoticesViewModel"
+                  IconImageSource="{controls:IconFont IconType=RecentActors}">
+        <Grid d:BindingContext="{x:Static vm:NoticesViewModel}">
+            <RefreshView>
+                <CollectionView ItemsSource="{Binding UpcomingNotices}"
+                                SelectionChangedCommand="{Binding NoticeCommand}"
+                                SelectionMode="None" 
+                                ItemTemplate="{StaticResource NoticeTemplate}"/>
+            </RefreshView>
+            <Button Style="{StaticResource FloatingButton}"
+                    Command="{Binding AddCommand}"
+                    VerticalOptions="End"
+                    HorizontalOptions="End"
+                    Margin="20"
+                    ImageSource="{controls:IconFont IconType=Add}" />
+        </Grid>
+    </ContentPage>
+    <ContentPage  x:DataType="vm:NoticesViewModel"
+                  IconImageSource="{controls:IconFont IconType=RecentActors}">
+        <Grid d:BindingContext="{x:Static vm:NoticesViewModel}">
+            <RefreshView Command="{Binding RefreshCommand}"
+                         IsRefreshing="{Binding IsRefreshisng}">
+                <CollectionView ItemsSource="{Binding Notices}"
+                                SelectionChangedCommand="{Binding NoticeCommand}"
+                                RemainingItemsThreshold="3"
+                                RemainingItemsThresholdReachedCommand="{Binding LoadMoreCommand}"
+                                SelectionMode="None"
+                                ItemTemplate="{StaticResource NoticeTemplate}" />
+            </RefreshView>
+            <Button Style="{StaticResource FloatingButton}"
+                    Command="{Binding AddCommand}"
+                    VerticalOptions="End"
+                    HorizontalOptions="End"
+                    Margin="20"
+                    ImageSource="{controls:IconFont IconType=Add}" />
+        </Grid>
+    </ContentPage>
+</controls:CustomTabPage>

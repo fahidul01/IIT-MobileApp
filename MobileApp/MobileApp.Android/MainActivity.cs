@@ -15,7 +15,7 @@ namespace MobileApp.Droid
     //yoKOOpnaexb8JyrClG6ts00MiYU=
     //sakib.buet51@gmail.com, 25 Apr, 2019, PrivateKeyEntry,
     //Certificate fingerprint(SHA1): CA:82:8E:3A:99:DA:7B:16:FC:27:2A:C2:94:6E:AD:B3:4D:0C:89:85
-    
+
     [Activity(Label = "MobileApp", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {

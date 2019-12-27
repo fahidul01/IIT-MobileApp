@@ -40,12 +40,8 @@ namespace IIT.Server.Controllers
 
         public async Task<ActionResponse> ChangePassword(string currentPassword, string newPassword)
         {
-            if (HttpContext.User == null)
-            {
-                return new ActionResponse(false, "Invalid User");
-            }
-
-            var dbUser = await _userManager.FindByNameAsync(HttpContext.User.Identity.Name);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var dbUser = await _userManager.FindByIdAsync(userId);
             if (dbUser == null)
             {
                 return new ActionResponse(false, "Invalid User");
@@ -169,7 +165,8 @@ namespace IIT.Server.Controllers
 
         public async Task<ActionResponse> UpdateUser(User user)
         {
-            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var currentUser = await _userManager.FindByIdAsync(userId);
             if (currentUser?.Id == user.Id)
             {
                 var res = await _userService.Update(user);

@@ -2,7 +2,6 @@
 using CoreEngine.Model.DBModel;
 using GalaSoft.MvvmLight.Command;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 
@@ -10,7 +9,7 @@ namespace Mobile.Core.ViewModels
 {
     public class SemesterViewModel : BaseViewModel
     {
-        private ICourseHandler _courseHandler;
+        private readonly ICourseHandler _courseHandler;
 
         public List<Course> Courses { get; set; }
         public Semester CurrentSemester { get; private set; }
@@ -30,7 +29,7 @@ namespace Mobile.Core.ViewModels
             }
         }
 
-        protected async override void RefreshAction()
+        protected override async void RefreshAction()
         {
             base.RefreshAction();
             Courses = await _courseHandler.GetSemesterCourses(CurrentSemester.Id);
@@ -40,7 +39,11 @@ namespace Mobile.Core.ViewModels
 
         private async void LoaaLessonsAsync()
         {
-            if (Courses == null) return;
+            if (Courses == null)
+            {
+                return;
+            }
+
             foreach (var item in Courses)
             {
                 var fullCourse = await _courseHandler.GetCourse(item.Id);

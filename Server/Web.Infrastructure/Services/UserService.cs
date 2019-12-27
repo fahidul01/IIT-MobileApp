@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Student.Infrastructure.AppServices;
 using Student.Infrastructure.DBModel;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -57,8 +56,14 @@ namespace Student.Infrastructure.Services
         {
             var lesson = await _db.Lessons.Include(x => x.Course)
                                           .FirstOrDefaultAsync(x => x.Id == lessonId);
-            if (lesson == null) return false;
-            else return await AuthorizeCourse(userId, lesson.Course.Id);
+            if (lesson == null)
+            {
+                return false;
+            }
+            else
+            {
+                return await AuthorizeCourse(userId, lesson.Course.Id);
+            }
         }
 
         public async Task<bool> AuthorizeSemester(string userId, int semesterId)
@@ -303,7 +308,10 @@ namespace Student.Infrastructure.Services
                     await _db.SaveChangesAsync();
                     return new ActionResponse(true);
                 }
-                else return new ActionResponse(false, resetRes.Errors.Select(x=>x.Description));
+                else
+                {
+                    return new ActionResponse(false, resetRes.Errors.Select(x => x.Description));
+                }
             }
         }
 

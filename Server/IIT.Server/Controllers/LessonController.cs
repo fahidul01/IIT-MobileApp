@@ -50,11 +50,16 @@ namespace IIT.Server.Controllers
         public async Task<ActionResponse> UpdateLesson(Lesson lesson)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var lessonAccess = await _userService.AuthorizeLesson(userId,lesson.Id);
+            var lessonAccess = await _userService.AuthorizeLesson(userId, lesson.Id);
 
-            if(lessonAccess)
-             return await _lessonService.UpdateLesson(lesson);
-           else return new ActionResponse(false,"Invalid User access");
+            if (lessonAccess)
+            {
+                return await _lessonService.UpdateLesson(lesson);
+            }
+            else
+            {
+                return new ActionResponse(false, "Invalid User access");
+            }
         }
 
         public Task<List<Lesson>> GetUpcomingLessons()

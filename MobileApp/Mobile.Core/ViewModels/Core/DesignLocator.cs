@@ -15,7 +15,7 @@ namespace Mobile.Core.ViewModels
         public static NoticeDetailViewModel NoticeDetailViewModel => GetLocator<NoticeDetailViewModel>();
         public static NoticesViewModel NoticesViewModel => GetLocator<NoticesViewModel>();
         public static ProfileDetailViewModel ProfileDetailViewModel => GetLocator<ProfileDetailViewModel>();
-        public static ProfilesViewModel ProfilesViewModel => GetLocator<ProfilesViewModel>();
+        public static StudentsViewModel ProfilesViewModel => GetLocator<StudentsViewModel>();
         public static SplashViewModel SplashViewModel => GetLocator<SplashViewModel>();
         public static MainViewModel MainViewModel => Locator.GetInstance<MainViewModel>();
 

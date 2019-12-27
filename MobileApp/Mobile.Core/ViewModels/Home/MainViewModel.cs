@@ -1,4 +1,5 @@
-﻿using GalaSoft.MvvmLight.Command;
+﻿using CoreEngine.APIHandlers;
+using GalaSoft.MvvmLight.Command;
 using Mobile.Core.Models.Core;
 using System;
 using System.Collections.Generic;
@@ -9,9 +10,13 @@ namespace Mobile.Core.ViewModels
     public class MainViewModel : BaseViewModel
     {
         public bool IsPresented { get; set; }
+
+        private readonly IMemberHandler _memberHandler;
+
         public List<MenuItem> MenuItems { get; private set; }
-        public MainViewModel()
+        public MainViewModel(IMemberHandler memberHandler)
         {
+            _memberHandler = memberHandler;
             MenuItems = new List<MenuItem>()
             {
                 new MenuItem("Home",IconType.Home,typeof(HomeViewModel)),
@@ -22,6 +27,21 @@ namespace Mobile.Core.ViewModels
         }
 
         public ICommand FlyoutCommand => new RelayCommand<MenuItem>(FlyoutAction);
+        public ICommand LogoutCommand => new RelayCommand(LogoutAction);
+        public ICommand StudentsCommand => new RelayCommand(StudentAction);
+
+        private void StudentAction()
+        {
+            IsPresented = false;
+            _nav.NavigateTo<StudentsViewModel>();
+        }
+
+        private void LogoutAction()
+        {
+            IsPresented = false;
+            _memberHandler.Logout();
+            _nav.Init<LoginViewModel>();
+        }
 
         private void FlyoutAction(MenuItem obj)
         {

@@ -45,9 +45,10 @@
                                     Margin="3,5"
                                     HorizontalOptions="Start"
                                     HeightRequest="16"
-                                    WidthRequest="60"
-                                    Text="View Profile"
-                                    FontSize="6"
+                                    WidthRequest="80"
+                                    FontSize="Micro"
+                                    Text="Profile"
+                                    Command="{Binding ProfileCommand}"
                                     TextColor="White"
                                     BackgroundColor="Transparent" />
                         </StackLayout>

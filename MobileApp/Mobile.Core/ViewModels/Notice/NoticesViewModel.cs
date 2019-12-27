@@ -60,10 +60,19 @@ namespace Mobile.Core.ViewModels
             IsBusy = false;
         }
 
-        public ICommand NoticeCommand => new RelayCommand<Notice>(x => _nav.NavigateTo<NoticeDetailViewModel>(x));
-        public ICommand AddCommand => new RelayCommand(() => _nav.NavigateTo<AddUpdateNoticeViewModel>());
+        public ICommand NoticeCommand => new RelayCommand<Notice>(NoticeAction);
+        public ICommand AddCommand => new RelayCommand(AddAction);
         public ICommand LoadMoreCommand => new RelayCommand(LoadMoreAction);
 
+        private void NoticeAction(Notice notice)
+        {
+            _nav.NavigateTo<NoticeDetailViewModel>(notice);
+        }
+
+        private void AddAction()
+        {
+            _nav.NavigateTo<AddUpdateNoticeViewModel>();
+        }
         private void LoadMoreAction()
         {
             if (canLoadMore && !IsBusy)

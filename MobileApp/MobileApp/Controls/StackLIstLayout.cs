@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Threading.Tasks;
@@ -80,19 +79,19 @@ namespace MobileApp.Controls
 
         private async void AddEmpty()
         {
-            //if (_locked)
-            //{
-            //    return;
-            //}
-            //_locked = true;
-            //await Task.Delay(100);
-            //Children.Clear();
-            //Children.Add(new Label()
-            //{
-            //    HorizontalTextAlignment = TextAlignment.Center,
-            //    Text = EmptyText,
-            //});
-            //_locked = false;
+            if (_locked)
+            {
+                return;
+            }
+            _locked = true;
+            await Task.Delay(100);
+            Children.Clear();
+            Children.Add(new Label()
+            {
+                HorizontalTextAlignment = TextAlignment.Center,
+                Text = EmptyText,
+            });
+            _locked = false;
         }
 
         private async void NotifyCollection_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)

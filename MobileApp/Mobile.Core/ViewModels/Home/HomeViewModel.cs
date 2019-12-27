@@ -53,6 +53,12 @@ namespace Mobile.Core.ViewModels
         public ICommand SelectNoticeCommand => new RelayCommand<Notice>(SelectNoticeAction);
         public ICommand SelectCourseCommand => new RelayCommand<Course>(SelectCourseAction);
         public ICommand DaySelectCommand => new RelayCommand<Routine>(WeekAction);
+        public ICommand ProfileCommand => new RelayCommand(ProfileAction);
+
+        private void ProfileAction()
+        {
+            _nav.NavigateTo<ProfileDetailViewModel>();
+        }
 
         private void WeekAction(Routine obj)
         {

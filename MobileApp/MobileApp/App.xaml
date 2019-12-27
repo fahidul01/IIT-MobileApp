@@ -8,11 +8,11 @@
              xmlns:themes = "clr-namespace:MobileApp.Themes;assembly=MobileApp"
              x:Class="MobileApp.App">
     <Application.Resources>
-        <ResourceDictionary>
+        <!--<ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <themes:LightTheme />
             </ResourceDictionary.MergedDictionaries >
-        </ResourceDictionary>
+        </ResourceDictionary>-->
         <OnPlatform x:Key="MaterialFontFamily"
                     x:TypeArguments="x:String">
             <On Platform="iOS"
@@ -26,6 +26,7 @@
         <Color x:Key="colorPrimaryDark">#2E3192</Color>
         <Color x:Key="colorAccent">#3F51B5</Color>
         <converters:BoolInverter x:Key="BoolInverter" />
+        <converters:IdenticonConverter x:Key="IdenticonConverter" />
         <Style TargetType="ContentPage" ApplyToDerivedTypes="True">
             <Setter Property="Visual"
                     Value="Material" />

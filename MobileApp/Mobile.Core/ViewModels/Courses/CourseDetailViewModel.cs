@@ -5,7 +5,6 @@ using Mobile.Core.Engines.Services;
 using Mobile.Core.Models.Core;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Input;
 
 namespace Mobile.Core.ViewModels
@@ -24,12 +23,12 @@ namespace Mobile.Core.ViewModels
             _courseHandler = courseHandler;
             _preferenceEngine = preferenceEngine;
         }
-        public async override void OnAppear(params object[] args)
+        public override async void OnAppear(params object[] args)
         {
             base.OnAppear(args);
             if (args != null && args.Length > 0 && args[0] is Course course)
             {
-                
+
                 CurrentSemester = course.Semester;
                 //CurrentCourse = course;
                 CanEdit = AppService.HasCRRole;
@@ -53,7 +52,7 @@ namespace Mobile.Core.ViewModels
 
         public ICommand EditCourseCommand => new RelayCommand(CourseAction);
 
-       
+
 
         private void CourseAction()
         {

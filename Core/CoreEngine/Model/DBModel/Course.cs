@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CoreEngine.Model.DBModel
 {
-    public class Course:INotifyPropertyChanged
+    public class Course : INotifyPropertyChanged
     {
         public int Id { get; set; }
         public decimal CourseCredit { get; set; }

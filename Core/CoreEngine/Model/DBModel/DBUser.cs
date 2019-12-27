@@ -14,12 +14,20 @@ namespace CoreEngine.Model.DBModel
         public string UserRole { get; set; }
         public DateTime EnrolledIn { get; set; }
         public bool RequirePasswordChange { get; set; }
+        public string Address { get; set; }
+        public string BloodGroup { get; set; }
+        public string WorkHistory { get; set; }
+        public string Occupation { get; set; }
 
         public void UpdateUser(User user)
         {
             Name = user.Name;
             Email = user.Email;
             PhoneNumber = user.PhoneNumber;
+            Occupation = user.Occupation;
+            Address = user.Address;
+            BloodGroup = user.BloodGroup;
+            WorkHistory = user.WorkHistory;
         }
     }
 
@@ -39,7 +47,10 @@ namespace CoreEngine.Model.DBModel
         public int Roll { get; set; }
         public Batch Batch { get; set; }
         public List<StudentCourse> Courses { get; set; }
-        public bool RequirePasswordChange { get; set; }
+        public string Address { get; set; }
+        public string BloodGroup { get; set; }
+        public string Occupation { get; set; }
+        public string WorkHistory { get; set; }
 
         public static User FromDBUser(DBUser dBUser, string password)
         {
@@ -53,8 +64,11 @@ namespace CoreEngine.Model.DBModel
                 PhoneNumber = dBUser.PhoneNumber,
                 Roll = dBUser.Roll,
                 IsCR = dBUser.ClassRepresentative,
-                RequirePasswordChange = dBUser.RequirePasswordChange,
-                Role = dBUser.UserRole
+                Role = dBUser.UserRole,
+                Address = dBUser.Address,
+                BloodGroup = dBUser.BloodGroup,
+                Occupation = dBUser.Occupation,
+                WorkHistory = dBUser.WorkHistory,
             };
         }
     }

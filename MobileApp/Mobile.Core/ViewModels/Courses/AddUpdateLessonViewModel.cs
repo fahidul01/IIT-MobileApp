@@ -10,7 +10,7 @@ using System.Windows.Input;
 
 namespace Mobile.Core.ViewModels
 {
-    public class AddUpdateLessonViewModel : BaseViewModel,IPopupModel
+    public class AddUpdateLessonViewModel : BaseViewModel, IPopupModel
     {
         private readonly ILessonHandler _lessonHandler;
 

@@ -52,7 +52,10 @@ namespace Student.Infrastructure.Services
         public async Task<ActionResponse> UpdateLesson(Lesson lesson)
         {
             var dbLesson = await _db.Lessons.FirstOrDefaultAsync(x => x.Id == lesson.Id);
-            if (dbLesson == null) return new ActionResponse(false, "Invalid Lesson");
+            if (dbLesson == null)
+            {
+                return new ActionResponse(false, "Invalid Lesson");
+            }
             else
             {
                 _db.Entry(dbLesson).State = EntityState.Detached;

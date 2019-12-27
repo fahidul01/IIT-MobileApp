@@ -1,4 +1,6 @@
 ﻿
+using Mobile.Core.Engines.Dependency;
+using Mobile.Core.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -10,6 +12,7 @@ namespace MobileApp.Views.Home
         public MainPage(Page page)
         {
             InitializeComponent();
+            BindingContext = Locator.GetInstance<MainViewModel>();
             Detail = page;
         }
     }

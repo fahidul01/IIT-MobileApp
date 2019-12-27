@@ -129,7 +129,9 @@ namespace Mobile.Core.ViewModels
             IsBusy = false;
             _dialog.ShowMessage("Error", message);
             if (string.IsNullOrWhiteSpace(OTPToken))
+            {
                 RegistrationState = RegistrationState.Roll;
+            }
         }
 
         private void CodeSentAction(string verifyId)
