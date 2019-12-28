@@ -8,7 +8,7 @@ namespace Mobile.Core.ViewModels
     public class StudentsViewModel : BaseViewModel
     {
         private readonly IMemberHandler _memberHandler;
-        public List<User> CurrentStudents { get; set; }
+        public List<DBUser> CurrentStudents { get; set; }
 
         public StudentsViewModel(IMemberHandler userHandler)
         {

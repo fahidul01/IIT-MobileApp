@@ -11,7 +11,7 @@ namespace Mobile.Core.ViewModels
     {
         private readonly IMemberHandler _memberHandler;
 
-        public User CurrentUser { get; private set; }
+        public DBUser CurrentUser { get; private set; }
         public List<Semester> Semesters { get; set; }
         public bool EditPassword { get; private set; }
         public bool EditProfile { get; private set; }

@@ -32,6 +32,10 @@ else
             </div>
         </div>
         <div class="card-body">
+            @if (addStudentSpinner)
+            {
+                <MatProgressBar Indeterminate="true"/>
+            }
             <StudentsView Students="Students" />
         </div>
     </div>
@@ -83,7 +87,7 @@ else
     [Parameter]
     public int BatchId { get; set; }
     bool addStudentDialog;
-    bool addStudentSpinner;
+    bool addStudentSpinner { get; set; }
 
 
 
@@ -92,7 +96,7 @@ else
         if (BatchId > 0)
         {
             currentBatch = await _batchService.GetBatch(BatchId);
-            Students = currentBatch.Students.ToList();
+            Students = currentBatch.Students.OrderBy(x=>x.Roll).ToList();
         }
         else
         {
@@ -103,8 +107,11 @@ else
     private async void AddStudentsClick()
     {
         addStudentDialog = false;
+        addStudentSpinner = true;
+        this.StateHasChanged();
         var res = await _memberHandler.CreateStudent(currentBatch.Id,
             StudentModel.Roll, StudentModel.Name, StudentModel.Email, StudentModel.Phone);
+        addStudentSpinner = false;
         if (res == null || res.Actionstatus == false)
         {
             _matToaster.Add("Failed to create Student", MatToastType.Danger);
@@ -127,8 +134,11 @@ else
         if (currentFile != null)
         {
             addStudentSpinner = true;
+            this.StateHasChanged();
             var dbFile = new DBFile(currentFile.Data, currentFile.Name);
             var res = await _memberHandler.CreateBatchStudents(currentBatch.Id, dbFile);
+            addStudentSpinner = false;
+            this.StateHasChanged();
             if (res != null && res.Actionstatus)
             {
                 _matToaster.Add("Student Batch Update successfull", MatToastType.Success);

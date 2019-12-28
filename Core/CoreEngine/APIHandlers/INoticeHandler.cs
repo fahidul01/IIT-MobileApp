@@ -1,6 +1,7 @@
 ﻿using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
 using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -13,6 +14,7 @@ namespace CoreEngine.APIHandlers
         Task<ActionResponse> UpdatePost(Notice notice);
         Task<ActionResponse> DeletePost(Notice notice);
         Task<List<Notice>> GetUpcomingEvents(int page, PostType all);
+        Task<List<Notice>> GetPostsDate(DateTime startTime, DateTime endTime);
         Task<Notice> GetNotice(int noticeId);
     }
 }

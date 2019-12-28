@@ -39,7 +39,7 @@ namespace Mobile.Core.ViewModels
                 else
                 {
                     AppService.CurrentUser = res;
-                    AppService.HasCRRole = res.IsCR;
+                    AppService.HasCRRole = res.ClassRepresentative;
                     _nav.Init<HomeViewModel>();
                     if (AppService.CurrentUser.Batch != null)
                     {

@@ -18,7 +18,7 @@ namespace Mobile.Core.ViewModels
         public List<Notice> RecentNotices { get; set; }
         public List<Lesson> UpcomingClasses { get; set; }
         public List<Course> CurrentCourses { get; set; }
-        public User User { get; private set; }
+        public DBUser User { get; private set; }
         public string Today { get; private set; }
         public string Date { get; private set; }
         public RoutineViewModel RoutineViewModel { get; private set; }

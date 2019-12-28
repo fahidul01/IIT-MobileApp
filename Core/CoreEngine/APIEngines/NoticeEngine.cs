@@ -3,6 +3,7 @@ using CoreEngine.Engine;
 using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
 using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -34,6 +35,11 @@ namespace CoreEngine.APIEngines
         public Task<List<Notice>> GetPosts(int page, PostType postType = PostType.All)
         {
             return SendRequest<List<Notice>>(HttpMethod.Post, new { page, postType });
+        }
+
+        public Task<List<Notice>> GetPostsDate(DateTime startTime, DateTime endTime)
+        {
+            return SendRequest<List<Notice>>(HttpMethod.Post, new { startTime, endTime });
         }
 
         public Task<List<Notice>> GetUpcomingEvents(int page, PostType postType)

@@ -37,7 +37,7 @@ else
                               AllowSelection="true">
                         <MatTableHeader>
                             <th style="width:30%">Course Id</th>
-                            <th style="width:60%">Course Name</th>
+                            <th style="width:100%">Course Name</th>
                             <th style="width:10%">Credit</th>
                         </MatTableHeader>
                         <MatTableRow Context="Course">
@@ -112,18 +112,23 @@ else
         if (!string.IsNullOrWhiteSpace(NewCourse.CourseName))
         {
             var res = await _courseService.CreateCourse(CurrentSemester.Id, NewCourse, null);
-            if (res != null && res.Actionstatus)
+            if (res ==null)
             {
-                _matToaster.Add("Added Course Successfully", MatToastType.Success);
-                var data = await _courseService.GetSemesterCourses(CurrentSemester.Id);
-                if(data!= null)
-                {
-                    CurrentSemester.Courses = data;
-                }
+                _matToaster.Add("Failed to create new course", MatToastType.Danger);
+
             }
             else
             {
-                _matToaster.Add("Failed to create new course", MatToastType.Danger);
+                var toast = res.Actionstatus ? MatToastType.Success : MatToastType.Danger;
+                _matToaster.Add(res.Message, MatToastType.Success);
+                if (res.Actionstatus)
+                {
+                    var data = await _courseService.GetSemesterCourses(CurrentSemester.Id);
+                    if (data != null)
+                    {
+                        CurrentSemester.Courses = data;
+                    }
+                }
             }
             NewCourse = new Course();
         }

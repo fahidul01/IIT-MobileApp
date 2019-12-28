@@ -19,16 +19,14 @@ namespace IIT.Server.Controllers
     {
         private readonly CourseService _courseService;
         private readonly UserService _userservice;
-        private readonly UserManager<DBUser> _usermanager;
         private readonly FileService _fileService;
 
         public CoursesController(CourseService courseService,
-            UserService userService, UserManager<DBUser> userManager,
+            UserService userService,
             FileService fileService)
         {
             _courseService = courseService;
             _userservice = userService;
-            _usermanager = userManager;
             _fileService = fileService;
         }
         #region Course
@@ -176,7 +174,6 @@ namespace IIT.Server.Controllers
         }
 
         #endregion
-
 
 
         public async Task<List<Course>> GetBatchCourses(int batchId)

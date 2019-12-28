@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Student.Infrastructure.Services;
+using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -48,6 +49,12 @@ namespace IIT.Server.Controllers
         public async Task<List<Notice>> GetPosts(int page, PostType postType = PostType.All)
         {
             return await _noticeService.GetRecentNotice(page);
+        }
+
+        public async Task<List<Notice>> GetPostsDate(DateTime startTime, DateTime endTime)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return await _noticeService.GetNoticeDate(userId, startTime, endTime);
         }
 
         public async Task<List<Notice>> GetUpcomingEvents(int page, PostType all)

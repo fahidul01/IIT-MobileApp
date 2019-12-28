@@ -43,14 +43,13 @@ namespace IIT.Server.Controllers
         public async Task<ActionResponse> ChangePassword(string currentPassword, string newPassword)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var idUser = await _userService.GetIdentiuser(userId);
+            var idUser = await _userService.GetIdentityUserByDBUserId(userId);
             if (idUser == null)
             {
                 return new ActionResponse(false, "Invalid User");
             }
             else
             {
-
                 var res = await _userManager.ChangePasswordAsync(idUser, currentPassword, newPassword);
                 return new ActionResponse(res.Succeeded, res.Errors.Select(x => x.Description));
             }
@@ -87,17 +86,15 @@ namespace IIT.Server.Controllers
         {
             try
             {
-                var user = await _userManager.FindByNameAsync(username);
-
-                if (user == null)
+                var dbUser = await _userService.GetUserByName(username);
+                if (dbUser == null)
                 {
                     return new SignInResponse(false)
                     {
                         Message = "Invalid Username"
                     };
                 }
-                else if (await _userManager.IsInRoleAsync(user,AppConstants.Student)
-                            && !user.PhoneNumberConfirmed)
+                else if (dbUser.Role == AppConstants.Student && !dbUser.PhoneNumberConfirmed)
                 {
                     return new SignInResponse(false)
                     {
@@ -109,8 +106,7 @@ namespace IIT.Server.Controllers
                     var res = await _signInmanager.PasswordSignInAsync(username, password, true, false);
                     if (res.Succeeded)
                     {
-                        var iUser = await _userManager.FindByNameAsync(username);
-                        var token = _tokenService.GenerateJwtToken(username, iUser.DBUser);
+                        var token = _tokenService.GenerateJwtToken(username, dbUser);
                         return new SignInResponse(true, token);
                     }
                     else
@@ -158,19 +154,10 @@ namespace IIT.Server.Controllers
             return res;
         }
 
-        public async Task<ActionResponse> UpdateUser(DBUser user)
+        public Task<ActionResponse> UpdateUser(DBUser user)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var currentUser = await _userManager.FindByIdAsync(userId);
-            if (currentUser?.Id == user.Id)
-            {
-                var res = await _userService.Update(user);
-                if (res != null)
-                {
-                    return new ActionResponse(true, "User Update Successfull");
-                }
-            }
-            return new ActionResponse(false, "Failed to update User");
+            return _userService.Update(userId, user);
         }
 
         public async Task<List<DBUser>> SearchStudents(string key)

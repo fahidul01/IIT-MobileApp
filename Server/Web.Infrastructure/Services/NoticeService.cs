@@ -3,6 +3,7 @@ using CoreEngine.Model.DBModel;
 using Microsoft.EntityFrameworkCore;
 using Student.Infrastructure.AppServices;
 using Student.Infrastructure.DBModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -76,6 +77,18 @@ namespace Student.Infrastructure.Services
                 await _db.SaveChangesAsync();
                 return new ActionResponse(true, "Successfully created the notice");
             }
+        }
+
+        public async Task<List<Notice>> GetNoticeDate(string userId, DateTime startTime, DateTime endTime)
+        {
+            var user = await _db.DBUsers
+                                .Include(x => x.Batch)
+                                .FirstOrDefaultAsync(x => x.Id == userId);
+
+            return await _db.Notices.Where(x => x.EventDate >= startTime &&
+                                                  x.EventDate <= endTime &&
+                                                  (x.Batch == null || x.Batch == user.Batch))
+                            .ToListAsync();
         }
 
         public async Task<bool> UpdateNotice(Notice notice)

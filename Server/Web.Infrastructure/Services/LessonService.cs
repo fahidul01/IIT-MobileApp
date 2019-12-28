@@ -34,10 +34,10 @@ namespace Student.Infrastructure.Services
 
         public async Task<List<Lesson>> GetLesson(string userId)
         {
-
             var lessons = await _db.Lessons.Include(x => x.Course)
-                                           .Where(m => m.Course.StudentCourses
-                                           .Any(n => n.Student.Id == userId))
+                                           .Where(m => m.Course.StudentCourses.Any(n => n.Student.Id == userId) &&
+                                                       m.Course.Semester.StartsOn >= CurrentTime &&
+                                                       m.Course.Semester.EndsOn <= CurrentTime)
                                            .ToListAsync();
             return lessons;
         }

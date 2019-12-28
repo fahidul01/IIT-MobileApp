@@ -173,7 +173,7 @@ namespace Mobile.Core.ViewModels
                         CurrentCourse.Id = id;
                         AllowModify = true;
                     }
-                    _dialog.ShowToastMessage(res.Message);
+                    ShowResponse(res);
                 }
                 else
                 {
@@ -182,7 +182,7 @@ namespace Mobile.Core.ViewModels
                     {
                         _nav.GoBack();
                     }
-                    _dialog.ShowToastMessage(res.Message);
+                    ShowResponse(res);
                 }
             }
         }
