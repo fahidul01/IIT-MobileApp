@@ -16,7 +16,7 @@ namespace IIT.Client.Services
         private readonly HttpWorker _httpWorker;
         private readonly ILocalStorageService _localData;
         private readonly ISessionStorageService _sessionData;
-        private User CurrentUser;
+        private DBUser CurrentUser;
         private const string tokenKey = "__access_token__";
         private const string tokenUser = "__access_user__";
 
@@ -31,7 +31,7 @@ namespace IIT.Client.Services
         }
 
 
-        internal async Task<User> GetUser()
+        internal async Task<DBUser> GetUser()
         {
             try
             {
@@ -54,7 +54,7 @@ namespace IIT.Client.Services
 
                 try
                 {
-                    var user = await _sessionData.GetItemAsync<User>(tokenUser);
+                    var user = await _sessionData.GetItemAsync<DBUser>(tokenUser);
                     if (user != null)
                     {
                         CurrentUser = user;

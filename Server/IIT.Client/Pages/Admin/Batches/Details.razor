@@ -78,7 +78,7 @@ else
 
 @code{
         Batch currentBatch = new Batch();
-        List<User> Students = new List<User>();
+        List<DBUser> Students = new List<DBUser>();
         AddStudentViewModel StudentModel = new AddStudentViewModel();
     [Parameter]
     public int BatchId { get; set; }
@@ -92,7 +92,7 @@ else
         if (BatchId > 0)
         {
             currentBatch = await _batchService.GetBatch(BatchId);
-            Students = currentBatch.ExternalUsers;
+            Students = currentBatch.Students.ToList();
         }
         else
         {
@@ -115,7 +115,7 @@ else
             var batch = await _batchService.GetBatch(currentBatch.Id);
             if (batch != null)
             {
-                Students = batch.ExternalUsers;
+                Students = batch.Students.ToList();
                 this.StateHasChanged();
             }
         }
@@ -135,7 +135,7 @@ else
                 var batch = await _batchService.GetBatch(currentBatch.Id);
                 if (batch != null)
                 {
-                    Students = batch.ExternalUsers;
+                    Students = batch.Students.ToList();
                     this.StateHasChanged();
                 }
             }

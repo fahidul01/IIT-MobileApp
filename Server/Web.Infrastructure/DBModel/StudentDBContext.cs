@@ -2,11 +2,13 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Student.Infrasructure.DBModel;
 
 namespace Student.Infrastructure.DBModel
 {
-    public class StudentDBContext : IdentityDbContext<DBUser, IdentityRole, string>
+    public class StudentDBContext : IdentityDbContext<IdentityDBUser, IdentityRole, string>
     {
+        public DbSet<DBUser> DBUsers { get; internal set; }
         public DbSet<Batch> Batches { get; internal set; }
         public DbSet<Course> Courses { get; internal set; }
         public DbSet<Semester> Semesters { get; internal set; }

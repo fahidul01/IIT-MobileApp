@@ -6,10 +6,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Student.Infrasructure.DBModel;
 using Student.Infrastructure.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -19,15 +21,15 @@ namespace IIT.Server.Controllers
     public class MemberController : Controller, IMemberHandler
     {
         private readonly UserService _userService;
-        private readonly SignInManager<DBUser> _signInmanager;
-        private readonly UserManager<DBUser> _userManager;
+        private readonly SignInManager<IdentityDBUser> _signInmanager;
+        private readonly UserManager<IdentityDBUser> _userManager;
         private readonly TokenService _tokenService;
         private readonly BatchService _batchService;
 
         public MemberController(
             UserService userService,
-            SignInManager<DBUser> signInManager,
-            UserManager<DBUser> userManager,
+            SignInManager<IdentityDBUser> signInManager,
+            UserManager<IdentityDBUser> userManager,
             TokenService tokenService,
             BatchService batchService)
         {
@@ -41,29 +43,20 @@ namespace IIT.Server.Controllers
         public async Task<ActionResponse> ChangePassword(string currentPassword, string newPassword)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var dbUser = await _userManager.FindByIdAsync(userId);
-            if (dbUser == null)
+            var idUser = await _userService.GetIdentiuser(userId);
+            if (idUser == null)
             {
                 return new ActionResponse(false, "Invalid User");
             }
             else
             {
-                var res = await _signInmanager.CheckPasswordSignInAsync(dbUser, currentPassword, false);
-                if (res == Microsoft.AspNetCore.Identity.SignInResult.Success)
-                {
-                    var hashedPass = _userManager.PasswordHasher.HashPassword(dbUser, newPassword);
-                    dbUser.PasswordHash = hashedPass;
-                    var updateRes = await _userManager.UpdateAsync(dbUser);
-                    return new ActionResponse(updateRes.Succeeded, "Password Updated");
-                }
-                else
-                {
-                    return new ActionResponse(false, "Failed to match Password");
-                }
+
+                var res = await _userManager.ChangePasswordAsync(idUser, currentPassword, newPassword);
+                return new ActionResponse(res.Succeeded, res.Errors.Select(x => x.Description));
             }
         }
 
-        public Task<ActionResponse> DeleteUser(User user)
+        public Task<ActionResponse> DeleteUser(DBUser user)
         {
             return Task.FromResult(new ActionResponse(false, "Not Allowed"));
         }
@@ -74,7 +67,7 @@ namespace IIT.Server.Controllers
             return res;
         }
 
-        public async Task<List<User>> GetCurrentBatchUsers()
+        public async Task<List<DBUser>> GetCurrentBatchUsers()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var batch = await _userService.GetBatch(userId);
@@ -95,6 +88,7 @@ namespace IIT.Server.Controllers
             try
             {
                 var user = await _userManager.FindByNameAsync(username);
+
                 if (user == null)
                 {
                     return new SignInResponse(false)
@@ -102,7 +96,8 @@ namespace IIT.Server.Controllers
                         Message = "Invalid Username"
                     };
                 }
-                else if (user.UserRole == AppConstants.Student && !user.PhoneNumberConfirmed)
+                else if (await _userManager.IsInRoleAsync(user,AppConstants.Student)
+                            && !user.PhoneNumberConfirmed)
                 {
                     return new SignInResponse(false)
                     {
@@ -114,8 +109,8 @@ namespace IIT.Server.Controllers
                     var res = await _signInmanager.PasswordSignInAsync(username, password, true, false);
                     if (res.Succeeded)
                     {
-                        var dbUser = await _userManager.FindByNameAsync(username);
-                        var token = _tokenService.GenerateJwtToken(username, dbUser);
+                        var iUser = await _userManager.FindByNameAsync(username);
+                        var token = _tokenService.GenerateJwtToken(username, iUser.DBUser);
                         return new SignInResponse(true, token);
                     }
                     else
@@ -149,7 +144,7 @@ namespace IIT.Server.Controllers
             return "Routing is ok";
         }
 
-        public async Task<User> TouchLogin()
+        public async Task<DBUser> TouchLogin()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var res = await _userService.GetUser(userId);
@@ -157,13 +152,13 @@ namespace IIT.Server.Controllers
         }
 
         [Authorize(Roles = AppConstants.Admin)]
-        public async Task<User> GetUser(string userId)
+        public async Task<DBUser> GetUser(string userId)
         {
             var res = await _userService.GetUser(userId);
             return res;
         }
 
-        public async Task<ActionResponse> UpdateUser(User user)
+        public async Task<ActionResponse> UpdateUser(DBUser user)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var currentUser = await _userManager.FindByIdAsync(userId);
@@ -178,7 +173,7 @@ namespace IIT.Server.Controllers
             return new ActionResponse(false, "Failed to update User");
         }
 
-        public async Task<List<User>> SearchStudents(string key)
+        public async Task<List<DBUser>> SearchStudents(string key)
         {
             return await _userService.SearchStudent(key);
         }
@@ -229,7 +224,7 @@ namespace IIT.Server.Controllers
             }
         }
 
-        public Task<List<User>> GetCurrentCr()
+        public Task<List<DBUser>> GetCurrentCr()
         {
             return _userService.GetCurrentCr();
         }

@@ -47,7 +47,7 @@ namespace Student.Infrastructure.Services
 
         public async Task<ActionResponse> AddUpdateNotice(Notice post, string userId)
         {
-            var dbUser = await _db.Users
+            var dbUser = await _db.DBUsers
                                   .Include(m => m.Batch)
                                   .FirstOrDefaultAsync(x => x.Id == userId);
             if (dbUser == null)
@@ -61,7 +61,7 @@ namespace Student.Infrastructure.Services
                 {
                     post.Course = await _db.Courses.FirstOrDefaultAsync(x => x.Id == post.CourseId);
                 }
-                if (dbUser.UserRole == AppConstants.Student)
+                if (dbUser.Role == AppConstants.Student)
                 {
                     post.Batch = dbUser.Batch;
                 }

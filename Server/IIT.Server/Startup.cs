@@ -1,5 +1,4 @@
 using CoreEngine.Model.Common;
-using CoreEngine.Model.DBModel;
 using IIT.Server.Helpers;
 using IIT.Server.WebServices;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -12,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using Student.Infrasructure.DBModel;
 using Student.Infrastructure.AppServices;
 using Student.Infrastructure.DBModel;
 using System.IdentityModel.Tokens.Jwt;
@@ -38,7 +38,7 @@ namespace IIT.Server
 
             services.RegisterAllTypes<BaseService>(typeof(StudentDBContext).Assembly);
 
-            services.AddIdentity<DBUser, IdentityRole>(options =>
+            services.AddIdentity<IdentityDBUser, IdentityRole>(options =>
             {
                 options.Password.RequiredLength = 8;
                 options.Password.RequireLowercase = false;
@@ -88,7 +88,7 @@ namespace IIT.Server
             {
                 app.UseDeveloperExceptionPage();
             }
-            app.UseClientSideBlazorFiles<IIT.Client.Startup>();
+            app.UseClientSideBlazorFiles<Client.Startup>();
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();

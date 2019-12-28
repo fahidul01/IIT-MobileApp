@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Student.Infrasructure.DBModel;
 using Student.Infrastructure.DBModel;
 using System;
 using System.Threading;
@@ -28,7 +29,7 @@ namespace IIT.Server.WebServices
             await db.Database.MigrateAsync();
 
             var _roleManager = scope.ServiceProvider.GetService<RoleManager<IdentityRole>>();
-            var _userManager = scope.ServiceProvider.GetRequiredService<UserManager<DBUser>>();
+            var _userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityDBUser>>();
             var adminRole = await _roleManager.FindByNameAsync(AppConstants.Admin);
             if (adminRole == null)
             {
@@ -43,12 +44,14 @@ namespace IIT.Server.WebServices
             if (user == null)
             {
 
-                user = new DBUser()
+                var dbUser = new DBUser()
                 {
                     UserName = "admin",
-                    Email = "sakib.buet51@outlook.com",
-                    UserRole = AppConstants.Admin,
+                    Email = "iit.mobile19@gmail.com",
+                    Role = AppConstants.Admin,
+                    PhoneNumber = "017000000"
                 };
+                user = IdentityDBUser.Create(dbUser);
                 await _userManager.CreateAsync(user, "pass_WORD_1234");
                 await _userManager.AddToRoleAsync(user, AppConstants.Admin);
             }

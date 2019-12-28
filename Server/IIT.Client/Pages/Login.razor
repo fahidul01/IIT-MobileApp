@@ -6,18 +6,22 @@
 @inject ApiAuthenticationProvider _apiServiceProvider
 <MatCard>
     <div class="logo">
-        <a href="/" title="Blazor Boilerplate Home"><img src="images/iitlogo-blue.png" style="width:100px;" title="Blazor Boilerplate Home" alt="Blazor Boilerplate" /><br />Blazor Boilerplate</a>
         <br />
+        <a href="/" title="Blazor Boilerplate Home">
+            <img src="images/iitlogo-blue.png" style="width:100px;"
+                 title="IIT Home" alt="IIT" />
+            <br />IIT
+        </a>
         <h4>Log In</h4>
-        User -> Username: <b>user</b> Password: <b>user123</b><br />
-        Admin -> Username: <b>admin</b> Password: <b>admin123</b><br />
+        <br />
+        <br />
     </div>
-    <EditForm Model="@CurrentUser" OnValidSubmit="@SubmitLogin">
+    <EditForm OnValidSubmit="@SubmitLogin" Model="loginModel">
         <DataAnnotationsValidator />
         <ValidationSummary />
         <fieldset>
             <div class="form-group">
-                <MatTextField @bind-Value="@CurrentUser.UserName"
+                <MatTextField @bind-Value="@loginModel.Username"
                               Label="User Name"
                               Icon="person"
                               IconTrailing="true"
@@ -25,7 +29,7 @@
                               Required="true"></MatTextField>
             </div>
             <div class="form-group">
-                <MatTextField @bind-Value="@CurrentUser.Password"
+                <MatTextField @bind-Value="@loginModel.Password"
                               Label="Password"
                               Icon="lock_outline"
                               IconTrailing="true"
@@ -43,11 +47,7 @@
 </MatCard>
 
 @code{
-    User CurrentUser { get; set; } = new User()
-    {
-        UserName = "admin",
-        Password = "pass_WORD_1234"
-    };
+    LoginViewModel loginModel = new LoginViewModel();
     bool RememberMe;
     [CascadingParameter] Task<AuthenticationState> AuthenticationState { get; set; }
     protected override async Task OnInitializedAsync()
@@ -62,7 +62,7 @@
 
     private async void SubmitLogin()
     {
-        var res = await _apiServiceProvider.Login(CurrentUser.UserName, CurrentUser.Password,RememberMe);
+        var res = await _apiServiceProvider.Login(loginModel.Username,loginModel.Password,RememberMe);
         if(res != null && res.Success)
         {
             Console.WriteLine("Login Success");

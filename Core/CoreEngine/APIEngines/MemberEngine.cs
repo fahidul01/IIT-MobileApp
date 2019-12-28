@@ -20,16 +20,16 @@ namespace CoreEngine.APIEngines
             return SendRequest<ActionResponse>(HttpMethod.Post, new { currentPassword, newPassword });
         }
 
-        public Task<ActionResponse> DeleteUser(User user)
+        public Task<ActionResponse> DeleteUser(DBUser user)
         {
             return SendRequest<ActionResponse>(HttpMethod.Get, user);
         }
 
 
 
-        public Task<List<User>> GetCurrentBatchUsers()
+        public Task<List<DBUser>> GetCurrentBatchUsers()
         {
-            return SendRequest<List<User>>(HttpMethod.Get, null);
+            return SendRequest<List<DBUser>>(HttpMethod.Get, null);
         }
 
         public async Task<SignInResponse> Login(string username, string password)
@@ -50,14 +50,14 @@ namespace CoreEngine.APIEngines
             LogoutToken();
         }
 
-        public Task<ActionResponse> UpdateUser(User user)
+        public Task<ActionResponse> UpdateUser(DBUser user)
         {
             return SendRequest<ActionResponse>(HttpMethod.Post, user);
         }
 
-        public Task<User> TouchLogin()
+        public Task<DBUser> TouchLogin()
         {
-            return SendRequest<User>(HttpMethod.Get, null);
+            return SendRequest<DBUser>(HttpMethod.Get, null);
         }
 
         public Task<ActionResponse> CreateStudent(int batchId, string roll, string name, string email, string phone)
@@ -70,19 +70,19 @@ namespace CoreEngine.APIEngines
             return SendMultiPartRequest<ActionResponse>(new { batchId }, dBFile);
         }
 
-        public Task<List<User>> SearchStudents(string key)
+        public Task<List<DBUser>> SearchStudents(string key)
         {
-            return SendRequest<List<User>>(HttpMethod.Get, new { key });
+            return SendRequest<List<DBUser>>(HttpMethod.Get, new { key });
         }
 
-        public Task<List<User>> GetCurrentCr()
+        public Task<List<DBUser>> GetCurrentCr()
         {
-            return SendRequest<List<User>>(HttpMethod.Get, null);
+            return SendRequest<List<DBUser>>(HttpMethod.Get, null);
         }
 
-        public Task<User> GetUser(string userId)
+        public Task<DBUser> GetUser(string userId)
         {
-            return SendRequest<User>(HttpMethod.Get, new { userId });
+            return SendRequest<DBUser>(HttpMethod.Get, new { userId });
         }
 
         public Task<ActionResponse> ForgetPassword(string rollNo, string phoneNo, string password)

@@ -34,17 +34,5 @@ namespace CoreEngine.Model.DBModel
             Students = new HashSet<DBUser>();
             Semesters = new HashSet<Semester>();
         }
-
-        [NotMapped]
-        public List<User> ExternalUsers { get; set; }
-
-        public void LoadUsers()
-        {
-            ExternalUsers = new List<User>();
-            foreach (var user in Students.OrderBy(x => x.Roll))
-            {
-                ExternalUsers.Add(User.FromDBUser(user, ""));
-            }
-        }
     }
 }

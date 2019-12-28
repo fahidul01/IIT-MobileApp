@@ -20,4 +20,8 @@
     <ProjectReference Include="..\..\Core\CoreEngine\CoreEngine.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.0" />
+  </ItemGroup>
+
 </Project>

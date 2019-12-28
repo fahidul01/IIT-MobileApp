@@ -29,11 +29,11 @@
 
 @code {
     [Parameter]
-    public List<User> Students { get; set; }
+    public List<DBUser> Students { get; set; }
     [Parameter]
     public bool ShowBatch { get; set; } = false;
     public BaseTableRow BaseTableRow { get; set; }
-    private void ViewStudent(User user)
+    private void ViewStudent(DBUser user)
     {
         _navigationManager.NavigateTo("/admin/students/details/" + user.Id);
     }

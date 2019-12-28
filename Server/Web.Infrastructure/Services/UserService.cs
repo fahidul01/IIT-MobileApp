@@ -3,8 +3,10 @@ using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Student.Infrasructure.DBModel;
 using Student.Infrastructure.AppServices;
 using Student.Infrastructure.DBModel;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -14,11 +16,11 @@ namespace Student.Infrastructure.Services
 {
     public class UserService : BaseService
     {
-        private readonly UserManager<DBUser> _usermanager;
+        private readonly UserManager<IdentityDBUser> _usermanager;
         private readonly StudentDBContext _db;
         private readonly IEmailSender _emailSender;
 
-        public UserService(UserManager<DBUser> userManager,
+        public UserService(UserManager<IdentityDBUser> userManager,
             StudentDBContext studentDB,
             IEmailSender emailSender)
         {
@@ -27,9 +29,9 @@ namespace Student.Infrastructure.Services
             _emailSender = emailSender;
         }
 
-        internal async Task<List<User>> AddStudents(IList<DBUser> students, int batchID)
+        internal async Task<List<DBUser>> AddStudents(IList<DBUser> students, int batchID)
         {
-            var users = new List<User>();
+            var users = new List<DBUser>();
             var batch = await _db.Batches.FindAsync(batchID);
             foreach (var student in students)
             {
@@ -38,18 +40,24 @@ namespace Student.Infrastructure.Services
                 {
                     continue;
                 }
-                var password = CryptoService.GenerateRandomPassword();
+
                 student.Batch = batch;
                 student.PhoneNumberConfirmed = false;
-                student.UserRole = AppConstants.Student;
-                var res = await _usermanager.CreateAsync(student);
+                student.Role = AppConstants.Student;
+
+                var idbUser = IdentityDBUser.Create(student);
+                var res = await _usermanager.CreateAsync(idbUser);
                 if (res.Succeeded)
                 {
-                    users.Add(User.FromDBUser(student, password));
-                    await _usermanager.AddToRoleAsync(student, AppConstants.Student);
+                    await _usermanager.AddToRoleAsync(idbUser, AppConstants.Student);
                 }
             }
             return users;
+        }
+
+        public async Task<IdentityDBUser> GetIdentiuser(string userId)
+        {
+            return await _db.Users.FirstOrDefaultAsync(x => x.DBUser.Id == userId);
         }
 
         public async Task<bool> AuthorizeLesson(string userId, int lessonId)
@@ -68,9 +76,9 @@ namespace Student.Infrastructure.Services
 
         public async Task<bool> AuthorizeSemester(string userId, int semesterId)
         {
-            var user = await _db.Users.Include(x => x.Batch)
-                                      .FirstOrDefaultAsync(x => x.Id == userId);
-            if (user.UserRole == AppConstants.Admin)
+            var user = await _db.DBUsers.Include(x => x.Batch)
+                                        .FirstOrDefaultAsync(x => x.Id == userId);
+            if (user.Role == AppConstants.Admin)
             {
                 return true;
             }
@@ -84,9 +92,9 @@ namespace Student.Infrastructure.Services
 
         public async Task<bool> AuthorizeCourse(string userId, int courseId)
         {
-            var user = await _db.Users.Include(x => x.Batch)
+            var user = await _db.DBUsers.Include(x => x.Batch)
                                       .FirstOrDefaultAsync(x => x.Id == userId);
-            if (user.UserRole == AppConstants.Admin)
+            if (user.Role == AppConstants.Admin)
             {
                 return true;
             }
@@ -101,14 +109,15 @@ namespace Student.Infrastructure.Services
 
         public async Task<Batch> GetBatch(string userId)
         {
-            var user = await _db.Users.Include(x => x.Batch)
+            var user = await _db.DBUsers.Include(x => x.Batch)
                                       .FirstOrDefaultAsync(x => x.Id == userId);
             return user?.Batch;
         }
 
-        public async Task<User> Update(User user)
+        public async Task<DBUser> Update(DBUser user)
         {
-            var dbUser = await _db.Users.FirstOrDefaultAsync(x => x.Id == user.Id);
+            var dbUser = await _db.DBUsers
+                                  .FirstOrDefaultAsync(x => x.Id == user.Id);
             if (dbUser != null)
             {
                 dbUser.UpdateUser(user);
@@ -122,17 +131,11 @@ namespace Student.Infrastructure.Services
             }
         }
 
-        public async Task<User> GetUser(string userId)
+        public async Task<DBUser> GetUser(string userId)
         {
-            var user = await _db.Users.FirstOrDefaultAsync(x => x.Id == userId);
-            if (user != null)
-            {
-                return User.FromDBUser(user, "");
-            }
-            else
-            {
-                return null;
-            }
+            var user = await _db.DBUsers
+                                .FirstOrDefaultAsync(x => x.Id == userId);
+            return user;
         }
 
         public async Task<ActionResponse> AddStudent(int batchId, string roll, string name, string email, string phone)
@@ -150,7 +153,6 @@ namespace Student.Infrastructure.Services
             }
             else
             {
-                var password = CryptoService.GenerateRandomPassword();
                 int.TryParse(roll, out int studentRoll);
                 var student = new DBUser()
                 {
@@ -160,14 +162,15 @@ namespace Student.Infrastructure.Services
                     Name = name,
                     UserName = roll,
                     Roll = studentRoll,
-                    UserRole = AppConstants.Student,
+                    Role = AppConstants.Student,
                     PhoneNumber = phone,
                     PhoneNumberConfirmed = false
                 };
-                var res = await _usermanager.CreateAsync(student);
+                var idUser = IdentityDBUser.Create(student);
+                var res = await _usermanager.CreateAsync(idUser);
                 if (res.Succeeded)
                 {
-                    var mRes = await _usermanager.AddToRoleAsync(student, AppConstants.Student);
+                    var mRes = await _usermanager.AddToRoleAsync(idUser, AppConstants.Student);
                     if (mRes.Succeeded)
                     {
                         return new ActionResponse(true);
@@ -180,9 +183,9 @@ namespace Student.Infrastructure.Services
             }
         }
 
-        public async Task<User> MakeCR(string id)
+        public async Task<DBUser> MakeCR(string userId)
         {
-            var user = await _db.Users.FirstOrDefaultAsync(x => x.Id == id);
+            var user = await _db.DBUsers.FirstOrDefaultAsync(x => x.Id == userId);
             if (user == null)
             {
                 return null;
@@ -192,13 +195,13 @@ namespace Student.Infrastructure.Services
                 user.ClassRepresentative = true;
                 _db.Entry(user).State = EntityState.Modified;
                 await _db.SaveChangesAsync();
-                return await GetUser(id);
+                return await GetUser(userId);
             }
         }
 
-        public async Task<User> RemoveCR(string id)
+        public async Task<DBUser> RemoveCR(string id)
         {
-            var user = await _db.Users.FirstOrDefaultAsync(x => x.Id == id);
+            var user = await _db.DBUsers.FirstOrDefaultAsync(x => x.Id == id);
             if (user == null)
             {
                 return null;
@@ -212,52 +215,38 @@ namespace Student.Infrastructure.Services
             }
         }
 
-        public async Task<List<User>> GetCurrentCr()
+        public async Task<List<DBUser>> GetCurrentCr()
         {
-            var users = await _db.Users.Where(x => x.Batch.EndsOn >= CurrentTime &&
-                                                   x.ClassRepresentative)
+            var users = await _db.DBUsers
+                                 .Where(x => x.Batch.EndsOn >= CurrentTime &&
+                                             x.ClassRepresentative)
                                  .OrderByDescending(x => x.Batch.Id)
                                  .Include(x => x.Batch)
                                  .ToListAsync();
-            var userList = new List<User>();
-            foreach (var item in users)
-            {
-                var user = User.FromDBUser(item, "");
-                user.Batch = item.Batch;
-                userList.Add(user);
-            }
-            return userList;
+            return users;
         }
 
-        public async Task<List<User>> SearchStudent(string value)
+        public async Task<List<DBUser>> SearchStudent(string value)
         {
-            var users = new List<User>();
             if (string.IsNullOrWhiteSpace(value))
             {
-                var res = await _db.Users.Where(x => x.UserRole == AppConstants.Student)
-                                        .OrderByDescending(x => x.EnrolledIn)
-                                        .Take(50)
-                                        .ToListAsync();
-                foreach (var item in res)
-                {
-                    var user = User.FromDBUser(item, "");
-                    users.Add(user);
-                }
-                return users;
+                var res = await _db.DBUsers
+                                   .Where(x => x.Role == AppConstants.Student)
+                                   .OrderByDescending(x => x.EnrolledIn)
+                                   .Take(50)
+                                   .ToListAsync();
+                return res;
             }
             else
             {
-                var res = await _db.Users.Where(x => x.UserRole == AppConstants.Student &&
+                var res = await _db.DBUsers
+                                   .Where(x => x.Role == AppConstants.Student &&
                                                 (x.UserName == value ||
                                                  EF.Functions.Like(x.Name, $"%{value}%")))
                                            .OrderByDescending(x => x.EnrolledIn)
                                            .Take(100)
                                            .ToListAsync();
-                foreach (var item in res)
-                {
-                    users.Add(User.FromDBUser(item, ""));
-                }
-                return users;
+                return res;
             }
         }
 
@@ -315,7 +304,7 @@ namespace Student.Infrastructure.Services
             }
         }
 
-        public async Task<List<User>> UploadCSVStudents(string filePath, int batchId)
+        public async Task<List<DBUser>> UploadCSVStudents(string filePath, int batchId)
         {
             var students = new List<DBUser>();
             using var stream = File.OpenRead(filePath);

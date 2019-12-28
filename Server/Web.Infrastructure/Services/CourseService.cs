@@ -234,7 +234,8 @@ namespace Student.Infrastructure.Services
                                                                        x.Course.Id == course.Id);
                 if (courseStudent == null)
                 {
-                    var student = await _db.Users.FirstOrDefaultAsync(x => x.UserName == roll);
+                    var student = await _db.DBUsers
+                                           .FirstOrDefaultAsync(x => x.UserName == roll);
                     if (student != null)
                     {
                         courseStudent = new StudentCourse()
@@ -280,8 +281,9 @@ namespace Student.Infrastructure.Services
 
         public async Task<ActionResponse> DeleteLesson(string userId, int lessonId)
         {
-            var user = await _db.Users.Include(x => x.Batch)
-                                       .FirstOrDefaultAsync(x => x.UserName == userId);
+            var user = await _db.DBUsers
+                                .Include(x => x.Batch)
+                                .FirstOrDefaultAsync(x => x.UserName == userId);
             if (user != null && user.Batch != null && user.ClassRepresentative)
             {
                 var lesson = await _db.Lessons.FirstOrDefaultAsync(x => x.Id == lessonId);

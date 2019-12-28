@@ -11,17 +11,16 @@ namespace CoreEngine.APIHandlers
         Task<SignInResponse> Login(string username, string password);
         Task<ActionResponse> ChangePassword(string currentPassword, string newPassword);
         Task<ActionResponse> ForgetPassword(string rollNo, string phoneNo, string password);
-        Task<User> TouchLogin();
+        Task<DBUser> TouchLogin();
         void Logout();
-
-        Task<List<User>> GetCurrentBatchUsers();
+        Task<List<DBUser>> GetCurrentBatchUsers();
         Task<ActionResponse> CreateBatchStudents(int batchId, DBFile dBFile, IFormFile formFile = null);
         Task<ActionResponse> CreateStudent(int batchId, string roll, string name, string email, string phone);
-        Task<ActionResponse> UpdateUser(User user);
-        Task<ActionResponse> DeleteUser(User user);
-        Task<List<User>> SearchStudents(string key);
-        Task<List<User>> GetCurrentCr();
-        Task<User> GetUser(string userId);
+        Task<ActionResponse> UpdateUser(DBUser user);
+        Task<ActionResponse> DeleteUser(DBUser user);
+        Task<List<DBUser>> SearchStudents(string key);
+        Task<List<DBUser>> GetCurrentCr();
+        Task<DBUser> GetUser(string userId);
         Task<ActionResponse> VerifyPhoneNo(string rollNo, string phoneNo);
         Task<ActionResponse> Register(string rollNo, string phoneNo, string password);
     }

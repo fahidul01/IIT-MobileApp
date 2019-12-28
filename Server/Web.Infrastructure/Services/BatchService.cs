@@ -65,7 +65,6 @@ namespace Student.Infrastructure.Services
                                .Include(x => x.Semesters)
                                .ThenInclude(x => x.Courses)
                                .FirstOrDefaultAsync(x => x.Id == id);
-            res.LoadUsers();
             return res;
         }
 
@@ -111,12 +110,12 @@ namespace Student.Infrastructure.Services
             }
         }
 
-        public async Task<List<User>> GetBatchStudents(int batchId)
+        public async Task<List<DBUser>> GetBatchStudents(int batchId)
         {
-            var batch = await _db.Batches.Include(x => x.Students)
+            var batch = await _db.Batches
+                                 .Include(x => x.Students)
                                  .FirstOrDefaultAsync(x => x.Id == batchId);
-            batch.LoadUsers();
-            return batch.ExternalUsers;
+            return batch.Students.ToList();
         }
     }
 }
