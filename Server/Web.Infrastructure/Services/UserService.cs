@@ -128,7 +128,7 @@ namespace Student.Infrastructure.Services
 
         public async Task<DBUser> GetUserByName(string userName)
         {
-            return await _db.DBUsers.FirstOrDefaultAsync(x=>x.UserName == userName);
+            return await _db.DBUsers.FirstOrDefaultAsync(x => x.UserName == userName);
         }
 
         public async Task<Batch> GetBatch(string userId)

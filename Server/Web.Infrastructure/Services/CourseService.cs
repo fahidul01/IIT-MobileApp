@@ -157,7 +157,8 @@ namespace Student.Infrastructure.Services
         #region Lesson
         public async Task<ActionResponse> UploadResult(int courseId, string filePath)
         {
-            var course = await _db.Courses.Include(x => x.Semester.Batch).FirstOrDefaultAsync(x => x.Id == courseId);
+            var course = await _db.Courses.Include(x => x.Semester.Batch)
+                                          .FirstOrDefaultAsync(x => x.Id == courseId);
             return await AddResult(course, course.Semester.Batch, filePath);
         }
 
@@ -167,26 +168,6 @@ namespace Student.Infrastructure.Services
                                .Include(m => m.Student)
                                .ToListAsync();
             return res;
-        }
-
-        public async Task<ActionResponse> UploadResult(int courseId, int batchId, string filePath)
-        {
-            var course = await _db.Courses.Include(x => x.StudentCourses)
-                                          .FirstOrDefaultAsync(x => x.Id == courseId);
-            if (course == null)
-            {
-                return new ActionResponse(false, "Invalid Course Information");
-            }
-
-            var batch = await _db.Batches.FindAsync(batchId);
-            if (course.Semester.Batch.Id != batch.Id)
-            {
-                return new ActionResponse(false, "Invalid Batch Information");
-            }
-            else
-            {
-                return await AddResult(course, batch, filePath);
-            }
         }
 
         private async Task<ActionResponse> AddResult(Course course, Batch batch, string filePath)

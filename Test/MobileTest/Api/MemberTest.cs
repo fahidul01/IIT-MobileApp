@@ -1,6 +1,4 @@
 ﻿using CoreEngine.APIHandlers;
-using CoreEngine.Engine;
-using MobileTest.Core;
 using NUnit.Framework;
 using System.Threading.Tasks;
 
@@ -9,12 +7,12 @@ namespace MobileTest.Api
 
     public class MemberTest
     {
-        private IMemberHandler member;
+        private readonly IMemberHandler member;
 
         [SetUp]
         public void SetUp()
         {
-           
+
         }
 
         [Test]

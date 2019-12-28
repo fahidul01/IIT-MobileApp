@@ -55,7 +55,7 @@
                                                 <Label Text="{Binding DayOfWeek}"
                                                        FontSize="Small"
                                                        d:Text="Wednesday" />
-                                                <Label Text="{Binding TimeOfDay}"
+                                                <Label Text="{Binding TimeOfLesson}"
                                                        FontSize="Small"
                                                        d:Text="7.00 PM" />
                                             </StackLayout>

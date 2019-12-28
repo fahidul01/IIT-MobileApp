@@ -55,7 +55,7 @@
                                            Minimum="1" />
                 </div>
                 <div class="form-group">
-                    <MatBlazor.MatDatePicker @bind-Value="@CurrentBatch.StartsOn"
+                    <MatBlazor.MatDatePicker @bind-Value="@CurrentTime"
                                              Label="Starts On" />
                 </div>
             </fieldset>
@@ -72,6 +72,12 @@
     private int TotalBatch;
     private bool addDialogOpen;
     public Batch CurrentBatch { get; set; } = new Batch();
+    public DateTime CurrentTime
+    {
+        get => CurrentBatch.StartsOn;
+        set => CurrentBatch.StartsOn = value.AddHours(6);
+    }
+
     protected override async Task OnInitializedAsync()
     {
         try

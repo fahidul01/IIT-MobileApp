@@ -10,6 +10,7 @@ using Mobile.Core.Models.Core;
 using Mobile.Core.ViewModels;
 using Mobile.Core.Worker;
 using MobileApp.Controls;
+using MobileApp.Helpers;
 using MobileApp.Service;
 using System;
 using System.Linq;
@@ -61,6 +62,7 @@ namespace MobileApp
 
             services.AddSingleton(http);
             services.AddSingleton<SettingService>();
+            services.AddScoped<ICalenderHelper, CalenderHelper>();
             ServiceHelper.Register(services);
         }
 

@@ -54,6 +54,18 @@ namespace Mobile.Core.ViewModels
         public ICommand SelectCourseCommand => new RelayCommand<Course>(SelectCourseAction);
         public ICommand DaySelectCommand => new RelayCommand<Routine>(WeekAction);
         public ICommand ProfileCommand => new RelayCommand(ProfileAction);
+        public ICommand CalenderCommand => new RelayCommand(CalenderAction);
+        public ICommand TodoItemCommand => new RelayCommand(TodoItemAction);
+
+        private void TodoItemAction()
+        {
+            _nav.NavigateTo<TodoItemsViewModel>();
+        }
+
+        private void CalenderAction()
+        {
+            _nav.NavigateTo<CalenderViewModel>();
+        }
 
         private void ProfileAction()
         {

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -10,6 +11,7 @@ namespace MobileApp.Controls
     public class StackListLayout : StackLayout
     {
         private bool _locked;
+        private static SemaphoreSlim semaphoreSlim = new SemaphoreSlim(1, 1);
         public string EmptyText { get; set; }
         public static readonly BindableProperty ItemsSourceProperty =
             BindableProperty.Create(nameof(ItemsSource),
@@ -43,7 +45,7 @@ namespace MobileApp.Controls
         private static void ItemsSourceChanged(BindableObject bindable, object oldValue, object newValue)
         {
             var itemsLayout = (StackListLayout)bindable;
-            itemsLayout.SetItems();
+            itemsLayout.UpdateItems();
         }
 
         public StackListLayout()
@@ -51,30 +53,32 @@ namespace MobileApp.Controls
 
         }
 
-        protected virtual void SetItems()
+        private async void UpdateItems()
         {
+            await semaphoreSlim.WaitAsync();
             Children.Clear();
-            if (ItemsSource == null)
+            if (ItemsSource != null)
             {
-                return;
-            }
 
-            var counter = 0;
-            foreach (var item in ItemsSource)
-            {
-                var v = GetItemView(item);
-                Children.Add(v);
-                counter++;
-            }
-            if (Children.Count == 0 && !string.IsNullOrWhiteSpace(EmptyText))
-            {
-                AddEmpty();
-            }
 
-            if (ItemsSource is INotifyCollectionChanged notifyCollection)
-            {
-                notifyCollection.CollectionChanged += NotifyCollection_CollectionChanged;
+                var counter = 0;
+                foreach (var item in ItemsSource)
+                {
+                    var v = GetItemView(item);
+                    Children.Add(v);
+                    counter++;
+                }
+                if (Children.Count == 0 && !string.IsNullOrWhiteSpace(EmptyText))
+                {
+                    AddEmpty();
+                }
+
+                if (ItemsSource is INotifyCollectionChanged notifyCollection)
+                {
+                    notifyCollection.CollectionChanged += NotifyCollection_CollectionChanged;
+                }
             }
+            semaphoreSlim.Release();
         }
 
         private async void AddEmpty()
@@ -103,7 +107,7 @@ namespace MobileApp.Controls
 
             _locked = true;
             await Task.Delay(250);  //Disable Consecutive Update
-            SetItems();
+            UpdateItems();
             _locked = false;
         }
 

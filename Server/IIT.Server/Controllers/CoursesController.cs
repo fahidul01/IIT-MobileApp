@@ -3,7 +3,6 @@ using CoreEngine.Model.Common;
 using CoreEngine.Model.DBModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Student.Infrastructure.Services;
 using System;
@@ -61,26 +60,30 @@ namespace IIT.Server.Controllers
         {
             if (courseId != 0 && formFile != null)
             {
-                var filePath = Path.GetTempFileName();
 
                 try
                 {
                     var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                    var batch = await _userservice.GetBatch(userId);
-                    using (var stream = System.IO.File.Create(filePath))
+                    var filePath = Path.GetTempFileName();
+                    var access = await _userservice.AuthorizeCourse(userId, courseId);
+                    if (access)
                     {
-                        await formFile.CopyToAsync(stream);
-                    }
+                        using (var stream = System.IO.File.Create(filePath))
+                        {
+                            await formFile.CopyToAsync(stream);
+                        }
 
-                    if (formFile.FileName.EndsWith("csv"))
-                    {
-                        var uploadRes = await _courseService.UploadResult(courseId, batch.Id, filePath);
-                        return uploadRes;
+                        if (formFile.FileName.EndsWith("csv"))
+                        {
+                            var uploadRes = await _courseService.UploadResult(courseId, filePath);
+                            return uploadRes;
+                        }
+                        else
+                        {
+                            return new ActionResponse(false, "Invalid File Format");
+                        }
                     }
-                    else
-                    {
-                        return new ActionResponse(false, "Invalid File Format");
-                    }
+                    return new ActionResponse(false, "We could not upload file");
                 }
                 catch (Exception ex)
                 {

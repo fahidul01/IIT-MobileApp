@@ -123,11 +123,12 @@ namespace MobileApp.Service
             {
                 var page = Activator.CreateInstance(Pages[type]) as Page;
                 page.BindingContext = Locator.GetInstance(type);
+                await _nav.Navigation.PushAsync(page);
                 if (page.BindingContext is BaseViewModel viewModel)
                 {
                     viewModel.OnAppear(parameter);
                 }
-                await _nav.Navigation.PushAsync(page);
+               
             }
             else
             {
@@ -145,11 +146,12 @@ namespace MobileApp.Service
                 var page = Activator.CreateInstance(Pages[type]) as Page;
                 // var vm = Locator.GetInstance<T>();
                 // page.BindingContext = vm;
+                await _nav.Navigation.PushModalAsync(page);
                 if (page.BindingContext is BaseViewModel viewModel)
                 {
                     viewModel.OnAppear(parameter);
                 }
-                await _nav.Navigation.PushModalAsync(page);
+                
                 if (page.BindingContext is IPopupModel popupModel)
                 {
                     popupModel.DataCommand = dataCommand;

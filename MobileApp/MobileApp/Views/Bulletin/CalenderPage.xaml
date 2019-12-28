@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<controls:CustomPage xmlns="http://xamarin.com/schemas/2014/forms"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                     xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                     mc:Ignorable="d"
+                     Title="Academic Calender"
+                     xmlns:vm="clr-namespace:Mobile.Core.ViewModels;assembly=Mobile.Core"
+                     x:TypeArguments="vm:CalenderViewModel"
+                     xmlns:cl="clr-namespace:Xamarin.Plugin.Calendar.Controls;assembly=Xamarin.Plugin.Calendar"
+                     xmlns:controls="clr-namespace:MobileApp.Controls"
+                     xmlns:cv="clr-namespace:MobileApp.Converters"
+                     xmlns:model="clr-namespace:CoreEngine.Model.DBModel;assembly=CoreEngine"
+                     x:Class="MobileApp.Views.Bulletin.CalenderPage">
+    <ContentPage.Resources>
+        <cv:EventsConverter x:Key="NoticeConverter" />
+    </ContentPage.Resources>
+    <Grid d:BindingContext="{x:Static vm:CalenderViewModel}">
+        <cl:Calendar Events="{Binding CalenderHelper.EventDatas}"
+                     ShowYearPicker="False"
+                     Margin="10"
+                     Year="{Binding Year}"
+                     Month="{Binding Month}">
+            <cl:Calendar.HeaderSectionTemplate>
+                <DataTemplate>
+                    <StackLayout Orientation="Horizontal"
+                                 HorizontalOptions="Center">
+                        <StackLayout.Resources>
+                            <Style TargetType="Label">
+                                <Setter Property="FontSize"
+                                        Value="Large" />
+                                <Setter Property="VerticalOptions"
+                                        Value="Center" />
+                                <Setter Property="TextColor"
+                                        Value="DarkCyan" />
+                            </Style>
+                        </StackLayout.Resources>
+                        <Button Command="{Binding PrevMonthCommand}"
+                                Visual="Default"
+                                BackgroundColor="Transparent"
+                                ImageSource="{controls:IconFont Color=DarkCyan, IconType=ArrowBack}"
+                                Style="{StaticResource FloatingButton}" />
+                        <Label Text="{Binding MonthText}" />
+                        <Label Text="," />
+                        <Label Text="{Binding Year}" />
+                        <Button Command="{Binding NextMonthCommand}"
+                                BackgroundColor="Transparent"
+                                Visual="Default"
+                                ImageSource="{controls:IconFont Color=DarkCyan, IconType=ArrowForward}"
+                                Style="{StaticResource FloatingButton}" />
+                    </StackLayout>
+                </DataTemplate>
+            </cl:Calendar.HeaderSectionTemplate>
+            <cl:Calendar.EventTemplate>
+                <DataTemplate x:DataType="model:Notice">
+                    <Grid>
+                        <StackLayout Padding="15,0,0,0">
+                            <Label Text="{Binding Title}"
+                                   FontAttributes="Bold"
+                                   FontSize="Medium" />
+                            <Label Text="{Binding Message}"
+                                   FontSize="Small"
+                                   LineBreakMode="WordWrap" />
+                        </StackLayout>
+                    </Grid>
+                </DataTemplate>
+            </cl:Calendar.EventTemplate>
+        </cl:Calendar>
+    </Grid>
+</controls:CustomPage>

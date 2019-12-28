@@ -27,20 +27,31 @@ namespace CoreEngine.Model.DBModel
 
     public class SemesterData
     {
+        public SemesterData()
+        {
+
+        }
         public SemesterData(Semester semester, List<StudentCourse> studentCourses)
         {
             SemesterName = semester.Name;
             StartsOn = semester.StartsOn;
             SemesterNo = SemesterName.ToLower().Replace("semester", "").Trim();
             CourseDatas = new List<CourseData>();
-            decimal totalCredit = 0;
+            decimal totalCredit = 0, totalComplete = 0;
             foreach (var gradeData in studentCourses)
             {
                 var cData = new CourseData(gradeData, gradeData.Course);
-                totalCredit += gradeData.GradePoint * gradeData.Course.CourseCredit;
-                CourseDatas.Add(new CourseData(gradeData, gradeData.Course));
+                CourseDatas.Add(cData);
+                if (gradeData.GradePoint > 0)
+                {
+                    totalCredit += gradeData.GradePoint * gradeData.Course.CourseCredit;
+                    totalComplete += gradeData.Course.CourseCredit;
+                }
             }
-            SemesterGPA = Math.Round(totalCredit / studentCourses.Sum(x => x.Course.CourseCredit), 2);
+            if (totalComplete > 0)
+            {
+                SemesterGPA = Math.Round(totalCredit / totalComplete, 2);
+            }
         }
 
         public string SemesterNo { get; set; }
@@ -57,7 +68,10 @@ namespace CoreEngine.Model.DBModel
         public string Grade { get; set; }
         public decimal GradePoint { get; set; }
         public bool Failed => Grade == "F" || Grade == "f";
+        public CourseData()
+        {
 
+        }
         public CourseData(StudentCourse studentCourse, Course course)
         {
             Name = course.CourseName;

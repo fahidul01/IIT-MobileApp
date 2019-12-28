@@ -63,7 +63,34 @@
                                     <Label Text="{Binding Description}"
                                            TextColor="DarkGray"
                                            d:Text="{Binding}" />
-                                    <controls:StackListLayout ItemsSource="{Binding Lessons}"
+                                    <CollectionView ItemsSource="{Binding Lessons}"
+                                                    VerticalOptions="Start"
+                                                    HeightRequest="35">
+                                        <CollectionView.EmptyView>
+                                            <Label HorizontalOptions="Center"
+                                                   Text="No Class has been added yet" />
+                                        </CollectionView.EmptyView>
+                                        <CollectionView.ItemsLayout>
+                                            <LinearItemsLayout Orientation="Horizontal" />
+                                        </CollectionView.ItemsLayout>
+                                        <CollectionView.ItemTemplate>
+                                            <DataTemplate x:DataType="model:Lesson">
+                                                <Grid>
+                                                    <Frame BorderColor="LightGray"
+                                                           CornerRadius="10"
+                                                           Margin="0,0,5,0"
+                                                           Padding="5">
+                                                        <StackLayout Orientation="Horizontal"
+                                                                     VerticalOptions="Center">
+                                                            <Label Text="{Binding DayOfWeek}" />
+                                                            <Label Text="{Binding TimeOfLesson}" />
+                                                        </StackLayout>
+                                                    </Frame>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </CollectionView.ItemTemplate>
+                                    </CollectionView>
+                                    <!--<controls:StackListLayout ItemsSource="{Binding Lessons}"
                                                               EmptyText="No Classes Has been addet yet"
                                                               Orientation="Horizontal">
                                         <controls:StackListLayout.ItemTemplate>
@@ -78,7 +105,7 @@
                                                 </Frame>
                                             </DataTemplate>
                                         </controls:StackListLayout.ItemTemplate>
-                                    </controls:StackListLayout>
+                                    </controls:StackListLayout>-->
                                 </StackLayout>
                             </Frame>
                         </Grid>

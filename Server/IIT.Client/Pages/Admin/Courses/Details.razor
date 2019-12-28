@@ -40,19 +40,22 @@ else
             </div>*@
         </div>
 
-        @if (CurrentCourse.CourseMaterials != null &&
-            CurrentCourse.CourseMaterials.Count>0)
-        {
-            foreach (var dbFile in CurrentCourse.CourseMaterials)
+        <div class="ml-3 mr-3">
+            @if (CurrentCourse.CourseMaterials != null &&
+           CurrentCourse.CourseMaterials.Count > 0)
             {
-                <a href="/api/files+@dbFile.Id">@dbFile.FileName</a>
-                <br />
+                foreach (var dbFile in CurrentCourse.CourseMaterials)
+                {
+                    <a href="/api/files/index?id=@dbFile.Id">@dbFile.FileName</a>
+                    <br />
+                }
             }
-        }
-        else
-        {
-            <h6 class="text-center">No Course material has been added yet</h6>
-        }
+            else
+            {
+                <h6 class="text-center">No Course material has been added yet</h6>
+            }
+        </div>
+        
     </div>
     <MatDivider />
     <div class="card m-3">
@@ -60,18 +63,23 @@ else
             <h4 class="d-inline float-left">
                 Students
             </h4>
+            <MatButton Label="Upload Result"
+                       Class="input-file-custom float-right">
+                <InputFile OnChange="AddResultUploadClick" />
+            </MatButton>
         </div>
         <div class="card-body">
-            <MatTable Class="mat-elevation-z5" Items="@CurrentCourse.StudentCourses"
+            <MatTable Class="mat-elevation-z5" Items="@StudentCourses"
                       ShowPaging="false"
                       PageSize="100"
                       AllowSelection="true">
                 <MatTableHeader>
-                    <th style="width:40%">Name</th>
+                    <th style="width:100%">Name</th>
                     <th style="width:15%">Roll</th>
                     <th style="width:20%">Credit</th>
                     <th style="width:15%">GPA</th>
                     <th style="width:10%">Grade</th>
+                    <th style="width:10%"></th>
                 </MatTableHeader>
                 <MatTableRow Context="StudentCourse">
                     <td @onclick="(() => ViewStudent(StudentCourse.Student))">@StudentCourse.Student.Name</td>
@@ -79,6 +87,9 @@ else
                     <td @onclick="(() => ViewStudent(StudentCourse.Student))">@CurrentCourse.CourseCredit</td>
                     <td @onclick="(() => ViewStudent(StudentCourse.Student))">@StudentCourse.GradePoint</td>
                     <td @onclick="(() => ViewStudent(StudentCourse.Student))">@StudentCourse.Grade</td>
+                    <td>
+                        <MatButton Icon="@MatIconNames.Delete"/>
+                    </td>
                 </MatTableRow>
             </MatTable>
         </div>
@@ -89,11 +100,13 @@ else
     public int CourseId { get; set; }
     Course CurrentCourse = new Course();
     List<Lesson> Lessons = new List<Lesson>();
+    List<StudentCourse> StudentCourses;
 
     protected override async Task OnInitializedAsync()
     {
         CurrentCourse = await _courseHandler.GetCourse(CourseId);
         Lessons = CurrentCourse.Lessons.ToList();
+        StudentCourses = CurrentCourse.StudentCourses.ToList();
     }
 
     private void ViewStudent(DBUser user)
@@ -139,6 +152,34 @@ else
             {
                 var toast = resp.Actionstatus ? MatToastType.Success : MatToastType.Danger;
                 _matToaster.Add(resp.Message, toast);
+            }
+        }
+    }
+
+    private async void AddResultUploadClick(IFileListEntry[] files)
+    {
+        var file = files.FirstOrDefault();
+        if(file != null && file.Size > 0)
+        {
+            var dbFile = new DBFile(file.Data, file.Name);
+            var resp = await _courseHandler.UploadCourseResult(CurrentCourse.Id, dbFile, null);
+            if(resp == null)
+            {
+                _matToaster.Add("Failed to Upload result", MatToastType.Danger);
+            }
+            else
+            {
+                var toast = resp.Actionstatus ? MatToastType.Success : MatToastType.Danger;
+                _matToaster.Add(resp.Message, toast);
+                if (resp.Actionstatus)
+                {
+                    var data = await _courseHandler.GetCourse(CurrentCourse.Id);
+                    if(data!= null)
+                    {
+                        StudentCourses = data.StudentCourses.ToList();
+                        this.StateHasChanged();
+                    }
+                }
             }
         }
     }

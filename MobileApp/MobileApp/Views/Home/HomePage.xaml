@@ -75,17 +75,19 @@
                 <Grid Margin="10">
                     <Button ImageSource="{controls:IconFont IconType=PermContactCalendar, Color=Blue}"
                             BackgroundColor="White"
+                            Command="{Binding CalenderCommand}"
                             ContentLayout="Right,15"
                             TextColor="Black"
                             FontSize="Small"
                             Text="Calender" />
                     <Button ImageSource="{controls:IconFont IconType=Event, Color=Blue}"
                             BackgroundColor="White"
+                            Command="{Binding TodoItemCommand}"
                             ContentLayout="Right,15"
                             TextColor="Black"
                             Grid.Column="1"
                             FontSize="Small"
-                            Text="Events" />
+                            Text="TodoItem" />
                 </Grid>
             </StackLayout>
         </ScrollView>
