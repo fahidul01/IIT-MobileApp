@@ -14,6 +14,7 @@ namespace Student.Infrastructure.DBModel
         public DbSet<DBFile> DBFiles { get; internal set; }
         public DbSet<StudentCourse> StudentCourses { get; internal set; }
         public DbSet<Lesson> Lessons { get; internal set; }
+        public DbSet<ToDoItem> ToDoItems { get; internal set; }
 
         public StudentDBContext(DbContextOptions<StudentDBContext> opt) : base(opt)
         {

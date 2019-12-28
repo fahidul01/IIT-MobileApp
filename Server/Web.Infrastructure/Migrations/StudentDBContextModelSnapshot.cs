@@ -175,6 +175,9 @@ namespace Student.Infrasructure.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("TEXT");
 
+                    b.Property<int?>("ToDoItemId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("INTEGER");
 
@@ -198,6 +201,8 @@ namespace Student.Infrasructure.Migrations
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
                         .HasName("UserNameIndex");
+
+                    b.HasIndex("ToDoItemId");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -335,6 +340,31 @@ namespace Student.Infrasructure.Migrations
                     b.HasIndex("StudentId");
 
                     b.ToTable("StudentCourses");
+                });
+
+            modelBuilder.Entity("CoreEngine.Model.DBModel.ToDoItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("EventTime")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Message")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("OwnerId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OwnerId");
+
+                    b.ToTable("ToDoItems");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -490,6 +520,10 @@ namespace Student.Infrasructure.Migrations
                     b.HasOne("CoreEngine.Model.DBModel.Batch", "Batch")
                         .WithMany("Students")
                         .HasForeignKey("BatchId");
+
+                    b.HasOne("CoreEngine.Model.DBModel.ToDoItem", null)
+                        .WithMany("Participents")
+                        .HasForeignKey("ToDoItemId");
                 });
 
             modelBuilder.Entity("CoreEngine.Model.DBModel.Lesson", b =>
@@ -542,6 +576,13 @@ namespace Student.Infrasructure.Migrations
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("CoreEngine.Model.DBModel.ToDoItem", b =>
+                {
+                    b.HasOne("CoreEngine.Model.DBModel.DBUser", "Owner")
+                        .WithMany()
+                        .HasForeignKey("OwnerId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

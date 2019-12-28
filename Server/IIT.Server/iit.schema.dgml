@@ -1,0 +1,307 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DirectedGraph GraphDirection="LeftToRight" Layout="Sugiyama" ZoomLevel="-1" xmlns="http://schemas.microsoft.com/vs/2009/dgml">
+  <Nodes>
+    <Node Id="AspNetRoleClaims" Category="Table" Bounds="20,97.4213945111396,137.026666666667,24.9999999999999" Group="Collapsed" Label="AspNetRoleClaims" Visibility="Hidden" />
+    <Node Id="AspNetRoleClaims_ClaimType" Category="Field Optional" Description="text" Label="ClaimType" Visibility="Hidden" />
+    <Node Id="AspNetRoleClaims_ClaimValue" Category="Field Optional" Description="text" Label="ClaimValue" Visibility="Hidden" />
+    <Node Id="AspNetRoleClaims_Id" Category="Field Primary" Description="bigint" Label="Id" Visibility="Hidden" />
+    <Node Id="AspNetRoleClaims_RoleId" Category="Field Foreign" Description="text" Label="RoleId" Visibility="Hidden" />
+    <Node Id="AspNetRoles" Category="Table" Bounds="74.0408092854064,398.720171396635,107.34,25" Group="Collapsed" Label="AspNetRoles" Visibility="Hidden" />
+    <Node Id="AspNetRoles_ConcurrencyStamp" Category="Field Optional" Description="text" Label="ConcurrencyStamp" Visibility="Hidden" />
+    <Node Id="AspNetRoles_Id" Category="Field Primary" Description="text" Label="Id" Visibility="Hidden" />
+    <Node Id="AspNetRoles_Name" Category="Field Optional" Description="text" Label="Name" Visibility="Hidden" />
+    <Node Id="AspNetRoles_NormalizedName" Category="Field Optional" Description="text" Label="NormalizedName" Visibility="Hidden" />
+    <Node Id="AspNetUserClaims" Category="Table" Bounds="65.1536407116126,264.196112669865,137.773333333334,25" Group="Collapsed" Label="AspNetUserClaims" Visibility="Hidden" />
+    <Node Id="AspNetUserClaims_ClaimType" Category="Field Optional" Description="text" Label="ClaimType" Visibility="Hidden" />
+    <Node Id="AspNetUserClaims_ClaimValue" Category="Field Optional" Description="text" Label="ClaimValue" Visibility="Hidden" />
+    <Node Id="AspNetUserClaims_Id" Category="Field Primary" Description="bigint" Label="Id" Visibility="Hidden" />
+    <Node Id="AspNetUserClaims_UserId" Category="Field Foreign" Description="text" Label="UserId" Visibility="Hidden" />
+    <Node Id="AspNetUserLogins" Category="Table" Bounds="73.0506809602065,142.67577967809,137.53,25" Group="Collapsed" Label="AspNetUserLogins" Visibility="Hidden" />
+    <Node Id="AspNetUserLogins_LoginProvider" Category="Field Primary" Description="text" Label="LoginProvider" Visibility="Hidden" />
+    <Node Id="AspNetUserLogins_ProviderDisplayName" Category="Field Optional" Description="text" Label="ProviderDisplayName" Visibility="Hidden" />
+    <Node Id="AspNetUserLogins_ProviderKey" Category="Field Primary" Description="text" Label="ProviderKey" Visibility="Hidden" />
+    <Node Id="AspNetUserLogins_UserId" Category="Field Foreign" Description="text" Label="UserId" Visibility="Hidden" />
+    <Node Id="AspNetUserRoles" Category="Table" Bounds="84.6819653362873,319.196112669865,131.126666666667,25" Group="Collapsed" Label="AspNetUserRoles" Visibility="Hidden" />
+    <Node Id="AspNetUserRoles_RoleId" Category="Field Primary" Description="text" Label="RoleId" Visibility="Hidden" />
+    <Node Id="AspNetUserRoles_UserId" Category="Field Primary" Description="text" Label="UserId" Visibility="Hidden" />
+    <Node Id="AspNetUserTokens" Category="Table" Bounds="155.088860345564,72.25980614183,139.263333333333,24.9999999999998" Group="Collapsed" Label="AspNetUserTokens" Visibility="Hidden" />
+    <Node Id="AspNetUserTokens_LoginProvider" Category="Field Primary" Description="text" Label="LoginProvider" Visibility="Hidden" />
+    <Node Id="AspNetUserTokens_Name" Category="Field Primary" Description="text" Label="Name" Visibility="Hidden" />
+    <Node Id="AspNetUserTokens_UserId" Category="Field Primary" Description="text" Label="UserId" Visibility="Hidden" />
+    <Node Id="AspNetUserTokens_Value" Category="Field Optional" Description="text" Label="Value" Visibility="Hidden" />
+    <Node Id="AspNetUsers" Category="Table" Bounds="39.6124346550514,176.37144102571,108.086666666667,25" Group="Collapsed" Label="AspNetUsers" UseManualLocation="True" />
+    <Node Id="AspNetUsers_AccessFailedCount" Category="Field" Bounds="451.086214463286,780.40102408899,118.11,25.96" Description="bigint" Label="AccessFailedCount" UseManualLocation="True" />
+    <Node Id="AspNetUsers_Address" Category="Field Optional" Bounds="716.459578721099,556.560508952271,62.51,25.96" Description="text" Label="Address" UseManualLocation="True" />
+    <Node Id="AspNetUsers_BatchId" Category="Field Foreign" Bounds="626.812845729562,556.560508952271,59.6466666666666,25.96" Description="bigint" Label="BatchId" UseManualLocation="True" />
+    <Node Id="AspNetUsers_BloodGroup" Category="Field Optional" Bounds="305.116119146717,668.480736003053,84.1933333333334,25.96" Description="text" Label="BloodGroup" UseManualLocation="True" />
+    <Node Id="AspNetUsers_ClassRepresentative" Category="Field" Bounds="305.116113246652,836.361168131959,124.566666666667,25.96" Description="bigint" Label="ClassRepresentative" UseManualLocation="True" />
+    <Node Id="AspNetUsers_ConcurrencyStamp" Category="Field Optional" Bounds="599.196146510812,780.401085124146,119.896666666667,25.96" Description="text" Label="ConcurrencyStamp" UseManualLocation="True" />
+    <Node Id="AspNetUsers_Email" Category="Field Optional" Bounds="385.116129014067,556.560508952271,50,25.96" Description="text" Label="Email" UseManualLocation="True" />
+    <Node Id="AspNetUsers_EmailConfirmed" Category="Field" Bounds="432.32941107787,724.440880046021,104.093333333333,25.96" Description="bigint" Label="EmailConfirmed" UseManualLocation="True" />
+    <Node Id="AspNetUsers_EnrolledIn" Category="Field" Bounds="401.942791815174,612.520591960084,73.2033333333333,25.96" Description="text" Label="EnrolledIn" UseManualLocation="True" />
+    <Node Id="AspNetUsers_Id" Category="Field Primary" Bounds="305.116129014067,556.560508952271,50,25.96" Description="text" Label="Id" UseManualLocation="True" />
+    <Node Id="AspNetUsers_LockoutEnabled" Category="Field" Bounds="566.422764349354,724.440880046021,104.343333333333,25.96" Description="bigint" Label="LockoutEnabled" UseManualLocation="True" />
+    <Node Id="AspNetUsers_LockoutEnd" Category="Field Optional" Bounds="721.506204697661,612.520591960084,82,25.96" Description="text" Label="LockoutEnd" UseManualLocation="True" />
+    <Node Id="AspNetUsers_Name" Category="Field Optional" Bounds="545.116123317453,556.560508952271,51.6966666666667,25.96" Description="text" Label="Name" UseManualLocation="True" />
+    <Node Id="AspNetUsers_NormalizedEmail" Category="Field Optional" Bounds="700.766088323963,724.440941081178,109.533333333333,25.96" Description="text" Label="NormalizedEmail" UseManualLocation="True" />
+    <Node Id="AspNetUsers_NormalizedUserName" Category="Field Optional" Bounds="459.682780625395,836.361229167115,136.69,25.96" Description="text" Label="NormalizedUserName" UseManualLocation="True" />
+    <Node Id="AspNetUsers_Occupation" Category="Field Optional" Bounds="610.629486354562,612.520591960084,80.8766666666667,25.96" Description="text" Label="Occupation" UseManualLocation="True" />
+    <Node Id="AspNetUsers_PasswordHash" Category="Field Optional" Bounds="660.299465602609,668.480736003053,96.0566666666667,25.96" Description="text" Label="PasswordHash" UseManualLocation="True" />
+    <Node Id="AspNetUsers_PhoneNumber" Category="Field Optional" Bounds="305.116113653553,724.440880046021,97.2133333333334,25.96" Description="text" Label="PhoneNumber" UseManualLocation="True" />
+    <Node Id="AspNetUsers_PhoneNumberConfirmed" Category="Field" Bounds="305.116103989653,892.321312174928,152.98,25.96" Description="bigint" Label="PhoneNumberConfirmed" UseManualLocation="True" />
+    <Node Id="AspNetUsers_RequirePasswordChange" Category="Field" Bounds="626.37276679076,836.361168131959,150.323333333333,25.96" Description="bigint" Label="RequirePasswordChange" UseManualLocation="True" />
+    <Node Id="AspNetUsers_Roll" Category="Field" Bounds="465.116129014067,556.560508952271,50,25.96" Description="bigint" Label="Roll" UseManualLocation="True" />
+    <Node Id="AspNetUsers_SecurityStamp" Category="Field Optional" Bounds="534.81279812214,668.480736003053,95.4866666666667,25.96" Description="text" Label="SecurityStamp" UseManualLocation="True" />
+    <Node Id="AspNetUsers_TwoFactorEnabled" Category="Field" Bounds="305.116160141997,780.40102408899,115.97,25.96" Description="bigint" Label="TwoFactorEnabled" UseManualLocation="True" />
+    <Node Id="AspNetUsers_UserName" Category="Field Optional" Bounds="505.146114569081,612.52065299524,75.4833333333331,25.96" Description="text" Label="UserName" UseManualLocation="True" />
+    <Node Id="AspNetUsers_UserRole" Category="Field Optional" Bounds="305.116087611886,612.520591960084,66.8266666666667,25.96" Description="text" Label="UserRole" UseManualLocation="True" />
+    <Node Id="AspNetUsers_WorkHistory" Category="Field Optional" Bounds="419.309362860096,668.480736003053,85.5033333333333,25.96" Description="text" Label="WorkHistory" UseManualLocation="True" />
+    <Node Id="Batches" Category="Table" Bounds="210.420051961259,177.309699403162,80.7566666666668,25" Group="Collapsed" Label="Batches" UseManualLocation="True" />
+    <Node Id="Batches_EndsOn" Category="Field" Bounds="336.352474161784,14.0064286333062,60.8566666666667,25.96" Description="text" Label="EndsOn" UseManualLocation="True" />
+    <Node Id="Batches_Id" Category="Field Primary" Bounds="174.655838012695,14.0063904863336,50,25.96" Description="bigint" Label="Id" UseManualLocation="True" />
+    <Node Id="Batches_Name" Category="Field" Bounds="254.655809427897,14.0063904863336,51.6966666666667,25.96" Description="text" Label="Name" UseManualLocation="True" />
+    <Node Id="Batches_NumberOfSemester" Category="Field" Bounds="174.655841573079,125.926600197027,125.283333333333,25.96" Description="bigint" Label="NumberOfSemester" UseManualLocation="True" />
+    <Node Id="Batches_SemesterDuration" Category="Field" Bounds="269.985836791992,69.9665286333062,115.15,25.96" Description="bigint" Label="SemesterDuration" UseManualLocation="True" />
+    <Node Id="Batches_StartsOn" Category="Field" Bounds="174.655838928223,69.9664904863336,65.33,25.96" Description="text" Label="StartsOn" UseManualLocation="True" />
+    <Node Id="Courses" Category="Table" Bounds="196.986697688217,79.1640378690098,81.8866666666668,25" Group="Collapsed" Label="Courses" UseManualLocation="True" />
+    <Node Id="Courses_CourseCredit" Category="Field" Bounds="675.38843610926,776.563159115607,88.7133333333334,25.96" Description="text" Label="CourseCredit" UseManualLocation="True" />
+    <Node Id="Courses_CourseId" Category="Field Optional" Bounds="636.898520337775,664.642993099982,67.0533333333333,25.96" Description="text" Label="CourseId" UseManualLocation="True" />
+    <Node Id="Courses_CourseName" Category="Field Optional" Bounds="556.898448723192,776.563037045295,88.49,25.96" Description="text" Label="CourseName" UseManualLocation="True" />
+    <Node Id="Courses_Description" Category="Field Optional" Bounds="666.031888257697,720.602954037482,80.2533333333333,25.96" Description="text" Label="Description" UseManualLocation="True" />
+    <Node Id="Courses_Id" Category="Field Primary" Bounds="556.898453606004,664.642993099982,50,25.96" Description="bigint" Label="Id" UseManualLocation="True" />
+    <Node Id="Courses_SemesterId" Category="Field Foreign" Bounds="556.898437329963,720.602954037482,79.1333333333333,25.96" Description="bigint" Label="SemesterId" UseManualLocation="True" />
+    <Node Id="DBFiles" Category="Table" Bounds="373.720840967,19.6653575117131,78.3366666666666,25" Group="Collapsed" Label="DBFiles" UseManualLocation="True" />
+    <Node Id="DBFiles_CourseId" Category="Field Foreign" Bounds="915.002755360497,438.668385457621,67.0533333333334,25.96" Description="bigint" Label="CourseId" UseManualLocation="True" />
+    <Node Id="DBFiles_Description" Category="Field Optional" Bounds="919.589492421044,494.628575276957,80.2533333333333,25.96" Description="text" Label="Description" UseManualLocation="True" />
+    <Node Id="DBFiles_FileHash" Category="Field Optional" Bounds="991.166060210757,382.708332967387,64.4599999999999,25.96" Description="text" Label="FileHash" UseManualLocation="True" />
+    <Node Id="DBFiles_FileName" Category="Field Optional" Bounds="819.942691477033,494.628575276957,69.6466666666666,25.96" Description="text" Label="FileName" UseManualLocation="True" />
+    <Node Id="DBFiles_FilePath" Category="Field Optional" Bounds="899.942749256981,382.708332967387,61.2233333333334,25.96" Description="text" Label="FilePath" UseManualLocation="True" />
+    <Node Id="DBFiles_Id" Category="Field Primary" Bounds="819.942691070132,382.708332967387,50,25.96" Description="text" Label="Id" UseManualLocation="True" />
+    <Node Id="DBFiles_NoticeId" Category="Field Foreign" Bounds="819.942689849429,438.668385457621,65.0600000000001,25.96" Description="bigint" Label="NoticeId" UseManualLocation="True" />
+    <Node Id="Database" Category="Database" Bounds="19.6124346550514,-75.5323466557068,452.445072978615,298.727835826689" Group="Expanded" Label="mydata.db" UseManualLocation="True" />
+    <Node Id="Lessons" Category="Table" Bounds="369.874519844228,97.5007923195374,81.0266666666664,25" Group="Collapsed" Label="Lessons" UseManualLocation="True" />
+    <Node Id="Lessons_CourseId" Category="Field Foreign" Bounds="825.051633984087,165.007381348695,67.0533333333334,25.96" Description="bigint" Label="CourseId" UseManualLocation="True" />
+    <Node Id="Lessons_DayOfWeek" Category="Field" Bounds="855.304980745155,276.927432923402,82.3866666666667,25.96" Description="bigint" Label="DayOfWeek" UseManualLocation="True" />
+    <Node Id="Lessons_Description" Category="Field Optional" Bounds="745.051640087603,276.927432923402,80.2533333333333,25.96" Description="text" Label="Description" UseManualLocation="True" />
+    <Node Id="Lessons_Id" Category="Field Primary" Bounds="745.051628287473,165.007381348695,50,25.96" Description="bigint" Label="Id" UseManualLocation="True" />
+    <Node Id="Lessons_RoomNo" Category="Field Optional" Bounds="922.10496324841,165.007381348695,67.23,25.96" Description="text" Label="RoomNo" UseManualLocation="True" />
+    <Node Id="Lessons_TeacherId" Category="Field" Bounds="745.051629101275,220.967403321352,70.5433333333333,25.96" Description="bigint" Label="TeacherId" UseManualLocation="True" />
+    <Node Id="Lessons_TeacherName" Category="Field Optional" Bounds="745.051557486692,332.887393860902,91.98,25.96" Description="text" Label="TeacherName" UseManualLocation="True" />
+    <Node Id="Lessons_TimeOfDay" Category="Field" Bounds="845.594891633827,220.967403321352,78.9366666666666,25.96" Description="text" Label="TimeOfDay" UseManualLocation="True" />
+    <Node Id="Notices" Category="Table" Bounds="51.7607094660431,17.8522153182469,79.8933333333334,25" Group="Collapsed" Label="Notices" UseManualLocation="True" />
+    <Node Id="Notices_BatchId" Category="Field Foreign" Bounds="849.826123953429,147.367943871625,59.6466666666666,25.96" Description="bigint" Label="BatchId" UseManualLocation="True" />
+    <Node Id="Notices_CourseId" Category="Field Foreign" Bounds="881.736224457986,203.328045952924,67.0533333333333,25.96" Description="bigint" Label="CourseId" UseManualLocation="True" />
+    <Node Id="Notices_CreatedOn" Category="Field" Bounds="890.869460541971,259.288251031049,77.2333333333332,25.96" Description="text" Label="CreatedOn" UseManualLocation="True" />
+    <Node Id="Notices_EventDate" Category="Field" Bounds="787.056236665018,259.288128960736,73.8133333333333,25.96" Description="text" Label="EventDate" UseManualLocation="True" />
+    <Node Id="Notices_FutureNotification" Category="Field" Bounds="689.826185395486,315.248242486127,116.043333333333,25.96" Description="bigint" Label="FutureNotification" UseManualLocation="True" />
+    <Node Id="Notices_Id" Category="Field Primary" Bounds="689.826245616841,147.367943871625,50,25.96" Description="bigint" Label="Id" UseManualLocation="True" />
+    <Node Id="Notices_Message" Category="Field Optional" Bounds="785.046217540669,203.328045952924,66.6899999999999,25.96" Description="text" Label="Message" UseManualLocation="True" />
+    <Node Id="Notices_OwnerId" Category="Field Foreign" Bounds="689.826169933247,203.328045952924,65.22,25.96" Description="text" Label="OwnerId" UseManualLocation="True" />
+    <Node Id="Notices_PostType" Category="Field" Bounds="689.826174816059,259.288128960736,67.23,25.96" Description="bigint" Label="PostType" UseManualLocation="True" />
+    <Node Id="Notices_Title" Category="Field Optional" Bounds="769.826245616841,147.367943871625,50,25.96" Description="text" Label="Title" UseManualLocation="True" />
+    <Node Id="Semesters" Category="Table" Bounds="355.094146115025,178.195389170982,93.9666666666666,25" Group="Collapsed" Label="Semesters" UseManualLocation="True" />
+    <Node Id="Semesters_BatchId" Category="Field Foreign" Bounds="637.3358396123,170.83857881184,59.6466666666666,25.96" Description="bigint" Label="BatchId" UseManualLocation="True" />
+    <Node Id="Semesters_Duration" Category="Field" Bounds="475.639186780268,282.75882112141,66.2766666666666,25.96" Description="bigint" Label="Duration" UseManualLocation="True" />
+    <Node Id="Semesters_EndsOn" Category="Field" Bounds="475.63919532519,226.79869233723,60.8566666666667,25.96" Description="text" Label="EndsOn" UseManualLocation="True" />
+    <Node Id="Semesters_Id" Category="Field Primary" Bounds="475.639183931961,170.83857881184,50,25.96" Description="bigint" Label="Id" UseManualLocation="True" />
+    <Node Id="Semesters_Name" Category="Field Optional" Bounds="555.639178235346,170.83857881184,51.6966666666667,25.96" Description="text" Label="Name" UseManualLocation="True" />
+    <Node Id="Semesters_StartsOn" Category="Field" Bounds="566.495820894852,226.79869233723,65.33,25.96" Description="text" Label="StartsOn" UseManualLocation="True" />
+    <Node Id="StudentCourses" Category="Table" Bounds="169.439788451293,-35.5322466557068,122.93,25" Group="Collapsed" Label="StudentCourses" UseManualLocation="True" />
+    <Node Id="StudentCourses_CourseId" Category="Field Foreign" Bounds="565.827338517496,194.213486191661,67.0533333333333,25.96" Description="bigint" Label="CourseId" UseManualLocation="True" />
+    <Node Id="StudentCourses_Grade" Category="Field Optional" Bounds="645.827344214111,138.2533564538,51.8566666666667,25.96" Description="text" Label="Grade" UseManualLocation="True" />
+    <Node Id="StudentCourses_GradePoint" Category="Field" Bounds="565.82734787622,250.173588272959,78.9266666666667,25.96" Description="text" Label="GradePoint" UseManualLocation="True" />
+    <Node Id="StudentCourses_Id" Category="Field Primary" Bounds="565.827332820882,138.25337266627,50,25.96" Description="bigint" Label="Id" UseManualLocation="True" />
+    <Node Id="StudentCourses_StudentId" Category="Field Foreign" Bounds="662.880683244059,194.213455674082,71.3033333333333,25.96" Description="text" Label="StudentId" UseManualLocation="True" />
+  </Nodes>
+  <Links>
+    <Link Source="AspNetRoleClaims" Target="AspNetRoleClaims_ClaimType" Category="Contains" />
+    <Link Source="AspNetRoleClaims" Target="AspNetRoleClaims_ClaimValue" Category="Contains" />
+    <Link Source="AspNetRoleClaims" Target="AspNetRoleClaims_Id" Category="Contains" />
+    <Link Source="AspNetRoleClaims" Target="AspNetRoleClaims_RoleId" Category="Contains" />
+    <Link Source="AspNetRoleClaims_RoleId" Target="AspNetRoles_Id" Category="Foreign Key" Label="FK_AspNetRoleClaims_0_0" />
+    <Link Source="AspNetRoles" Target="AspNetRoles_ConcurrencyStamp" Category="Contains" />
+    <Link Source="AspNetRoles" Target="AspNetRoles_Id" Category="Contains" />
+    <Link Source="AspNetRoles" Target="AspNetRoles_Name" Category="Contains" />
+    <Link Source="AspNetRoles" Target="AspNetRoles_NormalizedName" Category="Contains" />
+    <Link Source="AspNetUserClaims" Target="AspNetUserClaims_ClaimType" Category="Contains" />
+    <Link Source="AspNetUserClaims" Target="AspNetUserClaims_ClaimValue" Category="Contains" />
+    <Link Source="AspNetUserClaims" Target="AspNetUserClaims_Id" Category="Contains" />
+    <Link Source="AspNetUserClaims" Target="AspNetUserClaims_UserId" Category="Contains" />
+    <Link Source="AspNetUserClaims_UserId" Target="AspNetUsers_Id" Category="Foreign Key" Label="FK_AspNetUserClaims_0_0" />
+    <Link Source="AspNetUserLogins" Target="AspNetUserLogins_LoginProvider" Category="Contains" />
+    <Link Source="AspNetUserLogins" Target="AspNetUserLogins_ProviderDisplayName" Category="Contains" />
+    <Link Source="AspNetUserLogins" Target="AspNetUserLogins_ProviderKey" Category="Contains" />
+    <Link Source="AspNetUserLogins" Target="AspNetUserLogins_UserId" Category="Contains" />
+    <Link Source="AspNetUserLogins_UserId" Target="AspNetUsers_Id" Category="Foreign Key" Label="FK_AspNetUserLogins_0_0" />
+    <Link Source="AspNetUserRoles" Target="AspNetUserRoles_RoleId" Category="Contains" />
+    <Link Source="AspNetUserRoles" Target="AspNetUserRoles_UserId" Category="Contains" />
+    <Link Source="AspNetUserRoles_RoleId" Target="AspNetRoles_Id" Category="Foreign Key" Label="FK_AspNetUserRoles_1_0" />
+    <Link Source="AspNetUserRoles_UserId" Target="AspNetUsers_Id" Category="Foreign Key" Label="FK_AspNetUserRoles_0_0" />
+    <Link Source="AspNetUserTokens" Target="AspNetUserTokens_LoginProvider" Category="Contains" />
+    <Link Source="AspNetUserTokens" Target="AspNetUserTokens_Name" Category="Contains" />
+    <Link Source="AspNetUserTokens" Target="AspNetUserTokens_UserId" Category="Contains" />
+    <Link Source="AspNetUserTokens" Target="AspNetUserTokens_Value" Category="Contains" />
+    <Link Source="AspNetUserTokens_UserId" Target="AspNetUsers_Id" Category="Foreign Key" Label="FK_AspNetUserTokens_0_0" />
+    <Link Source="AspNetUsers" Target="AspNetUsers_AccessFailedCount" Category="Contains" />
+    <Link Source="AspNetUsers" Target="AspNetUsers_Address" Category="Contains" />
+    <Link Source="AspNetUsers" Target="AspNetUsers_BatchId" Category="Contains" />
+    <Link Source="AspNetUsers" Target="AspNetUsers_BloodGroup" Category="Contains" />
+    <Link Source="AspNetUsers" Target="AspNetUsers_ClassRepresentative" Category="Contains" />
+    <Link Source="AspNetUsers" Target="AspNetUsers_ConcurrencyStamp" Category="Contains" />
+    <Link Source="AspNetUsers" Target="AspNetUsers_Email" Category="Contains" />
+    <Link Source="AspNetUsers" Target="AspNetUsers_EmailConfirmed" Category="Contains" />
+    <Link Source="AspNetUsers" Target="AspNetUsers_EnrolledIn" Category="Contains" />
+    <Link Source="AspNetUsers" Target="AspNetUsers_Id" Category="Contains" />
+    <Link Source="AspNetUsers" Target="AspNetUsers_LockoutEnabled" Category="Contains" />
+    <Link Source="AspNetUsers" Target="AspNetUsers_LockoutEnd" Category="Contains" />
+    <Link Source="AspNetUsers" Target="AspNetUsers_Name" Category="Contains" />
+    <Link Source="AspNetUsers" Target="AspNetUsers_NormalizedEmail" Category="Contains" />
+    <Link Source="AspNetUsers" Target="AspNetUsers_NormalizedUserName" Category="Contains" />
+    <Link Source="AspNetUsers" Target="AspNetUsers_Occupation" Category="Contains" />
+    <Link Source="AspNetUsers" Target="AspNetUsers_PasswordHash" Category="Contains" />
+    <Link Source="AspNetUsers" Target="AspNetUsers_PhoneNumber" Category="Contains" />
+    <Link Source="AspNetUsers" Target="AspNetUsers_PhoneNumberConfirmed" Category="Contains" />
+    <Link Source="AspNetUsers" Target="AspNetUsers_RequirePasswordChange" Category="Contains" />
+    <Link Source="AspNetUsers" Target="AspNetUsers_Roll" Category="Contains" />
+    <Link Source="AspNetUsers" Target="AspNetUsers_SecurityStamp" Category="Contains" />
+    <Link Source="AspNetUsers" Target="AspNetUsers_TwoFactorEnabled" Category="Contains" />
+    <Link Source="AspNetUsers" Target="AspNetUsers_UserName" Category="Contains" />
+    <Link Source="AspNetUsers" Target="AspNetUsers_UserRole" Category="Contains" />
+    <Link Source="AspNetUsers" Target="AspNetUsers_WorkHistory" Category="Contains" />
+    <Link Source="AspNetUsers_BatchId" Target="Batches_Id" Category="Foreign Key" Label="FK_AspNetUsers_0_0" />
+    <Link Source="Batches" Target="Batches_EndsOn" Category="Contains" />
+    <Link Source="Batches" Target="Batches_Id" Category="Contains" />
+    <Link Source="Batches" Target="Batches_Name" Category="Contains" />
+    <Link Source="Batches" Target="Batches_NumberOfSemester" Category="Contains" />
+    <Link Source="Batches" Target="Batches_SemesterDuration" Category="Contains" />
+    <Link Source="Batches" Target="Batches_StartsOn" Category="Contains" />
+    <Link Source="Courses" Target="Courses_CourseCredit" Category="Contains" />
+    <Link Source="Courses" Target="Courses_CourseId" Category="Contains" />
+    <Link Source="Courses" Target="Courses_CourseName" Category="Contains" />
+    <Link Source="Courses" Target="Courses_Description" Category="Contains" />
+    <Link Source="Courses" Target="Courses_Id" Category="Contains" />
+    <Link Source="Courses" Target="Courses_SemesterId" Category="Contains" />
+    <Link Source="Courses_SemesterId" Target="Semesters_Id" Category="Foreign Key" Label="FK_Courses_0_0" />
+    <Link Source="DBFiles" Target="DBFiles_CourseId" Category="Contains" />
+    <Link Source="DBFiles" Target="DBFiles_Description" Category="Contains" />
+    <Link Source="DBFiles" Target="DBFiles_FileHash" Category="Contains" />
+    <Link Source="DBFiles" Target="DBFiles_FileName" Category="Contains" />
+    <Link Source="DBFiles" Target="DBFiles_FilePath" Category="Contains" />
+    <Link Source="DBFiles" Target="DBFiles_Id" Category="Contains" />
+    <Link Source="DBFiles" Target="DBFiles_NoticeId" Category="Contains" />
+    <Link Source="DBFiles_CourseId" Target="Courses_Id" Category="Foreign Key" Label="FK_DBFiles_1_0" />
+    <Link Source="DBFiles_NoticeId" Target="Notices_Id" Category="Foreign Key" Label="FK_DBFiles_0_0" />
+    <Link Source="Database" Target="AspNetRoleClaims" Category="Contains" />
+    <Link Source="Database" Target="AspNetRoles" Category="Contains" />
+    <Link Source="Database" Target="AspNetUserClaims" Category="Contains" />
+    <Link Source="Database" Target="AspNetUserLogins" Category="Contains" />
+    <Link Source="Database" Target="AspNetUserRoles" Category="Contains" />
+    <Link Source="Database" Target="AspNetUserTokens" Category="Contains" />
+    <Link Source="Database" Target="AspNetUsers" Category="Contains" />
+    <Link Source="Database" Target="Batches" Category="Contains" />
+    <Link Source="Database" Target="Courses" Category="Contains" />
+    <Link Source="Database" Target="DBFiles" Category="Contains" />
+    <Link Source="Database" Target="Lessons" Category="Contains" />
+    <Link Source="Database" Target="Notices" Category="Contains" />
+    <Link Source="Database" Target="Semesters" Category="Contains" />
+    <Link Source="Database" Target="StudentCourses" Category="Contains" />
+    <Link Source="Lessons" Target="Lessons_CourseId" Category="Contains" />
+    <Link Source="Lessons" Target="Lessons_DayOfWeek" Category="Contains" />
+    <Link Source="Lessons" Target="Lessons_Description" Category="Contains" />
+    <Link Source="Lessons" Target="Lessons_Id" Category="Contains" />
+    <Link Source="Lessons" Target="Lessons_RoomNo" Category="Contains" />
+    <Link Source="Lessons" Target="Lessons_TeacherId" Category="Contains" />
+    <Link Source="Lessons" Target="Lessons_TeacherName" Category="Contains" />
+    <Link Source="Lessons" Target="Lessons_TimeOfDay" Category="Contains" />
+    <Link Source="Lessons_CourseId" Target="Courses_Id" Category="Foreign Key" Label="FK_Lessons_0_0" />
+    <Link Source="Notices" Target="Notices_BatchId" Category="Contains" />
+    <Link Source="Notices" Target="Notices_CourseId" Category="Contains" />
+    <Link Source="Notices" Target="Notices_CreatedOn" Category="Contains" />
+    <Link Source="Notices" Target="Notices_EventDate" Category="Contains" />
+    <Link Source="Notices" Target="Notices_FutureNotification" Category="Contains" />
+    <Link Source="Notices" Target="Notices_Id" Category="Contains" />
+    <Link Source="Notices" Target="Notices_Message" Category="Contains" />
+    <Link Source="Notices" Target="Notices_OwnerId" Category="Contains" />
+    <Link Source="Notices" Target="Notices_PostType" Category="Contains" />
+    <Link Source="Notices" Target="Notices_Title" Category="Contains" />
+    <Link Source="Notices_BatchId" Target="Batches_Id" Category="Foreign Key" Label="FK_Notices_2_0" />
+    <Link Source="Notices_CourseId" Target="Courses_Id" Category="Foreign Key" Label="FK_Notices_1_0" />
+    <Link Source="Notices_OwnerId" Target="AspNetUsers_Id" Category="Foreign Key" Label="FK_Notices_0_0" />
+    <Link Source="Semesters" Target="Semesters_BatchId" Category="Contains" />
+    <Link Source="Semesters" Target="Semesters_Duration" Category="Contains" />
+    <Link Source="Semesters" Target="Semesters_EndsOn" Category="Contains" />
+    <Link Source="Semesters" Target="Semesters_Id" Category="Contains" />
+    <Link Source="Semesters" Target="Semesters_Name" Category="Contains" />
+    <Link Source="Semesters" Target="Semesters_StartsOn" Category="Contains" />
+    <Link Source="Semesters_BatchId" Target="Batches_Id" Category="Foreign Key" Label="FK_Semesters_0_0" />
+    <Link Source="StudentCourses" Target="StudentCourses_CourseId" Category="Contains" />
+    <Link Source="StudentCourses" Target="StudentCourses_Grade" Category="Contains" />
+    <Link Source="StudentCourses" Target="StudentCourses_GradePoint" Category="Contains" />
+    <Link Source="StudentCourses" Target="StudentCourses_Id" Category="Contains" />
+    <Link Source="StudentCourses" Target="StudentCourses_StudentId" Category="Contains" />
+    <Link Source="StudentCourses_CourseId" Target="Courses_Id" Category="Foreign Key" Label="FK_StudentCourses_1_0" />
+    <Link Source="StudentCourses_StudentId" Target="AspNetUsers_Id" Category="Foreign Key" Label="FK_StudentCourses_0_0" />
+  </Links>
+  <Categories>
+    <Category Id="Contains" Label="Contains" Description="Whether the source of the link contains the target object" CanBeDataDriven="False" CanLinkedNodesBeDataDriven="True" IncomingActionLabel="Contained By" IsContainment="True" OutgoingActionLabel="Contains" />
+    <Category Id="Database" />
+    <Category Id="Field" />
+    <Category Id="Field Foreign" />
+    <Category Id="Field Optional" />
+    <Category Id="Field Primary" />
+    <Category Id="Foreign Key" />
+    <Category Id="Table" />
+  </Categories>
+  <Properties>
+    <Property Id="Bounds" DataType="System.Windows.Rect" />
+    <Property Id="CanBeDataDriven" Label="CanBeDataDriven" Description="CanBeDataDriven" DataType="System.Boolean" />
+    <Property Id="CanLinkedNodesBeDataDriven" Label="CanLinkedNodesBeDataDriven" Description="CanLinkedNodesBeDataDriven" DataType="System.Boolean" />
+    <Property Id="Description" Label="Description" Description="Description" DataType="System.String" />
+    <Property Id="Expression" DataType="System.String" />
+    <Property Id="GraphDirection" DataType="Microsoft.VisualStudio.Diagrams.Layout.LayoutOrientation" />
+    <Property Id="Group" Label="Group" Description="Display the node as a group" DataType="Microsoft.VisualStudio.GraphModel.GraphGroupStyle" />
+    <Property Id="GroupLabel" DataType="System.String" />
+    <Property Id="IncomingActionLabel" Label="IncomingActionLabel" Description="IncomingActionLabel" DataType="System.String" />
+    <Property Id="IsContainment" DataType="System.Boolean" />
+    <Property Id="IsEnabled" DataType="System.Boolean" />
+    <Property Id="Label" Label="Label" Description="Displayable label of an Annotatable object" DataType="System.String" />
+    <Property Id="Layout" DataType="System.String" />
+    <Property Id="OutgoingActionLabel" Label="OutgoingActionLabel" Description="OutgoingActionLabel" DataType="System.String" />
+    <Property Id="TargetType" DataType="System.Type" />
+    <Property Id="UseManualLocation" DataType="System.Boolean" />
+    <Property Id="Value" DataType="System.String" />
+    <Property Id="ValueLabel" DataType="System.String" />
+    <Property Id="Visibility" Label="Visibility" Description="Defines whether a node in the graph is visible or not" DataType="System.Windows.Visibility" />
+    <Property Id="ZoomLevel" DataType="System.String" />
+  </Properties>
+  <Styles>
+    <Style TargetType="Node" GroupLabel="Table" ValueLabel="True">
+      <Condition Expression="HasCategory('Table')" />
+      <Setter Property="Background" Value="#FFC0C0C0" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Schema" ValueLabel="True">
+      <Condition Expression="HasCategory('Schema')" />
+      <Setter Property="Background" Value="#FF7F9169" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Field Primary" ValueLabel="True">
+      <Condition Expression="HasCategory('Field Primary')" />
+      <Setter Property="Background" Value="#FF008000" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Field Optional" ValueLabel="True">
+      <Condition Expression="HasCategory('Field Optional')" />
+      <Setter Property="Background" Value="#FF808040" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Field Foreign" ValueLabel="True">
+      <Condition Expression="HasCategory('Field Foreign')" />
+      <Setter Property="Background" Value="#FF8080FF" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Field" ValueLabel="True">
+      <Condition Expression="HasCategory('Field')" />
+      <Setter Property="Background" Value="#FFC0A000" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Database" ValueLabel="True">
+      <Condition Expression="HasCategory('Database')" />
+      <Setter Property="Background" Value="#FFFFFFFF" />
+    </Style>
+  </Styles>
+</DirectedGraph>

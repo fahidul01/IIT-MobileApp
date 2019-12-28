@@ -8,6 +8,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreEngine", "Core\CoreEngine\CoreEngine.csproj", "{C64CB616-0CD5-4B1F-8BFA-882F56E1BE3B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{6D2B5268-2DA4-41EB-8793-90A23E4AC364}"
+	ProjectSection(SolutionItems) = preProject
+		C:\Users\sakib\Desktop\iit.schema.dgml = C:\Users\sakib\Desktop\iit.schema.dgml
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Student.Infrasructure", "Server\Web.Infrastructure\Student.Infrasructure.csproj", "{FA682E4E-0169-4084-B306-E4029EA1E87A}"
 EndProject
