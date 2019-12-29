@@ -71,6 +71,9 @@ namespace Mobile.Core.ViewModels
                             {
                                 _platformService.SubsubcribeTopics(AppService.CurrentUser.Batch.Name);
                             }
+#if DEBUG
+                            _platformService.SubsubcribeTopics("MIT19");
+#endif
                         }
                     }
                     else

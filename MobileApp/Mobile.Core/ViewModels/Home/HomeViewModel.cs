@@ -38,6 +38,13 @@ namespace Mobile.Core.ViewModels
             LoadEvents();
         }
 
+        protected override void RefreshAction()
+        {
+            base.RefreshAction();
+            IsRefreshisng = false;
+            LoadEvents();
+        }
+
         private async void LoadEvents()
         {
             IsBusy = true;

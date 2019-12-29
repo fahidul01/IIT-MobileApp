@@ -61,6 +61,12 @@ namespace Student.Infrastructure.Services
                 }
 
                 student.Batch = batch;
+                if (student.PhoneNumber.StartsWith("0"))
+                    student.PhoneNumber = "+88" + student.PhoneNumber;
+
+                if (!student.PhoneNumber.StartsWith("+880"))
+                    student.PhoneNumber = "+880" + student.PhoneNumber;
+
                 student.PhoneNumberConfirmed = false;
                 student.Role = AppConstants.Student;
 
@@ -141,6 +147,7 @@ namespace Student.Infrastructure.Services
         public async Task<DBUser> GetUser(string userId)
         {
             var user = await _db.DBUsers
+                                .Include(m=>m.Batch)
                                 .FirstOrDefaultAsync(x => x.Id == userId);
             return user;
         }
