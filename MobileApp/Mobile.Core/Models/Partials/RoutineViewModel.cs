@@ -10,6 +10,7 @@ namespace Mobile.Core.Models.Partials
     {
         public List<Activity> Activities { get; private set; }
         public List<Routine> Routines { get; private set; }
+        private Routine CurrentRoutine;
 
         public RoutineViewModel()
         {
@@ -47,12 +48,14 @@ namespace Mobile.Core.Models.Partials
 
             foreach (var item in Routines)
             {
-                var todayActivity = allActivity.Where(x => x.DayOfWeek == item.DayOfWeek)
+                var dayActivity = allActivity.Where(x => x.DayOfWeek == item.DayOfWeek)
                                                .OrderBy(x => x.TimeOfDay)
                                                .ToList();
-                if (todayActivity.Count > 0)
+                if (dayActivity.Count > 0)
                 {
-                    item.Activities = todayActivity;
+                    item.Activities = dayActivity;
+                    if (item.DayOfWeek == DateTime.Now.DayOfWeek)
+                        Activities = dayActivity;
                 }
             }
         }

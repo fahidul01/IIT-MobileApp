@@ -12,7 +12,8 @@
                      x:DataType="vm:CourseDetailViewModel"
                      x:TypeArguments="vm:CourseDetailViewModel"
                      x:Class="MobileApp.Views.Course.CourseDetailPage">
-    <Grid d:BindingContext="{x:Static vm:CourseDetailViewModel}">
+    <Grid d:BindingContext="{x:Static vm:CourseDetailViewModel}"
+          x:Name="MainGrid">
         <pk:PancakeView HeightRequest="200"
                         VerticalOptions="Start"
                         BackgroundGradientStartColor="DarkBlue"
@@ -79,6 +80,10 @@
                                 <controls:StackListLayout.ItemTemplate>
                                     <DataTemplate x:DataType="model:DBFile">
                                         <Grid Margin="5">
+                                            <Grid.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding BindingContext.FileCommand, Source={x:Reference MainGrid}}"
+                                                                      CommandParameter="{Binding}" />
+                                            </Grid.GestureRecognizers>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*" />
                                                 <ColumnDefinition Width="Auto" />

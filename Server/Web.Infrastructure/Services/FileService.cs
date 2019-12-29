@@ -108,16 +108,19 @@ namespace Student.Infrastructure.Services
             var target = GetTargetFolder();
 
             var _dbFile = await _db.DBFiles.FindAsync(obj.Id);
-            var targetFile = Path.Combine(target, _dbFile.FilePath);
-            if (_dbFile != null && File.Exists(targetFile))
+
+            if (_dbFile != null)
             {
-                File.Delete(targetFile);
-                return new ActionResponse(true, "File Delete Successfull");
+                _db.Entry(_dbFile).State = EntityState.Deleted;
+                await _db.SaveChangesAsync();
+                var targetFile = Path.Combine(target, _dbFile.FilePath);
+                if (_dbFile != null && File.Exists(targetFile))
+                {
+                    File.Delete(targetFile);
+                    return new ActionResponse(true, "File Delete Successfull");
+                }
             }
-            else
-            {
-                return new ActionResponse(false, "Failed to Locate the target file");
-            }
+            return new ActionResponse(false, "Failed to Locate the target file");
         }
     }
 }

@@ -10,9 +10,14 @@
                      xmlns:vm="clr-namespace:Mobile.Core.ViewModels;assembly=Mobile.Core"
                      x:DataType="vm:HomeViewModel"
                      Title="Home"
-                     
                      x:TypeArguments="vm:HomeViewModel"
                      x:Class="MobileApp.Views.Home.HomePage">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem IconImageSource="{controls:IconFont IconType=Notifications}"
+                     Order="Primary"
+                     Command="{Binding NoticesCommand}"
+                     Priority="0" />
+    </ContentPage.ToolbarItems>
     <Grid d:BindingContext="{x:Static vm:HomeViewModel}">
         <ScrollView >
             <StackLayout>

@@ -19,7 +19,7 @@ namespace Mobile.Core.ViewModels
         public override void OnAppear(params object[] args)
         {
             base.OnAppear(args);
-            RefreshAction();
+            IsRefreshisng = true;
         }
 
         protected override async void RefreshAction()

@@ -1,5 +1,7 @@
 ﻿using Mobile.Core.ViewModels;
 using MobileApp.Controls;
+using Xamarin.Forms.PlatformConfiguration;
+using Xamarin.Forms.PlatformConfiguration.AndroidSpecific;
 using Xamarin.Forms.Xaml;
 
 namespace MobileApp.Views.Notice
@@ -10,6 +12,7 @@ namespace MobileApp.Views.Notice
         public NoticesPage()
         {
             InitializeComponent();
+            On<Android>().SetToolbarPlacement(ToolbarPlacement.Bottom);
         }
     }
 }

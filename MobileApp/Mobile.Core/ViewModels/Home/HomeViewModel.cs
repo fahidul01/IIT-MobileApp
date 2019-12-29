@@ -56,6 +56,24 @@ namespace Mobile.Core.ViewModels
         public ICommand ProfileCommand => new RelayCommand(ProfileAction);
         public ICommand CalenderCommand => new RelayCommand(CalenderAction);
         public ICommand TodoItemCommand => new RelayCommand(TodoItemAction);
+        public ICommand NoticesCommand => new RelayCommand(NoticesAction);
+        public ICommand SwipeLeftCommand => new RelayCommand(SwipeLeftAAction);
+        public ICommand SwipteRightCommand => new RelayCommand(SwipeRightAction);
+
+        private void SwipeRightAction()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void SwipeLeftAAction()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void NoticesAction()
+        {
+            _nav.NavigateTo<NoticesViewModel>();
+        }
 
         private void TodoItemAction()
         {

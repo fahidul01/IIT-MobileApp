@@ -51,8 +51,12 @@ namespace Mobile.Core.ViewModels
         }
 
         public ICommand EditCourseCommand => new RelayCommand(CourseAction);
+        public ICommand FileCommand => new RelayCommand<DBFile>(FileAction);
 
-
+        private void FileAction(DBFile obj)
+        {
+            _nav.OpenFile(obj.Id);
+        }
 
         private void CourseAction()
         {

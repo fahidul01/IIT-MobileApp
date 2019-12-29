@@ -3,6 +3,7 @@ using CoreEngine.Model.DBModel;
 using GalaSoft.MvvmLight.Command;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Mobile.Core.ViewModels
@@ -27,21 +28,22 @@ namespace Mobile.Core.ViewModels
             RefreshAction();
         }
 
-        protected override void RefreshAction()
+        protected async override void RefreshAction()
         {
             base.RefreshAction();
             canLoadMore = true;
             page = 1;
-            LoadUpcomingNotice();
-            LoadNotice(0);
+            await LoadUpcomingNotice();
+            await LoadNotice(0);
+            IsRefreshisng = false;
         }
 
-        private async void LoadUpcomingNotice()
+        private async Task LoadUpcomingNotice()
         {
             UpcomingNotices = await _noticeHandler.GetUpcomingEvents(1, PostType.All);
         }
 
-        private async void LoadNotice(int page)
+        private async Task LoadNotice(int page)
         {
             IsBusy = true;
             var res = await _noticeHandler.GetPosts(page, PostType.All);

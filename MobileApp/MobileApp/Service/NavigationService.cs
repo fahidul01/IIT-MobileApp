@@ -55,11 +55,6 @@ namespace MobileApp.Service
             if (vm == typeof(HomeViewModel))
             {
                 Application.Current.MainPage = new MainPage(_nav);
-                _nav.ToolbarItems.Add(new ToolbarItem()
-                {
-                    Command = new RelayCommand(() => NavigateTo<NoticesViewModel>()),
-                    IconImageSource = IconFont.GetSource(IconType.Notifications, Color.White)
-                });
             }
             else
             {
@@ -206,7 +201,7 @@ namespace MobileApp.Service
 
         public void OpenFile(string fileId)
         {
-            var url = Path.Combine(AppConstants.BaseUrl + "/api/files/index/id?=" + fileId);
+            var url = Path.Combine(AppConstants.BaseUrl + "api/files/index?id=" + fileId);
             Launcher.TryOpenAsync(url);
         }
     }
