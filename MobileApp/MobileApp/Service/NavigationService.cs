@@ -1,4 +1,5 @@
-﻿using GalaSoft.MvvmLight.Command;
+﻿using CoreEngine.Model.Common;
+using GalaSoft.MvvmLight.Command;
 using Mobile.Core.Engines.Dependency;
 using Mobile.Core.Engines.Services;
 using Mobile.Core.Models.Core;
@@ -8,10 +9,12 @@ using MobileApp.Controls;
 using MobileApp.Views.Home;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace MobileApp.Service
@@ -128,7 +131,7 @@ namespace MobileApp.Service
                 {
                     viewModel.OnAppear(parameter);
                 }
-               
+
             }
             else
             {
@@ -151,7 +154,7 @@ namespace MobileApp.Service
                 {
                     viewModel.OnAppear(parameter);
                 }
-                
+
                 if (page.BindingContext is IPopupModel popupModel)
                 {
                     popupModel.DataCommand = dataCommand;
@@ -199,6 +202,12 @@ namespace MobileApp.Service
         public void ShowToastMessage(string message)
         {
             _platformService.OpenToast(message);
+        }
+
+        public void OpenFile(string fileId)
+        {
+            var url = Path.Combine(AppConstants.BaseUrl + "/api/files/index/id?=" + fileId);
+            Launcher.TryOpenAsync(url);
         }
     }
 }

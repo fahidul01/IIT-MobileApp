@@ -13,6 +13,10 @@
                       Icon="@MatIconNames.Search"
                       IconTrailing="true"
                       FullWidth="true" />
+        @if (IsBusy)
+        {
+            <MatProgressBar Indeterminate="true"/>
+        }
         <MatTable Items="Courses"
                   AllowSelection="true"
                   ShowPaging="false"
@@ -48,7 +52,7 @@
     public string SearchText
     {
         get => _search;
-        set => SearchAction(_search);
+        set => SearchAction(value);
     }
 
     private async void SearchAction(string search)
@@ -60,6 +64,7 @@
             IsBusy = true;
             Courses = await _courseService.SearchCourse(search);
             IsBusy = false;
+            this.StateHasChanged();
         }
     }
 

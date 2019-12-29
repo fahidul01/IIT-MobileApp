@@ -29,7 +29,7 @@ namespace CoreEngine.Model.DBModel
     {
         public SemesterData()
         {
-
+            CourseDatas = new List<CourseData>();
         }
         public SemesterData(Semester semester, List<StudentCourse> studentCourses)
         {
@@ -63,10 +63,12 @@ namespace CoreEngine.Model.DBModel
 
     public class CourseData
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public string CourseId { get; set; }
         public string Grade { get; set; }
         public decimal GradePoint { get; set; }
+        public decimal CourseCredit { get; set; }
         public bool Failed => Grade == "F" || Grade == "f";
         public CourseData()
         {
@@ -74,9 +76,11 @@ namespace CoreEngine.Model.DBModel
         }
         public CourseData(StudentCourse studentCourse, Course course)
         {
+            Id = course.Id;
             Name = course.CourseName;
             CourseId = course.CourseId;
             GradePoint = studentCourse.GradePoint;
+            CourseCredit = course.CourseCredit;
             if (string.IsNullOrEmpty(studentCourse.Grade))
             {
                 Grade = "Not Published";

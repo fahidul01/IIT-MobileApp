@@ -2,11 +2,11 @@
 
 @if (Notices != null && Notices.Count > 0)
 {
-    <MatList>
+    <ul>
         @foreach (var notice in Notices)
         {
-            <MatListItem class="card-body pt-1 pb-1">
-                <a class="btn col-12 text-left"
+            <li class="m-1">
+                <a class="btn text-left"
                    @onclick="(()=>ViewNotice(notice))">
                     <small class="text-muted font-weight-bold">@notice.EventDate</small>
                     <h5 class=" mt-0 mb-0">@notice.Title</h5>
@@ -22,9 +22,9 @@
                         }
                     </div>
                 </a>
-            </MatListItem>
+            </li>
         }
-    </MatList>
+    </ul>
 }
 else
 {

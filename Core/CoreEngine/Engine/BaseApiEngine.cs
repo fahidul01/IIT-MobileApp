@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CoreEngine.Engine
 {
-    class BaseApiEngine
+    abstract class BaseApiEngine
     {
         private readonly HttpWorker _httpWorker;
         private readonly string controller;

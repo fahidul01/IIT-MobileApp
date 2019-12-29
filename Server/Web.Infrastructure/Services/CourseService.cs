@@ -254,6 +254,7 @@ namespace Student.Infrastructure.Services
                                       .ThenInclude(m => m.Batch)
                                       .Where(n => EF.Functions.Like(n.CourseId, $"%{search}%") ||
                                                 EF.Functions.Like(n.CourseName, $"%{search}%"))
+                                      .OrderByDescending(x => x.Semester.EndsOn)
                                       .ToListAsync();
             return courseList;
         }

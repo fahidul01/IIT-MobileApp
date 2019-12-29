@@ -15,5 +15,6 @@ namespace Mobile.Core.Engines.Services
         void GoModalBack();
         void Configure(Type viewModel, Type page);
         void Init<T>() where T : BaseViewModel;
+        void OpenFile(string fileId);
     }
 }
