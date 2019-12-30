@@ -24,7 +24,7 @@ namespace IIT.Server.Controllers
             return await _batchService.GetBatchesAsync(page);
         }
 
-        public async Task<Batch> CreateBatch(Batch batch)
+        public async Task<ActionResponse> CreateBatch(Batch batch)
         {
             return await _batchService.AddBatch(batch);
         }

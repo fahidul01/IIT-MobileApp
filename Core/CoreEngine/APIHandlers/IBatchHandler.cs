@@ -8,7 +8,7 @@ namespace CoreEngine.APIHandlers
     public interface IBatchHandler
     {
         Task<List<Batch>> GetBatches(int page = 1);
-        Task<Batch> CreateBatch(Batch batch);
+        Task<ActionResponse> CreateBatch(Batch batch);
         Task<ActionResponse> UpdateBatch(Batch batch);
         Task<Batch> GetBatch(int batchId);
     }

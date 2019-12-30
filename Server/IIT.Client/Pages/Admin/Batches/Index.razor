@@ -26,8 +26,8 @@
         <td @onclick="(() => ViewBatch(Batch))">@Batch.NumberOfSemester</td>
         <td @onclick="(() => ViewBatch(Batch))">@Batch.SemesterDuration</td>
         <td>
-            <MatButton Icon="@MatIconNames.Open_in_new"
-                       OnClick="@(() => ViewBatch(Batch))"/>
+            <MatButton Icon="@MatIconNames.Edit"
+                       OnClick="@(() => EditBatch(Batch))"/>
         </td>
     </MatTableRow>
 </MatTable>
@@ -63,7 +63,8 @@
     </MatDialogContent>
     <MatDialogActions>
         <MatButton OnClick="@(e => { addDialogOpen = false; })">Cancel</MatButton>
-        <MatButton OnClick="@CreateBatch">Create Batch</MatButton>
+        <MatButton OnClick="@CreateBatch"
+                   Label="@GetEditState()"/>
     </MatDialogActions>
 </MatDialog>
 @code
@@ -80,19 +81,16 @@
 
     protected override async Task OnInitializedAsync()
     {
-        try
+        Batches = await _batchService.GetBatches(1);
+        if (Batches == null || Batches.Count == 0)
         {
-            //TotalBatch = await _batchService.GetCount();
-            Batches = await _batchService.GetBatches(1);
-            if (Batches == null || Batches.Count == 0)
-            {
-                _matToaster.Add("No Batches found. Create New", MatBlazor.MatToastType.Info);
-            }
+            _matToaster.Add("No Batches found. Create New", MatBlazor.MatToastType.Info);
         }
-        catch (Exception ex)
-        {
-            _matToaster.Add(ex.Message, MatBlazor.MatToastType.Danger, "Error");
-        }
+    }
+
+    private string GetEditState()
+    {
+        return CurrentBatch.Id == 0 ? "Create Batch" : "Update Batch";
     }
 
     private void AddBatchDialog()
@@ -107,15 +105,15 @@
         if (CurrentBatch.Id == 0)
         {
             var res = await _batchService.CreateBatch(CurrentBatch);
-            if (res != null)
+            var toast = res.Actionstatus ? MatToastType.Success : MatToastType.Danger;
+            if (res.Actionstatus && res.Data is int batchId)
             {
-                Batches.Insert(0, res);
-                _matToaster.Add("Successfully Created New Batch", MatToastType.Success);
-                this.StateHasChanged();
-            }
-            else
-            {
-                _matToaster.Add("Failed to create New Batch", MatToastType.Danger);
+                var batch = await _batchService.GetBatch(batchId);
+                if (batch != null)
+                {
+                    Batches.Insert(0, batch);
+                    this.StateHasChanged();
+                }
             }
         }
         else
@@ -135,5 +133,12 @@
     private void ViewBatch(Batch batch)
     {
         _nabigationManager.NavigateTo("/admin/batches/details/" + batch.Id.ToString());
+    }
+
+    private void EditBatch(Batch batch)
+    {
+        CurrentBatch = batch;
+        addDialogOpen = true;
+        this.StateHasChanged();
     }
 }

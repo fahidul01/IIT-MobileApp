@@ -26,26 +26,6 @@ namespace Student.Infrastructure.Services
             return await _db.Notices.CountAsync();
         }
 
-        public async Task<bool> AddNotice(Notice notice, DBUser dBUser, int batchId)
-        {
-            if (notice.Id == 0 && dBUser != null)
-            {
-                if (batchId != 0)
-                {
-                    notice.Batch = await _db.Batches.FindAsync(batchId);
-                    _notificationService.SendNotification(notice.Batch.Name, notice.Title, notice.Message);
-                }
-                notice.Owner = dBUser;
-                _db.Notices.Add(notice);
-                await _db.SaveChangesAsync();
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
         public async Task<ActionResponse> AddUpdateNotice(Notice post, string userId)
         {
             var dbUser = await _db.DBUsers
@@ -75,7 +55,42 @@ namespace Student.Infrastructure.Services
                     _db.Entry(post).State = EntityState.Modified;
                 }
                 await _db.SaveChangesAsync();
+                if (post.Batch != null)
+                {
+                    _notificationService.SendNotification(post.Batch.Name, post.Title, post.Message);
+                }
+                else
+                {
+                    var currentBatch = await _db.Semesters
+                                                .Where(x => x.EndsOn > DateTime.Now)
+                                                .Select(m => m.Batch)
+                                                .Distinct()
+                                                .ToListAsync();
+                    foreach(var batch in currentBatch)
+                    {
+                        _notificationService.SendNotification(batch.Name, post.Title, post.Message);
+                    }
+                }
                 return new ActionResponse(true, "Successfully created the notice");
+            }
+        }
+
+        public async Task<List<Notice>> SearchNotice(string userId, string key)
+        {
+            var user = await _db.DBUsers
+                               .Include(x => x.Batch)
+                               .FirstOrDefaultAsync(x => x.Id == userId);
+            var primaryQuery = _db.Notices
+                                  .Where(x => EF.Functions.Like(x.Title, $"%{key}%"))
+                                  .Take(20);
+            if (user.Role == AppConstants.Admin)
+            {
+                return await primaryQuery.ToListAsync();
+            }
+            else
+            {
+                return await primaryQuery.Where(x => x.Batch == null || x.Batch == user.Batch)
+                                                .ToListAsync();
             }
         }
 
@@ -84,11 +99,19 @@ namespace Student.Infrastructure.Services
             var user = await _db.DBUsers
                                 .Include(x => x.Batch)
                                 .FirstOrDefaultAsync(x => x.Id == userId);
-
-            return await _db.Notices.Where(x => x.EventDate >= startTime &&
-                                                  x.EventDate <= endTime &&
-                                                  (x.Batch == null || x.Batch == user.Batch))
-                            .ToListAsync();
+            var primaryQuery = _db.Notices
+                                .Where(x => x.EventDate >= startTime &&
+                                                    x.EventDate <= endTime);
+            if (user.Role == AppConstants.Admin)
+            {
+                return await primaryQuery.ToListAsync();
+            }
+            else
+            {
+                return await primaryQuery
+                                .Where(x => x.Batch == null || x.Batch == user.Batch)
+                                .ToListAsync();
+            }
         }
 
         public async Task<bool> UpdateNotice(Notice notice)
@@ -108,25 +131,48 @@ namespace Student.Infrastructure.Services
 
 
 
-        public async Task<List<Notice>> GetUpcomingEvents()
+        public async Task<List<Notice>> GetUpcomingEvents(string userId)
         {
+            var user = await _db.DBUsers
+                               .Include(x => x.Batch)
+                               .FirstOrDefaultAsync(x => x.Id == userId);
             var nextWeek = CurrentTime.AddDays(7);
-            var notices = await _db.Notices.Where(x => x.EventDate > CurrentTime &&
-                                                     x.EventDate <= nextWeek)
+            var primaryQuery = _db.Notices.Where(x => x.EventDate > CurrentTime &&
+                                                           x.EventDate <= nextWeek)
                                            .Include(m => m.Batch)
-                                           .OrderBy(x => x.EventDate)
-                                           .ToListAsync();
-            return notices;
+                                           .OrderBy(x => x.EventDate);
+            if (user.Role == AppConstants.Admin)
+            {
+                var notices = await primaryQuery.ToListAsync();
+                return notices;
+            }
+            else
+            {
+                var notices = await primaryQuery.Where(x=>x.Batch == null || x.Batch == user.Batch)
+                                                .ToListAsync();
+                return notices;
+            }
         }
 
-        public async Task<List<Notice>> GetRecentNotice(int page, int itemPerPage = 20)
+        public async Task<List<Notice>> GetRecentNotice(int page, string userId, int itemPerPage = 20)
         {
-            var notices = await _db.Notices.OrderByDescending(m => m.CreatedOn)
-                                           .Skip((page - 1) * itemPerPage)
-                                           .Take(itemPerPage)
-                                           .Include(m => m.Batch)
-                                           .ToListAsync();
-            return notices;
+            var user = await _db.DBUsers
+                              .Include(x => x.Batch)
+                              .FirstOrDefaultAsync(x => x.Id == userId);
+
+            var primaryQuery =_db.Notices.OrderByDescending(m => m.EventDate)
+                                         .Skip((page - 1) * itemPerPage)
+                                         .Take(itemPerPage)
+                                         .Include(m => m.Batch);
+            if (user.Role == AppConstants.Admin)
+            {
+                return await primaryQuery.ToListAsync();
+            }
+            else 
+            {
+                return await primaryQuery.Where(x => x.Batch == null || x.Batch == user.Batch)
+                                         .ToListAsync();
+            }
         }
 
         public async Task<bool> Delete(int id)

@@ -27,12 +27,12 @@ namespace MobileApp.Helpers
 
         public void Insert(DateTime dateTime, List<Notice> notices)
         {
-            CollectedMonth.Add(dateTime);
+            if (CollectedMonth.Contains(dateTime) == false)
+                CollectedMonth.Add(dateTime);
             foreach (var group in notices.GroupBy(x => x.EventDate))
             {
-                if (EventCollection.ContainsKey(group.Key))
-                    continue;
-                EventCollection.Add(group.Key, group.ToList());
+                if (!EventCollection.ContainsKey(group.Key.Date))
+                    EventCollection.Add(group.Key.Date, group.ToList());
             }
         }
 

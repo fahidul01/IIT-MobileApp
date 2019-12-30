@@ -54,6 +54,7 @@ else
     {
         Student = await _memberService.GetUser(StudentId);
         SemesterDatas = await _courseService.GetStudentResult(StudentId);
+        var studentCourses = await _courseService.GetBatchCourses(Student.Batch.Id);
     }
 
     private void ViewCourse(CourseData course)

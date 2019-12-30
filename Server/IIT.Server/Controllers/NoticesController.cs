@@ -48,7 +48,14 @@ namespace IIT.Server.Controllers
 
         public async Task<List<Notice>> GetPosts(int page, PostType postType = PostType.All)
         {
-            return await _noticeService.GetRecentNotice(page);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return await _noticeService.GetRecentNotice(page,userId);
+        }
+
+        public async Task<List<Notice>> SearchNotice(string key)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return await _noticeService.SearchNotice(userId, key);
         }
 
         public async Task<List<Notice>> GetPostsDate(DateTime startTime, DateTime endTime)
@@ -59,7 +66,8 @@ namespace IIT.Server.Controllers
 
         public async Task<List<Notice>> GetUpcomingEvents(int page, PostType all)
         {
-            return await _noticeService.GetUpcomingEvents();
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return await _noticeService.GetUpcomingEvents(userId);
         }
 
         public async Task<ActionResponse> UpdatePost(Notice post)

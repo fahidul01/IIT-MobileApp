@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using Student.Infrastructure.AppServices;
+using System;
 using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
@@ -24,25 +25,39 @@ namespace IIT.Server.WebServices
         private async Task<bool> Execute(string email, string subject, string message)
         {
 
-            using (var client = new SmtpClient())
+            try
             {
-                var mail = new MailMessage(Options.From, email)
+#if DEBUG
+                Console.WriteLine("Email Demo: " + email);
+                await Task.Delay(100);
+#else
+
+                using (var client = new SmtpClient())
                 {
-                    Subject = subject,
-                    Body = message
-                };
+                    var mail = new MailMessage(Options.From, email)
+                    {
+                        Subject = subject,
+                        Body = message
+                    };
 
 
-                client.Host = Options.SMTPServer;
-                client.Port = 587;
-                client.EnableSsl = true;
-                client.Timeout = 10000;
-                client.UseDefaultCredentials = false;
-                client.Credentials = new NetworkCredential(Options.Username, Options.Password);
+                    client.Host = Options.SMTPServer;
+                    client.Port = 587;
+                    client.EnableSsl = true;
+                    client.Timeout = 10000;
+                    client.UseDefaultCredentials = false;
+                    client.Credentials = new NetworkCredential(Options.Username, Options.Password);
 
-                await client.SendMailAsync(mail);
+                    await client.SendMailAsync(mail);
+                }
+#endif
+                return true;
             }
-            return true;
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
         }
     }
 }

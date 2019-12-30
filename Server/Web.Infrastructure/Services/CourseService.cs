@@ -25,14 +25,15 @@ namespace Student.Infrastructure.Services
         }
 
         #region Course
-        public async Task<Course> AddCourse(Course course, int semesterId, int batchId)
+        public async Task<ActionResponse> AddCourse(Course course, int semesterId, int batchId)
         {
+            course.CourseId = course.CourseId.ToUpper();
             var oldCourse = await _db.Courses
                                      .FirstOrDefaultAsync(x => x.CourseId == course.CourseId &&
                                                                x.Semester.Batch.Id == batchId);
             if (oldCourse != null)
             {
-                return null;
+                return new ActionResponse(false, "Course Information already exists");
             }
             else
             {
@@ -60,7 +61,10 @@ namespace Student.Infrastructure.Services
                     await _db.SaveChangesAsync();
                     var message = string.Format("You have been enrolled in Course {0}", course.CourseName);
                     _notificationService.SendNotification(batch.Name, course.CourseName, message);
-                    return course;
+                    return new ActionResponse(true)
+                    {
+                        Data = course.Id
+                    };
                 }
             }
         }
@@ -243,7 +247,8 @@ namespace Student.Infrastructure.Services
 
         public async Task<List<Course>> GetSemesterCoursesAsync(int semesterId)
         {
-            return await _db.Courses.Where(x => x.Semester.Id == semesterId)
+            return await _db.Courses
+                            .Where(x => x.Semester.Id == semesterId)
                             .ToListAsync();
         }
 

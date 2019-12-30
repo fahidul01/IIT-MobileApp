@@ -20,9 +20,9 @@ namespace CoreEngine.APIEngines
             return SendRequest<List<Batch>>(HttpMethod.Get, new { page });
         }
 
-        public Task<Batch> CreateBatch(Batch batch)
+        public Task<ActionResponse> CreateBatch(Batch batch)
         {
-            return SendRequest<Batch>(HttpMethod.Post, batch);
+            return SendRequest<ActionResponse>(HttpMethod.Post, batch);
         }
 
         public Task<ActionResponse> UpdateBatch(Batch batch)

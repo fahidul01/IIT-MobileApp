@@ -30,32 +30,33 @@ namespace Student.Infrastructure.Services
             return await _db.Batches.CountAsync();
         }
 
-        public async Task<Batch> AddBatch(Batch batch)
+        public async Task<ActionResponse> AddBatch(Batch batch)
         {
-            if (batch.Id == 0)
+            batch.Name = batch.Name.ToUpper();
+            if(await _db.Batches.AnyAsync(x=>x.Name == batch.Name))
             {
-                for (int counter = 0; counter < batch.NumberOfSemester; counter++)
+                return new ActionResponse(false, "Batch Name Already exists");
+            }
+            for (int counter = 0; counter < batch.NumberOfSemester; counter++)
+            {
+                var sem = new Semester()
                 {
-                    var sem = new Semester()
-                    {
-                        Duration = batch.SemesterDuration,
-                        Name = "Semester " + (counter + 1).ToString(),
-                        StartsOn = batch.StartsOn.AddMonths(counter * batch.SemesterDuration),
-                        EndsOn = batch.StartsOn.AddMonths((counter + 1) * batch.SemesterDuration).AddMinutes(-1)
-                    };
-                    batch.Semesters.Add(sem);
-                }
-                batch.EndsOn = batch.StartsOn
-                                    .AddMonths(batch.SemesterDuration * batch.NumberOfSemester)
-                                    .AddDays(7);
-                _db.Batches.Add(batch);
-                await _db.SaveChangesAsync();
-                return batch;
+                    Duration = batch.SemesterDuration,
+                    Name = "Semester " + (counter + 1).ToString(),
+                    StartsOn = batch.StartsOn.AddMonths(counter * batch.SemesterDuration),
+                    EndsOn = batch.StartsOn.AddMonths((counter + 1) * batch.SemesterDuration).AddMinutes(-1)
+                };
+                batch.Semesters.Add(sem);
             }
-            else
+            batch.EndsOn = batch.StartsOn
+                                .AddMonths(batch.SemesterDuration * batch.NumberOfSemester)
+                                .AddDays(7);
+            _db.Batches.Add(batch);
+            await _db.SaveChangesAsync();
+            return new ActionResponse(true)
             {
-                return batch;
-            }
+                Data = batch.Id
+            };
         }
 
         public async Task<Batch> GetBatchAsync(int id)

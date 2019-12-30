@@ -3,6 +3,8 @@ using Newtonsoft.Json.Linq;
 using Student.Infrastructure.AppServices;
 using System;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
 
 namespace IIT.Server.WebServices
 {
@@ -29,9 +31,18 @@ namespace IIT.Server.WebServices
                 };
                 var sData = topicData.ToString();
                 using var httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Add("Content-Type", "application/json");
-                httpClient.DefaultRequestHeaders.Add("Authorization", "key=" + GCMKey);
-                await httpClient.PostAsync(GCMUrl, new StringContent(sData));
+                httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", GCMKey);
+
+#if DEBUG
+                await Task.Delay(100);
+                Console.WriteLine(string.Format("   Notification demo: {0}=> {1}, {2}",
+                                topic,title,message));
+#else
+                var resp = await httpClient.PostAsync(GCMUrl, new StringContent(sData));
+                Console.WriteLine("Notification:" + resp.StatusCode);
+#endif
+
             }
             catch (Exception ex)
             {

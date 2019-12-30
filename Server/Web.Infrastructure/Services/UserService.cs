@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Student.Infrasructure.DBModel;
 using Student.Infrastructure.AppServices;
 using Student.Infrastructure.DBModel;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -52,6 +53,8 @@ namespace Student.Infrastructure.Services
         {
             var users = new List<DBUser>();
             var batch = await _db.Batches.FindAsync(batchID);
+            var allCourses = await _db.Courses.Where(x => x.Semester.Batch.Id == batchID)
+                                      .ToListAsync();
             foreach (var student in students)
             {
                 var oldUser = await _db.Users.FirstOrDefaultAsync(x => x.UserName == student.UserName);
@@ -61,11 +64,7 @@ namespace Student.Infrastructure.Services
                 }
 
                 student.Batch = batch;
-                if (student.PhoneNumber.StartsWith("0"))
-                    student.PhoneNumber = "+88" + student.PhoneNumber;
-
-                if (!student.PhoneNumber.StartsWith("+880"))
-                    student.PhoneNumber = "+880" + student.PhoneNumber;
+                student.PhoneNumber = FixPhone(student.PhoneNumber);
 
                 student.PhoneNumberConfirmed = false;
                 student.Role = AppConstants.Student;
@@ -75,10 +74,31 @@ namespace Student.Infrastructure.Services
                 if (res.Succeeded)
                 {
                     await _usermanager.AddToRoleAsync(idbUser, AppConstants.Student);
+                    foreach(var course in allCourses)
+                    {
+                        _db.StudentCourses.Add(new StudentCourse()
+                        {
+                            Course = course,
+                            Student = student
+                        });
+                    }
                 }
             }
+            await _db.SaveChangesAsync();
             return users;
         }
+
+        private string FixPhone(string phoneNumber)
+        {
+            phoneNumber = phoneNumber.Trim();
+            if (phoneNumber.StartsWith("0"))
+                return "+88" + phoneNumber;
+
+            if (!phoneNumber.StartsWith("+880"))
+                return "+880" + phoneNumber;
+            return phoneNumber;
+        }
+
         public async Task<ActionResponse> AddStudent(int batchId, string roll, string name, string email, string phone)
         {
             var batch = await _db.Batches.FirstOrDefaultAsync(x => x.Id == batchId);
@@ -94,6 +114,8 @@ namespace Student.Infrastructure.Services
             }
             else
             {
+                var allCourses = await _db.Courses.Where(x => x.Semester.Batch.Id == batchId)
+                                                  .ToListAsync();
                 int.TryParse(roll, out int studentRoll);
                 var student = new DBUser()
                 {
@@ -104,7 +126,7 @@ namespace Student.Infrastructure.Services
                     UserName = roll,
                     Roll = studentRoll,
                     Role = AppConstants.Student,
-                    PhoneNumber = phone,
+                    PhoneNumber = FixPhone(phone),
                     PhoneNumberConfirmed = false
                 };
                 var idUser = IdentityDBUser.Create(student);
@@ -114,11 +136,19 @@ namespace Student.Infrastructure.Services
                     var mRes = await _usermanager.AddToRoleAsync(idUser, AppConstants.Student);
                     if (mRes.Succeeded)
                     {
+                        foreach (var course in allCourses)
+                        {
+                            _db.StudentCourses.Add(new StudentCourse()
+                            {
+                                Course = course,
+                                Student = student
+                            });
+                        }
+                        await _db.SaveChangesAsync();
+                        var msg = EmailMessageCreator.CreateInvitation(phone);
+                        await _emailSender.SendEmailAsync(student.Email, "Registration", msg);
                         return new ActionResponse(true);
                     }
-
-                    var msg = EmailMessageCreator.CreateInvitation(phone);
-                    await _emailSender.SendEmailAsync(student.Email, "Password Recover", msg);
                 }
                 return new ActionResponse(false, "Failed to create User");
             }
@@ -273,7 +303,7 @@ namespace Student.Infrastructure.Services
         public async Task<ActionResponse> VerifyPhoneNo(string rollNo, string phoneNo)
         {
             rollNo = rollNo.Trim();
-            phoneNo = phoneNo.Replace("+88", "").Trim();
+            phoneNo = FixPhone(phoneNo);
             var res = await _db.Users.FirstOrDefaultAsync(x => x.UserName == rollNo);
             if (res == null)
             {
@@ -296,7 +326,7 @@ namespace Student.Infrastructure.Services
         public async Task<ActionResponse> ConfirmRegistration(string rollNo, string phoneNo, string password)
         {
             rollNo = rollNo.Trim();
-            phoneNo = phoneNo.Replace("+88", "").Trim();
+            phoneNo = FixPhone(phoneNo);
             var dbUser = await _db.DBUsers.FirstOrDefaultAsync(x => x.UserName == rollNo);
             if (dbUser == null)
             {

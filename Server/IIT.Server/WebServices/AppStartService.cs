@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Student.Infrasructure.DBModel;
 using Student.Infrastructure.DBModel;
+using Student.Infrastructure.Services;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -54,8 +55,11 @@ namespace IIT.Server.WebServices
                 user = IdentityDBUser.Create(dbUser);
                 await _userManager.CreateAsync(user, "pass_WORD_1234");
                 await _userManager.AddToRoleAsync(user, AppConstants.Admin);
-            }
 
+
+                var _feedService = scope.ServiceProvider.GetRequiredService<FeedDataService>();
+                await _feedService.StartAsync(dbUser.Id);
+            }
         }
 
         public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
