@@ -62,7 +62,6 @@ namespace MobileApp
 
             services.AddSingleton(http);
             services.AddSingleton<SettingService>();
-            services.AddScoped<ICalenderHelper, CalenderHelper>();
             ServiceHelper.Register(services);
         }
 

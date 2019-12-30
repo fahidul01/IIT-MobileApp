@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Mobile.Core.Models.Core
 {
@@ -12,12 +13,15 @@ namespace Mobile.Core.Models.Core
             Activities = new Dictionary<DateTime, ICollection>();
         }
 
-        public void AddData(DateTime dateTime, ICollection collection)
+        public void AddData(Dictionary<DateTime, ICollection> newData)
         {
-            if (!Activities.ContainsKey(dateTime.Date))
+            foreach (var item in newData)
             {
-                Activities.Add(dateTime.Date, collection);
-                DataChanged?.Invoke(this, null);
+                if (!Activities.ContainsKey(item.Key))
+                {
+                    Activities.Add(item.Key, item.Value);
+                    DataChanged?.Invoke(this, null);
+                }
             }
         }
 
@@ -39,5 +43,10 @@ namespace Mobile.Core.Models.Core
         }
 
         public event EventHandler DataChanged;
+
+        internal bool RequireData(DateTime start, DateTime end)
+        {
+            return !Activities.Keys.Any(x => x > start && x < end) ;
+        }
     }
 }

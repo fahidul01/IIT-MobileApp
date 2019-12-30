@@ -1,8 +1,11 @@
 ﻿using CoreEngine.APIHandlers;
 using CoreEngine.Model.DBModel;
 using Mobile.Core.Engines.Dependency;
+using Mobile.Core.Models.Core;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,12 +13,14 @@ namespace Mobile.Core.ViewModels
 {
     public class CalenderViewModel : BaseViewModel
     {
-        private readonly INoticeHandler _noticeHandler;
+        public ActivityCollection ActivityCollection { get; set; }
         public List<Notice> Notices { get; set; }
+
+        private readonly INoticeHandler _noticeHandler;
+
         public DateTime SelectedDate { get; set; }
-        public ICalenderHelper CalenderHelper { get; }
         public int Year { get; set; } = 2020;
-        int _month=1;
+        int _month = 1;
         public int Month
         {
             get => _month;
@@ -25,20 +30,20 @@ namespace Mobile.Core.ViewModels
                 LoadInformation(_month);
             }
         }
-        public CalenderViewModel(INoticeHandler noticeHandler,ICalenderHelper calenderHelper)
+        public CalenderViewModel(INoticeHandler noticeHandler)
         {
             _noticeHandler = noticeHandler;
             SelectedDate = DateTime.Now;
-            CalenderHelper = calenderHelper;
+            ActivityCollection = new ActivityCollection();
         }
 
         public override void OnAppear(params object[] args)
         {
             base.OnAppear(args);
-            CalenderHelper.Clear();
+            ActivityCollection.Clear();
             Year = DateTime.Today.Year;
             Month = DateTime.Today.Month;
-           // LoadInformation(DateTime.Today.Year, DateTime.Today.Month);
+            // LoadInformation(DateTime.Today.Year, DateTime.Today.Month);
         }
 
         private async void LoadInformation(int month)
@@ -46,11 +51,16 @@ namespace Mobile.Core.ViewModels
             await Task.Delay(250);
             var start = new DateTime(Year, month, 1);
             var end = start.AddMonths(1);
-            if (CalenderHelper.RequireInfo(start))
+            if (ActivityCollection.RequireData(start, end))
             {
                 IsBusy = true;
                 Notices = await _noticeHandler.GetPostsDate(start, end);
-                CalenderHelper.Insert(start, Notices);
+                var allData = new Dictionary<DateTime, ICollection>();
+                foreach (var group in Notices.GroupBy(x => x.EventDate.Date))
+                {
+                    allData.Add(group.Key.Date, group.ToList());
+                }
+                ActivityCollection.AddData(allData);
                 IsBusy = false;
             }
         }
