@@ -37,10 +37,13 @@ namespace CoreEngine.Engine
                 requestContent.Add(new StringContent(item.Value), item.Key);
             }
 
-            foreach (var dbFile in dBFiles)
+            if (dBFiles != null)
             {
-                var streamContent = new StreamContent(dbFile.FileStream);
-                requestContent.Add(streamContent, "formfiles", dbFile.FileName);
+                foreach (var dbFile in dBFiles)
+                {
+                    var streamContent = new StreamContent(dbFile.FileStream);
+                    requestContent.Add(streamContent, "formfiles", dbFile.FileName);
+                }
             }
             return await _httpWorker.SendRequest<T>(HttpMethod.Post, path, requestContent);
         }
@@ -54,9 +57,11 @@ namespace CoreEngine.Engine
             {
                 requestContent.Add(new StringContent(item.Value), item.Key);
             }
-
-            var streamContent = new StreamContent(dBFile.FileStream);
-            requestContent.Add(streamContent, "formfile", dBFile.FileName);
+            if (dBFile != null)
+            {
+                var streamContent = new StreamContent(dBFile.FileStream);
+                requestContent.Add(streamContent, "formfile", dBFile.FileName);
+            }
             return await _httpWorker.SendRequest<T>(HttpMethod.Post, path, requestContent);
         }
 

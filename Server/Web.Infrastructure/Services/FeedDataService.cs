@@ -54,7 +54,9 @@ namespace Student.Infrastructure.Services
 
                 cNotices.AddRange(lNotices);
                 foreach (var item in cNotices)
+                {
                     await _noticeService.AddUpdateNotice(item, _userId);
+                }
             }
 
         }
@@ -85,7 +87,7 @@ namespace Student.Infrastructure.Services
             {
                 var allCourse = _feed.Courses();
                 var counter = 3;
-                while (counter >0)
+                while (counter > 0)
                 {
                     var course = allCourse[rnd.Next(0, allCourse.Count)];
                     var resp = await _courseService.AddCourse(course, semester.Id, batchId);
@@ -98,7 +100,9 @@ namespace Student.Infrastructure.Services
                             var lesson = _feed.CreateLesson(allLesson);
                             resp = await _courseService.AddUpdateLesson(course.Id, lesson);
                             if (resp.Actionstatus)
+                            {
                                 Console.WriteLine("  Lesson Created: " + lesson.DayOfWeek.ToString() + " : " + lesson.TeacherName);
+                            }
                         }
                     }
                 }
@@ -149,17 +153,23 @@ namespace Student.Infrastructure.Services
         internal Lesson CreateLesson(List<Lesson> lessons)
         {
             var day = (DayOfWeek)rnd.Next(0, 6);
-            var time = TimeSpan.FromHours(rnd.Next(5, 9)).Add(TimeSpan.FromMinutes(15 * rnd.Next(0, 4)));
+            var time = TimeSpan.FromHours(rnd.Next(17, 21)).Add(TimeSpan.FromMinutes(15 * rnd.Next(0, 4)));
             var oldlesson = lessons.FirstOrDefault(x => x.DayOfWeek == day && Math.Abs((x.TimeOfDay - time).Minutes) < 60);
-            if (oldlesson != null) return CreateLesson(lessons);
-            else return new Lesson()
+            if (oldlesson != null)
             {
-                DayOfWeek = day,
-                RoomNo = "R" + rnd.Next(100, 300),
-                TeacherName = GetTeacherName(),
-                TimeOfDay = time,
-                Description = "Short description"
-            };
+                return CreateLesson(lessons);
+            }
+            else
+            {
+                return new Lesson()
+                {
+                    DayOfWeek = day,
+                    RoomNo = "R" + rnd.Next(100, 300),
+                    TeacherName = GetTeacherName(),
+                    TimeOfDay = time,
+                    Description = "Short description"
+                };
+            }
         }
 
         private Course Create(string id, string name, decimal credit)
@@ -183,10 +193,10 @@ namespace Student.Infrastructure.Services
             return UserNames[rnd.Next(0, UserNames.Count)].Trim();
         }
 
-        internal List<Notice> CreateNotice(Course course,Batch batch)
+        internal List<Notice> CreateNotice(Course course, Batch batch)
         {
             var noticeList = new List<Notice>();
-            var end = course.Semester.EndsOn.AddDays(-1*rnd.Next(1,15)).Date.AddHours(17);
+            var end = course.Semester.EndsOn.AddDays(-1 * rnd.Next(1, 15)).Date.AddHours(17);
             var exam = new Notice()
             {
                 CourseId = course.Id,
@@ -207,7 +217,7 @@ namespace Student.Infrastructure.Services
             var noticeList = new List<Notice>();
             foreach (var item in list)
             {
-                var cancel = RandomDate(course.Semester.StartsOn, course.Semester.EndsOn,item.DayOfWeek);
+                var cancel = RandomDate(course.Semester.StartsOn, course.Semester.EndsOn, item.DayOfWeek);
                 var cancelNotice = new Notice()
                 {
                     CourseId = course.Id,

@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using Student.Infrasructure.DBModel;
 using Student.Infrastructure.AppServices;
 using Student.Infrastructure.DBModel;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -74,7 +73,7 @@ namespace Student.Infrastructure.Services
                 if (res.Succeeded)
                 {
                     await _usermanager.AddToRoleAsync(idbUser, AppConstants.Student);
-                    foreach(var course in allCourses)
+                    foreach (var course in allCourses)
                     {
                         _db.StudentCourses.Add(new StudentCourse()
                         {
@@ -92,10 +91,15 @@ namespace Student.Infrastructure.Services
         {
             phoneNumber = phoneNumber.Trim();
             if (phoneNumber.StartsWith("0"))
+            {
                 return "+88" + phoneNumber;
+            }
 
             if (!phoneNumber.StartsWith("+880"))
+            {
                 return "+880" + phoneNumber;
+            }
+
             return phoneNumber;
         }
 
@@ -177,7 +181,7 @@ namespace Student.Infrastructure.Services
         public async Task<DBUser> GetUser(string userId)
         {
             var user = await _db.DBUsers
-                                .Include(m=>m.Batch)
+                                .Include(m => m.Batch)
                                 .FirstOrDefaultAsync(x => x.Id == userId);
             return user;
         }

@@ -26,6 +26,7 @@
                      WidthRequest="3"
                      Color="Accent" />
             <Frame Padding="0"
+                   HasShadow="False"
                    BackgroundColor="LightBlue"
                    BorderColor="DarkBlue"
                    HeightRequest="10"
@@ -51,7 +52,7 @@
                          Orientation="Vertical"
                          VerticalOptions="Center">
                 <Label FontAttributes="Bold"
-                       FontSize="Medium"
+                       FontSize="Default"
                        HorizontalOptions="Start"
                        Text="{Binding Name}"
                        TextColor="Black" />

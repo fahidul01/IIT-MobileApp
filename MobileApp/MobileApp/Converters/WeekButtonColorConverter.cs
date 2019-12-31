@@ -10,11 +10,11 @@ namespace MobileApp.Converters
         {
             if (value is bool data && data)
             {
-                return Color.WhiteSmoke;
+                return Color.White;
             }
             else
             {
-                return Color.Transparent;
+                return Color.Black;
             }
         }
 

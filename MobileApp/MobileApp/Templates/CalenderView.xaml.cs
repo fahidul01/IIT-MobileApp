@@ -4,7 +4,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -26,7 +25,10 @@ namespace MobileApp.Templates
             InitializeComponent();
             DayItems = new List<DayItem>();
             for (var counter = 0; counter < 35; counter++)
+            {
                 DayItems.Add(new DayItem());
+            }
+
             CalenderGrid.ItemsSource = DayItems;
             CreateMonth(DateTime.Today);
             var currentDay = DayItems.FirstOrDefault(x => x.DateTime == DateTime.Today);
@@ -82,7 +84,7 @@ namespace MobileApp.Templates
         {
             MonthText.Text = dateTime.ToString("MMMM");
             YearText.Text = dateTime.Year.ToString();
-           
+
 
             var start = new DateTime(dateTime.Year, dateTime.Month, 1);
             CurrentMonth = start;
@@ -95,9 +97,14 @@ namespace MobileApp.Templates
             {
                 item.Update(start, CurrentMonth);
                 if (ActivityCollection == null)
+                {
                     item.UpdateCollection(null);
+                }
                 else
+                {
                     item.UpdateCollection(ActivityCollection.GetCollection(item.DateTime));
+                }
+
                 start = start.AddDays(1);
             }
         }
@@ -107,16 +114,24 @@ namespace MobileApp.Templates
             foreach (var item in DayItems)
             {
                 if (ActivityCollection == null)
+                {
                     item.UpdateCollection(null);
+                }
                 else
+                {
                     item.UpdateCollection(ActivityCollection.GetCollection(item.DateTime));
+                }
             }
         }
 
         private bool _locked;
         private void ListView_RightSwiped(object sender, EventArgs e)
         {
-            if (_locked) return;
+            if (_locked)
+            {
+                return;
+            }
+
             _locked = true;
             CreateMonth(CurrentMonth.AddMonths(1));
             _locked = false;
@@ -124,7 +139,11 @@ namespace MobileApp.Templates
 
         private void ListView_LeftSwiped(object sender, EventArgs e)
         {
-            if (_locked) return;
+            if (_locked)
+            {
+                return;
+            }
+
             _locked = true;
             CreateMonth(CurrentMonth.AddMonths(-1));
             _locked = false;
@@ -148,16 +167,35 @@ namespace MobileApp.Templates
                 CreateMonth(dayItem.DateTime);
                 SelectedItem = DayItems.FirstOrDefault(x => x.DateTime == selectedDate);
             }
-            else SelectedItem = dayItem;
+            else
+            {
+                SelectedItem = dayItem;
+            }
 
             foreach (var item in DayItems)
             {
                 item.Selected(SelectedItem);
             }
         }
+
+        private double ListPosition;
+        private async void ArrowUp_Clicked(object sender, EventArgs e)
+        {
+            ArrowDown.IsVisible = true;
+            ArrowUp.IsVisible = false;
+            ListPosition = Height - ListContainer.Height;
+            await ListContainer.LayoutTo(new Rectangle(0, 0, Width, Height));
+        }
+
+        private async void ArrowDown_Clicked(object sender, EventArgs e)
+        {
+            ArrowUp.IsVisible = true;
+            ArrowDown.IsVisible = false;
+            await ListContainer.LayoutTo(new Rectangle(0, ListPosition, Width, Height - ListPosition));
+        }
     }
 
-    public class DayItem:INotifyPropertyChanged
+    public class DayItem : INotifyPropertyChanged
     {
         public DateTime DateTime { get; set; }
         public string Day => DateTime.Day.ToString();
@@ -188,7 +226,7 @@ namespace MobileApp.Templates
 
         internal void Selected(DayItem dayItem)
         {
-            if(dayItem == null)
+            if (dayItem == null)
             {
                 ForegroundColor = Color.Black;
                 BackgroundColor = Color.White;
@@ -219,7 +257,11 @@ namespace MobileApp.Templates
             {
                 HasItemColor = Color.OrangeRed;
             }
-            else HasItemColor = Color.Transparent;
+            else
+            {
+                HasItemColor = Color.Transparent;
+            }
+
             NotifyChange(nameof(HasItemColor));
         }
     }

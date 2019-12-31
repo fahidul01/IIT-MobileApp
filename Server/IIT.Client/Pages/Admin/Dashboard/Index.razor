@@ -64,7 +64,7 @@ else
     private bool IsBusy = true;
     protected override async Task OnInitializedAsync()
     {
-        UpcomingLessons = await _lessonService.GetUpcomingLessons();
+        UpcomingLessons = await _lessonService.GetTodaysLessons();
         UpcomingNotices = await _noticeService.GetUpcomingEvents(0, PostType.All);
         CurrentClassRepresentaives = await _memberService.GetCurrentCr();
         IsBusy = false;

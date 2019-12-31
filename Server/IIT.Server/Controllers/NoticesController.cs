@@ -49,7 +49,7 @@ namespace IIT.Server.Controllers
         public async Task<List<Notice>> GetPosts(int page, PostType postType = PostType.All)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            return await _noticeService.GetRecentNotice(page,userId);
+            return await _noticeService.GetRecentNotice(page, userId);
         }
 
         public async Task<List<Notice>> SearchNotice(string key)
@@ -61,13 +61,15 @@ namespace IIT.Server.Controllers
         public async Task<List<Notice>> GetPostsDate(DateTime startTime, DateTime endTime)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            return await _noticeService.GetNoticeDate(userId, startTime, endTime);
+            var res = await _noticeService.GetNoticeDate(userId, startTime, endTime);
+            return res;
         }
 
         public async Task<List<Notice>> GetUpcomingEvents(int page, PostType all)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            return await _noticeService.GetUpcomingEvents(userId);
+            var resp = await _noticeService.GetUpcomingEvents(userId);
+            return resp;
         }
 
         public async Task<ActionResponse> UpdatePost(Notice post)

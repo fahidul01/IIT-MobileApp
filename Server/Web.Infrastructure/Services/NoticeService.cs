@@ -66,7 +66,7 @@ namespace Student.Infrastructure.Services
                                                 .Select(m => m.Batch)
                                                 .Distinct()
                                                 .ToListAsync();
-                    foreach(var batch in currentBatch)
+                    foreach (var batch in currentBatch)
                     {
                         _notificationService.SendNotification(batch.Name, post.Title, post.Message);
                     }
@@ -148,7 +148,7 @@ namespace Student.Infrastructure.Services
             }
             else
             {
-                var notices = await primaryQuery.Where(x=>x.Batch == null || x.Batch == user.Batch)
+                var notices = await primaryQuery.Where(x => x.Batch == null || x.Batch == user.Batch)
                                                 .ToListAsync();
                 return notices;
             }
@@ -160,7 +160,7 @@ namespace Student.Infrastructure.Services
                               .Include(x => x.Batch)
                               .FirstOrDefaultAsync(x => x.Id == userId);
 
-            var primaryQuery =_db.Notices.OrderByDescending(m => m.EventDate)
+            var primaryQuery = _db.Notices.OrderByDescending(m => m.EventDate)
                                          .Skip((page - 1) * itemPerPage)
                                          .Take(itemPerPage)
                                          .Include(m => m.Batch);
@@ -168,7 +168,7 @@ namespace Student.Infrastructure.Services
             {
                 return await primaryQuery.ToListAsync();
             }
-            else 
+            else
             {
                 return await primaryQuery.Where(x => x.Batch == null || x.Batch == user.Batch)
                                          .ToListAsync();

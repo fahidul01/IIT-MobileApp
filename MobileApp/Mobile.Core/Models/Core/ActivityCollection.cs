@@ -46,7 +46,7 @@ namespace Mobile.Core.Models.Core
 
         internal bool RequireData(DateTime start, DateTime end)
         {
-            return !Activities.Keys.Any(x => x > start && x < end) ;
+            return !Activities.Keys.Any(x => x > start && x < end);
         }
     }
 }

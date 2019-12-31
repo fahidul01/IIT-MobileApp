@@ -10,7 +10,7 @@ using System.Windows.Input;
 
 namespace Mobile.Core.ViewModels
 {
-    public class TodoItemsViewModel:BaseViewModel
+    public class TodoItemsViewModel : BaseViewModel
     {
         private readonly ITodoItemHandler _todoItemHandler;
         public ObservableCollection<ToDoItem> ToDoItems { get; set; }
@@ -29,7 +29,7 @@ namespace Mobile.Core.ViewModels
             IsRefreshisng = true;
         }
 
-        protected async override void RefreshAction()
+        protected override async void RefreshAction()
         {
             base.RefreshAction();
             page = 0;
@@ -42,7 +42,7 @@ namespace Mobile.Core.ViewModels
         {
             IsBusy = true;
             var resp = await _todoItemHandler.GetToDoItems(page);
-            if(resp == null)
+            if (resp == null)
             {
                 CanLoadMore = false;
             }
@@ -61,7 +61,9 @@ namespace Mobile.Core.ViewModels
         private async void LoadMoreAction()
         {
             if (CanLoadMore && !IsBusy)
-               await LoadItems();
+            {
+                await LoadItems();
+            }
         }
 
         private void SelectItemAction(ToDoItem obj)
@@ -76,14 +78,17 @@ namespace Mobile.Core.ViewModels
 
         private async void DeleteItem(ToDoItem obj)
         {
-            if(obj.Owner.Id == AppService.CurrentUser.Id)
+            if (obj.OwnerId == AppService.CurrentUser.Id)
             {
                 var confirm = await _dialog.ShowConfirmation("Confirm?", "Are you sure to delete this item?");
                 if (confirm)
                 {
                     var resp = await _todoItemHandler.DeleteToDoItem(obj);
                     if (resp != null && resp.Actionstatus)
+                    {
                         ToDoItems.Remove(obj);
+                    }
+
                     ShowResponse(resp);
                 }
             }

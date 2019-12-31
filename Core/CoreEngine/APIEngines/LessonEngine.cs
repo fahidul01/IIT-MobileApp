@@ -31,7 +31,7 @@ namespace CoreEngine.APIEngines
             return SendRequest<List<Lesson>>(HttpMethod.Get, new { courseId });
         }
 
-        public Task<List<Lesson>> GetLessons()
+        public Task<List<Lesson>> GetUserLessons()
         {
             return SendRequest<List<Lesson>>(HttpMethod.Get, null);
         }
@@ -41,7 +41,7 @@ namespace CoreEngine.APIEngines
             return SendRequest<List<Lesson>>(HttpMethod.Post, dateTime);
         }
 
-        public Task<List<Lesson>> GetUpcomingLessons()
+        public Task<List<Lesson>> GetTodaysLessons()
         {
             return SendRequest<List<Lesson>>(HttpMethod.Get, null);
         }

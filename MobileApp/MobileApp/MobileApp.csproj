@@ -26,6 +26,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\Bulletin\TodoAddPage.xaml.cs">
+      <DependentUpon>TodoAddPage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\Course\CoursesPartialView.xaml.cs">
       <DependentUpon>CoursesPartialView.xaml</DependentUpon>
     </Compile>
@@ -44,7 +47,13 @@
     <EmbeddedResource Update="Templates\CalenderView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="Views\Bulletin\TodoAddPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Views\Bulletin\CalenderPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Bulletin\TodoItemsPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\Course\AddUpdateCoursePage.xaml">

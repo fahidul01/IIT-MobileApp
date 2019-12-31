@@ -33,7 +33,7 @@ namespace Student.Infrastructure.Services
         public async Task<ActionResponse> AddBatch(Batch batch)
         {
             batch.Name = batch.Name.ToUpper();
-            if(await _db.Batches.AnyAsync(x=>x.Name == batch.Name))
+            if (await _db.Batches.AnyAsync(x => x.Name == batch.Name))
             {
                 return new ActionResponse(false, "Batch Name Already exists");
             }

@@ -1,12 +1,10 @@
 ﻿using CoreEngine.APIHandlers;
 using CoreEngine.Model.DBModel;
-using Mobile.Core.Engines.Dependency;
 using Mobile.Core.Models.Core;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Mobile.Core.ViewModels

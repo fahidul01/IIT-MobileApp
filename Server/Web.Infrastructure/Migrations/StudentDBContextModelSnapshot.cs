@@ -149,9 +149,6 @@ namespace Student.Infrasructure.Migrations
                     b.Property<int>("Roll")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("ToDoItemId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -163,9 +160,29 @@ namespace Student.Infrasructure.Migrations
 
                     b.HasIndex("BatchId");
 
+                    b.ToTable("DBUsers");
+                });
+
+            modelBuilder.Entity("CoreEngine.Model.DBModel.DBUserTodoItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("DBUserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("ToDoItemId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DBUserId");
+
                     b.HasIndex("ToDoItemId");
 
-                    b.ToTable("DBUsers");
+                    b.ToTable("DBUserTodoItem");
                 });
 
             modelBuilder.Entity("CoreEngine.Model.DBModel.Lesson", b =>
@@ -322,8 +339,6 @@ namespace Student.Infrasructure.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("OwnerId");
 
                     b.ToTable("ToDoItems");
                 });
@@ -550,10 +565,21 @@ namespace Student.Infrasructure.Migrations
                     b.HasOne("CoreEngine.Model.DBModel.Batch", "Batch")
                         .WithMany("Students")
                         .HasForeignKey("BatchId");
+                });
 
-                    b.HasOne("CoreEngine.Model.DBModel.ToDoItem", null)
+            modelBuilder.Entity("CoreEngine.Model.DBModel.DBUserTodoItem", b =>
+                {
+                    b.HasOne("CoreEngine.Model.DBModel.DBUser", "DBUser")
+                        .WithMany()
+                        .HasForeignKey("DBUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CoreEngine.Model.DBModel.ToDoItem", "ToDoItem")
                         .WithMany("Participents")
-                        .HasForeignKey("ToDoItemId");
+                        .HasForeignKey("ToDoItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("CoreEngine.Model.DBModel.Lesson", b =>
@@ -606,13 +632,6 @@ namespace Student.Infrasructure.Migrations
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("CoreEngine.Model.DBModel.ToDoItem", b =>
-                {
-                    b.HasOne("CoreEngine.Model.DBModel.DBUser", "Owner")
-                        .WithMany()
-                        .HasForeignKey("OwnerId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

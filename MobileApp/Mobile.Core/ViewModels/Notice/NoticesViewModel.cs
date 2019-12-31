@@ -28,7 +28,7 @@ namespace Mobile.Core.ViewModels
             RefreshAction();
         }
 
-        protected async override void RefreshAction()
+        protected override async void RefreshAction()
         {
             base.RefreshAction();
             canLoadMore = true;

@@ -16,15 +16,21 @@
     <ContentView.Resources>
         <converters:WeekButtonColorConverter x:Key="weekColor" />
     </ContentView.Resources>
-    <Frame Margin="15"
+    <Frame Margin="10,10,10,5"
            x:Name="WeekGrid"
            Padding="3">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="300" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
+            <Grid.GestureRecognizers>
+                <SwipeGestureRecognizer Command="{Binding SwipeLeftCommand}"
+                                        Direction="Left" />
+                <SwipeGestureRecognizer Command="{Binding SwipteRightCommand}"
+                                        Direction="Right" />
+            </Grid.GestureRecognizers>
             <Grid>
                 <Label Text="Time Table"
                        HorizontalOptions="Start"
@@ -43,7 +49,7 @@
                 </Image>
             </Grid>
             <CollectionView Grid.Row="1"
-                            HeightRequest="40"
+                            HeightRequest="42"
                             ItemsSource="{Binding RoutineViewModel.Routines}"
                             HorizontalOptions="Center">
                 <CollectionView.ItemsLayout>
@@ -63,7 +69,8 @@
                 </d:CollectionView.ItemsSource>
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="partials:Routine">
-                        <Grid>
+                        <Grid VerticalOptions="Start"
+                              HeightRequest="42">
                             <Grid.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding BindingContext.DaySelectCommand, Source={x:Reference WeekGrid}}"
                                                       CommandParameter="{Binding}"/>
@@ -72,8 +79,8 @@
                                   VerticalOptions="Start"
                                   BackgroundColor="WhiteSmoke" />
                             <pk:PancakeView Padding="0"
+                                            WidthRequest="38"
                                             HorizontalOptions="Center"
-                                            WidthRequest="35"
                                             BorderColor="Transparent"
                                             HeightRequest="40"
                                             HasShadow="False"
@@ -85,14 +92,8 @@
                             <Label Text="{Binding Day}"
                                    d:Text="{Binding}"
                                    Margin="0"
+                                   TextColor="{Binding IsSelected, Converter={StaticResource weekColor}}"
                                    VerticalOptions="Start"
-                                   HorizontalOptions="Center" />
-                            <Label Text="{Binding Day}"
-                                   d:Text="{Binding}"
-                                   Margin="0"
-                                   TextColor="White"
-                                   VerticalOptions="Start"
-                                   IsVisible="{Binding IsSelected}"
                                    HorizontalOptions="Center" />
                         </Grid>
                     </DataTemplate>

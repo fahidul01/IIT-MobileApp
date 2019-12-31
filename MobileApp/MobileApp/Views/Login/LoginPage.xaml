@@ -17,7 +17,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Image Aspect="AspectFill"
-               Source="front_bg.ong" />
+               Source="front_bg.jpg" />
         <BoxView BackgroundColor="Black"
                  Opacity="0.6" />
         <Frame CornerRadius="60"

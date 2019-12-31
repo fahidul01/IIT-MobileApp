@@ -5,18 +5,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              xmlns:converters="clr-namespace:MobileApp.Converters"
-             xmlns:themes = "clr-namespace:MobileApp.Themes;assembly=MobileApp"
              x:Class="MobileApp.App">
     <Application.Resources>
-        <!--<ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <themes:LightTheme />
-            </ResourceDictionary.MergedDictionaries >
-        </ResourceDictionary>-->
         <OnPlatform x:Key="MaterialFontFamily"
                     x:TypeArguments="x:String">
             <On Platform="iOS"
-                Value="Material Design Icons" />
+                Value="Material Icons" />
             <On Platform="Android"
                 Value="MaterialIcons-Regular.ttf#Material Icons" />
             <On Platform="UWP"

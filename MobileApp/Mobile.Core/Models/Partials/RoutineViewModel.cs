@@ -10,7 +10,7 @@ namespace Mobile.Core.Models.Partials
     {
         public List<Activity> Activities { get; private set; }
         public List<Routine> Routines { get; private set; }
-        private Routine CurrentRoutine;
+        private readonly Routine CurrentRoutine;
 
         public RoutineViewModel()
         {
@@ -55,7 +55,9 @@ namespace Mobile.Core.Models.Partials
                 {
                     item.Activities = dayActivity;
                     if (item.DayOfWeek == DateTime.Now.DayOfWeek)
+                    {
                         Activities = dayActivity;
+                    }
                 }
             }
         }

@@ -99,7 +99,7 @@ namespace Mobile.Core.ViewModels
             {
                 _dialog.ShowToastMessage("Invalid Mobile Number");
             }
-            var response = await _memberHandler.VerifyPhoneNo(RollNo,  PhoneNo);
+            var response = await _memberHandler.VerifyPhoneNo(RollNo, PhoneNo);
             if (response != null && response.Actionstatus)
             {
                 RegistrationState = RegistrationState.Mobile;

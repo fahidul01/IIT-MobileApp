@@ -11,7 +11,7 @@ namespace MobileApp.Controls
     public class StackListLayout : StackLayout
     {
         private bool _locked;
-        private static SemaphoreSlim semaphoreSlim = new SemaphoreSlim(1, 1);
+        private static readonly SemaphoreSlim semaphoreSlim = new SemaphoreSlim(1, 1);
         public string EmptyText { get; set; }
         public static readonly BindableProperty ItemsSourceProperty =
             BindableProperty.Create(nameof(ItemsSource),

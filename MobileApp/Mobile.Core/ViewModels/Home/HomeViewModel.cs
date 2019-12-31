@@ -48,7 +48,7 @@ namespace Mobile.Core.ViewModels
         private async void LoadEvents()
         {
             IsBusy = true;
-            UpcomingClasses = await _classHandler.GetLessons();
+            UpcomingClasses = await _classHandler.GetUserLessons();
             UpcomingEvents = await _noticeHandler.GetUpcomingEvents(1, PostType.All);
             //RecentNotices = await _noticeHandler.GetPosts(1, PostType.All);
             // CurrentCourses = await _courseHandler.GetCourses();
@@ -64,17 +64,17 @@ namespace Mobile.Core.ViewModels
         public ICommand CalenderCommand => new RelayCommand(CalenderAction);
         public ICommand TodoItemCommand => new RelayCommand(TodoItemAction);
         public ICommand NoticesCommand => new RelayCommand(NoticesAction);
-        public ICommand SwipeLeftCommand => new RelayCommand(SwipeLeftAAction);
+        public ICommand SwipeLeftCommand => new RelayCommand(SwipeLeftAction);
         public ICommand SwipteRightCommand => new RelayCommand(SwipeRightAction);
 
         private void SwipeRightAction()
         {
-            throw new NotImplementedException();
+
         }
 
-        private void SwipeLeftAAction()
+        private void SwipeLeftAction()
         {
-            throw new NotImplementedException();
+
         }
 
         private void NoticesAction()

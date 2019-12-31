@@ -36,7 +36,7 @@ namespace IIT.Server.Controllers
             }
         }
 
-        public async Task<List<Lesson>> GetLessons()
+        public async Task<List<Lesson>> GetUserLessons()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             return await _lessonService.GetLesson(userId);
@@ -62,7 +62,7 @@ namespace IIT.Server.Controllers
             }
         }
 
-        public Task<List<Lesson>> GetUpcomingLessons()
+        public Task<List<Lesson>> GetTodaysLessons()
         {
             return _lessonService.UpcomingLessons();
         }

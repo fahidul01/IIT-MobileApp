@@ -1,11 +1,8 @@
 ﻿using CoreEngine.Model.Common;
-using GalaSoft.MvvmLight.Command;
 using Mobile.Core.Engines.Dependency;
 using Mobile.Core.Engines.Services;
-using Mobile.Core.Models.Core;
 using Mobile.Core.ViewModels;
 using Mobile.Core.ViewModels.Core;
-using MobileApp.Controls;
 using MobileApp.Views.Home;
 using System;
 using System.Collections.Generic;
@@ -46,23 +43,27 @@ namespace MobileApp.Service
             CurrentPage = vm;
             var page = Activator.CreateInstance(Pages[vm]) as Page;
             page.BindingContext = Locator.GetInstance<T>();
-            _nav = new NavigationPage(page)
-            {
-                BarBackgroundColor = Color.DarkBlue,
-                BarTextColor = Color.White
-            };
+
 
             if (vm == typeof(HomeViewModel))
             {
-                Application.Current.MainPage = new MainPage(_nav);
+                _nav = new NavigationPage(new MainPage(page))
+                {
+                    BarBackgroundColor = Color.DarkBlue,
+                    BarTextColor = Color.White
+                };
             }
             else
             {
-                Application.Current.MainPage = _nav;
+                _nav = new NavigationPage(page)
+                {
+                    BarBackgroundColor = Color.DarkBlue,
+                    BarTextColor = Color.White
+                };
+
             }
 
-
-            //page.BindingContext = Locator.GetInstance<T>();
+            Application.Current.MainPage = _nav;
 
             if (page.BindingContext is BaseViewModel viewModel)
             {

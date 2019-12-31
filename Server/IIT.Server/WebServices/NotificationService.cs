@@ -37,7 +37,7 @@ namespace IIT.Server.WebServices
 #if DEBUG
                 await Task.Delay(100);
                 Console.WriteLine(string.Format("   Notification demo: {0}=> {1}, {2}",
-                                topic,title,message));
+                                topic, title, message));
 #else
                 var resp = await httpClient.PostAsync(GCMUrl, new StringContent(sData));
                 Console.WriteLine("Notification:" + resp.StatusCode);
