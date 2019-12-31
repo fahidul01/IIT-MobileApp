@@ -1,11 +1,14 @@
-﻿using System;
+﻿using CoreEngine.Model.Common;
+using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CoreEngine.Model.DBModel
 {
-    public class DBUser
+    public class DBUser : DBNotifyModel
     {
         public virtual Batch Batch { get; set; }
         public string Id { get; set; }
@@ -39,5 +42,9 @@ namespace CoreEngine.Model.DBModel
             BloodGroup = user.BloodGroup;
             WorkHistory = user.WorkHistory;
         }
+
+        [NotMapped]
+        [JsonIgnore]
+        public bool IsChecked { get; set; }
     }
 }

@@ -38,10 +38,6 @@ namespace Student.Infrastructure.Services
             else
             {
                 post.Owner = dbUser;
-                if (post.CourseId != 0)
-                {
-                    post.Course = await _db.Courses.FirstOrDefaultAsync(x => x.Id == post.CourseId);
-                }
                 if (dbUser.Role == AppConstants.Student)
                 {
                     post.Batch = dbUser.Batch;
@@ -54,35 +50,46 @@ namespace Student.Infrastructure.Services
                 {
                     _db.Entry(post).State = EntityState.Modified;
                 }
-                await _db.SaveChangesAsync();
-                if (post.Batch != null)
+                try
                 {
-                    _notificationService.SendNotification(post.Batch.Name, post.Title, post.Message);
-                }
-                else
-                {
-                    var currentBatch = await _db.Semesters
-                                                .Where(x => x.EndsOn > DateTime.Now)
-                                                .Select(m => m.Batch)
-                                                .Distinct()
-                                                .ToListAsync();
-                    foreach (var batch in currentBatch)
+                    await _db.SaveChangesAsync();
+                    if (post.Batch != null)
                     {
-                        _notificationService.SendNotification(batch.Name, post.Title, post.Message);
+                        _notificationService.SendNotification(post.Batch.Name, post.Title, post.Message);
                     }
+                    else
+                    {
+                        var currentBatch = await _db.Semesters
+                                                    .Where(x => x.EndsOn > DateTime.Now)
+                                                    .Select(m => m.Batch)
+                                                    .Distinct()
+                                                    .ToListAsync();
+                        foreach (var batch in currentBatch)
+                        {
+                            _notificationService.SendNotification(batch.Name, post.Title, post.Message);
+                        }
+                    }
+                    return new ActionResponse(true, "Successfully created the notice");
                 }
-                return new ActionResponse(true, "Successfully created the notice");
+                catch (Exception ex)
+                {
+                    return new ActionResponse(false, ex.Message);
+                }
             }
         }
 
         public async Task<List<Notice>> SearchNotice(string userId, string key)
         {
+            key = key.ToUpper();
             var user = await _db.DBUsers
                                .Include(x => x.Batch)
                                .FirstOrDefaultAsync(x => x.Id == userId);
             var primaryQuery = _db.Notices
-                                  .Where(x => EF.Functions.Like(x.Title, $"%{key}%"))
-                                  .Take(20);
+                                  .Include(x=>x.DBFiles)
+                                  .Where(x => EF.Functions.Like(x.Title, $"%{key}%") ||
+                                               EF.Functions.Like(x.Message, $"%{key}%") ||
+                                               x.Batch.Name == key)
+                                  .Take(40);
             if (user.Role == AppConstants.Admin)
             {
                 return await primaryQuery.ToListAsync();
@@ -90,7 +97,7 @@ namespace Student.Infrastructure.Services
             else
             {
                 return await primaryQuery.Where(x => x.Batch == null || x.Batch == user.Batch)
-                                                .ToListAsync();
+                                         .ToListAsync();
             }
         }
 
@@ -137,10 +144,12 @@ namespace Student.Infrastructure.Services
                                .Include(x => x.Batch)
                                .FirstOrDefaultAsync(x => x.Id == userId);
             var nextWeek = CurrentTime.AddDays(7);
-            var primaryQuery = _db.Notices.Where(x => x.EventDate > CurrentTime &&
-                                                           x.EventDate <= nextWeek)
-                                           .Include(m => m.Batch)
-                                           .OrderBy(x => x.EventDate);
+            var primaryQuery = _db.Notices
+                                  .Include(x=>x.DBFiles)
+                                  .Where(x => x.EventDate > CurrentTime &&
+                                              x.EventDate <= nextWeek)
+                                  .Include(m => m.Batch)
+                                  .OrderBy(x => x.EventDate);
             if (user.Role == AppConstants.Admin)
             {
                 var notices = await primaryQuery.ToListAsync();
@@ -160,7 +169,8 @@ namespace Student.Infrastructure.Services
                               .Include(x => x.Batch)
                               .FirstOrDefaultAsync(x => x.Id == userId);
 
-            var primaryQuery = _db.Notices.OrderByDescending(m => m.EventDate)
+            var primaryQuery = _db.Notices.Include(x=>x.DBFiles)
+                                  .OrderByDescending(m => m.EventDate)
                                          .Skip((page - 1) * itemPerPage)
                                          .Take(itemPerPage)
                                          .Include(m => m.Batch);

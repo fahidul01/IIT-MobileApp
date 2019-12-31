@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 
 namespace CoreEngine.Model.DBModel
 {
@@ -20,7 +21,7 @@ namespace CoreEngine.Model.DBModel
 
         //These parameters are optional and can be used as accessory
         public virtual Batch Batch { get; set; }
-        public int CourseId { get; set; }
+        public int? CourseId { get; set; }
         public virtual Course Course { get; set; }
 
         [Required]

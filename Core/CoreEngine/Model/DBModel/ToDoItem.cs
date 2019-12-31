@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace CoreEngine.Model.DBModel
 {
@@ -15,6 +17,30 @@ namespace CoreEngine.Model.DBModel
         public List<DBUserTodoItem> Participents { get; set; }
         [NotMapped]
         public List<string> ParticementUserIds { get; set; }
+        [NotMapped]
+        [JsonIgnore]
+        public string OwnerName { get; set; }
+        [JsonIgnore]
+        [NotMapped]
+        public string AllParticipents { get; set; }
+
+        private DBUser GetOwnerData()
+        {
+            if (OwnerId == null || Participents == null) return null;
+            var owner = Participents.FirstOrDefault(x => x.DBUser.Id == OwnerId);
+            return owner?.DBUser;
+        }
+
+        public void Update()
+        {
+            var owner = GetOwnerData();
+            if (owner != null)
+            {
+                OwnerName = owner.Name;
+                Participents.Remove(Participents.FirstOrDefault(x=>x.DBUser == owner));
+            }
+            AllParticipents = string.Join(",", Participents.Select(x => x.DBUser.Name));
+        }
     }
 
     public class DBUserTodoItem

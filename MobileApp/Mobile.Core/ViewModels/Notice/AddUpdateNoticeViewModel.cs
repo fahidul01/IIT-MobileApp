@@ -40,7 +40,8 @@ namespace Mobile.Core.ViewModels
         public override async void OnAppear(params object[] args)
         {
             base.OnAppear(args);
-            Courses = await _courseHandler.GetCourses();
+            var semesters = await _courseHandler.GetStudentCurrentSemesters();
+            Courses = semesters.SelectMany(x => x.Courses).ToList();
             if (args.Length > 0 && args[0] is Notice notice)
             {
                 CurrentNotice = notice;

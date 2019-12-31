@@ -130,20 +130,6 @@ namespace IIT.Server.Controllers
             return res;
         }
 
-        public async Task<List<Course>> GetCourses()
-        {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var batch = await _userservice.GetBatch(userId);
-            if (batch == null)
-            {
-                return null;
-            }
-            else
-            {
-                return await _courseService.GetCoursesAsync(batch.Id);
-            }
-
-        }
         #endregion
 
         #region Course Material
@@ -176,12 +162,13 @@ namespace IIT.Server.Controllers
         #endregion
 
 
-        public async Task<List<Course>> GetBatchCourses(int batchId)
+        public async Task<List<Semester>> GetCurrentSemesters(string userId)
         {
-            return await _courseService.GetCoursesAsync(batchId);
+            var batch = await _userservice.GetBatch(userId);
+            return await _courseService.GetSemestersAsync(batch.Id);
         }
 
-        public async Task<List<Semester>> GetCurrentSemester()
+        public async Task<List<Semester>> GetStudentCurrentSemesters()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var batch = await _userservice.GetBatch(userId);

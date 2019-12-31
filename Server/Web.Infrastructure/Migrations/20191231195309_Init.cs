@@ -334,7 +334,7 @@ namespace Student.Infrasructure.Migrations
                     CreatedOn = table.Column<DateTime>(nullable: false),
                     EventDate = table.Column<DateTime>(nullable: false),
                     BatchId = table.Column<int>(nullable: true),
-                    CourseId = table.Column<int>(nullable: false),
+                    CourseId = table.Column<int>(nullable: true),
                     OwnerId = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
@@ -351,7 +351,7 @@ namespace Student.Infrasructure.Migrations
                         column: x => x.CourseId,
                         principalTable: "Courses",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Notices_DBUsers_OwnerId",
                         column: x => x.OwnerId,

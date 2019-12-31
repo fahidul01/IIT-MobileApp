@@ -32,7 +32,7 @@ else
             {
                 foreach (var file in Notice.DBFiles)
                 {
-                    <a href="/api/files+@file.Id">@file.FileName</a>
+                    <a href="/api/files/index?id=@file.Id">@file.FileName</a>
                     <br/>
                 }
             }

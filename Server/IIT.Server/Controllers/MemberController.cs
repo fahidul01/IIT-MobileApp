@@ -173,6 +173,12 @@ namespace IIT.Server.Controllers
         }
 
         [Authorize(Roles = AppConstants.Admin)]
+        public async Task<ActionResponse> MakeCR(string userId, bool isCR)
+        {
+            return await _userService.MakeCR(userId, isCR);
+        }
+
+        [Authorize(Roles = AppConstants.Admin)]
         [HttpPost]
         public async Task<ActionResponse> CreateBatchStudents(int batchId, DBFile dBFile, IFormFile formFile = null)
         {
@@ -211,9 +217,11 @@ namespace IIT.Server.Controllers
             }
         }
 
-        public Task<List<DBUser>> GetCurrentCr()
+        
+
+        public async Task<List<DBUser>> GetCurrentCr()
         {
-            return _userService.GetCurrentCr();
+            return await _userService.GetCurrentCr();
         }
 
         [AllowAnonymous]

@@ -186,35 +186,19 @@ namespace Student.Infrastructure.Services
             return user;
         }
 
-        public async Task<DBUser> MakeCR(string userId)
+        public async Task<ActionResponse> MakeCR(string userId, bool isCR)
         {
             var user = await _db.DBUsers.FirstOrDefaultAsync(x => x.Id == userId);
             if (user == null)
             {
-                return null;
+                return new ActionResponse(false,"Invalid User information");
             }
             else
             {
-                user.ClassRepresentative = true;
+                user.ClassRepresentative = isCR;
                 _db.Entry(user).State = EntityState.Modified;
                 await _db.SaveChangesAsync();
-                return await GetUser(userId);
-            }
-        }
-
-        public async Task<DBUser> RemoveCR(string id)
-        {
-            var user = await _db.DBUsers.FirstOrDefaultAsync(x => x.Id == id);
-            if (user == null)
-            {
-                return null;
-            }
-            else
-            {
-                user.ClassRepresentative = false;
-                _db.Entry(user).State = EntityState.Modified;
-                await _db.SaveChangesAsync();
-                return await GetUser(id);
+                return new ActionResponse(true);
             }
         }
 

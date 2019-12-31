@@ -228,7 +228,7 @@ namespace Student.Infrasructure.Migrations
                     b.Property<int?>("BatchId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("CourseId")
+                    b.Property<int?>("CourseId")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("CreatedOn")
@@ -599,9 +599,7 @@ namespace Student.Infrasructure.Migrations
 
                     b.HasOne("CoreEngine.Model.DBModel.Course", "Course")
                         .WithMany()
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CourseId");
 
                     b.HasOne("CoreEngine.Model.DBModel.DBUser", "Owner")
                         .WithMany()

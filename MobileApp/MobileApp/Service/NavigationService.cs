@@ -47,11 +47,12 @@ namespace MobileApp.Service
 
             if (vm == typeof(HomeViewModel))
             {
-                _nav = new NavigationPage(new MainPage(page))
+                _nav = new NavigationPage(page)
                 {
                     BarBackgroundColor = Color.DarkBlue,
                     BarTextColor = Color.White
                 };
+                Application.Current.MainPage = new MainPage(_nav);
             }
             else
             {
@@ -60,10 +61,10 @@ namespace MobileApp.Service
                     BarBackgroundColor = Color.DarkBlue,
                     BarTextColor = Color.White
                 };
-
+                Application.Current.MainPage = _nav;
             }
 
-            Application.Current.MainPage = _nav;
+            
 
             if (page.BindingContext is BaseViewModel viewModel)
             {

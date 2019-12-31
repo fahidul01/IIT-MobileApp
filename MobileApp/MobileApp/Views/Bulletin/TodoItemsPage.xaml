@@ -9,6 +9,7 @@
                      xmlns:model="clr-namespace:CoreEngine.Model.DBModel;assembly=CoreEngine"
                      xmlns:pk="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
                      x:DataType="vm:TodoItemsViewModel"
+                     Title="My Work Items"
                      x:TypeArguments="vm:TodoItemsViewModel"
                      x:Class="MobileApp.Views.Bulletin.TodoItemsPage">
     <Grid d:BindingContext="{x:Static vm:TodoItemsViewModel}">
@@ -20,20 +21,42 @@
                      IsRefreshing="{Binding IsRefreshisng}">
             <CollectionView ItemsSource="{Binding ToDoItems}">
                 <CollectionView.EmptyView>
-                    <Label Text="Create new personalized items by pressing Add"
-                           Margin="10"
-                           HorizontalOptions="Center" />
+                    <Grid HeightRequest="250"
+                          BackgroundColor="WhiteSmoke">
+                        <Label Text="Create new personalized items by pressing Add"
+                               Margin="10"
+                               HorizontalOptions="Center" />
+                    </Grid>
+                    
                 </CollectionView.EmptyView>
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="model:ToDoItem">
                         <Grid>
                             <Frame Margin="10,5">
-                                
+                                <StackLayout>
+                                    <Label Text="{Binding EventTime}"
+                                           FontSize="Small"/>
+                                    <Label Text="{Binding Title}"
+                                           FontSize="Medium"
+                                           FontAttributes="Bold"/>
+                                    <Label Text="{Binding OwnerName}" />
+                                    <BoxView HeightRequest="1"
+                                             BackgroundColor="LightGray" />
+                                    <Label Text="{Binding Message}" />
+                                    <Label Text="{Binding AllParticipents}" 
+                                           Margin="0,15,0,0"/>
+                                </StackLayout>
                             </Frame>
                         </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
         </RefreshView>
+        <Button Style="{StaticResource FloatingButton}"
+                HorizontalOptions="End"
+                Command="{Binding AddCommand}"
+                VerticalOptions="End"
+                Margin="20"
+                ImageSource="{controls:IconFont IconType=Add}" />
     </Grid>
 </controls:CustomPage>

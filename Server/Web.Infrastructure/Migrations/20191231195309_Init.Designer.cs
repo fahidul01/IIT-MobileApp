@@ -9,7 +9,7 @@ using Student.Infrastructure.DBModel;
 namespace Student.Infrasructure.Migrations
 {
     [DbContext(typeof(StudentDBContext))]
-    [Migration("20191231155853_Init")]
+    [Migration("20191231195309_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -230,7 +230,7 @@ namespace Student.Infrasructure.Migrations
                     b.Property<int?>("BatchId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("CourseId")
+                    b.Property<int?>("CourseId")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("CreatedOn")
@@ -601,9 +601,7 @@ namespace Student.Infrasructure.Migrations
 
                     b.HasOne("CoreEngine.Model.DBModel.Course", "Course")
                         .WithMany()
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CourseId");
 
                     b.HasOne("CoreEngine.Model.DBModel.DBUser", "Owner")
                         .WithMany()

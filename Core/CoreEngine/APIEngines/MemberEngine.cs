@@ -99,5 +99,10 @@ namespace CoreEngine.APIEngines
         {
             return SendRequest<ActionResponse>(HttpMethod.Post, new { rollNo, phoneNo, password });
         }
+
+        public Task<ActionResponse> MakeCR(string userId, bool isCR)
+        {
+            return SendRequest<ActionResponse>(HttpMethod.Post, new { userId, isCR });
+        }
     }
 }

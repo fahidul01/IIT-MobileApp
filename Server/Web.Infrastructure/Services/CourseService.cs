@@ -124,13 +124,6 @@ namespace Student.Infrastructure.Services
                             .FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<List<Course>> GetCoursesAsync(int batchId)
-        {
-            return await _db.Courses.Include(x => x.Semester)
-                                    .Where(x => x.Semester.Batch.Id == batchId)
-                                    .ToListAsync();
-        }
-
         public async Task<bool> ModifyCourse(Course course)
         {
             var dbCourse = await _db.Courses.FindAsync(course.Id);

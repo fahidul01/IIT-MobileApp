@@ -75,11 +75,11 @@ namespace Mobile.Core.ViewModels
         {
             _nav.NavigateTo<AddUpdateNoticeViewModel>();
         }
-        private void LoadMoreAction()
+        private async void LoadMoreAction()
         {
             if (canLoadMore && !IsBusy)
             {
-                LoadNotice(page++);
+               await LoadNotice(page++);
             }
         }
     }

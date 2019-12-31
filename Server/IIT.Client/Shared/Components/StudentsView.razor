@@ -6,7 +6,7 @@
     <MatTableHeader>
         @if (ShowBatch)
         {
-           <th style="width:20%">Batch</th>
+            <th style="width:20%">Batch</th>
         }
         <th style="width:40%">Name</th>
         <th style="width:15%">Roll</th>
@@ -17,13 +17,18 @@
     <MatTableRow Context="Student">
         @if (ShowBatch)
         {
-        <td @onclick="(() => ViewBatch(Student.Batch))">@Student.Batch.Name</td>
+            <td @onclick="(() => ViewBatch(Student.Batch))">@Student.Batch.Name</td>
         }
         <td @onclick="(() => ViewStudent(Student))">@Student.Name</td>
         <td @onclick="(() => ViewStudent(Student))">@Student.Roll</td>
         <td @onclick="(() => ViewStudent(Student))">@Student.Email</td>
         <td @onclick="(() => ViewStudent(Student))">@Student.PhoneNumber</td>
-        <td @onclick="(() => ViewStudent(Student))">@Student.ClassRepresentative</td>
+        <td @onclick="(() => ViewStudent(Student))">
+            @if (Student.ClassRepresentative)
+            {
+                <span>CR</span>
+            }
+        </td>
     </MatTableRow>
 </MatTable>
 

@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using CoreEngine.Model.Common;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace CoreEngine.Model.DBModel
 {
-    public class Course : INotifyPropertyChanged
+    public class Course : DBNotifyModel
     {
         public int Id { get; set; }
         public decimal CourseCredit { get; set; }
@@ -23,11 +24,7 @@ namespace CoreEngine.Model.DBModel
             Lessons = new HashSet<Lesson>();
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void NotifyChange(string property)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
-        }
+        
     }
 
     public class StudentCourse

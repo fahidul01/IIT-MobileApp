@@ -10,7 +10,7 @@ namespace Mobile.Core.Models.Partials
     {
         public List<Activity> Activities { get; private set; }
         public List<Routine> Routines { get; private set; }
-        private readonly Routine CurrentRoutine;
+        //private readonly Routine CurrentRoutine;
 
         public RoutineViewModel()
         {

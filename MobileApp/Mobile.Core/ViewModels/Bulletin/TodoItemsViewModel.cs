@@ -50,7 +50,11 @@ namespace Mobile.Core.ViewModels
             {
                 CanLoadMore = resp.Count > 5;
                 page++;
-                resp.ForEach(x => ToDoItems.Add(x));
+                foreach(var item in resp)
+                {
+                    item.Update();
+                    ToDoItems.Add(item);
+                }
             }
         }
 

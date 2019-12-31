@@ -23,6 +23,7 @@ namespace Student.Infrasructure.Services
             {
                 return new ActionResponse(false, "Invalid User Information");
             }
+            toDoItem.Participents = new List<DBUserTodoItem>();
             foreach (var user in toDoItem.ParticementUserIds)
             {
                 var dbUser = await _db.DBUsers.FindAsync(user);
@@ -30,9 +31,10 @@ namespace Student.Infrasructure.Services
                 {
                     var mergedItem = new DBUserTodoItem()
                     {
-                        DBUser = dbUser
+                        DBUser = dbUser,
+                        ToDoItem = toDoItem
                     };
-                    toDoItem.Participents.Add(mergedItem);
+                    _db.Entry(mergedItem).State = EntityState.Added;
                 }
             }
             _db.Entry(toDoItem).State = EntityState.Added;
@@ -54,8 +56,11 @@ namespace Student.Infrasructure.Services
         public async Task<List<ToDoItem>> GetItem(string userId, int page)
         {
             var items = await _db.ToDoItems.Include(x => x.Participents)
-                                           .Where(x => x.Participents
-                                                        .Any(m => m.DBUser.Id == userId))
+                                           .ThenInclude(x=>x.DBUser)
+                                           .Where(x => (x.Participents
+                                                        .Any(m => m.DBUser.Id == userId)||
+                                                        x.OwnerId == userId))
+                                           .OrderByDescending(x=>x.EventTime)
                                            .Skip(page * 20)
                                            .Take(20)
                                            .ToListAsync();
@@ -68,7 +73,7 @@ namespace Student.Infrasructure.Services
             {
                 return new ActionResponse(false, "Invalid User Information");
             }
-            toDoItem.Participents.Clear();
+            toDoItem.Participents = new List<DBUserTodoItem>();
             foreach (var user in toDoItem.ParticementUserIds)
             {
                 var dbUser = await _db.DBUsers.FindAsync(user);

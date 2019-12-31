@@ -6,12 +6,25 @@
                   xmlns:helpers="clr-namespace:MobileApp.Helpers"
                   mc:Ignorable="d"
                   xmlns:local="clr-namespace:MobileApp.Views.Home"
-                  Title="IIT"
                   x:Class="MobileApp.Views.Home.MainPage"
                   xmlns:vm="clr-namespace:Mobile.Core.ViewModels;assembly=Mobile.Core"
                   x:DataType="vm:MainViewModel"
+                  Title="IIT"
                   IsPresented="{Binding IsPresented, Mode=TwoWay}"
+                  xmlns:controls="clr-namespace:MobileApp.Controls"
                   xmlns:pages="clr-namespace:MobileApp.Views.Home">
+    <!--<NavigationPage.TitleView>
+        <StackLayout Orientation="Horizontal">
+            <Button ImageSource="{controls:IconFont IconType=Menu}" 
+                    BackgroundColor="DarkBlue"
+                    WidthRequest="30"
+                    Padding="0"/>
+            <Label Text="IIT"
+                   FontAttributes="Bold"
+                   TextColor="White"
+                   VerticalOptions="Center" />
+        </StackLayout>
+    </NavigationPage.TitleView>-->
     <MasterDetailPage.Master>
         <local:MenuPage x:Name="MenuContent"/>
     </MasterDetailPage.Master>

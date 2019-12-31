@@ -23,5 +23,6 @@ namespace CoreEngine.APIHandlers
         Task<DBUser> GetUser(string userId);
         Task<ActionResponse> VerifyPhoneNo(string rollNo, string phoneNo);
         Task<ActionResponse> Register(string rollNo, string phoneNo, string password);
+        Task<ActionResponse> MakeCR(string userId, bool isCR);
     }
 }

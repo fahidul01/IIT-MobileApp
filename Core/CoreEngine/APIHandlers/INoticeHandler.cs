@@ -16,5 +16,6 @@ namespace CoreEngine.APIHandlers
         Task<List<Notice>> GetUpcomingEvents(int page, PostType all);
         Task<List<Notice>> GetPostsDate(DateTime startTime, DateTime endTime);
         Task<Notice> GetNotice(int noticeId);
+        Task<List<Notice>> SearchNotice(string key);
     }
 }

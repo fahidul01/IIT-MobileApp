@@ -25,7 +25,7 @@ namespace Mobile.Core.ViewModels
         protected override async void RefreshAction()
         {
             base.RefreshAction();
-            Semesters = await _courseHandler.GetCurrentSemester();
+            Semesters = await _courseHandler.GetStudentCurrentSemesters();
             IsRefreshisng = false;
         }
 

@@ -38,23 +38,13 @@ namespace CoreEngine.APIEngines
             return SendRequest<Course>(HttpMethod.Post, new { courseId });
         }
 
-        public Task<List<Course>> GetCourses()
-        {
-            return SendRequest<List<Course>>(HttpMethod.Get, null);
-        }
-
-        public Task<List<Course>> GetBatchCourses(int batchId)
-        {
-            return SendRequest<List<Course>>(HttpMethod.Post, new { batchId });
-        }
-
         public Task<ActionResponse> UpdateCourse(Course course)
         {
             Semesters = null;
             return SendRequest<ActionResponse>(HttpMethod.Post, course);
         }
 
-        public async Task<List<Semester>> GetCurrentSemester()
+        public async Task<List<Semester>> GetStudentCurrentSemesters()
         {
             if (Semesters == null)
             {
@@ -92,6 +82,11 @@ namespace CoreEngine.APIEngines
         public Task<List<Course>> GetSemesterCourses(int semesterId)
         {
             return SendRequest<List<Course>>(HttpMethod.Get, new { semesterId });
+        }
+
+        public Task<List<Semester>> GetCurrentSemesters(string userId)
+        {
+            return SendRequest<List<Semester>>(HttpMethod.Get, new { userId });
         }
     }
 }
