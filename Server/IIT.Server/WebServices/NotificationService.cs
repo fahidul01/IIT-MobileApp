@@ -4,6 +4,7 @@ using Student.Infrastructure.AppServices;
 using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace IIT.Server.WebServices
@@ -29,17 +30,26 @@ namespace IIT.Server.WebServices
                     ["notification"] = notification,
                     ["ttl"] = 3600
                 };
-                var sData = topicData.ToString();
+                var payLoaddata = new StringContent(topicData.ToString(), Encoding.UTF8, "application/json");
+               
                 using var httpClient = new HttpClient();
                 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+              
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", GCMKey);
-
+                //httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + GCMKey);
 #if DEBUG
                 await Task.Delay(100);
                 Console.WriteLine(string.Format("   Notification demo: {0}=> {1}, {2}",
                                 topic, title, message));
 #else
-                var resp = await httpClient.PostAsync(GCMUrl, new StringContent(sData));
+                var resp = await httpClient.PostAsync(GCMUrl, payLoaddata);
+             
+                if(resp.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    var data = await resp.Content.ReadAsStringAsync();
+                    Console.WriteLine("Notification: " + topic + data.Trim());
+                }
+               
                 Console.WriteLine("Notification:" + resp.StatusCode);
 #endif
 

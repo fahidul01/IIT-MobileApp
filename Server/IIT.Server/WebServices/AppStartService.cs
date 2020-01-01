@@ -58,7 +58,9 @@ namespace IIT.Server.WebServices
 
 
                 var _feedService = scope.ServiceProvider.GetRequiredService<FeedDataService>();
+#if DEBUG
                 await _feedService.StartAsync(dbUser.Id);
+#endif
             }
         }
 

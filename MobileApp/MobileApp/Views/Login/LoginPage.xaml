@@ -12,9 +12,8 @@
                      x:Class="MobileApp.Views.Login.LoginPage">
     <Grid d:BindingContext="{x:Static vm:LoginViewModel}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="2*" />
-            <RowDefinition Height="3*" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="4*" />
+            <RowDefinition Height="7*" />
         </Grid.RowDefinitions>
         <Image Aspect="AspectFill"
                Source="front_bg.jpg" />
@@ -49,9 +48,9 @@
                     Command="{Binding LoginCommand}"
                     Text="Login" />
         </StackLayout>
-        <Button Grid.Row="2"
-                BackgroundColor="Transparent"
+        <Button BackgroundColor="Transparent"
                 Visual="Default"
+                Grid.Row="1"
                 VerticalOptions="End"
                 Margin="30,0"
                 HorizontalOptions="Center"
