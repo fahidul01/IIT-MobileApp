@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.Options;
 using Student.Infrastructure.AppServices;
 using System;
+using System.Net;
+using System.Net.Mail;
 using System.Threading.Tasks;
 
 namespace IIT.Server.WebServices
@@ -25,11 +27,6 @@ namespace IIT.Server.WebServices
 
             try
             {
-#if DEBUG
-                Console.WriteLine("Email Demo: " + email);
-                await Task.Delay(100);
-#else
-
                 using (var client = new SmtpClient())
                 {
                     var mail = new MailMessage(Options.From, email)
@@ -45,10 +42,16 @@ namespace IIT.Server.WebServices
                     client.Timeout = 10000;
                     client.UseDefaultCredentials = false;
                     client.Credentials = new NetworkCredential(Options.Username, Options.Password);
+#if DEBUG
+                Console.WriteLine("Email Demo: " + email);
+                await Task.Delay(100);
 
-                    await client.SendMailAsync(mail);
-                }
+
+#else     
+                await client.SendMailAsync(mail);
 #endif
+                }
+
                 return true;
             }
             catch (Exception ex)

@@ -33,6 +33,7 @@
                                HeightRequest="50"
                                WidthRequest="50"
                                VerticalOptions="Start"
+                               HasShadow="False"
                                Padding="0">
                             <Label Text="N"
                                    VerticalOptions="Center"

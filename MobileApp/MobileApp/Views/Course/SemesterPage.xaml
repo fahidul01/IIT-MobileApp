@@ -4,9 +4,9 @@
                      xmlns:d="http://xamarin.com/schemas/2014/forms/design"
                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                      mc:Ignorable="d"
+                     Title="Semester"
                      xmlns:controls="clr-namespace:MobileApp.Controls"
                      xmlns:vm="clr-namespace:Mobile.Core.ViewModels;assembly=Mobile.Core"
-                     Title="Semester"
                      xmlns:pk="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
                      xmlns:model="clr-namespace:CoreEngine.Model.DBModel;assembly=CoreEngine"
                      x:DataType="vm:SemesterViewModel"
@@ -14,11 +14,32 @@
                      x:Class="MobileApp.Views.Course.SemesterPage">
     <Grid d:BindingContext="{x:Static vm:SemesterViewModel}"
           x:Name="MainContainer">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
         <pk:PancakeView HeightRequest="200"
+                        Grid.RowSpan="2"
                         VerticalOptions="Start"
                         BackgroundGradientStartColor="DarkBlue"
                         BackgroundGradientEndColor="LightBlue" />
+        <Grid  BackgroundColor="White"
+               Padding="10"
+               Margin="10,0">
+            <StackLayout>
+                <Label Text="{Binding CurrentSemester.Name}"
+                       FontAttributes="Bold"
+                       FontSize="Large" />
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="{Binding CurrentSemester.StartsOn, StringFormat='{0:dd MMM, yyyy}'}" />
+                    <Label Text="-" />
+                    <Label Text="{Binding CurrentSemester.EndsOn, StringFormat='{0:dd MMM, yyyy}'}" />
+                </StackLayout>
+            </StackLayout>
+        </Grid>
+      
         <RefreshView Command="{Binding RefreshCommand}"
+                     Grid.Row="1"
                      IsRefreshing="{Binding IsRefreshisng}">
             <CollectionView ItemsSource="{Binding Courses}">
                 <CollectionView.EmptyView>
@@ -38,8 +59,9 @@
                 </d:CollectionView.ItemsSource>
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="model:Course">
-                        <Grid Padding="10,5">
-                            <Frame>
+                        <Grid Padding="10,5" >
+                            <Frame HasShadow="False"
+                                   BorderColor="LightGray">
                                 <Frame.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding BindingContext.CourseCommand, Source={x:Reference MainContainer}}"
                                                           CommandParameter="{Binding}" />
@@ -117,6 +139,7 @@
         <Button Style="{StaticResource FloatingButton}"
                 HorizontalOptions="End"
                 Margin="20"
+                Grid.Row="1"
                 Command="{Binding AddCommand}"
                 ImageSource="{controls:IconFont IconType=Add, FontSize=24}"
                 VerticalOptions="End" />

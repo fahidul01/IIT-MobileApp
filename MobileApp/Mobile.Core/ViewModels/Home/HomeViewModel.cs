@@ -11,23 +11,17 @@ namespace Mobile.Core.ViewModels
 {
     public class HomeViewModel : BaseViewModel
     {
-        private readonly ILessonHandler _classHandler;
-        private readonly ICourseHandler _courseHandler;
         private readonly INoticeHandler _noticeHandler;
-        public List<Notice> UpcomingEvents { get; set; }
-        public List<Notice> RecentNotices { get; set; }
-        public List<Lesson> UpcomingClasses { get; set; }
-        public List<Course> CurrentCourses { get; set; }
+        public List<Activity> UpcomingEvents { get; set; }
+       
         public DBUser User { get; private set; }
         public string Today { get; private set; }
         public string Date { get; private set; }
         public RoutineViewModel RoutineViewModel { get; private set; }
 
-        public HomeViewModel(ILessonHandler classHandler, ICourseHandler courseHandler, INoticeHandler postHandler)
+        public HomeViewModel(INoticeHandler postHandler)
         {
             RoutineViewModel = new RoutineViewModel();
-            _classHandler = classHandler;
-            _courseHandler = courseHandler;
             _noticeHandler = postHandler;
             Today = DateTime.Now.DayOfWeek.ToString();
             Date = DateTime.Now.ToString("dd MMMM yyyy");
@@ -48,11 +42,11 @@ namespace Mobile.Core.ViewModels
         private async void LoadEvents()
         {
             IsBusy = true;
-            UpcomingClasses = await _classHandler.GetUserLessons();
-            UpcomingEvents = await _noticeHandler.GetUpcomingEvents(1, PostType.All);
-            //RecentNotices = await _noticeHandler.GetPosts(1, PostType.All);
-            // CurrentCourses = await _courseHandler.GetCourses();
-            RoutineViewModel.Update(UpcomingClasses, UpcomingEvents);
+            int startDiff = (7 + (DateTime.Today.DayOfWeek - DayOfWeek.Saturday)) % 7;
+            var  start = DateTime.Today.AddDays(-1 * startDiff);
+            var end =start.AddDays(7).AddSeconds(-1);
+            UpcomingEvents = await _noticeHandler.GetActivities(start,end);
+            RoutineViewModel.Update(UpcomingEvents);
             IsBusy = false;
         }
 

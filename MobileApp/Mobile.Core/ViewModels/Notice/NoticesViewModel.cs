@@ -58,6 +58,7 @@ namespace Mobile.Core.ViewModels
                 {
                     Notices.Add(item);
                 }
+                page++;
             }
             IsBusy = false;
         }

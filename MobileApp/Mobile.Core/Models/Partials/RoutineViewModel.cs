@@ -38,19 +38,13 @@ namespace Mobile.Core.Models.Partials
             }
         }
 
-        public void Update(List<Lesson> lessons, List<Notice> notices)
+        internal void Update(List<Activity> allActivity)
         {
-            var allActivity = new List<Activity>();
-            lessons.ForEach(x =>
-            allActivity.Add(new Activity(x.Course?.CourseName, "Lesson", x.DayOfWeek, x.TimeOfLesson)));
-            notices.ForEach(x =>
-            allActivity.Add(new Activity(x.Title, x.PostType.ToString(), x.EventDate.DayOfWeek, x.TimeOfEvent)));
-
             foreach (var item in Routines)
             {
                 var dayActivity = allActivity.Where(x => x.DayOfWeek == item.DayOfWeek)
-                                               .OrderBy(x => x.TimeOfDay)
-                                               .ToList();
+                                             .OrderBy(x => x.TimeOfDay)
+                                             .ToList();
                 if (dayActivity.Count > 0)
                 {
                     item.Activities = dayActivity;
@@ -60,6 +54,7 @@ namespace Mobile.Core.Models.Partials
                     }
                 }
             }
+            SelectRoutine(Routines.FirstOrDefault(x => x.DayOfWeek == DateTime.Today.DayOfWeek));
         }
     }
 
@@ -78,30 +73,5 @@ namespace Mobile.Core.Models.Partials
         public string Day { get; set; }
         public bool IsSelected { get; set; }
         public List<Activity> Activities { get; set; }
-    }
-
-    public class Activity
-    {
-        public Activity(string name,
-            string description, DayOfWeek dayOfWeek,
-            string timeOfDay)
-        {
-            Name = name;
-            DayOfWeek = dayOfWeek;
-            TimeOfDay = timeOfDay;
-            Description = description;
-        }
-
-        public string Name { get; set; }
-        public DayOfWeek DayOfWeek { get; }
-        public string TimeOfDay { get; }
-        public string Description { get; }
-        public DateTime DateTime { get; set; }
-    }
-
-    public enum ActivityType
-    {
-        Lesson,
-        Notice
     }
 }

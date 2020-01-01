@@ -14,7 +14,7 @@ namespace CoreEngine.APIHandlers
         Task<ActionResponse> UpdatePost(Notice notice);
         Task<ActionResponse> DeletePost(Notice notice);
         Task<List<Notice>> GetUpcomingEvents(int page, PostType all);
-        Task<List<Notice>> GetPostsDate(DateTime startTime, DateTime endTime);
+        Task<List<Activity>> GetActivities(DateTime startTime, DateTime endTime);
         Task<Notice> GetNotice(int noticeId);
         Task<List<Notice>> SearchNotice(string key);
     }

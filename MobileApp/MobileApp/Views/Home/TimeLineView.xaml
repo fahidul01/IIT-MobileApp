@@ -4,11 +4,11 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:DataType="partials:Activity"
-             xmlns:partials="clr-namespace:Mobile.Core.Models.Partials;assembly=Mobile.Core"
+             xmlns:model="clr-namespace:CoreEngine.Model.DBModel;assembly=CoreEngine"
+             x:DataType="model:Activity"
              x:Class="MobileApp.Views.Home.TimeLineView">
     <StackLayout Margin="20,0,0,0"
-                 d:BindingContext="{x:Static partials:Activity}"
+                 d:BindingContext="{x:Static model:Activity}"
                  Orientation="Horizontal"
                  VerticalOptions="Center">
         <!--  VERTICAL LINE WITH IMAGE  -->
@@ -57,7 +57,7 @@
                        Text="{Binding Name}"
                        TextColor="Black" />
                 <Label FontSize="Small"
-                       Text="{Binding Description}"
+                       Text="{Binding ActivityType}"
                        TextColor="DarkGray" />
                 <Label FontAttributes="Bold"
                        FontSize="Small"

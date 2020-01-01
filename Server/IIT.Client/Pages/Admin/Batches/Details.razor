@@ -6,23 +6,25 @@
 @inject IMemberHandler _memberHandler
 
 
+
 @if (currentBatch == null)
 {
     <MatProgressBar Indeterminate="true" />
 }
 else
 {
+    <h4 class="p-2">@currentBatch.Name</h4>
     <CourseView Semesters="currentBatch.Semesters.ToList()"
-                BatchId ="currentBatch.Id"/>
-    <br/>
+                BatchId="currentBatch.Id" />
+    <br />
     <MatDivider />
-    <br/>
+    <br />
     <div class="card">
         <div class="card-header">
             <h3 class="d-inline">Students</h3>
             <div class="d-inline-flex float-right">
                 <label @onclick="(() => addStudentDialog = true)"
-                        class="btn btn-outline-primary custom-file-upload">
+                       class="btn btn-outline-primary custom-file-upload">
                     Add Student
                 </label>
                 <label class="btn btn-outline-primary custom-file-upload">
@@ -34,7 +36,7 @@ else
         <div class="card-body">
             @if (addStudentSpinner)
             {
-                <MatProgressBar Indeterminate="true"/>
+                <MatProgressBar Indeterminate="true" />
             }
             <StudentsView Students="Students" />
         </div>
@@ -81,9 +83,9 @@ else
 </MatDialog>
 
 @code{
-        Batch currentBatch = new Batch();
-        List<DBUser> Students = new List<DBUser>();
-        AddStudentViewModel StudentModel = new AddStudentViewModel();
+    Batch currentBatch = new Batch();
+    List<DBUser> Students = new List<DBUser>();
+    AddStudentViewModel StudentModel = new AddStudentViewModel();
     [Parameter]
     public int BatchId { get; set; }
     bool addStudentDialog;
@@ -96,7 +98,7 @@ else
         if (BatchId > 0)
         {
             currentBatch = await _batchService.GetBatch(BatchId);
-            Students = currentBatch.Students.OrderBy(x=>x.Roll).ToList();
+            Students = currentBatch.Students.OrderBy(x => x.Roll).ToList();
         }
         else
         {

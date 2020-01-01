@@ -101,24 +101,82 @@ namespace Student.Infrastructure.Services
             }
         }
 
-        public async Task<List<Notice>> GetNoticeDate(string userId, DateTime startTime, DateTime endTime)
+        public async Task<List<Activity>> GetActivitiesAsync(string userId, DateTime start, DateTime end)
         {
+            var activityList = new List<Activity>();
             var user = await _db.DBUsers
                                 .Include(x => x.Batch)
                                 .FirstOrDefaultAsync(x => x.Id == userId);
-            var primaryQuery = _db.Notices
-                                .Where(x => x.EventDate >= startTime &&
-                                                    x.EventDate <= endTime);
-            if (user.Role == AppConstants.Admin)
+            var notices = await _db.Notices.Where(x => x.EventDate >= start && x.EventDate <= end &&
+                                                     (x.Batch == null || x.Batch == user.Batch))
+                                   .ToListAsync();
+
+            var lessons = await _db.Lessons.Include(x => x.Course)
+                                           .Where(m => m.Course.StudentCourses.Any(n => n.Student.Id == userId) &&
+                                                       m.Course.Semester.StartsOn <= CurrentTime &&
+                                                       m.Course.Semester.EndsOn >= CurrentTime)
+                                           .ToListAsync();
+            var workItems = await _db.ToDoItems
+                                     .Include(x => x.Participents)
+                                     .Where(m => (m.EventTime >= start && m.EventTime <= end) &&
+                                                  m.Participents.Any(n => n.DBUser.Id == userId))
+                                     .ToListAsync();
+
+            var day = start.Date;
+            while (day < end)
             {
-                return await primaryQuery.ToListAsync();
+                var todayLesson = lessons.Where(x => x.DayOfWeek == day.DayOfWeek);
+                foreach (var lesson in todayLesson)
+                {
+                    var activity = new Activity()
+                    {
+                        Id = lesson.Id,
+                        DateTime = day,
+                        //Description = lesson.Description,
+                        ActivityType = ActivityType.Lesson,
+                        Name = lesson.Course.CourseName,
+                        DayOfWeek = day.DayOfWeek,
+                        TimeOfDay = lesson.TimeOfLesson
+                    };
+                    activityList.Add(activity);
+                }
+                var todayNotices = notices.Where(x => x.EventDate.Date == day);
+                foreach (var notice in todayNotices)
+                {
+                    var activity = new Activity()
+                    {
+                        ActivityType = ActivityType.Notice,
+                        DateTime = notice.EventDate,
+                        DayOfWeek = day.DayOfWeek,
+                        Description = notice.Message,
+                        Id = notice.Id,
+                        Name = notice.Title,
+                        TimeOfDay = notice.TimeOfEvent
+                    };
+                    activityList.Add(activity);
+                }
+                var todayWorks = workItems.Where(x => x.EventTime.Date == day);
+                foreach (var todoItem in todayWorks)
+                {
+                    var activity = new Activity()
+                    {
+                        ActivityType = ActivityType.Todo,
+                        DateTime = todoItem.EventTime,
+                        DayOfWeek = day.DayOfWeek,
+                        Description = todoItem.Message,
+                        Id = todoItem.Id,
+                        Name = todoItem.Title,
+                        TimeOfDay = todoItem.EventTime.ToString("hh:mm tt")
+                    };
+
+                    activityList.Add(activity);
+                }
+                day = day.AddDays(1);
             }
-            else
-            {
-                return await primaryQuery
-                                .Where(x => x.Batch == null || x.Batch == user.Batch)
-                                .ToListAsync();
-            }
+
+
+            return activityList;
+
         }
 
         public async Task<bool> UpdateNotice(Notice notice)
@@ -169,18 +227,21 @@ namespace Student.Infrastructure.Services
                               .Include(x => x.Batch)
                               .FirstOrDefaultAsync(x => x.Id == userId);
 
-            var primaryQuery = _db.Notices.Include(x=>x.DBFiles)
+            var primaryQuery = _db.Notices
+                                  .Include(x=>x.DBFiles)
                                   .OrderByDescending(m => m.EventDate)
-                                         .Skip((page - 1) * itemPerPage)
-                                         .Take(itemPerPage)
-                                         .Include(m => m.Batch);
+                                  .Include(m => m.Batch);
             if (user.Role == AppConstants.Admin)
             {
-                return await primaryQuery.ToListAsync();
+                return await primaryQuery.Skip(page * itemPerPage)
+                                         .Take(itemPerPage)
+                                         .ToListAsync();
             }
             else
             {
                 return await primaryQuery.Where(x => x.Batch == null || x.Batch == user.Batch)
+                                         .Skip(page * itemPerPage)
+                                         .Take(itemPerPage)
                                          .ToListAsync();
             }
         }

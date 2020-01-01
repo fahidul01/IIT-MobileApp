@@ -12,7 +12,7 @@ namespace Mobile.Core.ViewModels
     public class CalenderViewModel : BaseViewModel
     {
         public ActivityCollection ActivityCollection { get; set; }
-        public List<Notice> Notices { get; set; }
+        public List<Activity> Notices { get; set; }
 
         private readonly INoticeHandler _noticeHandler;
 
@@ -40,21 +40,20 @@ namespace Mobile.Core.ViewModels
             base.OnAppear(args);
             ActivityCollection.Clear();
             Year = DateTime.Today.Year;
-            Month = DateTime.Today.Month;
-            // LoadInformation(DateTime.Today.Year, DateTime.Today.Month);
+            _month = DateTime.Today.Month;
+            LoadInformation(Month);
         }
 
         private async void LoadInformation(int month)
         {
-            await Task.Delay(250);
             var start = new DateTime(Year, month, 1);
             var end = start.AddMonths(1);
             if (ActivityCollection.RequireData(start, end))
             {
                 IsBusy = true;
-                Notices = await _noticeHandler.GetPostsDate(start, end);
+                Notices = await _noticeHandler.GetActivities(start, end);
                 var allData = new Dictionary<DateTime, ICollection>();
-                foreach (var group in Notices.GroupBy(x => x.EventDate.Date))
+                foreach (var group in Notices.GroupBy(x => x.DateTime.Date))
                 {
                     allData.Add(group.Key.Date, group.ToList());
                 }

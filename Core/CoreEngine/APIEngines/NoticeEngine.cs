@@ -37,9 +37,9 @@ namespace CoreEngine.APIEngines
             return SendRequest<List<Notice>>(HttpMethod.Post, new { page, postType });
         }
 
-        public Task<List<Notice>> GetPostsDate(DateTime startTime, DateTime endTime)
+        public Task<List<Activity>> GetActivities(DateTime startTime, DateTime endTime)
         {
-            return SendRequest<List<Notice>>(HttpMethod.Post, new { startTime, endTime });
+            return SendRequest<List<Activity>>(HttpMethod.Post, new { startTime, endTime });
         }
 
         public Task<List<Notice>> GetUpcomingEvents(int page, PostType postType)
